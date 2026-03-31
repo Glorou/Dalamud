@@ -12255,9 +12255,10 @@ namespace Dalamud.Bindings.ImGui
 		public unsafe void* RendererSetWindowSize;
 		public unsafe void* RendererRenderWindow;
 		public unsafe void* RendererSwapBuffers;
+		public unsafe void* RendererRenderState;
 		public ImVector<ImGuiPlatformMonitor> Monitors;
 		public ImVector<ImGuiViewportPtr> Viewports;
-		public unsafe ImGuiPlatformIO(delegate*<ImGuiViewport*, void> platformCreatewindow = default, delegate*<ImGuiViewport*, void> platformDestroywindow = default, delegate*<ImGuiViewport*, void> platformShowwindow = default, delegate*<ImGuiViewport*, Vector2, void> platformSetwindowpos = default, delegate*<ImGuiViewport*, Vector2> platformGetwindowpos = default, delegate*<ImGuiViewport*, Vector2, void> platformSetwindowsize = default, delegate*<ImGuiViewport*, Vector2> platformGetwindowsize = default, delegate*<ImGuiViewport*, void> platformSetwindowfocus = default, delegate*<ImGuiViewport*, bool> platformGetwindowfocus = default, delegate*<ImGuiViewport*, bool> platformGetwindowminimized = default, delegate*<ImGuiViewport*, byte*, void> platformSetwindowtitle = default, delegate*<ImGuiViewport*, float, void> platformSetwindowalpha = default, delegate*<ImGuiViewport*, void> platformUpdatewindow = default, delegate*<ImGuiViewport*, void*, void> platformRenderwindow = default, delegate*<ImGuiViewport*, void*, void> platformSwapbuffers = default, delegate*<ImGuiViewport*, float> platformGetwindowdpiscale = default, delegate*<ImGuiViewport*, void> platformOnchangedviewport = default, delegate*<ImGuiViewport*, ulong, void*, ulong*, int> platformCreatevksurface = default, delegate*<ImGuiViewport*, void> rendererCreatewindow = default, delegate*<ImGuiViewport*, void> rendererDestroywindow = default, delegate*<ImGuiViewport*, Vector2, void> rendererSetwindowsize = default, delegate*<ImGuiViewport*, void*, void> rendererRenderwindow = default, delegate*<ImGuiViewport*, void*, void> rendererSwapbuffers = default, ImVector<ImGuiPlatformMonitor> monitors = default, ImVector<ImGuiViewportPtr> viewports = default)
+		public unsafe ImGuiPlatformIO(delegate*<ImGuiViewport*, void> platformCreatewindow = default, delegate*<ImGuiViewport*, void> platformDestroywindow = default, delegate*<ImGuiViewport*, void> platformShowwindow = default, delegate*<ImGuiViewport*, Vector2, void> platformSetwindowpos = default, delegate*<ImGuiViewport*, Vector2> platformGetwindowpos = default, delegate*<ImGuiViewport*, Vector2, void> platformSetwindowsize = default, delegate*<ImGuiViewport*, Vector2> platformGetwindowsize = default, delegate*<ImGuiViewport*, void> platformSetwindowfocus = default, delegate*<ImGuiViewport*, bool> platformGetwindowfocus = default, delegate*<ImGuiViewport*, bool> platformGetwindowminimized = default, delegate*<ImGuiViewport*, byte*, void> platformSetwindowtitle = default, delegate*<ImGuiViewport*, float, void> platformSetwindowalpha = default, delegate*<ImGuiViewport*, void> platformUpdatewindow = default, delegate*<ImGuiViewport*, void*, void> platformRenderwindow = default, delegate*<ImGuiViewport*, void*, void> platformSwapbuffers = default, delegate*<ImGuiViewport*, float> platformGetwindowdpiscale = default, delegate*<ImGuiViewport*, void> platformOnchangedviewport = default, delegate*<ImGuiViewport*, ulong, void*, ulong*, int> platformCreatevksurface = default, delegate*<ImGuiViewport*, void> rendererCreatewindow = default, delegate*<ImGuiViewport*, void> rendererDestroywindow = default, delegate*<ImGuiViewport*, Vector2, void> rendererSetwindowsize = default, delegate*<ImGuiViewport*, void*, void> rendererRenderwindow = default, delegate*<ImGuiViewport*, void*, void> rendererSwapbuffers = default, void* rendererRenderstate = default, ImVector<ImGuiPlatformMonitor> monitors = default, ImVector<ImGuiViewportPtr> viewports = default)
 		{
 			PlatformCreateWindow = (void*)platformCreatewindow;
 			PlatformDestroyWindow = (void*)platformDestroywindow;
@@ -12282,6 +12283,7 @@ namespace Dalamud.Bindings.ImGui
 			RendererSetWindowSize = (void*)rendererSetwindowsize;
 			RendererRenderWindow = (void*)rendererRenderwindow;
 			RendererSwapBuffers = (void*)rendererSwapbuffers;
+			RendererRenderState = (ImGui_ImplDX11_RenderState*)rendererRenderstate;
 			Monitors = monitors;
 			Viewports = viewports;
 		}
@@ -12330,10 +12332,19 @@ namespace Dalamud.Bindings.ImGui
 		public void* RendererSetWindowSize { get => Handle->RendererSetWindowSize; set => Handle->RendererSetWindowSize = value; }
 		public void* RendererRenderWindow { get => Handle->RendererRenderWindow; set => Handle->RendererRenderWindow = value; }
 		public void* RendererSwapBuffers { get => Handle->RendererSwapBuffers; set => Handle->RendererSwapBuffers = value; }
+		public ImGui_ImplDX11_RenderState* RendererRenderState { get => (ImGui_ImplDX11_RenderState*)Handle->RendererRenderState; set => Handle->RendererRenderState = value; }
 		public ref ImVector<ImGuiPlatformMonitor> Monitors => ref Unsafe.AsRef<ImVector<ImGuiPlatformMonitor>>(&Handle->Monitors);
 		public ref ImVector<ImGuiViewportPtr> Viewports => ref Unsafe.AsRef<ImVector<ImGuiViewportPtr>>(&Handle->Viewports);
 	}
+    public unsafe struct ImGui_ImplDX11_RenderState
+    {
+        public void* Device;
+        public void* DeviceContext;
+        public void* SamplerDefault;
+    };
 }
+
+
 /* ImGuiPlatformMonitor.cs */
 namespace Dalamud.Bindings.ImGui
 {

@@ -444,6 +444,13 @@ internal unsafe partial class Dx11Renderer : IImGuiRenderer
     private void SetupRenderState(ImDrawDataPtr drawData)
     {
         var ctx = this.context.Get();
+        ImGui_ImplDX11_RenderState state = new ImGui_ImplDX11_RenderState();
+        state.Device = this.device;
+        state.DeviceContext = this.context;
+        state.SamplerDefault = this.sampler;
+
+        var io = ImGui.GetPlatformIO();
+        io.RendererRenderState = &state;
         ctx->IASetInputLayout(this.inputLayout);
         var buffer = this.vertexBuffer.Get();
         var stride = (uint)sizeof(ImDrawVert);

@@ -2,6 +2,8 @@
 using Dalamud.Interface.ImGuiBackend.InputHandler;
 using Dalamud.Interface.ImGuiBackend.Renderers;
 
+using TerraFX.Interop.DirectX;
+
 namespace Dalamud.Interface.ImGuiBackend;
 
 /// <summary>Backend for ImGui.</summary>
@@ -61,4 +63,8 @@ internal interface IImGuiBackend : IDisposable
     /// <summary>Determines if the main viewport is full screen. </summary>
     /// <returns>Whether it is the case.</returns>
     bool IsMainViewportFullScreen();
+
+    unsafe ID3D11Device* GetDevice();
+
+    unsafe ID3D11DeviceContext* GetDeviceContext();
 }
