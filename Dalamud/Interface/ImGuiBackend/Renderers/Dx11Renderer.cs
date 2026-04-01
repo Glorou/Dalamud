@@ -34,6 +34,7 @@ internal unsafe partial class Dx11Renderer : IImGuiRenderer
     private readonly List<IDalamudTextureWrap> fontTextures = [];
     private readonly D3D_FEATURE_LEVEL featureLevel;
     private readonly ViewportHandler viewportHandler;
+    private readonly BlurHandler blurHandler;
     private readonly nint renderNamePtr;
     private readonly DXGI_FORMAT rtvFormat;
     private readonly ViewportData mainViewport;
@@ -101,6 +102,7 @@ internal unsafe partial class Dx11Renderer : IImGuiRenderer
             }
 
             this.mainViewport = ViewportData.Create(this, swapChain, null, null);
+            ImGui.GetPlatformIO().Viewports
             var vp = ImGui.GetPlatformIO().Viewports[0];
             vp.RendererUserData = this.mainViewport.Handle;
         }
@@ -378,6 +380,13 @@ internal unsafe partial class Dx11Renderer : IImGuiRenderer
                         break;
                     }
 
+                    case ImDrawCallbackEnum.Blur:
+                    {
+                        // Special callback value used to blur a window.
+                        this.blurHandler.BlurCallback(in cmdList, in cmd);
+                        break;
+                    }
+
                     default:
                     {
                         // User callback, registered via ImDrawList::AddCallback()
@@ -648,8 +657,6 @@ internal unsafe partial class Dx11Renderer : IImGuiRenderer
         this.releaseUnmanagedResourceCalled = true;
 
         this.mainViewport.Dispose();
-        var vp = ImGui.GetPlatformIO().Viewports[0];
-        vp.RendererUserData = null;
         ImGui.DestroyPlatformWindows();
 
         this.viewportHandler.Dispose();
