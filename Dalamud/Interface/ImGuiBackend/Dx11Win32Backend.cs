@@ -227,6 +227,11 @@ internal sealed unsafe class Dx11Win32Backend : IWin32Backend
         }
     }
 
+    public ID3D11Device* GetDevice() => this.Device;
+
+    public ID3D11DeviceContext* GetDeviceContext() => this.DeviceContext;
+
+
     private void ReleaseUnmanagedResources()
     {
         if (this.device.IsEmpty())

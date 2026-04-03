@@ -12,4 +12,5 @@ public enum ImDrawCallbackEnum : long
     /// altering render state for imgui contents (e.g. changing shader/blending settings before an Image call).
     /// </summary>
     ResetRenderState = ImGui.ImDrawCallbackResetRenderState,
+    ResetRenderStateAlt = -1,
 }

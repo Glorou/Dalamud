@@ -378,6 +378,13 @@ internal unsafe partial class Dx11Renderer : IImGuiRenderer
                         break;
                     }
 
+                    case ImDrawCallbackEnum.ResetRenderStateAlt:
+                    {
+                        // Special callback value used by the user to request the renderer to reset render state.
+                        this.SetupRenderState(drawData);
+                        break;
+                    }
+
                     default:
                     {
                         // User callback, registered via ImDrawList::AddCallback()
