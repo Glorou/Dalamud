@@ -10,62 +10,12 @@ using TerraFX.Interop.DirectX;
 
 namespace Dalamud.Interface.Utility;
 
-internal unsafe class Framebuffer : IDisposable
-{
-    public ID3D11Texture2D* tex = null;
-    public ID3D11RenderTargetView* rtv = null;
-    public ID3D11ShaderResourceView* srv = null;
-    public int width = 0, height = 0;
-
-    public void Dispose()
-    {
-        if (tex != null)
-            tex->Release(); this.tex=null;
-        if (rtv != null)
-            rtv->Release(); this.rtv=null;
-        if (srv != null)
-            srv->Release(); this.srv=null;
-    }
-}
 
 public unsafe partial class ImBlur
 {
 
 
-    /*public unsafe static void Process(ImDrawList* draw_list, int iterations, float offset, float noise, float scale)
-    {
-
-    }*/
-
-    internal unsafe static bool CreateFramebuffer(
-        ID3D11Device* device, ref Framebuffer framebuffer, int width, int height)
-    {
-        D3D11_TEXTURE2D_DESC tex_desc = default(D3D11_TEXTURE2D_DESC);
-        tex_desc.Width = (uint)width;
-        tex_desc.Height = (uint)height;
-        tex_desc.MipLevels = 1;
-        tex_desc.ArraySize = 1;
-        tex_desc.Format = DXGI_FORMAT.DXGI_FORMAT_R8G8B8A8_UNORM;
-        tex_desc.SampleDesc.Count = 1;
-        tex_desc.Usage = D3D11_USAGE.D3D11_USAGE_DEFAULT;
-        tex_desc.BindFlags = (uint)(D3D11_BIND_FLAG.D3D11_BIND_RENDER_TARGET | D3D11_BIND_FLAG.D3D11_BIND_SHADER_RESOURCE);
-
-        framebuffer.width = width;
-        framebuffer.height = height;
-        var tex = framebuffer.tex;
-        if (device->CreateTexture2D(&tex_desc, null, &tex).FAILED)
-            return false;
-        var rtv = framebuffer.rtv;
-        if (device->CreateRenderTargetView((ID3D11Resource*)framebuffer.tex, null, &rtv).FAILED)
-            return false;
-
-        var srv = framebuffer.srv;
-        return device->CreateShaderResourceView((ID3D11Resource*)framebuffer.tex, null, &srv).SUCCEEDED;
-    }
-
-
     public static ImTextureID Texture() => new ImTextureID(GetTexture());
-
 
 
 
