@@ -17,7 +17,6 @@ namespace Dalamud.Bindings.ImPlot
 	/// <summary>
 	/// To be documented.
 	/// </summary>
-	[Flags]
 	public enum ImPlotLocation : int
 	{
 		/// <summary>

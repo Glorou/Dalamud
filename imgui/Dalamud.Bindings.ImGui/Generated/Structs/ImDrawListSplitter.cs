@@ -89,7 +89,7 @@ namespace Dalamud.Bindings.ImGui
 		{
 			fixed (ImDrawListSplitter* @this = &this)
 			{
-				ImGui.MergeNative(@this, drawList);
+				ImGui.MergeNative(@this, (ImDrawList*)drawList);
 			}
 		}
 
@@ -114,7 +114,7 @@ namespace Dalamud.Bindings.ImGui
 		{
 			fixed (ImDrawListSplitter* @this = &this)
 			{
-				ImGui.SetCurrentChannelNative(@this, drawList, channelIdx);
+				ImGui.SetCurrentChannelNative(@this, (ImDrawList*)drawList, channelIdx);
 			}
 		}
 
@@ -139,7 +139,7 @@ namespace Dalamud.Bindings.ImGui
 		{
 			fixed (ImDrawListSplitter* @this = &this)
 			{
-				ImGui.SplitNative(@this, drawList, count);
+				ImGui.SplitNative(@this, (ImDrawList*)drawList, count);
 			}
 		}
 
@@ -241,7 +241,7 @@ namespace Dalamud.Bindings.ImGui
 		/// </summary>
 		public unsafe void Merge(ImDrawListPtr drawList)
 		{
-			ImGui.MergeNative(Handle, drawList);
+			ImGui.MergeNative(Handle, (ImDrawList*)drawList);
 		}
 
 		/// <summary>
@@ -260,7 +260,7 @@ namespace Dalamud.Bindings.ImGui
 		/// </summary>
 		public unsafe void SetCurrentChannel(ImDrawListPtr drawList, int channelIdx)
 		{
-			ImGui.SetCurrentChannelNative(Handle, drawList, channelIdx);
+			ImGui.SetCurrentChannelNative(Handle, (ImDrawList*)drawList, channelIdx);
 		}
 
 		/// <summary>
@@ -279,7 +279,7 @@ namespace Dalamud.Bindings.ImGui
 		/// </summary>
 		public unsafe void Split(ImDrawListPtr drawList, int count)
 		{
-			ImGui.SplitNative(Handle, drawList, count);
+			ImGui.SplitNative(Handle, (ImDrawList*)drawList, count);
 		}
 
 		/// <summary>

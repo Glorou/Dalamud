@@ -25,6 +25,11 @@ namespace Dalamud.Bindings.ImGui
 		/// <summary>
 		/// To be documented.
 		/// </summary>
+		public unsafe ImGuiContext* Ctx;
+
+		/// <summary>
+		/// To be documented.
+		/// </summary>
 		public ImGuiInputTextFlags EventFlag;
 
 		/// <summary>
@@ -40,12 +45,27 @@ namespace Dalamud.Bindings.ImGui
 		/// <summary>
 		/// To be documented.
 		/// </summary>
-		public ushort EventChar;
+		public uint ID;
 
 		/// <summary>
 		/// To be documented.
 		/// </summary>
 		public ImGuiKey EventKey;
+
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		public ushort EventChar;
+
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		public byte EventActivated;
+
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		public byte BufDirty;
 
 		/// <summary>
 		/// To be documented.
@@ -61,11 +81,6 @@ namespace Dalamud.Bindings.ImGui
 		/// To be documented.
 		/// </summary>
 		public int BufSize;
-
-		/// <summary>
-		/// To be documented.
-		/// </summary>
-		public byte BufDirty;
 
 		/// <summary>
 		/// To be documented.
@@ -86,17 +101,20 @@ namespace Dalamud.Bindings.ImGui
 		/// <summary>
 		/// To be documented.
 		/// </summary>
-		public unsafe ImGuiInputTextCallbackData(ImGuiInputTextFlags eventFlag = default, ImGuiInputTextFlags flags = default, void* userData = default, ushort eventChar = default, ImGuiKey eventKey = default, byte* buf = default, int bufTextLen = default, int bufSize = default, bool bufDirty = default, int cursorPos = default, int selectionStart = default, int selectionEnd = default)
+		public unsafe ImGuiInputTextCallbackData(ImGuiContextPtr ctx = default, ImGuiInputTextFlags eventFlag = default, ImGuiInputTextFlags flags = default, void* userData = default, uint id = default, ImGuiKey eventKey = default, ushort eventChar = default, bool eventActivated = default, bool bufDirty = default, byte* buf = default, int bufTextLen = default, int bufSize = default, int cursorPos = default, int selectionStart = default, int selectionEnd = default)
 		{
+			Ctx = ctx;
 			EventFlag = eventFlag;
 			Flags = flags;
 			UserData = userData;
-			EventChar = eventChar;
+			ID = id;
 			EventKey = eventKey;
+			EventChar = eventChar;
+			EventActivated = eventActivated ? (byte)1 : (byte)0;
+			BufDirty = bufDirty ? (byte)1 : (byte)0;
 			Buf = buf;
 			BufTextLen = bufTextLen;
 			BufSize = bufSize;
-			BufDirty = bufDirty ? (byte)1 : (byte)0;
 			CursorPos = cursorPos;
 			SelectionStart = selectionStart;
 			SelectionEnd = selectionEnd;
@@ -173,7 +191,7 @@ namespace Dalamud.Bindings.ImGui
 		/// <summary>
 		/// To be documented.
 		/// </summary>
-		public unsafe void InsertChars(int pos, ref byte text, byte* textEnd)
+		public unsafe void InsertChars(int pos, in byte text, byte* textEnd)
 		{
 			fixed (ImGuiInputTextCallbackData* @this = &this)
 			{
@@ -187,7 +205,7 @@ namespace Dalamud.Bindings.ImGui
 		/// <summary>
 		/// To be documented.
 		/// </summary>
-		public unsafe void InsertChars(int pos, ref byte text)
+		public unsafe void InsertChars(int pos, in byte text)
 		{
 			fixed (ImGuiInputTextCallbackData* @this = &this)
 			{
@@ -293,7 +311,7 @@ namespace Dalamud.Bindings.ImGui
 		/// <summary>
 		/// To be documented.
 		/// </summary>
-		public unsafe void InsertChars(int pos, byte* text, ref byte textEnd)
+		public unsafe void InsertChars(int pos, byte* text, in byte textEnd)
 		{
 			fixed (ImGuiInputTextCallbackData* @this = &this)
 			{
@@ -353,7 +371,7 @@ namespace Dalamud.Bindings.ImGui
 		/// <summary>
 		/// To be documented.
 		/// </summary>
-		public unsafe void InsertChars(int pos, ref byte text, ref byte textEnd)
+		public unsafe void InsertChars(int pos, in byte text, in byte textEnd)
 		{
 			fixed (ImGuiInputTextCallbackData* @this = &this)
 			{
@@ -440,7 +458,7 @@ namespace Dalamud.Bindings.ImGui
 		/// <summary>
 		/// To be documented.
 		/// </summary>
-		public unsafe void InsertChars(int pos, ref byte text, ReadOnlySpan<byte> textEnd)
+		public unsafe void InsertChars(int pos, in byte text, ReadOnlySpan<byte> textEnd)
 		{
 			fixed (ImGuiInputTextCallbackData* @this = &this)
 			{
@@ -457,7 +475,7 @@ namespace Dalamud.Bindings.ImGui
 		/// <summary>
 		/// To be documented.
 		/// </summary>
-		public unsafe void InsertChars(int pos, ref byte text, string textEnd)
+		public unsafe void InsertChars(int pos, in byte text, string textEnd)
 		{
 			fixed (ImGuiInputTextCallbackData* @this = &this)
 			{
@@ -492,7 +510,7 @@ namespace Dalamud.Bindings.ImGui
 		/// <summary>
 		/// To be documented.
 		/// </summary>
-		public unsafe void InsertChars(int pos, ReadOnlySpan<byte> text, ref byte textEnd)
+		public unsafe void InsertChars(int pos, ReadOnlySpan<byte> text, in byte textEnd)
 		{
 			fixed (ImGuiInputTextCallbackData* @this = &this)
 			{
@@ -544,7 +562,7 @@ namespace Dalamud.Bindings.ImGui
 		/// <summary>
 		/// To be documented.
 		/// </summary>
-		public unsafe void InsertChars(int pos, string text, ref byte textEnd)
+		public unsafe void InsertChars(int pos, string text, in byte textEnd)
 		{
 			fixed (ImGuiInputTextCallbackData* @this = &this)
 			{
@@ -622,6 +640,17 @@ namespace Dalamud.Bindings.ImGui
 			}
 		}
 
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		public unsafe void SetSelection(int s, int e)
+		{
+			fixed (ImGuiInputTextCallbackData* @this = &this)
+			{
+				ImGui.SetSelectionNative(@this, s, e);
+			}
+		}
+
 	}
 
 	/// <summary>
@@ -668,6 +697,10 @@ namespace Dalamud.Bindings.ImGui
 		/// <summary>
 		/// To be documented.
 		/// </summary>
+		public ref ImGuiContextPtr Ctx => ref Unsafe.AsRef<ImGuiContextPtr>(&Handle->Ctx);
+		/// <summary>
+		/// To be documented.
+		/// </summary>
 		public ref ImGuiInputTextFlags EventFlag => ref Unsafe.AsRef<ImGuiInputTextFlags>(&Handle->EventFlag);
 		/// <summary>
 		/// To be documented.
@@ -680,11 +713,23 @@ namespace Dalamud.Bindings.ImGui
 		/// <summary>
 		/// To be documented.
 		/// </summary>
-		public ref ushort EventChar => ref Unsafe.AsRef<ushort>(&Handle->EventChar);
+		public ref uint ID => ref Unsafe.AsRef<uint>(&Handle->ID);
 		/// <summary>
 		/// To be documented.
 		/// </summary>
 		public ref ImGuiKey EventKey => ref Unsafe.AsRef<ImGuiKey>(&Handle->EventKey);
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		public ref ushort EventChar => ref Unsafe.AsRef<ushort>(&Handle->EventChar);
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		public ref bool EventActivated => ref Unsafe.AsRef<bool>(&Handle->EventActivated);
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		public ref bool BufDirty => ref Unsafe.AsRef<bool>(&Handle->BufDirty);
 		/// <summary>
 		/// To be documented.
 		/// </summary>
@@ -697,10 +742,6 @@ namespace Dalamud.Bindings.ImGui
 		/// To be documented.
 		/// </summary>
 		public ref int BufSize => ref Unsafe.AsRef<int>(&Handle->BufSize);
-		/// <summary>
-		/// To be documented.
-		/// </summary>
-		public ref bool BufDirty => ref Unsafe.AsRef<bool>(&Handle->BufDirty);
 		/// <summary>
 		/// To be documented.
 		/// </summary>
@@ -765,7 +806,7 @@ namespace Dalamud.Bindings.ImGui
 		/// <summary>
 		/// To be documented.
 		/// </summary>
-		public unsafe void InsertChars(int pos, ref byte text, byte* textEnd)
+		public unsafe void InsertChars(int pos, in byte text, byte* textEnd)
 		{
 			fixed (byte* ptext = &text)
 			{
@@ -776,7 +817,7 @@ namespace Dalamud.Bindings.ImGui
 		/// <summary>
 		/// To be documented.
 		/// </summary>
-		public unsafe void InsertChars(int pos, ref byte text)
+		public unsafe void InsertChars(int pos, in byte text)
 		{
 			fixed (byte* ptext = &text)
 			{
@@ -867,7 +908,7 @@ namespace Dalamud.Bindings.ImGui
 		/// <summary>
 		/// To be documented.
 		/// </summary>
-		public unsafe void InsertChars(int pos, byte* text, ref byte textEnd)
+		public unsafe void InsertChars(int pos, byte* text, in byte textEnd)
 		{
 			fixed (byte* ptextEnd = &textEnd)
 			{
@@ -918,7 +959,7 @@ namespace Dalamud.Bindings.ImGui
 		/// <summary>
 		/// To be documented.
 		/// </summary>
-		public unsafe void InsertChars(int pos, ref byte text, ref byte textEnd)
+		public unsafe void InsertChars(int pos, in byte text, in byte textEnd)
 		{
 			fixed (byte* ptext = &text)
 			{
@@ -996,7 +1037,7 @@ namespace Dalamud.Bindings.ImGui
 		/// <summary>
 		/// To be documented.
 		/// </summary>
-		public unsafe void InsertChars(int pos, ref byte text, ReadOnlySpan<byte> textEnd)
+		public unsafe void InsertChars(int pos, in byte text, ReadOnlySpan<byte> textEnd)
 		{
 			fixed (byte* ptext = &text)
 			{
@@ -1010,7 +1051,7 @@ namespace Dalamud.Bindings.ImGui
 		/// <summary>
 		/// To be documented.
 		/// </summary>
-		public unsafe void InsertChars(int pos, ref byte text, string textEnd)
+		public unsafe void InsertChars(int pos, in byte text, string textEnd)
 		{
 			fixed (byte* ptext = &text)
 			{
@@ -1042,7 +1083,7 @@ namespace Dalamud.Bindings.ImGui
 		/// <summary>
 		/// To be documented.
 		/// </summary>
-		public unsafe void InsertChars(int pos, ReadOnlySpan<byte> text, ref byte textEnd)
+		public unsafe void InsertChars(int pos, ReadOnlySpan<byte> text, in byte textEnd)
 		{
 			fixed (byte* ptext = text)
 			{
@@ -1088,7 +1129,7 @@ namespace Dalamud.Bindings.ImGui
 		/// <summary>
 		/// To be documented.
 		/// </summary>
-		public unsafe void InsertChars(int pos, string text, ref byte textEnd)
+		public unsafe void InsertChars(int pos, string text, in byte textEnd)
 		{
 			byte* pStr0 = null;
 			int pStrSize0 = 0;
@@ -1155,6 +1196,14 @@ namespace Dalamud.Bindings.ImGui
 		public unsafe void SelectAll()
 		{
 			ImGui.SelectAllNative(Handle);
+		}
+
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		public unsafe void SetSelection(int s, int e)
+		{
+			ImGui.SetSelectionNative(Handle, s, e);
 		}
 
 	}

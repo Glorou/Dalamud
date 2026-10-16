@@ -124,7 +124,7 @@ internal class SeStringRenderer : IServiceType
         string text,
         scoped in SeStringDrawParams drawParams = default,
         ImGuiId imGuiId = default,
-        ImGuiButtonFlags buttonFlags = ImGuiButtonFlags.MouseButtonDefault) =>
+        ImGuiButtonFlags buttonFlags = ImGuiButtonFlags.MouseButtonLeft) =>
         this.Draw(this.CompileAndCache(text).AsSpan(), drawParams, imGuiId, buttonFlags);
 
     /// <summary>Draws a SeString.</summary>
@@ -137,7 +137,7 @@ internal class SeStringRenderer : IServiceType
         scoped in Utf8String utf8String,
         scoped in SeStringDrawParams drawParams = default,
         ImGuiId imGuiId = default,
-        ImGuiButtonFlags buttonFlags = ImGuiButtonFlags.MouseButtonDefault) =>
+        ImGuiButtonFlags buttonFlags = ImGuiButtonFlags.MouseButtonLeft) =>
         this.Draw(utf8String.AsSpan(), drawParams, imGuiId, buttonFlags);
 
     /// <summary>Draws a SeString.</summary>
@@ -150,7 +150,7 @@ internal class SeStringRenderer : IServiceType
         ReadOnlySeStringSpan sss,
         scoped in SeStringDrawParams drawParams = default,
         ImGuiId imGuiId = default,
-        ImGuiButtonFlags buttonFlags = ImGuiButtonFlags.MouseButtonDefault)
+        ImGuiButtonFlags buttonFlags = ImGuiButtonFlags.MouseButtonLeft)
     {
         // Interactivity is supported only from the main thread.
         if (!imGuiId.IsEmpty())

@@ -36,7 +36,7 @@ public unsafe partial struct ImDrawListSplitter
 		{
 			fixed (ImDrawListSplitter* @this = &this)
 			{
-				ImGuiNative.Merge(@this, drawList);
+				ImGuiNative.Merge(@this, (ImDrawList*)drawList);
 			}
 		}
 		public unsafe void Merge(ref ImDrawList drawList)
@@ -53,7 +53,7 @@ public unsafe partial struct ImDrawListSplitter
 		{
 			fixed (ImDrawListSplitter* @this = &this)
 			{
-				ImGuiNative.SetCurrentChannel(@this, drawList, channelIdx);
+				ImGuiNative.SetCurrentChannel(@this, (ImDrawList*)drawList, channelIdx);
 			}
 		}
 		public unsafe void SetCurrentChannel(ref ImDrawList drawList, int channelIdx)
@@ -70,7 +70,7 @@ public unsafe partial struct ImDrawListSplitter
 		{
 			fixed (ImDrawListSplitter* @this = &this)
 			{
-				ImGuiNative.Split(@this, drawList, count);
+				ImGuiNative.Split(@this, (ImDrawList*)drawList, count);
 			}
 		}
 		public unsafe void Split(ref ImDrawList drawList, int count)

@@ -26,14 +26,14 @@ namespace Dalamud.Bindings.ImGui
 		/// To be documented.
 		/// </summary>
 		[StructLayout(LayoutKind.Explicit)]
-		public partial struct ImGuiStyleModUnion
+		public partial struct ImGuiStyleModAnonymous
 		{
 			/// <summary>
 			/// To be documented.
 			/// </summary>
 			[FieldOffset(0)]
 			public int BackupInt_0;
-			[FieldOffset(8)]
+			[FieldOffset(4)]
 			public int BackupInt_1;
 
 			/// <summary>
@@ -41,14 +41,14 @@ namespace Dalamud.Bindings.ImGui
 			/// </summary>
 			[FieldOffset(0)]
 			public float BackupFloat_0;
-			[FieldOffset(8)]
+			[FieldOffset(4)]
 			public float BackupFloat_1;
 
 
 			/// <summary>
 			/// To be documented.
 			/// </summary>
-			public unsafe ImGuiStyleModUnion(int* backupInt = default, float* backupFloat = default)
+			public unsafe ImGuiStyleModAnonymous(int* backupInt = default, float* backupFloat = default)
 			{
 				if (backupInt != default(int*))
 				{
@@ -65,7 +65,7 @@ namespace Dalamud.Bindings.ImGui
 			/// <summary>
 			/// To be documented.
 			/// </summary>
-			public unsafe ImGuiStyleModUnion(Span<int> backupInt = default, Span<float> backupFloat = default)
+			public unsafe ImGuiStyleModAnonymous(Span<int> backupInt = default, Span<float> backupFloat = default)
 			{
 				if (backupInt != default(Span<int>))
 				{
@@ -90,29 +90,18 @@ namespace Dalamud.Bindings.ImGui
 		/// <summary>
 		/// To be documented.
 		/// </summary>
-		public ImGuiStyleModUnion Union;
+		public ImGuiStyleModAnonymous Union;
 
 
 		/// <summary>
 		/// To be documented.
 		/// </summary>
-		public unsafe ImGuiStyleMod(ImGuiStyleVar varIdx = default, ImGuiStyleModUnion union = default)
+		public unsafe ImGuiStyleMod(ImGuiStyleVar varIdx = default, ImGuiStyleModAnonymous union = default)
 		{
 			VarIdx = varIdx;
 			Union = union;
 		}
 
-
-		/// <summary>
-		/// To be documented.
-		/// </summary>
-		public unsafe void Destroy()
-		{
-			fixed (ImGuiStyleMod* @this = &this)
-			{
-				ImGui.DestroyNative(@this);
-			}
-		}
 
 	}
 
@@ -164,15 +153,7 @@ namespace Dalamud.Bindings.ImGui
 		/// <summary>
 		/// To be documented.
 		/// </summary>
-		public ref ImGuiStyleMod.ImGuiStyleModUnion Union => ref Unsafe.AsRef<ImGuiStyleMod.ImGuiStyleModUnion>(&Handle->Union);
-		/// <summary>
-		/// To be documented.
-		/// </summary>
-		public unsafe void Destroy()
-		{
-			ImGui.DestroyNative(Handle);
-		}
-
+		public ref ImGuiStyleMod.ImGuiStyleModAnonymous Union => ref Unsafe.AsRef<ImGuiStyleMod.ImGuiStyleModAnonymous>(&Handle->Union);
 	}
 
 }

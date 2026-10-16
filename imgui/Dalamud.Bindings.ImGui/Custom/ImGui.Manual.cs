@@ -214,7 +214,7 @@ public unsafe partial class ImGui
                         buf.Length,
                         sizeArg,
                         flags,
-                        callback == null ? null : &InputTextCallbackStatic,
+                        (delegate* unmanaged[Cdecl]<ImGuiInputTextCallbackData*, int>)(callback == null ? null : &InputTextCallbackStatic),
                         callback == null ? null : &dataBuffer) != 0;
             label.Recycle();
             hint.Recycle();
@@ -240,7 +240,7 @@ public unsafe partial class ImGui
                         buf.Length,
                         sizeArg,
                         flags,
-                        callback == null ? null : &InputTextCallbackPtrStatic,
+                        (delegate* unmanaged[Cdecl]<ImGuiInputTextCallbackData*, int>)(callback == null ? null : &InputTextCallbackPtrStatic),
                         callback == null ? null : &dataBuffer) != 0;
             label.Recycle();
             hint.Recycle();
@@ -267,7 +267,7 @@ public unsafe partial class ImGui
                         buf.Length,
                         sizeArg,
                         flags,
-                        &InputTextCallbackRefContextStatic,
+                        (delegate* unmanaged[Cdecl]<ImGuiInputTextCallbackData*, int>)(&InputTextCallbackRefContextStatic),
                         &dataBuffer) != 0;
             label.Recycle();
             hint.Recycle();
@@ -294,7 +294,7 @@ public unsafe partial class ImGui
                         buf.Length,
                         sizeArg,
                         flags,
-                        &InputTextCallbackInContextStatic,
+                        (delegate* unmanaged[Cdecl]<ImGuiInputTextCallbackData*, int>)(&InputTextCallbackInContextStatic),
                         &dataBuffer) != 0;
             label.Recycle();
             hint.Recycle();
@@ -624,7 +624,7 @@ public unsafe partial class ImGui
         fixed (byte* labelPtr = &label.GetPinnableNullTerminatedReference())
         fixed (byte* bufPtr = buf)
         {
-            var r = ImGuiNative.TempInputText(bb, id, labelPtr, bufPtr, buf.Length, flags) != 0;
+            var r = ImGuiNative.TempInputText(bb, id, labelPtr, bufPtr, (nuint)buf.Length, flags, null, null) != 0;
             label.Recycle();
             return r;
         }

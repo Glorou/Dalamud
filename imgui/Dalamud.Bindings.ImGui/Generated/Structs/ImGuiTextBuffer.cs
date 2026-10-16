@@ -62,7 +62,7 @@ namespace Dalamud.Bindings.ImGui
 		/// <summary>
 		/// To be documented.
 		/// </summary>
-		public unsafe void append(ref byte str, byte* strEnd)
+		public unsafe void append(in byte str, byte* strEnd)
 		{
 			fixed (ImGuiTextBuffer* @this = &this)
 			{
@@ -76,7 +76,7 @@ namespace Dalamud.Bindings.ImGui
 		/// <summary>
 		/// To be documented.
 		/// </summary>
-		public unsafe void append(ref byte str)
+		public unsafe void append(in byte str)
 		{
 			fixed (ImGuiTextBuffer* @this = &this)
 			{
@@ -182,7 +182,7 @@ namespace Dalamud.Bindings.ImGui
 		/// <summary>
 		/// To be documented.
 		/// </summary>
-		public unsafe void append(byte* str, ref byte strEnd)
+		public unsafe void append(byte* str, in byte strEnd)
 		{
 			fixed (ImGuiTextBuffer* @this = &this)
 			{
@@ -242,7 +242,7 @@ namespace Dalamud.Bindings.ImGui
 		/// <summary>
 		/// To be documented.
 		/// </summary>
-		public unsafe void append(ref byte str, ref byte strEnd)
+		public unsafe void append(in byte str, in byte strEnd)
 		{
 			fixed (ImGuiTextBuffer* @this = &this)
 			{
@@ -329,7 +329,7 @@ namespace Dalamud.Bindings.ImGui
 		/// <summary>
 		/// To be documented.
 		/// </summary>
-		public unsafe void append(ref byte str, ReadOnlySpan<byte> strEnd)
+		public unsafe void append(in byte str, ReadOnlySpan<byte> strEnd)
 		{
 			fixed (ImGuiTextBuffer* @this = &this)
 			{
@@ -346,7 +346,7 @@ namespace Dalamud.Bindings.ImGui
 		/// <summary>
 		/// To be documented.
 		/// </summary>
-		public unsafe void append(ref byte str, string strEnd)
+		public unsafe void append(in byte str, string strEnd)
 		{
 			fixed (ImGuiTextBuffer* @this = &this)
 			{
@@ -381,7 +381,7 @@ namespace Dalamud.Bindings.ImGui
 		/// <summary>
 		/// To be documented.
 		/// </summary>
-		public unsafe void append(ReadOnlySpan<byte> str, ref byte strEnd)
+		public unsafe void append(ReadOnlySpan<byte> str, in byte strEnd)
 		{
 			fixed (ImGuiTextBuffer* @this = &this)
 			{
@@ -433,7 +433,7 @@ namespace Dalamud.Bindings.ImGui
 		/// <summary>
 		/// To be documented.
 		/// </summary>
-		public unsafe void append(string str, ref byte strEnd)
+		public unsafe void append(string str, in byte strEnd)
 		{
 			fixed (ImGuiTextBuffer* @this = &this)
 			{
@@ -501,7 +501,82 @@ namespace Dalamud.Bindings.ImGui
 		}
 
 		/// <summary>
+		/// //////////////////////hand written functions<br/>
 		/// no appendfV<br/>
+		/// </summary>
+		public unsafe void TextBufferAppendf(byte* fmt)
+		{
+			fixed (ImGuiTextBuffer* @this = &this)
+			{
+				ImGui.TextBufferAppendfNative(@this, fmt);
+			}
+		}
+
+		/// <summary>
+		/// //////////////////////hand written functions<br/>
+		/// no appendfV<br/>
+		/// </summary>
+		public unsafe void TextBufferAppendf(in byte fmt)
+		{
+			fixed (ImGuiTextBuffer* @this = &this)
+			{
+				fixed (byte* pfmt = &fmt)
+				{
+					ImGui.TextBufferAppendfNative(@this, (byte*)pfmt);
+				}
+			}
+		}
+
+		/// <summary>
+		/// //////////////////////hand written functions<br/>
+		/// no appendfV<br/>
+		/// </summary>
+		public unsafe void TextBufferAppendf(ReadOnlySpan<byte> fmt)
+		{
+			fixed (ImGuiTextBuffer* @this = &this)
+			{
+				fixed (byte* pfmt = fmt)
+				{
+					ImGui.TextBufferAppendfNative(@this, (byte*)pfmt);
+				}
+			}
+		}
+
+		/// <summary>
+		/// //////////////////////hand written functions<br/>
+		/// no appendfV<br/>
+		/// </summary>
+		public unsafe void TextBufferAppendf(string fmt)
+		{
+			fixed (ImGuiTextBuffer* @this = &this)
+			{
+				byte* pStr0 = null;
+				int pStrSize0 = 0;
+				if (fmt != null)
+				{
+					pStrSize0 = Utils.GetByteCountUTF8(fmt);
+					if (pStrSize0 >= Utils.MaxStackallocSize)
+					{
+						pStr0 = Utils.Alloc<byte>(pStrSize0 + 1);
+					}
+					else
+					{
+						byte* pStrStack0 = stackalloc byte[pStrSize0 + 1];
+						pStr0 = pStrStack0;
+					}
+					int pStrOffset0 = Utils.EncodeStringUTF8(fmt, pStr0, pStrSize0);
+					pStr0[pStrOffset0] = 0;
+				}
+				ImGui.TextBufferAppendfNative(@this, pStr0);
+				if (pStrSize0 >= Utils.MaxStackallocSize)
+				{
+					Utils.Free(pStr0);
+				}
+			}
+		}
+
+		/// <summary>
+		/// To be documented.
 		/// </summary>
 		public unsafe void appendf(byte* fmt)
 		{
@@ -512,9 +587,9 @@ namespace Dalamud.Bindings.ImGui
 		}
 
 		/// <summary>
-		/// no appendfV<br/>
+		/// To be documented.
 		/// </summary>
-		public unsafe void appendf(ref byte fmt)
+		public unsafe void appendf(in byte fmt)
 		{
 			fixed (ImGuiTextBuffer* @this = &this)
 			{
@@ -526,7 +601,7 @@ namespace Dalamud.Bindings.ImGui
 		}
 
 		/// <summary>
-		/// no appendfV<br/>
+		/// To be documented.
 		/// </summary>
 		public unsafe void appendf(ReadOnlySpan<byte> fmt)
 		{
@@ -540,7 +615,7 @@ namespace Dalamud.Bindings.ImGui
 		}
 
 		/// <summary>
-		/// no appendfV<br/>
+		/// To be documented.
 		/// </summary>
 		public unsafe void appendf(string fmt)
 		{
@@ -585,7 +660,7 @@ namespace Dalamud.Bindings.ImGui
 		/// <summary>
 		/// To be documented.
 		/// </summary>
-		public unsafe void appendfv(ref byte fmt, nuint args)
+		public unsafe void appendfv(in byte fmt, nuint args)
 		{
 			fixed (ImGuiTextBuffer* @this = &this)
 			{
@@ -762,6 +837,17 @@ namespace Dalamud.Bindings.ImGui
 		/// <summary>
 		/// To be documented.
 		/// </summary>
+		public unsafe void resize(int size)
+		{
+			fixed (ImGuiTextBuffer* @this = &this)
+			{
+				ImGui.resizeNative(@this, size);
+			}
+		}
+
+		/// <summary>
+		/// To be documented.
+		/// </summary>
 		public unsafe int size()
 		{
 			fixed (ImGuiTextBuffer* @this = &this)
@@ -837,7 +923,7 @@ namespace Dalamud.Bindings.ImGui
 		/// <summary>
 		/// To be documented.
 		/// </summary>
-		public unsafe void append(ref byte str, byte* strEnd)
+		public unsafe void append(in byte str, byte* strEnd)
 		{
 			fixed (byte* pstr = &str)
 			{
@@ -848,7 +934,7 @@ namespace Dalamud.Bindings.ImGui
 		/// <summary>
 		/// To be documented.
 		/// </summary>
-		public unsafe void append(ref byte str)
+		public unsafe void append(in byte str)
 		{
 			fixed (byte* pstr = &str)
 			{
@@ -939,7 +1025,7 @@ namespace Dalamud.Bindings.ImGui
 		/// <summary>
 		/// To be documented.
 		/// </summary>
-		public unsafe void append(byte* str, ref byte strEnd)
+		public unsafe void append(byte* str, in byte strEnd)
 		{
 			fixed (byte* pstrEnd = &strEnd)
 			{
@@ -990,7 +1076,7 @@ namespace Dalamud.Bindings.ImGui
 		/// <summary>
 		/// To be documented.
 		/// </summary>
-		public unsafe void append(ref byte str, ref byte strEnd)
+		public unsafe void append(in byte str, in byte strEnd)
 		{
 			fixed (byte* pstr = &str)
 			{
@@ -1068,7 +1154,7 @@ namespace Dalamud.Bindings.ImGui
 		/// <summary>
 		/// To be documented.
 		/// </summary>
-		public unsafe void append(ref byte str, ReadOnlySpan<byte> strEnd)
+		public unsafe void append(in byte str, ReadOnlySpan<byte> strEnd)
 		{
 			fixed (byte* pstr = &str)
 			{
@@ -1082,7 +1168,7 @@ namespace Dalamud.Bindings.ImGui
 		/// <summary>
 		/// To be documented.
 		/// </summary>
-		public unsafe void append(ref byte str, string strEnd)
+		public unsafe void append(in byte str, string strEnd)
 		{
 			fixed (byte* pstr = &str)
 			{
@@ -1114,7 +1200,7 @@ namespace Dalamud.Bindings.ImGui
 		/// <summary>
 		/// To be documented.
 		/// </summary>
-		public unsafe void append(ReadOnlySpan<byte> str, ref byte strEnd)
+		public unsafe void append(ReadOnlySpan<byte> str, in byte strEnd)
 		{
 			fixed (byte* pstr = str)
 			{
@@ -1160,7 +1246,7 @@ namespace Dalamud.Bindings.ImGui
 		/// <summary>
 		/// To be documented.
 		/// </summary>
-		public unsafe void append(string str, ref byte strEnd)
+		public unsafe void append(string str, in byte strEnd)
 		{
 			byte* pStr0 = null;
 			int pStrSize0 = 0;
@@ -1222,7 +1308,70 @@ namespace Dalamud.Bindings.ImGui
 		}
 
 		/// <summary>
+		/// //////////////////////hand written functions<br/>
 		/// no appendfV<br/>
+		/// </summary>
+		public unsafe void TextBufferAppendf(byte* fmt)
+		{
+			ImGui.TextBufferAppendfNative(Handle, fmt);
+		}
+
+		/// <summary>
+		/// //////////////////////hand written functions<br/>
+		/// no appendfV<br/>
+		/// </summary>
+		public unsafe void TextBufferAppendf(in byte fmt)
+		{
+			fixed (byte* pfmt = &fmt)
+			{
+				ImGui.TextBufferAppendfNative(Handle, (byte*)pfmt);
+			}
+		}
+
+		/// <summary>
+		/// //////////////////////hand written functions<br/>
+		/// no appendfV<br/>
+		/// </summary>
+		public unsafe void TextBufferAppendf(ReadOnlySpan<byte> fmt)
+		{
+			fixed (byte* pfmt = fmt)
+			{
+				ImGui.TextBufferAppendfNative(Handle, (byte*)pfmt);
+			}
+		}
+
+		/// <summary>
+		/// //////////////////////hand written functions<br/>
+		/// no appendfV<br/>
+		/// </summary>
+		public unsafe void TextBufferAppendf(string fmt)
+		{
+			byte* pStr0 = null;
+			int pStrSize0 = 0;
+			if (fmt != null)
+			{
+				pStrSize0 = Utils.GetByteCountUTF8(fmt);
+				if (pStrSize0 >= Utils.MaxStackallocSize)
+				{
+					pStr0 = Utils.Alloc<byte>(pStrSize0 + 1);
+				}
+				else
+				{
+					byte* pStrStack0 = stackalloc byte[pStrSize0 + 1];
+					pStr0 = pStrStack0;
+				}
+				int pStrOffset0 = Utils.EncodeStringUTF8(fmt, pStr0, pStrSize0);
+				pStr0[pStrOffset0] = 0;
+			}
+			ImGui.TextBufferAppendfNative(Handle, pStr0);
+			if (pStrSize0 >= Utils.MaxStackallocSize)
+			{
+				Utils.Free(pStr0);
+			}
+		}
+
+		/// <summary>
+		/// To be documented.
 		/// </summary>
 		public unsafe void appendf(byte* fmt)
 		{
@@ -1230,9 +1379,9 @@ namespace Dalamud.Bindings.ImGui
 		}
 
 		/// <summary>
-		/// no appendfV<br/>
+		/// To be documented.
 		/// </summary>
-		public unsafe void appendf(ref byte fmt)
+		public unsafe void appendf(in byte fmt)
 		{
 			fixed (byte* pfmt = &fmt)
 			{
@@ -1241,7 +1390,7 @@ namespace Dalamud.Bindings.ImGui
 		}
 
 		/// <summary>
-		/// no appendfV<br/>
+		/// To be documented.
 		/// </summary>
 		public unsafe void appendf(ReadOnlySpan<byte> fmt)
 		{
@@ -1252,7 +1401,7 @@ namespace Dalamud.Bindings.ImGui
 		}
 
 		/// <summary>
-		/// no appendfV<br/>
+		/// To be documented.
 		/// </summary>
 		public unsafe void appendf(string fmt)
 		{
@@ -1291,7 +1440,7 @@ namespace Dalamud.Bindings.ImGui
 		/// <summary>
 		/// To be documented.
 		/// </summary>
-		public unsafe void appendfv(ref byte fmt, nuint args)
+		public unsafe void appendfv(in byte fmt, nuint args)
 		{
 			fixed (byte* pfmt = &fmt)
 			{
@@ -1424,6 +1573,14 @@ namespace Dalamud.Bindings.ImGui
 		public unsafe void reserve(int capacity)
 		{
 			ImGui.reserveNative(Handle, capacity);
+		}
+
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		public unsafe void resize(int size)
+		{
+			ImGui.resizeNative(Handle, size);
 		}
 
 		/// <summary>

@@ -25,62 +25,37 @@ namespace Dalamud.Bindings.ImGui
 		/// <summary>
 		/// To be documented.
 		/// </summary>
-		public ImVector<ImFontGlyphHotData> IndexedHotData;
+		public unsafe ImFontBaked* LastBaked;
 
 		/// <summary>
 		/// To be documented.
 		/// </summary>
-		public ImVector<float> FrequentKerningPairs;
+		public unsafe ImFontAtlas* OwnerAtlas;
 
 		/// <summary>
 		/// To be documented.
 		/// </summary>
-		public float FontSize;
+		public ImFontFlags Flags;
 
 		/// <summary>
 		/// To be documented.
 		/// </summary>
-		public ImVector<ushort> IndexLookup;
+		public float CurrentRasterizerDensity;
 
 		/// <summary>
 		/// To be documented.
 		/// </summary>
-		public ImVector<ImFontGlyph> Glyphs;
+		public uint FontId;
 
 		/// <summary>
 		/// To be documented.
 		/// </summary>
-		public unsafe ImFontGlyph* FallbackGlyph;
+		public float LegacySize;
 
 		/// <summary>
 		/// To be documented.
 		/// </summary>
-		public unsafe ImFontGlyphHotData* FallbackHotData;
-
-		/// <summary>
-		/// To be documented.
-		/// </summary>
-		public ImVector<ImFontKerningPair> KerningPairs;
-
-		/// <summary>
-		/// To be documented.
-		/// </summary>
-		public unsafe ImFontAtlas* ContainerAtlas;
-
-		/// <summary>
-		/// To be documented.
-		/// </summary>
-		public unsafe ImFontConfig* ConfigData;
-
-		/// <summary>
-		/// To be documented.
-		/// </summary>
-		public short ConfigDataCount;
-
-		/// <summary>
-		/// To be documented.
-		/// </summary>
-		public ushort FallbackChar;
+		public ImVector<ImFontConfigPtr> Sources;
 
 		/// <summary>
 		/// To be documented.
@@ -90,180 +65,136 @@ namespace Dalamud.Bindings.ImGui
 		/// <summary>
 		/// To be documented.
 		/// </summary>
-		public ushort DotChar;
+		public ushort FallbackChar;
 
 		/// <summary>
 		/// To be documented.
 		/// </summary>
-		public byte DirtyLookupTables;
+		public byte Used8kPagesMap_0;
+		public byte Used8kPagesMap_1;
+		public byte Used8kPagesMap_2;
+		public byte Used8kPagesMap_3;
+		public byte Used8kPagesMap_4;
+		public byte Used8kPagesMap_5;
+		public byte Used8kPagesMap_6;
+		public byte Used8kPagesMap_7;
+		public byte Used8kPagesMap_8;
+		public byte Used8kPagesMap_9;
+		public byte Used8kPagesMap_10;
+		public byte Used8kPagesMap_11;
+		public byte Used8kPagesMap_12;
+		public byte Used8kPagesMap_13;
+		public byte Used8kPagesMap_14;
+		public byte Used8kPagesMap_15;
+		public byte Used8kPagesMap_16;
 
 		/// <summary>
 		/// To be documented.
 		/// </summary>
-		public float Scale;
+		public byte EllipsisAutoBake;
 
 		/// <summary>
 		/// To be documented.
 		/// </summary>
-		public float Ascent;
-
-		/// <summary>
-		/// To be documented.
-		/// </summary>
-		public float Descent;
-
-		/// <summary>
-		/// To be documented.
-		/// </summary>
-		public int MetricsTotalSurface;
-
-		/// <summary>
-		/// To be documented.
-		/// </summary>
-		public byte Used4kPagesMap_0;
-		public byte Used4kPagesMap_1;
+		public ImGuiStorage RemapPairs;
 
 
 		/// <summary>
 		/// To be documented.
 		/// </summary>
-		public unsafe ImFont(ImVector<ImFontGlyphHotData> indexedHotData = default, ImVector<float> frequentKerningPairs = default, float fontSize = default, ImVector<ushort> indexLookup = default, ImVector<ImFontGlyph> glyphs = default, ImFontGlyph* fallbackGlyph = default, ImFontGlyphHotData* fallbackHotData = default, ImVector<ImFontKerningPair> kerningPairs = default, ImFontAtlas* containerAtlas = default, ImFontConfig* configData = default, short configDataCount = default, ushort fallbackChar = default, ushort ellipsisChar = default, ushort dotChar = default, bool dirtyLookupTables = default, float scale = default, float ascent = default, float descent = default, int metricsTotalSurface = default, byte* used4KPagesMap = default)
+		public unsafe ImFont(ImFontBaked* lastBaked = default, ImFontAtlasPtr ownerAtlas = default, ImFontFlags flags = default, float currentRasterizerDensity = default, uint fontId = default, float legacySize = default, ImVector<ImFontConfigPtr> sources = default, ushort ellipsisChar = default, ushort fallbackChar = default, byte* used8KPagesMap = default, bool ellipsisAutoBake = default, ImGuiStorage remapPairs = default)
 		{
-			IndexedHotData = indexedHotData;
-			FrequentKerningPairs = frequentKerningPairs;
-			FontSize = fontSize;
-			IndexLookup = indexLookup;
-			Glyphs = glyphs;
-			FallbackGlyph = fallbackGlyph;
-			FallbackHotData = fallbackHotData;
-			KerningPairs = kerningPairs;
-			ContainerAtlas = containerAtlas;
-			ConfigData = configData;
-			ConfigDataCount = configDataCount;
-			FallbackChar = fallbackChar;
+			LastBaked = lastBaked;
+			OwnerAtlas = ownerAtlas;
+			Flags = flags;
+			CurrentRasterizerDensity = currentRasterizerDensity;
+			FontId = fontId;
+			LegacySize = legacySize;
+			Sources = sources;
 			EllipsisChar = ellipsisChar;
-			DotChar = dotChar;
-			DirtyLookupTables = dirtyLookupTables ? (byte)1 : (byte)0;
-			Scale = scale;
-			Ascent = ascent;
-			Descent = descent;
-			MetricsTotalSurface = metricsTotalSurface;
-			if (used4KPagesMap != default(byte*))
-			{
-				Used4kPagesMap_0 = used4KPagesMap[0];
-				Used4kPagesMap_1 = used4KPagesMap[1];
-			}
-		}
-
-		/// <summary>
-		/// To be documented.
-		/// </summary>
-		public unsafe ImFont(ImVector<ImFontGlyphHotData> indexedHotData = default, ImVector<float> frequentKerningPairs = default, float fontSize = default, ImVector<ushort> indexLookup = default, ImVector<ImFontGlyph> glyphs = default, ImFontGlyph* fallbackGlyph = default, ImFontGlyphHotData* fallbackHotData = default, ImVector<ImFontKerningPair> kerningPairs = default, ImFontAtlas* containerAtlas = default, ImFontConfig* configData = default, short configDataCount = default, ushort fallbackChar = default, ushort ellipsisChar = default, ushort dotChar = default, bool dirtyLookupTables = default, float scale = default, float ascent = default, float descent = default, int metricsTotalSurface = default, Span<byte> used4KPagesMap = default)
-		{
-			IndexedHotData = indexedHotData;
-			FrequentKerningPairs = frequentKerningPairs;
-			FontSize = fontSize;
-			IndexLookup = indexLookup;
-			Glyphs = glyphs;
-			FallbackGlyph = fallbackGlyph;
-			FallbackHotData = fallbackHotData;
-			KerningPairs = kerningPairs;
-			ContainerAtlas = containerAtlas;
-			ConfigData = configData;
-			ConfigDataCount = configDataCount;
 			FallbackChar = fallbackChar;
+			if (used8KPagesMap != default(byte*))
+			{
+				Used8kPagesMap_0 = used8KPagesMap[0];
+				Used8kPagesMap_1 = used8KPagesMap[1];
+				Used8kPagesMap_2 = used8KPagesMap[2];
+				Used8kPagesMap_3 = used8KPagesMap[3];
+				Used8kPagesMap_4 = used8KPagesMap[4];
+				Used8kPagesMap_5 = used8KPagesMap[5];
+				Used8kPagesMap_6 = used8KPagesMap[6];
+				Used8kPagesMap_7 = used8KPagesMap[7];
+				Used8kPagesMap_8 = used8KPagesMap[8];
+				Used8kPagesMap_9 = used8KPagesMap[9];
+				Used8kPagesMap_10 = used8KPagesMap[10];
+				Used8kPagesMap_11 = used8KPagesMap[11];
+				Used8kPagesMap_12 = used8KPagesMap[12];
+				Used8kPagesMap_13 = used8KPagesMap[13];
+				Used8kPagesMap_14 = used8KPagesMap[14];
+				Used8kPagesMap_15 = used8KPagesMap[15];
+				Used8kPagesMap_16 = used8KPagesMap[16];
+			}
+			EllipsisAutoBake = ellipsisAutoBake ? (byte)1 : (byte)0;
+			RemapPairs = remapPairs;
+		}
+
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		public unsafe ImFont(ImFontBaked* lastBaked = default, ImFontAtlasPtr ownerAtlas = default, ImFontFlags flags = default, float currentRasterizerDensity = default, uint fontId = default, float legacySize = default, ImVector<ImFontConfigPtr> sources = default, ushort ellipsisChar = default, ushort fallbackChar = default, Span<byte> used8KPagesMap = default, bool ellipsisAutoBake = default, ImGuiStorage remapPairs = default)
+		{
+			LastBaked = lastBaked;
+			OwnerAtlas = ownerAtlas;
+			Flags = flags;
+			CurrentRasterizerDensity = currentRasterizerDensity;
+			FontId = fontId;
+			LegacySize = legacySize;
+			Sources = sources;
 			EllipsisChar = ellipsisChar;
-			DotChar = dotChar;
-			DirtyLookupTables = dirtyLookupTables ? (byte)1 : (byte)0;
-			Scale = scale;
-			Ascent = ascent;
-			Descent = descent;
-			MetricsTotalSurface = metricsTotalSurface;
-			if (used4KPagesMap != default(Span<byte>))
+			FallbackChar = fallbackChar;
+			if (used8KPagesMap != default(Span<byte>))
 			{
-				Used4kPagesMap_0 = used4KPagesMap[0];
-				Used4kPagesMap_1 = used4KPagesMap[1];
+				Used8kPagesMap_0 = used8KPagesMap[0];
+				Used8kPagesMap_1 = used8KPagesMap[1];
+				Used8kPagesMap_2 = used8KPagesMap[2];
+				Used8kPagesMap_3 = used8KPagesMap[3];
+				Used8kPagesMap_4 = used8KPagesMap[4];
+				Used8kPagesMap_5 = used8KPagesMap[5];
+				Used8kPagesMap_6 = used8KPagesMap[6];
+				Used8kPagesMap_7 = used8KPagesMap[7];
+				Used8kPagesMap_8 = used8KPagesMap[8];
+				Used8kPagesMap_9 = used8KPagesMap[9];
+				Used8kPagesMap_10 = used8KPagesMap[10];
+				Used8kPagesMap_11 = used8KPagesMap[11];
+				Used8kPagesMap_12 = used8KPagesMap[12];
+				Used8kPagesMap_13 = used8KPagesMap[13];
+				Used8kPagesMap_14 = used8KPagesMap[14];
+				Used8kPagesMap_15 = used8KPagesMap[15];
+				Used8kPagesMap_16 = used8KPagesMap[16];
 			}
+			EllipsisAutoBake = ellipsisAutoBake ? (byte)1 : (byte)0;
+			RemapPairs = remapPairs;
 		}
 
 
 		/// <summary>
 		/// To be documented.
 		/// </summary>
-		public unsafe void AddGlyph(ImFontConfig* srcCfg, ushort c, int textureIndex, float x0, float y0, float x1, float y1, float u0, float v0, float u1, float v1, float advanceX)
+		public unsafe void AddRemapChar(ushort fromCodepoint, ushort toCodepoint)
 		{
 			fixed (ImFont* @this = &this)
 			{
-				ImGui.AddGlyphNative(@this, srcCfg, c, textureIndex, x0, y0, x1, y1, u0, v0, u1, v1, advanceX);
+				ImGui.AddRemapCharNative(@this, fromCodepoint, toCodepoint);
 			}
 		}
 
 		/// <summary>
 		/// To be documented.
 		/// </summary>
-		public unsafe void AddGlyph(ref ImFontConfig srcCfg, ushort c, int textureIndex, float x0, float y0, float x1, float y1, float u0, float v0, float u1, float v1, float advanceX)
+		public unsafe Vector2 CalcTextSizeA(float size, float maxWidth, float wrapWidth, byte* textBegin, byte* textEnd, byte** outRemaining)
 		{
 			fixed (ImFont* @this = &this)
 			{
-				fixed (ImFontConfig* psrcCfg = &srcCfg)
-				{
-					ImGui.AddGlyphNative(@this, (ImFontConfig*)psrcCfg, c, textureIndex, x0, y0, x1, y1, u0, v0, u1, v1, advanceX);
-				}
-			}
-		}
-
-		/// <summary>
-		/// To be documented.
-		/// </summary>
-		public unsafe void AddKerningPair(ushort leftC, ushort rightC, float distanceAdjustment)
-		{
-			fixed (ImFont* @this = &this)
-			{
-				ImGui.AddKerningPairNative(@this, leftC, rightC, distanceAdjustment);
-			}
-		}
-
-		/// <summary>
-		/// To be documented.
-		/// </summary>
-		public unsafe void AddRemapChar(ushort dst, ushort src, bool overwriteDst)
-		{
-			fixed (ImFont* @this = &this)
-			{
-				ImGui.AddRemapCharNative(@this, dst, src, overwriteDst ? (byte)1 : (byte)0);
-			}
-		}
-
-		/// <summary>
-		/// To be documented.
-		/// </summary>
-		public unsafe void AddRemapChar(ushort dst, ushort src)
-		{
-			fixed (ImFont* @this = &this)
-			{
-				ImGui.AddRemapCharNative(@this, dst, src, (byte)(1));
-			}
-		}
-
-		/// <summary>
-		/// To be documented.
-		/// </summary>
-		public unsafe void BuildLookupTable()
-		{
-			fixed (ImFont* @this = &this)
-			{
-				ImGui.BuildLookupTableNative(@this);
-			}
-		}
-
-		/// <summary>
-		/// To be documented.
-		/// </summary>
-		public unsafe byte* CalcWordWrapPositionA(float scale, byte* text, byte* textEnd, float wrapWidth)
-		{
-			fixed (ImFont* @this = &this)
-			{
-				byte* ret = ImGui.CalcWordWrapPositionANative(@this, scale, text, textEnd, wrapWidth);
+				Vector2 ret = ImGui.CalcTextSizeANative(@this, size, maxWidth, wrapWidth, textBegin, textEnd, outRemaining);
 				return ret;
 			}
 		}
@@ -271,11 +202,11 @@ namespace Dalamud.Bindings.ImGui
 		/// <summary>
 		/// To be documented.
 		/// </summary>
-		public unsafe string CalcWordWrapPositionAS(float scale, byte* text, byte* textEnd, float wrapWidth)
+		public unsafe Vector2 CalcTextSizeA(float size, float maxWidth, float wrapWidth, byte* textBegin, byte* textEnd)
 		{
 			fixed (ImFont* @this = &this)
 			{
-				string ret = Utils.DecodeStringUTF8(ImGui.CalcWordWrapPositionANative(@this, scale, text, textEnd, wrapWidth));
+				Vector2 ret = ImGui.CalcTextSizeANative(@this, size, maxWidth, wrapWidth, textBegin, textEnd, (byte**)(default));
 				return ret;
 			}
 		}
@@ -283,13 +214,37 @@ namespace Dalamud.Bindings.ImGui
 		/// <summary>
 		/// To be documented.
 		/// </summary>
-		public unsafe byte* CalcWordWrapPositionA(float scale, ref byte text, byte* textEnd, float wrapWidth)
+		public unsafe Vector2 CalcTextSizeA(float size, float maxWidth, float wrapWidth, byte* textBegin)
 		{
 			fixed (ImFont* @this = &this)
 			{
-				fixed (byte* ptext = &text)
+				Vector2 ret = ImGui.CalcTextSizeANative(@this, size, maxWidth, wrapWidth, textBegin, (byte*)(default), (byte**)(default));
+				return ret;
+			}
+		}
+
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		public unsafe Vector2 CalcTextSizeA(float size, float maxWidth, float wrapWidth, byte* textBegin, byte** outRemaining)
+		{
+			fixed (ImFont* @this = &this)
+			{
+				Vector2 ret = ImGui.CalcTextSizeANative(@this, size, maxWidth, wrapWidth, textBegin, (byte*)(default), outRemaining);
+				return ret;
+			}
+		}
+
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		public unsafe Vector2 CalcTextSizeA(float size, float maxWidth, float wrapWidth, in byte textBegin, byte* textEnd, byte** outRemaining)
+		{
+			fixed (ImFont* @this = &this)
+			{
+				fixed (byte* ptextBegin = &textBegin)
 				{
-					byte* ret = ImGui.CalcWordWrapPositionANative(@this, scale, (byte*)ptext, textEnd, wrapWidth);
+					Vector2 ret = ImGui.CalcTextSizeANative(@this, size, maxWidth, wrapWidth, (byte*)ptextBegin, textEnd, outRemaining);
 					return ret;
 				}
 			}
@@ -298,13 +253,13 @@ namespace Dalamud.Bindings.ImGui
 		/// <summary>
 		/// To be documented.
 		/// </summary>
-		public unsafe string CalcWordWrapPositionAS(float scale, ref byte text, byte* textEnd, float wrapWidth)
+		public unsafe Vector2 CalcTextSizeA(float size, float maxWidth, float wrapWidth, in byte textBegin, byte* textEnd)
 		{
 			fixed (ImFont* @this = &this)
 			{
-				fixed (byte* ptext = &text)
+				fixed (byte* ptextBegin = &textBegin)
 				{
-					string ret = Utils.DecodeStringUTF8(ImGui.CalcWordWrapPositionANative(@this, scale, (byte*)ptext, textEnd, wrapWidth));
+					Vector2 ret = ImGui.CalcTextSizeANative(@this, size, maxWidth, wrapWidth, (byte*)ptextBegin, textEnd, (byte**)(default));
 					return ret;
 				}
 			}
@@ -313,13 +268,13 @@ namespace Dalamud.Bindings.ImGui
 		/// <summary>
 		/// To be documented.
 		/// </summary>
-		public unsafe byte* CalcWordWrapPositionA(float scale, ReadOnlySpan<byte> text, byte* textEnd, float wrapWidth)
+		public unsafe Vector2 CalcTextSizeA(float size, float maxWidth, float wrapWidth, in byte textBegin)
 		{
 			fixed (ImFont* @this = &this)
 			{
-				fixed (byte* ptext = text)
+				fixed (byte* ptextBegin = &textBegin)
 				{
-					byte* ret = ImGui.CalcWordWrapPositionANative(@this, scale, (byte*)ptext, textEnd, wrapWidth);
+					Vector2 ret = ImGui.CalcTextSizeANative(@this, size, maxWidth, wrapWidth, (byte*)ptextBegin, (byte*)(default), (byte**)(default));
 					return ret;
 				}
 			}
@@ -328,13 +283,13 @@ namespace Dalamud.Bindings.ImGui
 		/// <summary>
 		/// To be documented.
 		/// </summary>
-		public unsafe string CalcWordWrapPositionAS(float scale, ReadOnlySpan<byte> text, byte* textEnd, float wrapWidth)
+		public unsafe Vector2 CalcTextSizeA(float size, float maxWidth, float wrapWidth, in byte textBegin, byte** outRemaining)
 		{
 			fixed (ImFont* @this = &this)
 			{
-				fixed (byte* ptext = text)
+				fixed (byte* ptextBegin = &textBegin)
 				{
-					string ret = Utils.DecodeStringUTF8(ImGui.CalcWordWrapPositionANative(@this, scale, (byte*)ptext, textEnd, wrapWidth));
+					Vector2 ret = ImGui.CalcTextSizeANative(@this, size, maxWidth, wrapWidth, (byte*)ptextBegin, (byte*)(default), outRemaining);
 					return ret;
 				}
 			}
@@ -343,15 +298,75 @@ namespace Dalamud.Bindings.ImGui
 		/// <summary>
 		/// To be documented.
 		/// </summary>
-		public unsafe byte* CalcWordWrapPositionA(float scale, string text, byte* textEnd, float wrapWidth)
+		public unsafe Vector2 CalcTextSizeA(float size, float maxWidth, float wrapWidth, ReadOnlySpan<byte> textBegin, byte* textEnd, byte** outRemaining)
+		{
+			fixed (ImFont* @this = &this)
+			{
+				fixed (byte* ptextBegin = textBegin)
+				{
+					Vector2 ret = ImGui.CalcTextSizeANative(@this, size, maxWidth, wrapWidth, (byte*)ptextBegin, textEnd, outRemaining);
+					return ret;
+				}
+			}
+		}
+
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		public unsafe Vector2 CalcTextSizeA(float size, float maxWidth, float wrapWidth, ReadOnlySpan<byte> textBegin, byte* textEnd)
+		{
+			fixed (ImFont* @this = &this)
+			{
+				fixed (byte* ptextBegin = textBegin)
+				{
+					Vector2 ret = ImGui.CalcTextSizeANative(@this, size, maxWidth, wrapWidth, (byte*)ptextBegin, textEnd, (byte**)(default));
+					return ret;
+				}
+			}
+		}
+
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		public unsafe Vector2 CalcTextSizeA(float size, float maxWidth, float wrapWidth, ReadOnlySpan<byte> textBegin)
+		{
+			fixed (ImFont* @this = &this)
+			{
+				fixed (byte* ptextBegin = textBegin)
+				{
+					Vector2 ret = ImGui.CalcTextSizeANative(@this, size, maxWidth, wrapWidth, (byte*)ptextBegin, (byte*)(default), (byte**)(default));
+					return ret;
+				}
+			}
+		}
+
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		public unsafe Vector2 CalcTextSizeA(float size, float maxWidth, float wrapWidth, ReadOnlySpan<byte> textBegin, byte** outRemaining)
+		{
+			fixed (ImFont* @this = &this)
+			{
+				fixed (byte* ptextBegin = textBegin)
+				{
+					Vector2 ret = ImGui.CalcTextSizeANative(@this, size, maxWidth, wrapWidth, (byte*)ptextBegin, (byte*)(default), outRemaining);
+					return ret;
+				}
+			}
+		}
+
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		public unsafe Vector2 CalcTextSizeA(float size, float maxWidth, float wrapWidth, string textBegin, byte* textEnd, byte** outRemaining)
 		{
 			fixed (ImFont* @this = &this)
 			{
 				byte* pStr0 = null;
 				int pStrSize0 = 0;
-				if (text != null)
+				if (textBegin != null)
 				{
-					pStrSize0 = Utils.GetByteCountUTF8(text);
+					pStrSize0 = Utils.GetByteCountUTF8(textBegin);
 					if (pStrSize0 >= Utils.MaxStackallocSize)
 					{
 						pStr0 = Utils.Alloc<byte>(pStrSize0 + 1);
@@ -361,10 +376,10 @@ namespace Dalamud.Bindings.ImGui
 						byte* pStrStack0 = stackalloc byte[pStrSize0 + 1];
 						pStr0 = pStrStack0;
 					}
-					int pStrOffset0 = Utils.EncodeStringUTF8(text, pStr0, pStrSize0);
+					int pStrOffset0 = Utils.EncodeStringUTF8(textBegin, pStr0, pStrSize0);
 					pStr0[pStrOffset0] = 0;
 				}
-				byte* ret = ImGui.CalcWordWrapPositionANative(@this, scale, pStr0, textEnd, wrapWidth);
+				Vector2 ret = ImGui.CalcTextSizeANative(@this, size, maxWidth, wrapWidth, pStr0, textEnd, outRemaining);
 				if (pStrSize0 >= Utils.MaxStackallocSize)
 				{
 					Utils.Free(pStr0);
@@ -376,15 +391,15 @@ namespace Dalamud.Bindings.ImGui
 		/// <summary>
 		/// To be documented.
 		/// </summary>
-		public unsafe string CalcWordWrapPositionAS(float scale, string text, byte* textEnd, float wrapWidth)
+		public unsafe Vector2 CalcTextSizeA(float size, float maxWidth, float wrapWidth, string textBegin, byte* textEnd)
 		{
 			fixed (ImFont* @this = &this)
 			{
 				byte* pStr0 = null;
 				int pStrSize0 = 0;
-				if (text != null)
+				if (textBegin != null)
 				{
-					pStrSize0 = Utils.GetByteCountUTF8(text);
+					pStrSize0 = Utils.GetByteCountUTF8(textBegin);
 					if (pStrSize0 >= Utils.MaxStackallocSize)
 					{
 						pStr0 = Utils.Alloc<byte>(pStrSize0 + 1);
@@ -394,10 +409,10 @@ namespace Dalamud.Bindings.ImGui
 						byte* pStrStack0 = stackalloc byte[pStrSize0 + 1];
 						pStr0 = pStrStack0;
 					}
-					int pStrOffset0 = Utils.EncodeStringUTF8(text, pStr0, pStrSize0);
+					int pStrOffset0 = Utils.EncodeStringUTF8(textBegin, pStr0, pStrSize0);
 					pStr0[pStrOffset0] = 0;
 				}
-				string ret = Utils.DecodeStringUTF8(ImGui.CalcWordWrapPositionANative(@this, scale, pStr0, textEnd, wrapWidth));
+				Vector2 ret = ImGui.CalcTextSizeANative(@this, size, maxWidth, wrapWidth, pStr0, textEnd, (byte**)(default));
 				if (pStrSize0 >= Utils.MaxStackallocSize)
 				{
 					Utils.Free(pStr0);
@@ -409,13 +424,79 @@ namespace Dalamud.Bindings.ImGui
 		/// <summary>
 		/// To be documented.
 		/// </summary>
-		public unsafe byte* CalcWordWrapPositionA(float scale, byte* text, ref byte textEnd, float wrapWidth)
+		public unsafe Vector2 CalcTextSizeA(float size, float maxWidth, float wrapWidth, string textBegin)
+		{
+			fixed (ImFont* @this = &this)
+			{
+				byte* pStr0 = null;
+				int pStrSize0 = 0;
+				if (textBegin != null)
+				{
+					pStrSize0 = Utils.GetByteCountUTF8(textBegin);
+					if (pStrSize0 >= Utils.MaxStackallocSize)
+					{
+						pStr0 = Utils.Alloc<byte>(pStrSize0 + 1);
+					}
+					else
+					{
+						byte* pStrStack0 = stackalloc byte[pStrSize0 + 1];
+						pStr0 = pStrStack0;
+					}
+					int pStrOffset0 = Utils.EncodeStringUTF8(textBegin, pStr0, pStrSize0);
+					pStr0[pStrOffset0] = 0;
+				}
+				Vector2 ret = ImGui.CalcTextSizeANative(@this, size, maxWidth, wrapWidth, pStr0, (byte*)(default), (byte**)(default));
+				if (pStrSize0 >= Utils.MaxStackallocSize)
+				{
+					Utils.Free(pStr0);
+				}
+				return ret;
+			}
+		}
+
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		public unsafe Vector2 CalcTextSizeA(float size, float maxWidth, float wrapWidth, string textBegin, byte** outRemaining)
+		{
+			fixed (ImFont* @this = &this)
+			{
+				byte* pStr0 = null;
+				int pStrSize0 = 0;
+				if (textBegin != null)
+				{
+					pStrSize0 = Utils.GetByteCountUTF8(textBegin);
+					if (pStrSize0 >= Utils.MaxStackallocSize)
+					{
+						pStr0 = Utils.Alloc<byte>(pStrSize0 + 1);
+					}
+					else
+					{
+						byte* pStrStack0 = stackalloc byte[pStrSize0 + 1];
+						pStr0 = pStrStack0;
+					}
+					int pStrOffset0 = Utils.EncodeStringUTF8(textBegin, pStr0, pStrSize0);
+					pStr0[pStrOffset0] = 0;
+				}
+				Vector2 ret = ImGui.CalcTextSizeANative(@this, size, maxWidth, wrapWidth, pStr0, (byte*)(default), outRemaining);
+				if (pStrSize0 >= Utils.MaxStackallocSize)
+				{
+					Utils.Free(pStr0);
+				}
+				return ret;
+			}
+		}
+
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		public unsafe Vector2 CalcTextSizeA(float size, float maxWidth, float wrapWidth, byte* textBegin, in byte textEnd, byte** outRemaining)
 		{
 			fixed (ImFont* @this = &this)
 			{
 				fixed (byte* ptextEnd = &textEnd)
 				{
-					byte* ret = ImGui.CalcWordWrapPositionANative(@this, scale, text, (byte*)ptextEnd, wrapWidth);
+					Vector2 ret = ImGui.CalcTextSizeANative(@this, size, maxWidth, wrapWidth, textBegin, (byte*)ptextEnd, outRemaining);
 					return ret;
 				}
 			}
@@ -424,13 +505,13 @@ namespace Dalamud.Bindings.ImGui
 		/// <summary>
 		/// To be documented.
 		/// </summary>
-		public unsafe string CalcWordWrapPositionAS(float scale, byte* text, ref byte textEnd, float wrapWidth)
+		public unsafe Vector2 CalcTextSizeA(float size, float maxWidth, float wrapWidth, byte* textBegin, in byte textEnd)
 		{
 			fixed (ImFont* @this = &this)
 			{
 				fixed (byte* ptextEnd = &textEnd)
 				{
-					string ret = Utils.DecodeStringUTF8(ImGui.CalcWordWrapPositionANative(@this, scale, text, (byte*)ptextEnd, wrapWidth));
+					Vector2 ret = ImGui.CalcTextSizeANative(@this, size, maxWidth, wrapWidth, textBegin, (byte*)ptextEnd, (byte**)(default));
 					return ret;
 				}
 			}
@@ -439,13 +520,13 @@ namespace Dalamud.Bindings.ImGui
 		/// <summary>
 		/// To be documented.
 		/// </summary>
-		public unsafe byte* CalcWordWrapPositionA(float scale, byte* text, ReadOnlySpan<byte> textEnd, float wrapWidth)
+		public unsafe Vector2 CalcTextSizeA(float size, float maxWidth, float wrapWidth, byte* textBegin, ReadOnlySpan<byte> textEnd, byte** outRemaining)
 		{
 			fixed (ImFont* @this = &this)
 			{
 				fixed (byte* ptextEnd = textEnd)
 				{
-					byte* ret = ImGui.CalcWordWrapPositionANative(@this, scale, text, (byte*)ptextEnd, wrapWidth);
+					Vector2 ret = ImGui.CalcTextSizeANative(@this, size, maxWidth, wrapWidth, textBegin, (byte*)ptextEnd, outRemaining);
 					return ret;
 				}
 			}
@@ -454,13 +535,13 @@ namespace Dalamud.Bindings.ImGui
 		/// <summary>
 		/// To be documented.
 		/// </summary>
-		public unsafe string CalcWordWrapPositionAS(float scale, byte* text, ReadOnlySpan<byte> textEnd, float wrapWidth)
+		public unsafe Vector2 CalcTextSizeA(float size, float maxWidth, float wrapWidth, byte* textBegin, ReadOnlySpan<byte> textEnd)
 		{
 			fixed (ImFont* @this = &this)
 			{
 				fixed (byte* ptextEnd = textEnd)
 				{
-					string ret = Utils.DecodeStringUTF8(ImGui.CalcWordWrapPositionANative(@this, scale, text, (byte*)ptextEnd, wrapWidth));
+					Vector2 ret = ImGui.CalcTextSizeANative(@this, size, maxWidth, wrapWidth, textBegin, (byte*)ptextEnd, (byte**)(default));
 					return ret;
 				}
 			}
@@ -469,7 +550,7 @@ namespace Dalamud.Bindings.ImGui
 		/// <summary>
 		/// To be documented.
 		/// </summary>
-		public unsafe byte* CalcWordWrapPositionA(float scale, byte* text, string textEnd, float wrapWidth)
+		public unsafe Vector2 CalcTextSizeA(float size, float maxWidth, float wrapWidth, byte* textBegin, string textEnd, byte** outRemaining)
 		{
 			fixed (ImFont* @this = &this)
 			{
@@ -490,7 +571,7 @@ namespace Dalamud.Bindings.ImGui
 					int pStrOffset0 = Utils.EncodeStringUTF8(textEnd, pStr0, pStrSize0);
 					pStr0[pStrOffset0] = 0;
 				}
-				byte* ret = ImGui.CalcWordWrapPositionANative(@this, scale, text, pStr0, wrapWidth);
+				Vector2 ret = ImGui.CalcTextSizeANative(@this, size, maxWidth, wrapWidth, textBegin, pStr0, outRemaining);
 				if (pStrSize0 >= Utils.MaxStackallocSize)
 				{
 					Utils.Free(pStr0);
@@ -502,7 +583,7 @@ namespace Dalamud.Bindings.ImGui
 		/// <summary>
 		/// To be documented.
 		/// </summary>
-		public unsafe string CalcWordWrapPositionAS(float scale, byte* text, string textEnd, float wrapWidth)
+		public unsafe Vector2 CalcTextSizeA(float size, float maxWidth, float wrapWidth, byte* textBegin, string textEnd)
 		{
 			fixed (ImFont* @this = &this)
 			{
@@ -523,7 +604,7 @@ namespace Dalamud.Bindings.ImGui
 					int pStrOffset0 = Utils.EncodeStringUTF8(textEnd, pStr0, pStrSize0);
 					pStr0[pStrOffset0] = 0;
 				}
-				string ret = Utils.DecodeStringUTF8(ImGui.CalcWordWrapPositionANative(@this, scale, text, pStr0, wrapWidth));
+				Vector2 ret = ImGui.CalcTextSizeANative(@this, size, maxWidth, wrapWidth, textBegin, pStr0, (byte**)(default));
 				if (pStrSize0 >= Utils.MaxStackallocSize)
 				{
 					Utils.Free(pStr0);
@@ -535,7 +616,1366 @@ namespace Dalamud.Bindings.ImGui
 		/// <summary>
 		/// To be documented.
 		/// </summary>
-		public unsafe byte* CalcWordWrapPositionA(float scale, ref byte text, ref byte textEnd, float wrapWidth)
+		public unsafe Vector2 CalcTextSizeA(float size, float maxWidth, float wrapWidth, in byte textBegin, in byte textEnd, byte** outRemaining)
+		{
+			fixed (ImFont* @this = &this)
+			{
+				fixed (byte* ptextBegin = &textBegin)
+				{
+					fixed (byte* ptextEnd = &textEnd)
+					{
+						Vector2 ret = ImGui.CalcTextSizeANative(@this, size, maxWidth, wrapWidth, (byte*)ptextBegin, (byte*)ptextEnd, outRemaining);
+						return ret;
+					}
+				}
+			}
+		}
+
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		public unsafe Vector2 CalcTextSizeA(float size, float maxWidth, float wrapWidth, in byte textBegin, in byte textEnd)
+		{
+			fixed (ImFont* @this = &this)
+			{
+				fixed (byte* ptextBegin = &textBegin)
+				{
+					fixed (byte* ptextEnd = &textEnd)
+					{
+						Vector2 ret = ImGui.CalcTextSizeANative(@this, size, maxWidth, wrapWidth, (byte*)ptextBegin, (byte*)ptextEnd, (byte**)(default));
+						return ret;
+					}
+				}
+			}
+		}
+
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		public unsafe Vector2 CalcTextSizeA(float size, float maxWidth, float wrapWidth, ReadOnlySpan<byte> textBegin, ReadOnlySpan<byte> textEnd, byte** outRemaining)
+		{
+			fixed (ImFont* @this = &this)
+			{
+				fixed (byte* ptextBegin = textBegin)
+				{
+					fixed (byte* ptextEnd = textEnd)
+					{
+						Vector2 ret = ImGui.CalcTextSizeANative(@this, size, maxWidth, wrapWidth, (byte*)ptextBegin, (byte*)ptextEnd, outRemaining);
+						return ret;
+					}
+				}
+			}
+		}
+
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		public unsafe Vector2 CalcTextSizeA(float size, float maxWidth, float wrapWidth, ReadOnlySpan<byte> textBegin, ReadOnlySpan<byte> textEnd)
+		{
+			fixed (ImFont* @this = &this)
+			{
+				fixed (byte* ptextBegin = textBegin)
+				{
+					fixed (byte* ptextEnd = textEnd)
+					{
+						Vector2 ret = ImGui.CalcTextSizeANative(@this, size, maxWidth, wrapWidth, (byte*)ptextBegin, (byte*)ptextEnd, (byte**)(default));
+						return ret;
+					}
+				}
+			}
+		}
+
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		public unsafe Vector2 CalcTextSizeA(float size, float maxWidth, float wrapWidth, string textBegin, string textEnd, byte** outRemaining)
+		{
+			fixed (ImFont* @this = &this)
+			{
+				byte* pStr0 = null;
+				int pStrSize0 = 0;
+				if (textBegin != null)
+				{
+					pStrSize0 = Utils.GetByteCountUTF8(textBegin);
+					if (pStrSize0 >= Utils.MaxStackallocSize)
+					{
+						pStr0 = Utils.Alloc<byte>(pStrSize0 + 1);
+					}
+					else
+					{
+						byte* pStrStack0 = stackalloc byte[pStrSize0 + 1];
+						pStr0 = pStrStack0;
+					}
+					int pStrOffset0 = Utils.EncodeStringUTF8(textBegin, pStr0, pStrSize0);
+					pStr0[pStrOffset0] = 0;
+				}
+				byte* pStr1 = null;
+				int pStrSize1 = 0;
+				if (textEnd != null)
+				{
+					pStrSize1 = Utils.GetByteCountUTF8(textEnd);
+					if (pStrSize1 >= Utils.MaxStackallocSize)
+					{
+						pStr1 = Utils.Alloc<byte>(pStrSize1 + 1);
+					}
+					else
+					{
+						byte* pStrStack1 = stackalloc byte[pStrSize1 + 1];
+						pStr1 = pStrStack1;
+					}
+					int pStrOffset1 = Utils.EncodeStringUTF8(textEnd, pStr1, pStrSize1);
+					pStr1[pStrOffset1] = 0;
+				}
+				Vector2 ret = ImGui.CalcTextSizeANative(@this, size, maxWidth, wrapWidth, pStr0, pStr1, outRemaining);
+				if (pStrSize1 >= Utils.MaxStackallocSize)
+				{
+					Utils.Free(pStr1);
+				}
+				if (pStrSize0 >= Utils.MaxStackallocSize)
+				{
+					Utils.Free(pStr0);
+				}
+				return ret;
+			}
+		}
+
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		public unsafe Vector2 CalcTextSizeA(float size, float maxWidth, float wrapWidth, string textBegin, string textEnd)
+		{
+			fixed (ImFont* @this = &this)
+			{
+				byte* pStr0 = null;
+				int pStrSize0 = 0;
+				if (textBegin != null)
+				{
+					pStrSize0 = Utils.GetByteCountUTF8(textBegin);
+					if (pStrSize0 >= Utils.MaxStackallocSize)
+					{
+						pStr0 = Utils.Alloc<byte>(pStrSize0 + 1);
+					}
+					else
+					{
+						byte* pStrStack0 = stackalloc byte[pStrSize0 + 1];
+						pStr0 = pStrStack0;
+					}
+					int pStrOffset0 = Utils.EncodeStringUTF8(textBegin, pStr0, pStrSize0);
+					pStr0[pStrOffset0] = 0;
+				}
+				byte* pStr1 = null;
+				int pStrSize1 = 0;
+				if (textEnd != null)
+				{
+					pStrSize1 = Utils.GetByteCountUTF8(textEnd);
+					if (pStrSize1 >= Utils.MaxStackallocSize)
+					{
+						pStr1 = Utils.Alloc<byte>(pStrSize1 + 1);
+					}
+					else
+					{
+						byte* pStrStack1 = stackalloc byte[pStrSize1 + 1];
+						pStr1 = pStrStack1;
+					}
+					int pStrOffset1 = Utils.EncodeStringUTF8(textEnd, pStr1, pStrSize1);
+					pStr1[pStrOffset1] = 0;
+				}
+				Vector2 ret = ImGui.CalcTextSizeANative(@this, size, maxWidth, wrapWidth, pStr0, pStr1, (byte**)(default));
+				if (pStrSize1 >= Utils.MaxStackallocSize)
+				{
+					Utils.Free(pStr1);
+				}
+				if (pStrSize0 >= Utils.MaxStackallocSize)
+				{
+					Utils.Free(pStr0);
+				}
+				return ret;
+			}
+		}
+
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		public unsafe Vector2 CalcTextSizeA(float size, float maxWidth, float wrapWidth, in byte textBegin, ReadOnlySpan<byte> textEnd, byte** outRemaining)
+		{
+			fixed (ImFont* @this = &this)
+			{
+				fixed (byte* ptextBegin = &textBegin)
+				{
+					fixed (byte* ptextEnd = textEnd)
+					{
+						Vector2 ret = ImGui.CalcTextSizeANative(@this, size, maxWidth, wrapWidth, (byte*)ptextBegin, (byte*)ptextEnd, outRemaining);
+						return ret;
+					}
+				}
+			}
+		}
+
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		public unsafe Vector2 CalcTextSizeA(float size, float maxWidth, float wrapWidth, in byte textBegin, ReadOnlySpan<byte> textEnd)
+		{
+			fixed (ImFont* @this = &this)
+			{
+				fixed (byte* ptextBegin = &textBegin)
+				{
+					fixed (byte* ptextEnd = textEnd)
+					{
+						Vector2 ret = ImGui.CalcTextSizeANative(@this, size, maxWidth, wrapWidth, (byte*)ptextBegin, (byte*)ptextEnd, (byte**)(default));
+						return ret;
+					}
+				}
+			}
+		}
+
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		public unsafe Vector2 CalcTextSizeA(float size, float maxWidth, float wrapWidth, in byte textBegin, string textEnd, byte** outRemaining)
+		{
+			fixed (ImFont* @this = &this)
+			{
+				fixed (byte* ptextBegin = &textBegin)
+				{
+					byte* pStr0 = null;
+					int pStrSize0 = 0;
+					if (textEnd != null)
+					{
+						pStrSize0 = Utils.GetByteCountUTF8(textEnd);
+						if (pStrSize0 >= Utils.MaxStackallocSize)
+						{
+							pStr0 = Utils.Alloc<byte>(pStrSize0 + 1);
+						}
+						else
+						{
+							byte* pStrStack0 = stackalloc byte[pStrSize0 + 1];
+							pStr0 = pStrStack0;
+						}
+						int pStrOffset0 = Utils.EncodeStringUTF8(textEnd, pStr0, pStrSize0);
+						pStr0[pStrOffset0] = 0;
+					}
+					Vector2 ret = ImGui.CalcTextSizeANative(@this, size, maxWidth, wrapWidth, (byte*)ptextBegin, pStr0, outRemaining);
+					if (pStrSize0 >= Utils.MaxStackallocSize)
+					{
+						Utils.Free(pStr0);
+					}
+					return ret;
+				}
+			}
+		}
+
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		public unsafe Vector2 CalcTextSizeA(float size, float maxWidth, float wrapWidth, in byte textBegin, string textEnd)
+		{
+			fixed (ImFont* @this = &this)
+			{
+				fixed (byte* ptextBegin = &textBegin)
+				{
+					byte* pStr0 = null;
+					int pStrSize0 = 0;
+					if (textEnd != null)
+					{
+						pStrSize0 = Utils.GetByteCountUTF8(textEnd);
+						if (pStrSize0 >= Utils.MaxStackallocSize)
+						{
+							pStr0 = Utils.Alloc<byte>(pStrSize0 + 1);
+						}
+						else
+						{
+							byte* pStrStack0 = stackalloc byte[pStrSize0 + 1];
+							pStr0 = pStrStack0;
+						}
+						int pStrOffset0 = Utils.EncodeStringUTF8(textEnd, pStr0, pStrSize0);
+						pStr0[pStrOffset0] = 0;
+					}
+					Vector2 ret = ImGui.CalcTextSizeANative(@this, size, maxWidth, wrapWidth, (byte*)ptextBegin, pStr0, (byte**)(default));
+					if (pStrSize0 >= Utils.MaxStackallocSize)
+					{
+						Utils.Free(pStr0);
+					}
+					return ret;
+				}
+			}
+		}
+
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		public unsafe Vector2 CalcTextSizeA(float size, float maxWidth, float wrapWidth, ReadOnlySpan<byte> textBegin, in byte textEnd, byte** outRemaining)
+		{
+			fixed (ImFont* @this = &this)
+			{
+				fixed (byte* ptextBegin = textBegin)
+				{
+					fixed (byte* ptextEnd = &textEnd)
+					{
+						Vector2 ret = ImGui.CalcTextSizeANative(@this, size, maxWidth, wrapWidth, (byte*)ptextBegin, (byte*)ptextEnd, outRemaining);
+						return ret;
+					}
+				}
+			}
+		}
+
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		public unsafe Vector2 CalcTextSizeA(float size, float maxWidth, float wrapWidth, ReadOnlySpan<byte> textBegin, in byte textEnd)
+		{
+			fixed (ImFont* @this = &this)
+			{
+				fixed (byte* ptextBegin = textBegin)
+				{
+					fixed (byte* ptextEnd = &textEnd)
+					{
+						Vector2 ret = ImGui.CalcTextSizeANative(@this, size, maxWidth, wrapWidth, (byte*)ptextBegin, (byte*)ptextEnd, (byte**)(default));
+						return ret;
+					}
+				}
+			}
+		}
+
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		public unsafe Vector2 CalcTextSizeA(float size, float maxWidth, float wrapWidth, ReadOnlySpan<byte> textBegin, string textEnd, byte** outRemaining)
+		{
+			fixed (ImFont* @this = &this)
+			{
+				fixed (byte* ptextBegin = textBegin)
+				{
+					byte* pStr0 = null;
+					int pStrSize0 = 0;
+					if (textEnd != null)
+					{
+						pStrSize0 = Utils.GetByteCountUTF8(textEnd);
+						if (pStrSize0 >= Utils.MaxStackallocSize)
+						{
+							pStr0 = Utils.Alloc<byte>(pStrSize0 + 1);
+						}
+						else
+						{
+							byte* pStrStack0 = stackalloc byte[pStrSize0 + 1];
+							pStr0 = pStrStack0;
+						}
+						int pStrOffset0 = Utils.EncodeStringUTF8(textEnd, pStr0, pStrSize0);
+						pStr0[pStrOffset0] = 0;
+					}
+					Vector2 ret = ImGui.CalcTextSizeANative(@this, size, maxWidth, wrapWidth, (byte*)ptextBegin, pStr0, outRemaining);
+					if (pStrSize0 >= Utils.MaxStackallocSize)
+					{
+						Utils.Free(pStr0);
+					}
+					return ret;
+				}
+			}
+		}
+
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		public unsafe Vector2 CalcTextSizeA(float size, float maxWidth, float wrapWidth, ReadOnlySpan<byte> textBegin, string textEnd)
+		{
+			fixed (ImFont* @this = &this)
+			{
+				fixed (byte* ptextBegin = textBegin)
+				{
+					byte* pStr0 = null;
+					int pStrSize0 = 0;
+					if (textEnd != null)
+					{
+						pStrSize0 = Utils.GetByteCountUTF8(textEnd);
+						if (pStrSize0 >= Utils.MaxStackallocSize)
+						{
+							pStr0 = Utils.Alloc<byte>(pStrSize0 + 1);
+						}
+						else
+						{
+							byte* pStrStack0 = stackalloc byte[pStrSize0 + 1];
+							pStr0 = pStrStack0;
+						}
+						int pStrOffset0 = Utils.EncodeStringUTF8(textEnd, pStr0, pStrSize0);
+						pStr0[pStrOffset0] = 0;
+					}
+					Vector2 ret = ImGui.CalcTextSizeANative(@this, size, maxWidth, wrapWidth, (byte*)ptextBegin, pStr0, (byte**)(default));
+					if (pStrSize0 >= Utils.MaxStackallocSize)
+					{
+						Utils.Free(pStr0);
+					}
+					return ret;
+				}
+			}
+		}
+
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		public unsafe Vector2 CalcTextSizeA(float size, float maxWidth, float wrapWidth, string textBegin, in byte textEnd, byte** outRemaining)
+		{
+			fixed (ImFont* @this = &this)
+			{
+				byte* pStr0 = null;
+				int pStrSize0 = 0;
+				if (textBegin != null)
+				{
+					pStrSize0 = Utils.GetByteCountUTF8(textBegin);
+					if (pStrSize0 >= Utils.MaxStackallocSize)
+					{
+						pStr0 = Utils.Alloc<byte>(pStrSize0 + 1);
+					}
+					else
+					{
+						byte* pStrStack0 = stackalloc byte[pStrSize0 + 1];
+						pStr0 = pStrStack0;
+					}
+					int pStrOffset0 = Utils.EncodeStringUTF8(textBegin, pStr0, pStrSize0);
+					pStr0[pStrOffset0] = 0;
+				}
+				fixed (byte* ptextEnd = &textEnd)
+				{
+					Vector2 ret = ImGui.CalcTextSizeANative(@this, size, maxWidth, wrapWidth, pStr0, (byte*)ptextEnd, outRemaining);
+					if (pStrSize0 >= Utils.MaxStackallocSize)
+					{
+						Utils.Free(pStr0);
+					}
+					return ret;
+				}
+			}
+		}
+
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		public unsafe Vector2 CalcTextSizeA(float size, float maxWidth, float wrapWidth, string textBegin, in byte textEnd)
+		{
+			fixed (ImFont* @this = &this)
+			{
+				byte* pStr0 = null;
+				int pStrSize0 = 0;
+				if (textBegin != null)
+				{
+					pStrSize0 = Utils.GetByteCountUTF8(textBegin);
+					if (pStrSize0 >= Utils.MaxStackallocSize)
+					{
+						pStr0 = Utils.Alloc<byte>(pStrSize0 + 1);
+					}
+					else
+					{
+						byte* pStrStack0 = stackalloc byte[pStrSize0 + 1];
+						pStr0 = pStrStack0;
+					}
+					int pStrOffset0 = Utils.EncodeStringUTF8(textBegin, pStr0, pStrSize0);
+					pStr0[pStrOffset0] = 0;
+				}
+				fixed (byte* ptextEnd = &textEnd)
+				{
+					Vector2 ret = ImGui.CalcTextSizeANative(@this, size, maxWidth, wrapWidth, pStr0, (byte*)ptextEnd, (byte**)(default));
+					if (pStrSize0 >= Utils.MaxStackallocSize)
+					{
+						Utils.Free(pStr0);
+					}
+					return ret;
+				}
+			}
+		}
+
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		public unsafe Vector2 CalcTextSizeA(float size, float maxWidth, float wrapWidth, string textBegin, ReadOnlySpan<byte> textEnd, byte** outRemaining)
+		{
+			fixed (ImFont* @this = &this)
+			{
+				byte* pStr0 = null;
+				int pStrSize0 = 0;
+				if (textBegin != null)
+				{
+					pStrSize0 = Utils.GetByteCountUTF8(textBegin);
+					if (pStrSize0 >= Utils.MaxStackallocSize)
+					{
+						pStr0 = Utils.Alloc<byte>(pStrSize0 + 1);
+					}
+					else
+					{
+						byte* pStrStack0 = stackalloc byte[pStrSize0 + 1];
+						pStr0 = pStrStack0;
+					}
+					int pStrOffset0 = Utils.EncodeStringUTF8(textBegin, pStr0, pStrSize0);
+					pStr0[pStrOffset0] = 0;
+				}
+				fixed (byte* ptextEnd = textEnd)
+				{
+					Vector2 ret = ImGui.CalcTextSizeANative(@this, size, maxWidth, wrapWidth, pStr0, (byte*)ptextEnd, outRemaining);
+					if (pStrSize0 >= Utils.MaxStackallocSize)
+					{
+						Utils.Free(pStr0);
+					}
+					return ret;
+				}
+			}
+		}
+
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		public unsafe Vector2 CalcTextSizeA(float size, float maxWidth, float wrapWidth, string textBegin, ReadOnlySpan<byte> textEnd)
+		{
+			fixed (ImFont* @this = &this)
+			{
+				byte* pStr0 = null;
+				int pStrSize0 = 0;
+				if (textBegin != null)
+				{
+					pStrSize0 = Utils.GetByteCountUTF8(textBegin);
+					if (pStrSize0 >= Utils.MaxStackallocSize)
+					{
+						pStr0 = Utils.Alloc<byte>(pStrSize0 + 1);
+					}
+					else
+					{
+						byte* pStrStack0 = stackalloc byte[pStrSize0 + 1];
+						pStr0 = pStrStack0;
+					}
+					int pStrOffset0 = Utils.EncodeStringUTF8(textBegin, pStr0, pStrSize0);
+					pStr0[pStrOffset0] = 0;
+				}
+				fixed (byte* ptextEnd = textEnd)
+				{
+					Vector2 ret = ImGui.CalcTextSizeANative(@this, size, maxWidth, wrapWidth, pStr0, (byte*)ptextEnd, (byte**)(default));
+					if (pStrSize0 >= Utils.MaxStackallocSize)
+					{
+						Utils.Free(pStr0);
+					}
+					return ret;
+				}
+			}
+		}
+
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		public unsafe Vector2 CalcTextSizeA(float size, float maxWidth, float wrapWidth, byte* textBegin, byte* textEnd, ref byte* outRemaining)
+		{
+			fixed (ImFont* @this = &this)
+			{
+				fixed (byte** poutRemaining = &outRemaining)
+				{
+					Vector2 ret = ImGui.CalcTextSizeANative(@this, size, maxWidth, wrapWidth, textBegin, textEnd, (byte**)poutRemaining);
+					return ret;
+				}
+			}
+		}
+
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		public unsafe Vector2 CalcTextSizeA(float size, float maxWidth, float wrapWidth, byte* textBegin, ref byte* outRemaining)
+		{
+			fixed (ImFont* @this = &this)
+			{
+				fixed (byte** poutRemaining = &outRemaining)
+				{
+					Vector2 ret = ImGui.CalcTextSizeANative(@this, size, maxWidth, wrapWidth, textBegin, (byte*)(default), (byte**)poutRemaining);
+					return ret;
+				}
+			}
+		}
+
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		public unsafe Vector2 CalcTextSizeA(float size, float maxWidth, float wrapWidth, in byte textBegin, byte* textEnd, ref byte* outRemaining)
+		{
+			fixed (ImFont* @this = &this)
+			{
+				fixed (byte* ptextBegin = &textBegin)
+				{
+					fixed (byte** poutRemaining = &outRemaining)
+					{
+						Vector2 ret = ImGui.CalcTextSizeANative(@this, size, maxWidth, wrapWidth, (byte*)ptextBegin, textEnd, (byte**)poutRemaining);
+						return ret;
+					}
+				}
+			}
+		}
+
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		public unsafe Vector2 CalcTextSizeA(float size, float maxWidth, float wrapWidth, in byte textBegin, ref byte* outRemaining)
+		{
+			fixed (ImFont* @this = &this)
+			{
+				fixed (byte* ptextBegin = &textBegin)
+				{
+					fixed (byte** poutRemaining = &outRemaining)
+					{
+						Vector2 ret = ImGui.CalcTextSizeANative(@this, size, maxWidth, wrapWidth, (byte*)ptextBegin, (byte*)(default), (byte**)poutRemaining);
+						return ret;
+					}
+				}
+			}
+		}
+
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		public unsafe Vector2 CalcTextSizeA(float size, float maxWidth, float wrapWidth, ReadOnlySpan<byte> textBegin, byte* textEnd, ref byte* outRemaining)
+		{
+			fixed (ImFont* @this = &this)
+			{
+				fixed (byte* ptextBegin = textBegin)
+				{
+					fixed (byte** poutRemaining = &outRemaining)
+					{
+						Vector2 ret = ImGui.CalcTextSizeANative(@this, size, maxWidth, wrapWidth, (byte*)ptextBegin, textEnd, (byte**)poutRemaining);
+						return ret;
+					}
+				}
+			}
+		}
+
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		public unsafe Vector2 CalcTextSizeA(float size, float maxWidth, float wrapWidth, ReadOnlySpan<byte> textBegin, ref byte* outRemaining)
+		{
+			fixed (ImFont* @this = &this)
+			{
+				fixed (byte* ptextBegin = textBegin)
+				{
+					fixed (byte** poutRemaining = &outRemaining)
+					{
+						Vector2 ret = ImGui.CalcTextSizeANative(@this, size, maxWidth, wrapWidth, (byte*)ptextBegin, (byte*)(default), (byte**)poutRemaining);
+						return ret;
+					}
+				}
+			}
+		}
+
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		public unsafe Vector2 CalcTextSizeA(float size, float maxWidth, float wrapWidth, string textBegin, byte* textEnd, ref byte* outRemaining)
+		{
+			fixed (ImFont* @this = &this)
+			{
+				byte* pStr0 = null;
+				int pStrSize0 = 0;
+				if (textBegin != null)
+				{
+					pStrSize0 = Utils.GetByteCountUTF8(textBegin);
+					if (pStrSize0 >= Utils.MaxStackallocSize)
+					{
+						pStr0 = Utils.Alloc<byte>(pStrSize0 + 1);
+					}
+					else
+					{
+						byte* pStrStack0 = stackalloc byte[pStrSize0 + 1];
+						pStr0 = pStrStack0;
+					}
+					int pStrOffset0 = Utils.EncodeStringUTF8(textBegin, pStr0, pStrSize0);
+					pStr0[pStrOffset0] = 0;
+				}
+				fixed (byte** poutRemaining = &outRemaining)
+				{
+					Vector2 ret = ImGui.CalcTextSizeANative(@this, size, maxWidth, wrapWidth, pStr0, textEnd, (byte**)poutRemaining);
+					if (pStrSize0 >= Utils.MaxStackallocSize)
+					{
+						Utils.Free(pStr0);
+					}
+					return ret;
+				}
+			}
+		}
+
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		public unsafe Vector2 CalcTextSizeA(float size, float maxWidth, float wrapWidth, string textBegin, ref byte* outRemaining)
+		{
+			fixed (ImFont* @this = &this)
+			{
+				byte* pStr0 = null;
+				int pStrSize0 = 0;
+				if (textBegin != null)
+				{
+					pStrSize0 = Utils.GetByteCountUTF8(textBegin);
+					if (pStrSize0 >= Utils.MaxStackallocSize)
+					{
+						pStr0 = Utils.Alloc<byte>(pStrSize0 + 1);
+					}
+					else
+					{
+						byte* pStrStack0 = stackalloc byte[pStrSize0 + 1];
+						pStr0 = pStrStack0;
+					}
+					int pStrOffset0 = Utils.EncodeStringUTF8(textBegin, pStr0, pStrSize0);
+					pStr0[pStrOffset0] = 0;
+				}
+				fixed (byte** poutRemaining = &outRemaining)
+				{
+					Vector2 ret = ImGui.CalcTextSizeANative(@this, size, maxWidth, wrapWidth, pStr0, (byte*)(default), (byte**)poutRemaining);
+					if (pStrSize0 >= Utils.MaxStackallocSize)
+					{
+						Utils.Free(pStr0);
+					}
+					return ret;
+				}
+			}
+		}
+
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		public unsafe Vector2 CalcTextSizeA(float size, float maxWidth, float wrapWidth, byte* textBegin, in byte textEnd, ref byte* outRemaining)
+		{
+			fixed (ImFont* @this = &this)
+			{
+				fixed (byte* ptextEnd = &textEnd)
+				{
+					fixed (byte** poutRemaining = &outRemaining)
+					{
+						Vector2 ret = ImGui.CalcTextSizeANative(@this, size, maxWidth, wrapWidth, textBegin, (byte*)ptextEnd, (byte**)poutRemaining);
+						return ret;
+					}
+				}
+			}
+		}
+
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		public unsafe Vector2 CalcTextSizeA(float size, float maxWidth, float wrapWidth, byte* textBegin, ReadOnlySpan<byte> textEnd, ref byte* outRemaining)
+		{
+			fixed (ImFont* @this = &this)
+			{
+				fixed (byte* ptextEnd = textEnd)
+				{
+					fixed (byte** poutRemaining = &outRemaining)
+					{
+						Vector2 ret = ImGui.CalcTextSizeANative(@this, size, maxWidth, wrapWidth, textBegin, (byte*)ptextEnd, (byte**)poutRemaining);
+						return ret;
+					}
+				}
+			}
+		}
+
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		public unsafe Vector2 CalcTextSizeA(float size, float maxWidth, float wrapWidth, byte* textBegin, string textEnd, ref byte* outRemaining)
+		{
+			fixed (ImFont* @this = &this)
+			{
+				byte* pStr0 = null;
+				int pStrSize0 = 0;
+				if (textEnd != null)
+				{
+					pStrSize0 = Utils.GetByteCountUTF8(textEnd);
+					if (pStrSize0 >= Utils.MaxStackallocSize)
+					{
+						pStr0 = Utils.Alloc<byte>(pStrSize0 + 1);
+					}
+					else
+					{
+						byte* pStrStack0 = stackalloc byte[pStrSize0 + 1];
+						pStr0 = pStrStack0;
+					}
+					int pStrOffset0 = Utils.EncodeStringUTF8(textEnd, pStr0, pStrSize0);
+					pStr0[pStrOffset0] = 0;
+				}
+				fixed (byte** poutRemaining = &outRemaining)
+				{
+					Vector2 ret = ImGui.CalcTextSizeANative(@this, size, maxWidth, wrapWidth, textBegin, pStr0, (byte**)poutRemaining);
+					if (pStrSize0 >= Utils.MaxStackallocSize)
+					{
+						Utils.Free(pStr0);
+					}
+					return ret;
+				}
+			}
+		}
+
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		public unsafe Vector2 CalcTextSizeA(float size, float maxWidth, float wrapWidth, in byte textBegin, in byte textEnd, ref byte* outRemaining)
+		{
+			fixed (ImFont* @this = &this)
+			{
+				fixed (byte* ptextBegin = &textBegin)
+				{
+					fixed (byte* ptextEnd = &textEnd)
+					{
+						fixed (byte** poutRemaining = &outRemaining)
+						{
+							Vector2 ret = ImGui.CalcTextSizeANative(@this, size, maxWidth, wrapWidth, (byte*)ptextBegin, (byte*)ptextEnd, (byte**)poutRemaining);
+							return ret;
+						}
+					}
+				}
+			}
+		}
+
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		public unsafe Vector2 CalcTextSizeA(float size, float maxWidth, float wrapWidth, ReadOnlySpan<byte> textBegin, ReadOnlySpan<byte> textEnd, ref byte* outRemaining)
+		{
+			fixed (ImFont* @this = &this)
+			{
+				fixed (byte* ptextBegin = textBegin)
+				{
+					fixed (byte* ptextEnd = textEnd)
+					{
+						fixed (byte** poutRemaining = &outRemaining)
+						{
+							Vector2 ret = ImGui.CalcTextSizeANative(@this, size, maxWidth, wrapWidth, (byte*)ptextBegin, (byte*)ptextEnd, (byte**)poutRemaining);
+							return ret;
+						}
+					}
+				}
+			}
+		}
+
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		public unsafe Vector2 CalcTextSizeA(float size, float maxWidth, float wrapWidth, string textBegin, string textEnd, ref byte* outRemaining)
+		{
+			fixed (ImFont* @this = &this)
+			{
+				byte* pStr0 = null;
+				int pStrSize0 = 0;
+				if (textBegin != null)
+				{
+					pStrSize0 = Utils.GetByteCountUTF8(textBegin);
+					if (pStrSize0 >= Utils.MaxStackallocSize)
+					{
+						pStr0 = Utils.Alloc<byte>(pStrSize0 + 1);
+					}
+					else
+					{
+						byte* pStrStack0 = stackalloc byte[pStrSize0 + 1];
+						pStr0 = pStrStack0;
+					}
+					int pStrOffset0 = Utils.EncodeStringUTF8(textBegin, pStr0, pStrSize0);
+					pStr0[pStrOffset0] = 0;
+				}
+				byte* pStr1 = null;
+				int pStrSize1 = 0;
+				if (textEnd != null)
+				{
+					pStrSize1 = Utils.GetByteCountUTF8(textEnd);
+					if (pStrSize1 >= Utils.MaxStackallocSize)
+					{
+						pStr1 = Utils.Alloc<byte>(pStrSize1 + 1);
+					}
+					else
+					{
+						byte* pStrStack1 = stackalloc byte[pStrSize1 + 1];
+						pStr1 = pStrStack1;
+					}
+					int pStrOffset1 = Utils.EncodeStringUTF8(textEnd, pStr1, pStrSize1);
+					pStr1[pStrOffset1] = 0;
+				}
+				fixed (byte** poutRemaining = &outRemaining)
+				{
+					Vector2 ret = ImGui.CalcTextSizeANative(@this, size, maxWidth, wrapWidth, pStr0, pStr1, (byte**)poutRemaining);
+					if (pStrSize1 >= Utils.MaxStackallocSize)
+					{
+						Utils.Free(pStr1);
+					}
+					if (pStrSize0 >= Utils.MaxStackallocSize)
+					{
+						Utils.Free(pStr0);
+					}
+					return ret;
+				}
+			}
+		}
+
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		public unsafe Vector2 CalcTextSizeA(float size, float maxWidth, float wrapWidth, in byte textBegin, ReadOnlySpan<byte> textEnd, ref byte* outRemaining)
+		{
+			fixed (ImFont* @this = &this)
+			{
+				fixed (byte* ptextBegin = &textBegin)
+				{
+					fixed (byte* ptextEnd = textEnd)
+					{
+						fixed (byte** poutRemaining = &outRemaining)
+						{
+							Vector2 ret = ImGui.CalcTextSizeANative(@this, size, maxWidth, wrapWidth, (byte*)ptextBegin, (byte*)ptextEnd, (byte**)poutRemaining);
+							return ret;
+						}
+					}
+				}
+			}
+		}
+
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		public unsafe Vector2 CalcTextSizeA(float size, float maxWidth, float wrapWidth, in byte textBegin, string textEnd, ref byte* outRemaining)
+		{
+			fixed (ImFont* @this = &this)
+			{
+				fixed (byte* ptextBegin = &textBegin)
+				{
+					byte* pStr0 = null;
+					int pStrSize0 = 0;
+					if (textEnd != null)
+					{
+						pStrSize0 = Utils.GetByteCountUTF8(textEnd);
+						if (pStrSize0 >= Utils.MaxStackallocSize)
+						{
+							pStr0 = Utils.Alloc<byte>(pStrSize0 + 1);
+						}
+						else
+						{
+							byte* pStrStack0 = stackalloc byte[pStrSize0 + 1];
+							pStr0 = pStrStack0;
+						}
+						int pStrOffset0 = Utils.EncodeStringUTF8(textEnd, pStr0, pStrSize0);
+						pStr0[pStrOffset0] = 0;
+					}
+					fixed (byte** poutRemaining = &outRemaining)
+					{
+						Vector2 ret = ImGui.CalcTextSizeANative(@this, size, maxWidth, wrapWidth, (byte*)ptextBegin, pStr0, (byte**)poutRemaining);
+						if (pStrSize0 >= Utils.MaxStackallocSize)
+						{
+							Utils.Free(pStr0);
+						}
+						return ret;
+					}
+				}
+			}
+		}
+
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		public unsafe Vector2 CalcTextSizeA(float size, float maxWidth, float wrapWidth, ReadOnlySpan<byte> textBegin, in byte textEnd, ref byte* outRemaining)
+		{
+			fixed (ImFont* @this = &this)
+			{
+				fixed (byte* ptextBegin = textBegin)
+				{
+					fixed (byte* ptextEnd = &textEnd)
+					{
+						fixed (byte** poutRemaining = &outRemaining)
+						{
+							Vector2 ret = ImGui.CalcTextSizeANative(@this, size, maxWidth, wrapWidth, (byte*)ptextBegin, (byte*)ptextEnd, (byte**)poutRemaining);
+							return ret;
+						}
+					}
+				}
+			}
+		}
+
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		public unsafe Vector2 CalcTextSizeA(float size, float maxWidth, float wrapWidth, ReadOnlySpan<byte> textBegin, string textEnd, ref byte* outRemaining)
+		{
+			fixed (ImFont* @this = &this)
+			{
+				fixed (byte* ptextBegin = textBegin)
+				{
+					byte* pStr0 = null;
+					int pStrSize0 = 0;
+					if (textEnd != null)
+					{
+						pStrSize0 = Utils.GetByteCountUTF8(textEnd);
+						if (pStrSize0 >= Utils.MaxStackallocSize)
+						{
+							pStr0 = Utils.Alloc<byte>(pStrSize0 + 1);
+						}
+						else
+						{
+							byte* pStrStack0 = stackalloc byte[pStrSize0 + 1];
+							pStr0 = pStrStack0;
+						}
+						int pStrOffset0 = Utils.EncodeStringUTF8(textEnd, pStr0, pStrSize0);
+						pStr0[pStrOffset0] = 0;
+					}
+					fixed (byte** poutRemaining = &outRemaining)
+					{
+						Vector2 ret = ImGui.CalcTextSizeANative(@this, size, maxWidth, wrapWidth, (byte*)ptextBegin, pStr0, (byte**)poutRemaining);
+						if (pStrSize0 >= Utils.MaxStackallocSize)
+						{
+							Utils.Free(pStr0);
+						}
+						return ret;
+					}
+				}
+			}
+		}
+
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		public unsafe Vector2 CalcTextSizeA(float size, float maxWidth, float wrapWidth, string textBegin, in byte textEnd, ref byte* outRemaining)
+		{
+			fixed (ImFont* @this = &this)
+			{
+				byte* pStr0 = null;
+				int pStrSize0 = 0;
+				if (textBegin != null)
+				{
+					pStrSize0 = Utils.GetByteCountUTF8(textBegin);
+					if (pStrSize0 >= Utils.MaxStackallocSize)
+					{
+						pStr0 = Utils.Alloc<byte>(pStrSize0 + 1);
+					}
+					else
+					{
+						byte* pStrStack0 = stackalloc byte[pStrSize0 + 1];
+						pStr0 = pStrStack0;
+					}
+					int pStrOffset0 = Utils.EncodeStringUTF8(textBegin, pStr0, pStrSize0);
+					pStr0[pStrOffset0] = 0;
+				}
+				fixed (byte* ptextEnd = &textEnd)
+				{
+					fixed (byte** poutRemaining = &outRemaining)
+					{
+						Vector2 ret = ImGui.CalcTextSizeANative(@this, size, maxWidth, wrapWidth, pStr0, (byte*)ptextEnd, (byte**)poutRemaining);
+						if (pStrSize0 >= Utils.MaxStackallocSize)
+						{
+							Utils.Free(pStr0);
+						}
+						return ret;
+					}
+				}
+			}
+		}
+
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		public unsafe Vector2 CalcTextSizeA(float size, float maxWidth, float wrapWidth, string textBegin, ReadOnlySpan<byte> textEnd, ref byte* outRemaining)
+		{
+			fixed (ImFont* @this = &this)
+			{
+				byte* pStr0 = null;
+				int pStrSize0 = 0;
+				if (textBegin != null)
+				{
+					pStrSize0 = Utils.GetByteCountUTF8(textBegin);
+					if (pStrSize0 >= Utils.MaxStackallocSize)
+					{
+						pStr0 = Utils.Alloc<byte>(pStrSize0 + 1);
+					}
+					else
+					{
+						byte* pStrStack0 = stackalloc byte[pStrSize0 + 1];
+						pStr0 = pStrStack0;
+					}
+					int pStrOffset0 = Utils.EncodeStringUTF8(textBegin, pStr0, pStrSize0);
+					pStr0[pStrOffset0] = 0;
+				}
+				fixed (byte* ptextEnd = textEnd)
+				{
+					fixed (byte** poutRemaining = &outRemaining)
+					{
+						Vector2 ret = ImGui.CalcTextSizeANative(@this, size, maxWidth, wrapWidth, pStr0, (byte*)ptextEnd, (byte**)poutRemaining);
+						if (pStrSize0 >= Utils.MaxStackallocSize)
+						{
+							Utils.Free(pStr0);
+						}
+						return ret;
+					}
+				}
+			}
+		}
+
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		public unsafe byte* CalcWordWrapPosition(float size, byte* text, byte* textEnd, float wrapWidth)
+		{
+			fixed (ImFont* @this = &this)
+			{
+				byte* ret = ImGui.CalcWordWrapPositionNative(@this, size, text, textEnd, wrapWidth);
+				return ret;
+			}
+		}
+
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		public unsafe string CalcWordWrapPositionS(float size, byte* text, byte* textEnd, float wrapWidth)
+		{
+			fixed (ImFont* @this = &this)
+			{
+				string ret = Utils.DecodeStringUTF8(ImGui.CalcWordWrapPositionNative(@this, size, text, textEnd, wrapWidth));
+				return ret;
+			}
+		}
+
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		public unsafe byte* CalcWordWrapPosition(float size, in byte text, byte* textEnd, float wrapWidth)
+		{
+			fixed (ImFont* @this = &this)
+			{
+				fixed (byte* ptext = &text)
+				{
+					byte* ret = ImGui.CalcWordWrapPositionNative(@this, size, (byte*)ptext, textEnd, wrapWidth);
+					return ret;
+				}
+			}
+		}
+
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		public unsafe string CalcWordWrapPositionS(float size, in byte text, byte* textEnd, float wrapWidth)
+		{
+			fixed (ImFont* @this = &this)
+			{
+				fixed (byte* ptext = &text)
+				{
+					string ret = Utils.DecodeStringUTF8(ImGui.CalcWordWrapPositionNative(@this, size, (byte*)ptext, textEnd, wrapWidth));
+					return ret;
+				}
+			}
+		}
+
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		public unsafe byte* CalcWordWrapPosition(float size, ReadOnlySpan<byte> text, byte* textEnd, float wrapWidth)
+		{
+			fixed (ImFont* @this = &this)
+			{
+				fixed (byte* ptext = text)
+				{
+					byte* ret = ImGui.CalcWordWrapPositionNative(@this, size, (byte*)ptext, textEnd, wrapWidth);
+					return ret;
+				}
+			}
+		}
+
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		public unsafe string CalcWordWrapPositionS(float size, ReadOnlySpan<byte> text, byte* textEnd, float wrapWidth)
+		{
+			fixed (ImFont* @this = &this)
+			{
+				fixed (byte* ptext = text)
+				{
+					string ret = Utils.DecodeStringUTF8(ImGui.CalcWordWrapPositionNative(@this, size, (byte*)ptext, textEnd, wrapWidth));
+					return ret;
+				}
+			}
+		}
+
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		public unsafe byte* CalcWordWrapPosition(float size, string text, byte* textEnd, float wrapWidth)
+		{
+			fixed (ImFont* @this = &this)
+			{
+				byte* pStr0 = null;
+				int pStrSize0 = 0;
+				if (text != null)
+				{
+					pStrSize0 = Utils.GetByteCountUTF8(text);
+					if (pStrSize0 >= Utils.MaxStackallocSize)
+					{
+						pStr0 = Utils.Alloc<byte>(pStrSize0 + 1);
+					}
+					else
+					{
+						byte* pStrStack0 = stackalloc byte[pStrSize0 + 1];
+						pStr0 = pStrStack0;
+					}
+					int pStrOffset0 = Utils.EncodeStringUTF8(text, pStr0, pStrSize0);
+					pStr0[pStrOffset0] = 0;
+				}
+				byte* ret = ImGui.CalcWordWrapPositionNative(@this, size, pStr0, textEnd, wrapWidth);
+				if (pStrSize0 >= Utils.MaxStackallocSize)
+				{
+					Utils.Free(pStr0);
+				}
+				return ret;
+			}
+		}
+
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		public unsafe string CalcWordWrapPositionS(float size, string text, byte* textEnd, float wrapWidth)
+		{
+			fixed (ImFont* @this = &this)
+			{
+				byte* pStr0 = null;
+				int pStrSize0 = 0;
+				if (text != null)
+				{
+					pStrSize0 = Utils.GetByteCountUTF8(text);
+					if (pStrSize0 >= Utils.MaxStackallocSize)
+					{
+						pStr0 = Utils.Alloc<byte>(pStrSize0 + 1);
+					}
+					else
+					{
+						byte* pStrStack0 = stackalloc byte[pStrSize0 + 1];
+						pStr0 = pStrStack0;
+					}
+					int pStrOffset0 = Utils.EncodeStringUTF8(text, pStr0, pStrSize0);
+					pStr0[pStrOffset0] = 0;
+				}
+				string ret = Utils.DecodeStringUTF8(ImGui.CalcWordWrapPositionNative(@this, size, pStr0, textEnd, wrapWidth));
+				if (pStrSize0 >= Utils.MaxStackallocSize)
+				{
+					Utils.Free(pStr0);
+				}
+				return ret;
+			}
+		}
+
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		public unsafe byte* CalcWordWrapPosition(float size, byte* text, in byte textEnd, float wrapWidth)
+		{
+			fixed (ImFont* @this = &this)
+			{
+				fixed (byte* ptextEnd = &textEnd)
+				{
+					byte* ret = ImGui.CalcWordWrapPositionNative(@this, size, text, (byte*)ptextEnd, wrapWidth);
+					return ret;
+				}
+			}
+		}
+
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		public unsafe string CalcWordWrapPositionS(float size, byte* text, in byte textEnd, float wrapWidth)
+		{
+			fixed (ImFont* @this = &this)
+			{
+				fixed (byte* ptextEnd = &textEnd)
+				{
+					string ret = Utils.DecodeStringUTF8(ImGui.CalcWordWrapPositionNative(@this, size, text, (byte*)ptextEnd, wrapWidth));
+					return ret;
+				}
+			}
+		}
+
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		public unsafe byte* CalcWordWrapPosition(float size, byte* text, ReadOnlySpan<byte> textEnd, float wrapWidth)
+		{
+			fixed (ImFont* @this = &this)
+			{
+				fixed (byte* ptextEnd = textEnd)
+				{
+					byte* ret = ImGui.CalcWordWrapPositionNative(@this, size, text, (byte*)ptextEnd, wrapWidth);
+					return ret;
+				}
+			}
+		}
+
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		public unsafe string CalcWordWrapPositionS(float size, byte* text, ReadOnlySpan<byte> textEnd, float wrapWidth)
+		{
+			fixed (ImFont* @this = &this)
+			{
+				fixed (byte* ptextEnd = textEnd)
+				{
+					string ret = Utils.DecodeStringUTF8(ImGui.CalcWordWrapPositionNative(@this, size, text, (byte*)ptextEnd, wrapWidth));
+					return ret;
+				}
+			}
+		}
+
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		public unsafe byte* CalcWordWrapPosition(float size, byte* text, string textEnd, float wrapWidth)
+		{
+			fixed (ImFont* @this = &this)
+			{
+				byte* pStr0 = null;
+				int pStrSize0 = 0;
+				if (textEnd != null)
+				{
+					pStrSize0 = Utils.GetByteCountUTF8(textEnd);
+					if (pStrSize0 >= Utils.MaxStackallocSize)
+					{
+						pStr0 = Utils.Alloc<byte>(pStrSize0 + 1);
+					}
+					else
+					{
+						byte* pStrStack0 = stackalloc byte[pStrSize0 + 1];
+						pStr0 = pStrStack0;
+					}
+					int pStrOffset0 = Utils.EncodeStringUTF8(textEnd, pStr0, pStrSize0);
+					pStr0[pStrOffset0] = 0;
+				}
+				byte* ret = ImGui.CalcWordWrapPositionNative(@this, size, text, pStr0, wrapWidth);
+				if (pStrSize0 >= Utils.MaxStackallocSize)
+				{
+					Utils.Free(pStr0);
+				}
+				return ret;
+			}
+		}
+
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		public unsafe string CalcWordWrapPositionS(float size, byte* text, string textEnd, float wrapWidth)
+		{
+			fixed (ImFont* @this = &this)
+			{
+				byte* pStr0 = null;
+				int pStrSize0 = 0;
+				if (textEnd != null)
+				{
+					pStrSize0 = Utils.GetByteCountUTF8(textEnd);
+					if (pStrSize0 >= Utils.MaxStackallocSize)
+					{
+						pStr0 = Utils.Alloc<byte>(pStrSize0 + 1);
+					}
+					else
+					{
+						byte* pStrStack0 = stackalloc byte[pStrSize0 + 1];
+						pStr0 = pStrStack0;
+					}
+					int pStrOffset0 = Utils.EncodeStringUTF8(textEnd, pStr0, pStrSize0);
+					pStr0[pStrOffset0] = 0;
+				}
+				string ret = Utils.DecodeStringUTF8(ImGui.CalcWordWrapPositionNative(@this, size, text, pStr0, wrapWidth));
+				if (pStrSize0 >= Utils.MaxStackallocSize)
+				{
+					Utils.Free(pStr0);
+				}
+				return ret;
+			}
+		}
+
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		public unsafe byte* CalcWordWrapPosition(float size, in byte text, in byte textEnd, float wrapWidth)
 		{
 			fixed (ImFont* @this = &this)
 			{
@@ -543,7 +1983,7 @@ namespace Dalamud.Bindings.ImGui
 				{
 					fixed (byte* ptextEnd = &textEnd)
 					{
-						byte* ret = ImGui.CalcWordWrapPositionANative(@this, scale, (byte*)ptext, (byte*)ptextEnd, wrapWidth);
+						byte* ret = ImGui.CalcWordWrapPositionNative(@this, size, (byte*)ptext, (byte*)ptextEnd, wrapWidth);
 						return ret;
 					}
 				}
@@ -553,7 +1993,7 @@ namespace Dalamud.Bindings.ImGui
 		/// <summary>
 		/// To be documented.
 		/// </summary>
-		public unsafe string CalcWordWrapPositionAS(float scale, ref byte text, ref byte textEnd, float wrapWidth)
+		public unsafe string CalcWordWrapPositionS(float size, in byte text, in byte textEnd, float wrapWidth)
 		{
 			fixed (ImFont* @this = &this)
 			{
@@ -561,7 +2001,7 @@ namespace Dalamud.Bindings.ImGui
 				{
 					fixed (byte* ptextEnd = &textEnd)
 					{
-						string ret = Utils.DecodeStringUTF8(ImGui.CalcWordWrapPositionANative(@this, scale, (byte*)ptext, (byte*)ptextEnd, wrapWidth));
+						string ret = Utils.DecodeStringUTF8(ImGui.CalcWordWrapPositionNative(@this, size, (byte*)ptext, (byte*)ptextEnd, wrapWidth));
 						return ret;
 					}
 				}
@@ -571,7 +2011,7 @@ namespace Dalamud.Bindings.ImGui
 		/// <summary>
 		/// To be documented.
 		/// </summary>
-		public unsafe byte* CalcWordWrapPositionA(float scale, ReadOnlySpan<byte> text, ReadOnlySpan<byte> textEnd, float wrapWidth)
+		public unsafe byte* CalcWordWrapPosition(float size, ReadOnlySpan<byte> text, ReadOnlySpan<byte> textEnd, float wrapWidth)
 		{
 			fixed (ImFont* @this = &this)
 			{
@@ -579,7 +2019,7 @@ namespace Dalamud.Bindings.ImGui
 				{
 					fixed (byte* ptextEnd = textEnd)
 					{
-						byte* ret = ImGui.CalcWordWrapPositionANative(@this, scale, (byte*)ptext, (byte*)ptextEnd, wrapWidth);
+						byte* ret = ImGui.CalcWordWrapPositionNative(@this, size, (byte*)ptext, (byte*)ptextEnd, wrapWidth);
 						return ret;
 					}
 				}
@@ -589,7 +2029,7 @@ namespace Dalamud.Bindings.ImGui
 		/// <summary>
 		/// To be documented.
 		/// </summary>
-		public unsafe string CalcWordWrapPositionAS(float scale, ReadOnlySpan<byte> text, ReadOnlySpan<byte> textEnd, float wrapWidth)
+		public unsafe string CalcWordWrapPositionS(float size, ReadOnlySpan<byte> text, ReadOnlySpan<byte> textEnd, float wrapWidth)
 		{
 			fixed (ImFont* @this = &this)
 			{
@@ -597,7 +2037,7 @@ namespace Dalamud.Bindings.ImGui
 				{
 					fixed (byte* ptextEnd = textEnd)
 					{
-						string ret = Utils.DecodeStringUTF8(ImGui.CalcWordWrapPositionANative(@this, scale, (byte*)ptext, (byte*)ptextEnd, wrapWidth));
+						string ret = Utils.DecodeStringUTF8(ImGui.CalcWordWrapPositionNative(@this, size, (byte*)ptext, (byte*)ptextEnd, wrapWidth));
 						return ret;
 					}
 				}
@@ -607,7 +2047,7 @@ namespace Dalamud.Bindings.ImGui
 		/// <summary>
 		/// To be documented.
 		/// </summary>
-		public unsafe byte* CalcWordWrapPositionA(float scale, string text, string textEnd, float wrapWidth)
+		public unsafe byte* CalcWordWrapPosition(float size, string text, string textEnd, float wrapWidth)
 		{
 			fixed (ImFont* @this = &this)
 			{
@@ -645,7 +2085,7 @@ namespace Dalamud.Bindings.ImGui
 					int pStrOffset1 = Utils.EncodeStringUTF8(textEnd, pStr1, pStrSize1);
 					pStr1[pStrOffset1] = 0;
 				}
-				byte* ret = ImGui.CalcWordWrapPositionANative(@this, scale, pStr0, pStr1, wrapWidth);
+				byte* ret = ImGui.CalcWordWrapPositionNative(@this, size, pStr0, pStr1, wrapWidth);
 				if (pStrSize1 >= Utils.MaxStackallocSize)
 				{
 					Utils.Free(pStr1);
@@ -661,7 +2101,7 @@ namespace Dalamud.Bindings.ImGui
 		/// <summary>
 		/// To be documented.
 		/// </summary>
-		public unsafe string CalcWordWrapPositionAS(float scale, string text, string textEnd, float wrapWidth)
+		public unsafe string CalcWordWrapPositionS(float size, string text, string textEnd, float wrapWidth)
 		{
 			fixed (ImFont* @this = &this)
 			{
@@ -699,7 +2139,7 @@ namespace Dalamud.Bindings.ImGui
 					int pStrOffset1 = Utils.EncodeStringUTF8(textEnd, pStr1, pStrSize1);
 					pStr1[pStrOffset1] = 0;
 				}
-				string ret = Utils.DecodeStringUTF8(ImGui.CalcWordWrapPositionANative(@this, scale, pStr0, pStr1, wrapWidth));
+				string ret = Utils.DecodeStringUTF8(ImGui.CalcWordWrapPositionNative(@this, size, pStr0, pStr1, wrapWidth));
 				if (pStrSize1 >= Utils.MaxStackallocSize)
 				{
 					Utils.Free(pStr1);
@@ -715,7 +2155,7 @@ namespace Dalamud.Bindings.ImGui
 		/// <summary>
 		/// To be documented.
 		/// </summary>
-		public unsafe byte* CalcWordWrapPositionA(float scale, ref byte text, ReadOnlySpan<byte> textEnd, float wrapWidth)
+		public unsafe byte* CalcWordWrapPosition(float size, in byte text, ReadOnlySpan<byte> textEnd, float wrapWidth)
 		{
 			fixed (ImFont* @this = &this)
 			{
@@ -723,7 +2163,7 @@ namespace Dalamud.Bindings.ImGui
 				{
 					fixed (byte* ptextEnd = textEnd)
 					{
-						byte* ret = ImGui.CalcWordWrapPositionANative(@this, scale, (byte*)ptext, (byte*)ptextEnd, wrapWidth);
+						byte* ret = ImGui.CalcWordWrapPositionNative(@this, size, (byte*)ptext, (byte*)ptextEnd, wrapWidth);
 						return ret;
 					}
 				}
@@ -733,7 +2173,7 @@ namespace Dalamud.Bindings.ImGui
 		/// <summary>
 		/// To be documented.
 		/// </summary>
-		public unsafe string CalcWordWrapPositionAS(float scale, ref byte text, ReadOnlySpan<byte> textEnd, float wrapWidth)
+		public unsafe string CalcWordWrapPositionS(float size, in byte text, ReadOnlySpan<byte> textEnd, float wrapWidth)
 		{
 			fixed (ImFont* @this = &this)
 			{
@@ -741,7 +2181,7 @@ namespace Dalamud.Bindings.ImGui
 				{
 					fixed (byte* ptextEnd = textEnd)
 					{
-						string ret = Utils.DecodeStringUTF8(ImGui.CalcWordWrapPositionANative(@this, scale, (byte*)ptext, (byte*)ptextEnd, wrapWidth));
+						string ret = Utils.DecodeStringUTF8(ImGui.CalcWordWrapPositionNative(@this, size, (byte*)ptext, (byte*)ptextEnd, wrapWidth));
 						return ret;
 					}
 				}
@@ -751,7 +2191,7 @@ namespace Dalamud.Bindings.ImGui
 		/// <summary>
 		/// To be documented.
 		/// </summary>
-		public unsafe byte* CalcWordWrapPositionA(float scale, ref byte text, string textEnd, float wrapWidth)
+		public unsafe byte* CalcWordWrapPosition(float size, in byte text, string textEnd, float wrapWidth)
 		{
 			fixed (ImFont* @this = &this)
 			{
@@ -774,7 +2214,7 @@ namespace Dalamud.Bindings.ImGui
 						int pStrOffset0 = Utils.EncodeStringUTF8(textEnd, pStr0, pStrSize0);
 						pStr0[pStrOffset0] = 0;
 					}
-					byte* ret = ImGui.CalcWordWrapPositionANative(@this, scale, (byte*)ptext, pStr0, wrapWidth);
+					byte* ret = ImGui.CalcWordWrapPositionNative(@this, size, (byte*)ptext, pStr0, wrapWidth);
 					if (pStrSize0 >= Utils.MaxStackallocSize)
 					{
 						Utils.Free(pStr0);
@@ -787,7 +2227,7 @@ namespace Dalamud.Bindings.ImGui
 		/// <summary>
 		/// To be documented.
 		/// </summary>
-		public unsafe string CalcWordWrapPositionAS(float scale, ref byte text, string textEnd, float wrapWidth)
+		public unsafe string CalcWordWrapPositionS(float size, in byte text, string textEnd, float wrapWidth)
 		{
 			fixed (ImFont* @this = &this)
 			{
@@ -810,7 +2250,7 @@ namespace Dalamud.Bindings.ImGui
 						int pStrOffset0 = Utils.EncodeStringUTF8(textEnd, pStr0, pStrSize0);
 						pStr0[pStrOffset0] = 0;
 					}
-					string ret = Utils.DecodeStringUTF8(ImGui.CalcWordWrapPositionANative(@this, scale, (byte*)ptext, pStr0, wrapWidth));
+					string ret = Utils.DecodeStringUTF8(ImGui.CalcWordWrapPositionNative(@this, size, (byte*)ptext, pStr0, wrapWidth));
 					if (pStrSize0 >= Utils.MaxStackallocSize)
 					{
 						Utils.Free(pStr0);
@@ -823,7 +2263,7 @@ namespace Dalamud.Bindings.ImGui
 		/// <summary>
 		/// To be documented.
 		/// </summary>
-		public unsafe byte* CalcWordWrapPositionA(float scale, ReadOnlySpan<byte> text, ref byte textEnd, float wrapWidth)
+		public unsafe byte* CalcWordWrapPosition(float size, ReadOnlySpan<byte> text, in byte textEnd, float wrapWidth)
 		{
 			fixed (ImFont* @this = &this)
 			{
@@ -831,7 +2271,7 @@ namespace Dalamud.Bindings.ImGui
 				{
 					fixed (byte* ptextEnd = &textEnd)
 					{
-						byte* ret = ImGui.CalcWordWrapPositionANative(@this, scale, (byte*)ptext, (byte*)ptextEnd, wrapWidth);
+						byte* ret = ImGui.CalcWordWrapPositionNative(@this, size, (byte*)ptext, (byte*)ptextEnd, wrapWidth);
 						return ret;
 					}
 				}
@@ -841,7 +2281,7 @@ namespace Dalamud.Bindings.ImGui
 		/// <summary>
 		/// To be documented.
 		/// </summary>
-		public unsafe string CalcWordWrapPositionAS(float scale, ReadOnlySpan<byte> text, ref byte textEnd, float wrapWidth)
+		public unsafe string CalcWordWrapPositionS(float size, ReadOnlySpan<byte> text, in byte textEnd, float wrapWidth)
 		{
 			fixed (ImFont* @this = &this)
 			{
@@ -849,7 +2289,7 @@ namespace Dalamud.Bindings.ImGui
 				{
 					fixed (byte* ptextEnd = &textEnd)
 					{
-						string ret = Utils.DecodeStringUTF8(ImGui.CalcWordWrapPositionANative(@this, scale, (byte*)ptext, (byte*)ptextEnd, wrapWidth));
+						string ret = Utils.DecodeStringUTF8(ImGui.CalcWordWrapPositionNative(@this, size, (byte*)ptext, (byte*)ptextEnd, wrapWidth));
 						return ret;
 					}
 				}
@@ -859,7 +2299,7 @@ namespace Dalamud.Bindings.ImGui
 		/// <summary>
 		/// To be documented.
 		/// </summary>
-		public unsafe byte* CalcWordWrapPositionA(float scale, ReadOnlySpan<byte> text, string textEnd, float wrapWidth)
+		public unsafe byte* CalcWordWrapPosition(float size, ReadOnlySpan<byte> text, string textEnd, float wrapWidth)
 		{
 			fixed (ImFont* @this = &this)
 			{
@@ -882,7 +2322,7 @@ namespace Dalamud.Bindings.ImGui
 						int pStrOffset0 = Utils.EncodeStringUTF8(textEnd, pStr0, pStrSize0);
 						pStr0[pStrOffset0] = 0;
 					}
-					byte* ret = ImGui.CalcWordWrapPositionANative(@this, scale, (byte*)ptext, pStr0, wrapWidth);
+					byte* ret = ImGui.CalcWordWrapPositionNative(@this, size, (byte*)ptext, pStr0, wrapWidth);
 					if (pStrSize0 >= Utils.MaxStackallocSize)
 					{
 						Utils.Free(pStr0);
@@ -895,7 +2335,7 @@ namespace Dalamud.Bindings.ImGui
 		/// <summary>
 		/// To be documented.
 		/// </summary>
-		public unsafe string CalcWordWrapPositionAS(float scale, ReadOnlySpan<byte> text, string textEnd, float wrapWidth)
+		public unsafe string CalcWordWrapPositionS(float size, ReadOnlySpan<byte> text, string textEnd, float wrapWidth)
 		{
 			fixed (ImFont* @this = &this)
 			{
@@ -918,7 +2358,7 @@ namespace Dalamud.Bindings.ImGui
 						int pStrOffset0 = Utils.EncodeStringUTF8(textEnd, pStr0, pStrSize0);
 						pStr0[pStrOffset0] = 0;
 					}
-					string ret = Utils.DecodeStringUTF8(ImGui.CalcWordWrapPositionANative(@this, scale, (byte*)ptext, pStr0, wrapWidth));
+					string ret = Utils.DecodeStringUTF8(ImGui.CalcWordWrapPositionNative(@this, size, (byte*)ptext, pStr0, wrapWidth));
 					if (pStrSize0 >= Utils.MaxStackallocSize)
 					{
 						Utils.Free(pStr0);
@@ -931,7 +2371,7 @@ namespace Dalamud.Bindings.ImGui
 		/// <summary>
 		/// To be documented.
 		/// </summary>
-		public unsafe byte* CalcWordWrapPositionA(float scale, string text, ref byte textEnd, float wrapWidth)
+		public unsafe byte* CalcWordWrapPosition(float size, string text, in byte textEnd, float wrapWidth)
 		{
 			fixed (ImFont* @this = &this)
 			{
@@ -954,7 +2394,7 @@ namespace Dalamud.Bindings.ImGui
 				}
 				fixed (byte* ptextEnd = &textEnd)
 				{
-					byte* ret = ImGui.CalcWordWrapPositionANative(@this, scale, pStr0, (byte*)ptextEnd, wrapWidth);
+					byte* ret = ImGui.CalcWordWrapPositionNative(@this, size, pStr0, (byte*)ptextEnd, wrapWidth);
 					if (pStrSize0 >= Utils.MaxStackallocSize)
 					{
 						Utils.Free(pStr0);
@@ -967,7 +2407,7 @@ namespace Dalamud.Bindings.ImGui
 		/// <summary>
 		/// To be documented.
 		/// </summary>
-		public unsafe string CalcWordWrapPositionAS(float scale, string text, ref byte textEnd, float wrapWidth)
+		public unsafe string CalcWordWrapPositionS(float size, string text, in byte textEnd, float wrapWidth)
 		{
 			fixed (ImFont* @this = &this)
 			{
@@ -990,7 +2430,7 @@ namespace Dalamud.Bindings.ImGui
 				}
 				fixed (byte* ptextEnd = &textEnd)
 				{
-					string ret = Utils.DecodeStringUTF8(ImGui.CalcWordWrapPositionANative(@this, scale, pStr0, (byte*)ptextEnd, wrapWidth));
+					string ret = Utils.DecodeStringUTF8(ImGui.CalcWordWrapPositionNative(@this, size, pStr0, (byte*)ptextEnd, wrapWidth));
 					if (pStrSize0 >= Utils.MaxStackallocSize)
 					{
 						Utils.Free(pStr0);
@@ -1003,7 +2443,7 @@ namespace Dalamud.Bindings.ImGui
 		/// <summary>
 		/// To be documented.
 		/// </summary>
-		public unsafe byte* CalcWordWrapPositionA(float scale, string text, ReadOnlySpan<byte> textEnd, float wrapWidth)
+		public unsafe byte* CalcWordWrapPosition(float size, string text, ReadOnlySpan<byte> textEnd, float wrapWidth)
 		{
 			fixed (ImFont* @this = &this)
 			{
@@ -1026,7 +2466,7 @@ namespace Dalamud.Bindings.ImGui
 				}
 				fixed (byte* ptextEnd = textEnd)
 				{
-					byte* ret = ImGui.CalcWordWrapPositionANative(@this, scale, pStr0, (byte*)ptextEnd, wrapWidth);
+					byte* ret = ImGui.CalcWordWrapPositionNative(@this, size, pStr0, (byte*)ptextEnd, wrapWidth);
 					if (pStrSize0 >= Utils.MaxStackallocSize)
 					{
 						Utils.Free(pStr0);
@@ -1039,7 +2479,7 @@ namespace Dalamud.Bindings.ImGui
 		/// <summary>
 		/// To be documented.
 		/// </summary>
-		public unsafe string CalcWordWrapPositionAS(float scale, string text, ReadOnlySpan<byte> textEnd, float wrapWidth)
+		public unsafe string CalcWordWrapPositionS(float size, string text, ReadOnlySpan<byte> textEnd, float wrapWidth)
 		{
 			fixed (ImFont* @this = &this)
 			{
@@ -1062,7 +2502,7 @@ namespace Dalamud.Bindings.ImGui
 				}
 				fixed (byte* ptextEnd = textEnd)
 				{
-					string ret = Utils.DecodeStringUTF8(ImGui.CalcWordWrapPositionANative(@this, scale, pStr0, (byte*)ptextEnd, wrapWidth));
+					string ret = Utils.DecodeStringUTF8(ImGui.CalcWordWrapPositionNative(@this, size, pStr0, (byte*)ptextEnd, wrapWidth));
 					if (pStrSize0 >= Utils.MaxStackallocSize)
 					{
 						Utils.Free(pStr0);
@@ -1097,42 +2537,6 @@ namespace Dalamud.Bindings.ImGui
 		/// <summary>
 		/// To be documented.
 		/// </summary>
-		public unsafe ImFontGlyph* FindGlyph(ushort c)
-		{
-			fixed (ImFont* @this = &this)
-			{
-				ImFontGlyph* ret = ImGui.FindGlyphNative(@this, c);
-				return ret;
-			}
-		}
-
-		/// <summary>
-		/// To be documented.
-		/// </summary>
-		public unsafe ImFontGlyph* FindGlyphNoFallback(ushort c)
-		{
-			fixed (ImFont* @this = &this)
-			{
-				ImFontGlyph* ret = ImGui.FindGlyphNoFallbackNative(@this, c);
-				return ret;
-			}
-		}
-
-		/// <summary>
-		/// To be documented.
-		/// </summary>
-		public unsafe float GetCharAdvance(ushort c)
-		{
-			fixed (ImFont* @this = &this)
-			{
-				float ret = ImGui.GetCharAdvanceNative(@this, c);
-				return ret;
-			}
-		}
-
-		/// <summary>
-		/// To be documented.
-		/// </summary>
 		public unsafe byte* GetDebugName()
 		{
 			fixed (ImFont* @this = &this)
@@ -1157,11 +2561,11 @@ namespace Dalamud.Bindings.ImGui
 		/// <summary>
 		/// To be documented.
 		/// </summary>
-		public unsafe float GetDistanceAdjustmentForPair(ushort leftC, ushort rightC)
+		public unsafe ImFontBaked* GetFontBaked(float fontSize, float density)
 		{
 			fixed (ImFont* @this = &this)
 			{
-				float ret = ImGui.GetDistanceAdjustmentForPairNative(@this, leftC, rightC);
+				ImFontBaked* ret = ImGui.GetFontBakedNative(@this, fontSize, density);
 				return ret;
 			}
 		}
@@ -1169,11 +2573,11 @@ namespace Dalamud.Bindings.ImGui
 		/// <summary>
 		/// To be documented.
 		/// </summary>
-		public unsafe float GetDistanceAdjustmentForPairFromHotData(ushort leftC, ImFontGlyphHotData* rightCInfo)
+		public unsafe ImFontBaked* GetFontBaked(float fontSize)
 		{
 			fixed (ImFont* @this = &this)
 			{
-				float ret = ImGui.GetDistanceAdjustmentForPairFromHotDataNative(@this, leftC, rightCInfo);
+				ImFontBaked* ret = ImGui.GetFontBakedNative(@this, fontSize, (float)(-1.0f));
 				return ret;
 			}
 		}
@@ -1181,26 +2585,12 @@ namespace Dalamud.Bindings.ImGui
 		/// <summary>
 		/// To be documented.
 		/// </summary>
-		public unsafe float GetDistanceAdjustmentForPairFromHotData(ushort leftC, ref ImFontGlyphHotData rightCInfo)
+		public unsafe bool IsGlyphInFont(ushort c)
 		{
 			fixed (ImFont* @this = &this)
 			{
-				fixed (ImFontGlyphHotData* prightCInfo = &rightCInfo)
-				{
-					float ret = ImGui.GetDistanceAdjustmentForPairFromHotDataNative(@this, leftC, (ImFontGlyphHotData*)prightCInfo);
-					return ret;
-				}
-			}
-		}
-
-		/// <summary>
-		/// To be documented.
-		/// </summary>
-		public unsafe void GrowIndex(int newSize)
-		{
-			fixed (ImFont* @this = &this)
-			{
-				ImGui.GrowIndexNative(@this, newSize);
+				byte ret = ImGui.IsGlyphInFontNative(@this, c);
+				return ret != 0;
 			}
 		}
 
@@ -1231,11 +2621,36 @@ namespace Dalamud.Bindings.ImGui
 		/// <summary>
 		/// To be documented.
 		/// </summary>
+		public unsafe void RenderChar(ImDrawListPtr drawList, float size, Vector2 pos, uint col, ushort c, Vector4* cpuFineClip)
+		{
+			fixed (ImFont* @this = &this)
+			{
+				ImGui.RenderCharNative(@this, (ImDrawList*)drawList, size, pos, col, c, cpuFineClip);
+			}
+		}
+
+		/// <summary>
+		/// To be documented.
+		/// </summary>
 		public unsafe void RenderChar(ImDrawListPtr drawList, float size, Vector2 pos, uint col, ushort c)
 		{
 			fixed (ImFont* @this = &this)
 			{
-				ImGui.RenderCharNative(@this, drawList, size, pos, col, c);
+				ImGui.RenderCharNative(@this, (ImDrawList*)drawList, size, pos, col, c, (Vector4*)(default));
+			}
+		}
+
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		public unsafe void RenderChar(ref ImDrawList drawList, float size, Vector2 pos, uint col, ushort c, Vector4* cpuFineClip)
+		{
+			fixed (ImFont* @this = &this)
+			{
+				fixed (ImDrawList* pdrawList = &drawList)
+				{
+					ImGui.RenderCharNative(@this, (ImDrawList*)pdrawList, size, pos, col, c, cpuFineClip);
+				}
 			}
 		}
 
@@ -1248,7 +2663,7 @@ namespace Dalamud.Bindings.ImGui
 			{
 				fixed (ImDrawList* pdrawList = &drawList)
 				{
-					ImGui.RenderCharNative(@this, (ImDrawList*)pdrawList, size, pos, col, c);
+					ImGui.RenderCharNative(@this, (ImDrawList*)pdrawList, size, pos, col, c, (Vector4*)(default));
 				}
 			}
 		}
@@ -1256,11 +2671,42 @@ namespace Dalamud.Bindings.ImGui
 		/// <summary>
 		/// To be documented.
 		/// </summary>
-		public unsafe void RenderText(ImDrawListPtr drawList, float size, Vector2 pos, uint col, Vector4 clipRect, byte* textBegin, byte* textEnd, float wrapWidth, bool cpuFineClip)
+		public unsafe void RenderChar(ImDrawListPtr drawList, float size, Vector2 pos, uint col, ushort c, in Vector4 cpuFineClip)
 		{
 			fixed (ImFont* @this = &this)
 			{
-				ImGui.RenderTextNative(@this, drawList, size, pos, col, clipRect, textBegin, textEnd, wrapWidth, cpuFineClip ? (byte)1 : (byte)0);
+				fixed (Vector4* pcpuFineClip = &cpuFineClip)
+				{
+					ImGui.RenderCharNative(@this, (ImDrawList*)drawList, size, pos, col, c, (Vector4*)pcpuFineClip);
+				}
+			}
+		}
+
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		public unsafe void RenderChar(ref ImDrawList drawList, float size, Vector2 pos, uint col, ushort c, in Vector4 cpuFineClip)
+		{
+			fixed (ImFont* @this = &this)
+			{
+				fixed (ImDrawList* pdrawList = &drawList)
+				{
+					fixed (Vector4* pcpuFineClip = &cpuFineClip)
+					{
+						ImGui.RenderCharNative(@this, (ImDrawList*)pdrawList, size, pos, col, c, (Vector4*)pcpuFineClip);
+					}
+				}
+			}
+		}
+
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		public unsafe void RenderText(ImDrawListPtr drawList, float size, Vector2 pos, uint col, Vector4 clipRect, byte* textBegin, byte* textEnd, float wrapWidth, ImDrawTextFlags flags)
+		{
+			fixed (ImFont* @this = &this)
+			{
+				ImGui.RenderTextNative(@this, (ImDrawList*)drawList, size, pos, col, clipRect, textBegin, textEnd, wrapWidth, flags);
 			}
 		}
 
@@ -1271,7 +2717,7 @@ namespace Dalamud.Bindings.ImGui
 		{
 			fixed (ImFont* @this = &this)
 			{
-				ImGui.RenderTextNative(@this, drawList, size, pos, col, clipRect, textBegin, textEnd, wrapWidth, (byte)(0));
+				ImGui.RenderTextNative(@this, (ImDrawList*)drawList, size, pos, col, clipRect, textBegin, textEnd, wrapWidth, (ImDrawTextFlags)(0));
 			}
 		}
 
@@ -1282,31 +2728,31 @@ namespace Dalamud.Bindings.ImGui
 		{
 			fixed (ImFont* @this = &this)
 			{
-				ImGui.RenderTextNative(@this, drawList, size, pos, col, clipRect, textBegin, textEnd, (float)(0.0f), (byte)(0));
+				ImGui.RenderTextNative(@this, (ImDrawList*)drawList, size, pos, col, clipRect, textBegin, textEnd, (float)(0.0f), (ImDrawTextFlags)(0));
 			}
 		}
 
 		/// <summary>
 		/// To be documented.
 		/// </summary>
-		public unsafe void RenderText(ImDrawListPtr drawList, float size, Vector2 pos, uint col, Vector4 clipRect, byte* textBegin, byte* textEnd, bool cpuFineClip)
+		public unsafe void RenderText(ImDrawListPtr drawList, float size, Vector2 pos, uint col, Vector4 clipRect, byte* textBegin, byte* textEnd, ImDrawTextFlags flags)
 		{
 			fixed (ImFont* @this = &this)
 			{
-				ImGui.RenderTextNative(@this, drawList, size, pos, col, clipRect, textBegin, textEnd, (float)(0.0f), cpuFineClip ? (byte)1 : (byte)0);
+				ImGui.RenderTextNative(@this, (ImDrawList*)drawList, size, pos, col, clipRect, textBegin, textEnd, (float)(0.0f), flags);
 			}
 		}
 
 		/// <summary>
 		/// To be documented.
 		/// </summary>
-		public unsafe void RenderText(ref ImDrawList drawList, float size, Vector2 pos, uint col, Vector4 clipRect, byte* textBegin, byte* textEnd, float wrapWidth, bool cpuFineClip)
+		public unsafe void RenderText(ref ImDrawList drawList, float size, Vector2 pos, uint col, Vector4 clipRect, byte* textBegin, byte* textEnd, float wrapWidth, ImDrawTextFlags flags)
 		{
 			fixed (ImFont* @this = &this)
 			{
 				fixed (ImDrawList* pdrawList = &drawList)
 				{
-					ImGui.RenderTextNative(@this, (ImDrawList*)pdrawList, size, pos, col, clipRect, textBegin, textEnd, wrapWidth, cpuFineClip ? (byte)1 : (byte)0);
+					ImGui.RenderTextNative(@this, (ImDrawList*)pdrawList, size, pos, col, clipRect, textBegin, textEnd, wrapWidth, flags);
 				}
 			}
 		}
@@ -1320,7 +2766,7 @@ namespace Dalamud.Bindings.ImGui
 			{
 				fixed (ImDrawList* pdrawList = &drawList)
 				{
-					ImGui.RenderTextNative(@this, (ImDrawList*)pdrawList, size, pos, col, clipRect, textBegin, textEnd, wrapWidth, (byte)(0));
+					ImGui.RenderTextNative(@this, (ImDrawList*)pdrawList, size, pos, col, clipRect, textBegin, textEnd, wrapWidth, (ImDrawTextFlags)(0));
 				}
 			}
 		}
@@ -1334,7 +2780,7 @@ namespace Dalamud.Bindings.ImGui
 			{
 				fixed (ImDrawList* pdrawList = &drawList)
 				{
-					ImGui.RenderTextNative(@this, (ImDrawList*)pdrawList, size, pos, col, clipRect, textBegin, textEnd, (float)(0.0f), (byte)(0));
+					ImGui.RenderTextNative(@this, (ImDrawList*)pdrawList, size, pos, col, clipRect, textBegin, textEnd, (float)(0.0f), (ImDrawTextFlags)(0));
 				}
 			}
 		}
@@ -1342,13 +2788,13 @@ namespace Dalamud.Bindings.ImGui
 		/// <summary>
 		/// To be documented.
 		/// </summary>
-		public unsafe void RenderText(ref ImDrawList drawList, float size, Vector2 pos, uint col, Vector4 clipRect, byte* textBegin, byte* textEnd, bool cpuFineClip)
+		public unsafe void RenderText(ref ImDrawList drawList, float size, Vector2 pos, uint col, Vector4 clipRect, byte* textBegin, byte* textEnd, ImDrawTextFlags flags)
 		{
 			fixed (ImFont* @this = &this)
 			{
 				fixed (ImDrawList* pdrawList = &drawList)
 				{
-					ImGui.RenderTextNative(@this, (ImDrawList*)pdrawList, size, pos, col, clipRect, textBegin, textEnd, (float)(0.0f), cpuFineClip ? (byte)1 : (byte)0);
+					ImGui.RenderTextNative(@this, (ImDrawList*)pdrawList, size, pos, col, clipRect, textBegin, textEnd, (float)(0.0f), flags);
 				}
 			}
 		}
@@ -1356,13 +2802,13 @@ namespace Dalamud.Bindings.ImGui
 		/// <summary>
 		/// To be documented.
 		/// </summary>
-		public unsafe void RenderText(ImDrawListPtr drawList, float size, Vector2 pos, uint col, Vector4 clipRect, ref byte textBegin, byte* textEnd, float wrapWidth, bool cpuFineClip)
+		public unsafe void RenderText(ImDrawListPtr drawList, float size, Vector2 pos, uint col, Vector4 clipRect, in byte textBegin, byte* textEnd, float wrapWidth, ImDrawTextFlags flags)
 		{
 			fixed (ImFont* @this = &this)
 			{
 				fixed (byte* ptextBegin = &textBegin)
 				{
-					ImGui.RenderTextNative(@this, drawList, size, pos, col, clipRect, (byte*)ptextBegin, textEnd, wrapWidth, cpuFineClip ? (byte)1 : (byte)0);
+					ImGui.RenderTextNative(@this, (ImDrawList*)drawList, size, pos, col, clipRect, (byte*)ptextBegin, textEnd, wrapWidth, flags);
 				}
 			}
 		}
@@ -1370,13 +2816,13 @@ namespace Dalamud.Bindings.ImGui
 		/// <summary>
 		/// To be documented.
 		/// </summary>
-		public unsafe void RenderText(ImDrawListPtr drawList, float size, Vector2 pos, uint col, Vector4 clipRect, ref byte textBegin, byte* textEnd, float wrapWidth)
+		public unsafe void RenderText(ImDrawListPtr drawList, float size, Vector2 pos, uint col, Vector4 clipRect, in byte textBegin, byte* textEnd, float wrapWidth)
 		{
 			fixed (ImFont* @this = &this)
 			{
 				fixed (byte* ptextBegin = &textBegin)
 				{
-					ImGui.RenderTextNative(@this, drawList, size, pos, col, clipRect, (byte*)ptextBegin, textEnd, wrapWidth, (byte)(0));
+					ImGui.RenderTextNative(@this, (ImDrawList*)drawList, size, pos, col, clipRect, (byte*)ptextBegin, textEnd, wrapWidth, (ImDrawTextFlags)(0));
 				}
 			}
 		}
@@ -1384,13 +2830,13 @@ namespace Dalamud.Bindings.ImGui
 		/// <summary>
 		/// To be documented.
 		/// </summary>
-		public unsafe void RenderText(ImDrawListPtr drawList, float size, Vector2 pos, uint col, Vector4 clipRect, ref byte textBegin, byte* textEnd)
+		public unsafe void RenderText(ImDrawListPtr drawList, float size, Vector2 pos, uint col, Vector4 clipRect, in byte textBegin, byte* textEnd)
 		{
 			fixed (ImFont* @this = &this)
 			{
 				fixed (byte* ptextBegin = &textBegin)
 				{
-					ImGui.RenderTextNative(@this, drawList, size, pos, col, clipRect, (byte*)ptextBegin, textEnd, (float)(0.0f), (byte)(0));
+					ImGui.RenderTextNative(@this, (ImDrawList*)drawList, size, pos, col, clipRect, (byte*)ptextBegin, textEnd, (float)(0.0f), (ImDrawTextFlags)(0));
 				}
 			}
 		}
@@ -1398,13 +2844,13 @@ namespace Dalamud.Bindings.ImGui
 		/// <summary>
 		/// To be documented.
 		/// </summary>
-		public unsafe void RenderText(ImDrawListPtr drawList, float size, Vector2 pos, uint col, Vector4 clipRect, ref byte textBegin, byte* textEnd, bool cpuFineClip)
+		public unsafe void RenderText(ImDrawListPtr drawList, float size, Vector2 pos, uint col, Vector4 clipRect, in byte textBegin, byte* textEnd, ImDrawTextFlags flags)
 		{
 			fixed (ImFont* @this = &this)
 			{
 				fixed (byte* ptextBegin = &textBegin)
 				{
-					ImGui.RenderTextNative(@this, drawList, size, pos, col, clipRect, (byte*)ptextBegin, textEnd, (float)(0.0f), cpuFineClip ? (byte)1 : (byte)0);
+					ImGui.RenderTextNative(@this, (ImDrawList*)drawList, size, pos, col, clipRect, (byte*)ptextBegin, textEnd, (float)(0.0f), flags);
 				}
 			}
 		}
@@ -1412,13 +2858,13 @@ namespace Dalamud.Bindings.ImGui
 		/// <summary>
 		/// To be documented.
 		/// </summary>
-		public unsafe void RenderText(ImDrawListPtr drawList, float size, Vector2 pos, uint col, Vector4 clipRect, ReadOnlySpan<byte> textBegin, byte* textEnd, float wrapWidth, bool cpuFineClip)
+		public unsafe void RenderText(ImDrawListPtr drawList, float size, Vector2 pos, uint col, Vector4 clipRect, ReadOnlySpan<byte> textBegin, byte* textEnd, float wrapWidth, ImDrawTextFlags flags)
 		{
 			fixed (ImFont* @this = &this)
 			{
 				fixed (byte* ptextBegin = textBegin)
 				{
-					ImGui.RenderTextNative(@this, drawList, size, pos, col, clipRect, (byte*)ptextBegin, textEnd, wrapWidth, cpuFineClip ? (byte)1 : (byte)0);
+					ImGui.RenderTextNative(@this, (ImDrawList*)drawList, size, pos, col, clipRect, (byte*)ptextBegin, textEnd, wrapWidth, flags);
 				}
 			}
 		}
@@ -1432,7 +2878,7 @@ namespace Dalamud.Bindings.ImGui
 			{
 				fixed (byte* ptextBegin = textBegin)
 				{
-					ImGui.RenderTextNative(@this, drawList, size, pos, col, clipRect, (byte*)ptextBegin, textEnd, wrapWidth, (byte)(0));
+					ImGui.RenderTextNative(@this, (ImDrawList*)drawList, size, pos, col, clipRect, (byte*)ptextBegin, textEnd, wrapWidth, (ImDrawTextFlags)(0));
 				}
 			}
 		}
@@ -1446,7 +2892,7 @@ namespace Dalamud.Bindings.ImGui
 			{
 				fixed (byte* ptextBegin = textBegin)
 				{
-					ImGui.RenderTextNative(@this, drawList, size, pos, col, clipRect, (byte*)ptextBegin, textEnd, (float)(0.0f), (byte)(0));
+					ImGui.RenderTextNative(@this, (ImDrawList*)drawList, size, pos, col, clipRect, (byte*)ptextBegin, textEnd, (float)(0.0f), (ImDrawTextFlags)(0));
 				}
 			}
 		}
@@ -1454,13 +2900,13 @@ namespace Dalamud.Bindings.ImGui
 		/// <summary>
 		/// To be documented.
 		/// </summary>
-		public unsafe void RenderText(ImDrawListPtr drawList, float size, Vector2 pos, uint col, Vector4 clipRect, ReadOnlySpan<byte> textBegin, byte* textEnd, bool cpuFineClip)
+		public unsafe void RenderText(ImDrawListPtr drawList, float size, Vector2 pos, uint col, Vector4 clipRect, ReadOnlySpan<byte> textBegin, byte* textEnd, ImDrawTextFlags flags)
 		{
 			fixed (ImFont* @this = &this)
 			{
 				fixed (byte* ptextBegin = textBegin)
 				{
-					ImGui.RenderTextNative(@this, drawList, size, pos, col, clipRect, (byte*)ptextBegin, textEnd, (float)(0.0f), cpuFineClip ? (byte)1 : (byte)0);
+					ImGui.RenderTextNative(@this, (ImDrawList*)drawList, size, pos, col, clipRect, (byte*)ptextBegin, textEnd, (float)(0.0f), flags);
 				}
 			}
 		}
@@ -1468,7 +2914,7 @@ namespace Dalamud.Bindings.ImGui
 		/// <summary>
 		/// To be documented.
 		/// </summary>
-		public unsafe void RenderText(ImDrawListPtr drawList, float size, Vector2 pos, uint col, Vector4 clipRect, string textBegin, byte* textEnd, float wrapWidth, bool cpuFineClip)
+		public unsafe void RenderText(ImDrawListPtr drawList, float size, Vector2 pos, uint col, Vector4 clipRect, string textBegin, byte* textEnd, float wrapWidth, ImDrawTextFlags flags)
 		{
 			fixed (ImFont* @this = &this)
 			{
@@ -1489,7 +2935,7 @@ namespace Dalamud.Bindings.ImGui
 					int pStrOffset0 = Utils.EncodeStringUTF8(textBegin, pStr0, pStrSize0);
 					pStr0[pStrOffset0] = 0;
 				}
-				ImGui.RenderTextNative(@this, drawList, size, pos, col, clipRect, pStr0, textEnd, wrapWidth, cpuFineClip ? (byte)1 : (byte)0);
+				ImGui.RenderTextNative(@this, (ImDrawList*)drawList, size, pos, col, clipRect, pStr0, textEnd, wrapWidth, flags);
 				if (pStrSize0 >= Utils.MaxStackallocSize)
 				{
 					Utils.Free(pStr0);
@@ -1521,7 +2967,7 @@ namespace Dalamud.Bindings.ImGui
 					int pStrOffset0 = Utils.EncodeStringUTF8(textBegin, pStr0, pStrSize0);
 					pStr0[pStrOffset0] = 0;
 				}
-				ImGui.RenderTextNative(@this, drawList, size, pos, col, clipRect, pStr0, textEnd, wrapWidth, (byte)(0));
+				ImGui.RenderTextNative(@this, (ImDrawList*)drawList, size, pos, col, clipRect, pStr0, textEnd, wrapWidth, (ImDrawTextFlags)(0));
 				if (pStrSize0 >= Utils.MaxStackallocSize)
 				{
 					Utils.Free(pStr0);
@@ -1553,7 +2999,7 @@ namespace Dalamud.Bindings.ImGui
 					int pStrOffset0 = Utils.EncodeStringUTF8(textBegin, pStr0, pStrSize0);
 					pStr0[pStrOffset0] = 0;
 				}
-				ImGui.RenderTextNative(@this, drawList, size, pos, col, clipRect, pStr0, textEnd, (float)(0.0f), (byte)(0));
+				ImGui.RenderTextNative(@this, (ImDrawList*)drawList, size, pos, col, clipRect, pStr0, textEnd, (float)(0.0f), (ImDrawTextFlags)(0));
 				if (pStrSize0 >= Utils.MaxStackallocSize)
 				{
 					Utils.Free(pStr0);
@@ -1564,7 +3010,7 @@ namespace Dalamud.Bindings.ImGui
 		/// <summary>
 		/// To be documented.
 		/// </summary>
-		public unsafe void RenderText(ImDrawListPtr drawList, float size, Vector2 pos, uint col, Vector4 clipRect, string textBegin, byte* textEnd, bool cpuFineClip)
+		public unsafe void RenderText(ImDrawListPtr drawList, float size, Vector2 pos, uint col, Vector4 clipRect, string textBegin, byte* textEnd, ImDrawTextFlags flags)
 		{
 			fixed (ImFont* @this = &this)
 			{
@@ -1585,7 +3031,7 @@ namespace Dalamud.Bindings.ImGui
 					int pStrOffset0 = Utils.EncodeStringUTF8(textBegin, pStr0, pStrSize0);
 					pStr0[pStrOffset0] = 0;
 				}
-				ImGui.RenderTextNative(@this, drawList, size, pos, col, clipRect, pStr0, textEnd, (float)(0.0f), cpuFineClip ? (byte)1 : (byte)0);
+				ImGui.RenderTextNative(@this, (ImDrawList*)drawList, size, pos, col, clipRect, pStr0, textEnd, (float)(0.0f), flags);
 				if (pStrSize0 >= Utils.MaxStackallocSize)
 				{
 					Utils.Free(pStr0);
@@ -1596,7 +3042,7 @@ namespace Dalamud.Bindings.ImGui
 		/// <summary>
 		/// To be documented.
 		/// </summary>
-		public unsafe void RenderText(ref ImDrawList drawList, float size, Vector2 pos, uint col, Vector4 clipRect, ref byte textBegin, byte* textEnd, float wrapWidth, bool cpuFineClip)
+		public unsafe void RenderText(ref ImDrawList drawList, float size, Vector2 pos, uint col, Vector4 clipRect, in byte textBegin, byte* textEnd, float wrapWidth, ImDrawTextFlags flags)
 		{
 			fixed (ImFont* @this = &this)
 			{
@@ -1604,7 +3050,7 @@ namespace Dalamud.Bindings.ImGui
 				{
 					fixed (byte* ptextBegin = &textBegin)
 					{
-						ImGui.RenderTextNative(@this, (ImDrawList*)pdrawList, size, pos, col, clipRect, (byte*)ptextBegin, textEnd, wrapWidth, cpuFineClip ? (byte)1 : (byte)0);
+						ImGui.RenderTextNative(@this, (ImDrawList*)pdrawList, size, pos, col, clipRect, (byte*)ptextBegin, textEnd, wrapWidth, flags);
 					}
 				}
 			}
@@ -1613,7 +3059,7 @@ namespace Dalamud.Bindings.ImGui
 		/// <summary>
 		/// To be documented.
 		/// </summary>
-		public unsafe void RenderText(ref ImDrawList drawList, float size, Vector2 pos, uint col, Vector4 clipRect, ref byte textBegin, byte* textEnd, float wrapWidth)
+		public unsafe void RenderText(ref ImDrawList drawList, float size, Vector2 pos, uint col, Vector4 clipRect, in byte textBegin, byte* textEnd, float wrapWidth)
 		{
 			fixed (ImFont* @this = &this)
 			{
@@ -1621,7 +3067,7 @@ namespace Dalamud.Bindings.ImGui
 				{
 					fixed (byte* ptextBegin = &textBegin)
 					{
-						ImGui.RenderTextNative(@this, (ImDrawList*)pdrawList, size, pos, col, clipRect, (byte*)ptextBegin, textEnd, wrapWidth, (byte)(0));
+						ImGui.RenderTextNative(@this, (ImDrawList*)pdrawList, size, pos, col, clipRect, (byte*)ptextBegin, textEnd, wrapWidth, (ImDrawTextFlags)(0));
 					}
 				}
 			}
@@ -1630,7 +3076,7 @@ namespace Dalamud.Bindings.ImGui
 		/// <summary>
 		/// To be documented.
 		/// </summary>
-		public unsafe void RenderText(ref ImDrawList drawList, float size, Vector2 pos, uint col, Vector4 clipRect, ref byte textBegin, byte* textEnd)
+		public unsafe void RenderText(ref ImDrawList drawList, float size, Vector2 pos, uint col, Vector4 clipRect, in byte textBegin, byte* textEnd)
 		{
 			fixed (ImFont* @this = &this)
 			{
@@ -1638,7 +3084,7 @@ namespace Dalamud.Bindings.ImGui
 				{
 					fixed (byte* ptextBegin = &textBegin)
 					{
-						ImGui.RenderTextNative(@this, (ImDrawList*)pdrawList, size, pos, col, clipRect, (byte*)ptextBegin, textEnd, (float)(0.0f), (byte)(0));
+						ImGui.RenderTextNative(@this, (ImDrawList*)pdrawList, size, pos, col, clipRect, (byte*)ptextBegin, textEnd, (float)(0.0f), (ImDrawTextFlags)(0));
 					}
 				}
 			}
@@ -1647,7 +3093,7 @@ namespace Dalamud.Bindings.ImGui
 		/// <summary>
 		/// To be documented.
 		/// </summary>
-		public unsafe void RenderText(ref ImDrawList drawList, float size, Vector2 pos, uint col, Vector4 clipRect, ref byte textBegin, byte* textEnd, bool cpuFineClip)
+		public unsafe void RenderText(ref ImDrawList drawList, float size, Vector2 pos, uint col, Vector4 clipRect, in byte textBegin, byte* textEnd, ImDrawTextFlags flags)
 		{
 			fixed (ImFont* @this = &this)
 			{
@@ -1655,7 +3101,7 @@ namespace Dalamud.Bindings.ImGui
 				{
 					fixed (byte* ptextBegin = &textBegin)
 					{
-						ImGui.RenderTextNative(@this, (ImDrawList*)pdrawList, size, pos, col, clipRect, (byte*)ptextBegin, textEnd, (float)(0.0f), cpuFineClip ? (byte)1 : (byte)0);
+						ImGui.RenderTextNative(@this, (ImDrawList*)pdrawList, size, pos, col, clipRect, (byte*)ptextBegin, textEnd, (float)(0.0f), flags);
 					}
 				}
 			}
@@ -1664,7 +3110,7 @@ namespace Dalamud.Bindings.ImGui
 		/// <summary>
 		/// To be documented.
 		/// </summary>
-		public unsafe void RenderText(ref ImDrawList drawList, float size, Vector2 pos, uint col, Vector4 clipRect, ReadOnlySpan<byte> textBegin, byte* textEnd, float wrapWidth, bool cpuFineClip)
+		public unsafe void RenderText(ref ImDrawList drawList, float size, Vector2 pos, uint col, Vector4 clipRect, ReadOnlySpan<byte> textBegin, byte* textEnd, float wrapWidth, ImDrawTextFlags flags)
 		{
 			fixed (ImFont* @this = &this)
 			{
@@ -1672,7 +3118,7 @@ namespace Dalamud.Bindings.ImGui
 				{
 					fixed (byte* ptextBegin = textBegin)
 					{
-						ImGui.RenderTextNative(@this, (ImDrawList*)pdrawList, size, pos, col, clipRect, (byte*)ptextBegin, textEnd, wrapWidth, cpuFineClip ? (byte)1 : (byte)0);
+						ImGui.RenderTextNative(@this, (ImDrawList*)pdrawList, size, pos, col, clipRect, (byte*)ptextBegin, textEnd, wrapWidth, flags);
 					}
 				}
 			}
@@ -1689,7 +3135,7 @@ namespace Dalamud.Bindings.ImGui
 				{
 					fixed (byte* ptextBegin = textBegin)
 					{
-						ImGui.RenderTextNative(@this, (ImDrawList*)pdrawList, size, pos, col, clipRect, (byte*)ptextBegin, textEnd, wrapWidth, (byte)(0));
+						ImGui.RenderTextNative(@this, (ImDrawList*)pdrawList, size, pos, col, clipRect, (byte*)ptextBegin, textEnd, wrapWidth, (ImDrawTextFlags)(0));
 					}
 				}
 			}
@@ -1706,7 +3152,7 @@ namespace Dalamud.Bindings.ImGui
 				{
 					fixed (byte* ptextBegin = textBegin)
 					{
-						ImGui.RenderTextNative(@this, (ImDrawList*)pdrawList, size, pos, col, clipRect, (byte*)ptextBegin, textEnd, (float)(0.0f), (byte)(0));
+						ImGui.RenderTextNative(@this, (ImDrawList*)pdrawList, size, pos, col, clipRect, (byte*)ptextBegin, textEnd, (float)(0.0f), (ImDrawTextFlags)(0));
 					}
 				}
 			}
@@ -1715,7 +3161,7 @@ namespace Dalamud.Bindings.ImGui
 		/// <summary>
 		/// To be documented.
 		/// </summary>
-		public unsafe void RenderText(ref ImDrawList drawList, float size, Vector2 pos, uint col, Vector4 clipRect, ReadOnlySpan<byte> textBegin, byte* textEnd, bool cpuFineClip)
+		public unsafe void RenderText(ref ImDrawList drawList, float size, Vector2 pos, uint col, Vector4 clipRect, ReadOnlySpan<byte> textBegin, byte* textEnd, ImDrawTextFlags flags)
 		{
 			fixed (ImFont* @this = &this)
 			{
@@ -1723,7 +3169,7 @@ namespace Dalamud.Bindings.ImGui
 				{
 					fixed (byte* ptextBegin = textBegin)
 					{
-						ImGui.RenderTextNative(@this, (ImDrawList*)pdrawList, size, pos, col, clipRect, (byte*)ptextBegin, textEnd, (float)(0.0f), cpuFineClip ? (byte)1 : (byte)0);
+						ImGui.RenderTextNative(@this, (ImDrawList*)pdrawList, size, pos, col, clipRect, (byte*)ptextBegin, textEnd, (float)(0.0f), flags);
 					}
 				}
 			}
@@ -1732,7 +3178,7 @@ namespace Dalamud.Bindings.ImGui
 		/// <summary>
 		/// To be documented.
 		/// </summary>
-		public unsafe void RenderText(ref ImDrawList drawList, float size, Vector2 pos, uint col, Vector4 clipRect, string textBegin, byte* textEnd, float wrapWidth, bool cpuFineClip)
+		public unsafe void RenderText(ref ImDrawList drawList, float size, Vector2 pos, uint col, Vector4 clipRect, string textBegin, byte* textEnd, float wrapWidth, ImDrawTextFlags flags)
 		{
 			fixed (ImFont* @this = &this)
 			{
@@ -1755,7 +3201,7 @@ namespace Dalamud.Bindings.ImGui
 						int pStrOffset0 = Utils.EncodeStringUTF8(textBegin, pStr0, pStrSize0);
 						pStr0[pStrOffset0] = 0;
 					}
-					ImGui.RenderTextNative(@this, (ImDrawList*)pdrawList, size, pos, col, clipRect, pStr0, textEnd, wrapWidth, cpuFineClip ? (byte)1 : (byte)0);
+					ImGui.RenderTextNative(@this, (ImDrawList*)pdrawList, size, pos, col, clipRect, pStr0, textEnd, wrapWidth, flags);
 					if (pStrSize0 >= Utils.MaxStackallocSize)
 					{
 						Utils.Free(pStr0);
@@ -1790,7 +3236,7 @@ namespace Dalamud.Bindings.ImGui
 						int pStrOffset0 = Utils.EncodeStringUTF8(textBegin, pStr0, pStrSize0);
 						pStr0[pStrOffset0] = 0;
 					}
-					ImGui.RenderTextNative(@this, (ImDrawList*)pdrawList, size, pos, col, clipRect, pStr0, textEnd, wrapWidth, (byte)(0));
+					ImGui.RenderTextNative(@this, (ImDrawList*)pdrawList, size, pos, col, clipRect, pStr0, textEnd, wrapWidth, (ImDrawTextFlags)(0));
 					if (pStrSize0 >= Utils.MaxStackallocSize)
 					{
 						Utils.Free(pStr0);
@@ -1825,7 +3271,7 @@ namespace Dalamud.Bindings.ImGui
 						int pStrOffset0 = Utils.EncodeStringUTF8(textBegin, pStr0, pStrSize0);
 						pStr0[pStrOffset0] = 0;
 					}
-					ImGui.RenderTextNative(@this, (ImDrawList*)pdrawList, size, pos, col, clipRect, pStr0, textEnd, (float)(0.0f), (byte)(0));
+					ImGui.RenderTextNative(@this, (ImDrawList*)pdrawList, size, pos, col, clipRect, pStr0, textEnd, (float)(0.0f), (ImDrawTextFlags)(0));
 					if (pStrSize0 >= Utils.MaxStackallocSize)
 					{
 						Utils.Free(pStr0);
@@ -1837,7 +3283,7 @@ namespace Dalamud.Bindings.ImGui
 		/// <summary>
 		/// To be documented.
 		/// </summary>
-		public unsafe void RenderText(ref ImDrawList drawList, float size, Vector2 pos, uint col, Vector4 clipRect, string textBegin, byte* textEnd, bool cpuFineClip)
+		public unsafe void RenderText(ref ImDrawList drawList, float size, Vector2 pos, uint col, Vector4 clipRect, string textBegin, byte* textEnd, ImDrawTextFlags flags)
 		{
 			fixed (ImFont* @this = &this)
 			{
@@ -1860,7 +3306,7 @@ namespace Dalamud.Bindings.ImGui
 						int pStrOffset0 = Utils.EncodeStringUTF8(textBegin, pStr0, pStrSize0);
 						pStr0[pStrOffset0] = 0;
 					}
-					ImGui.RenderTextNative(@this, (ImDrawList*)pdrawList, size, pos, col, clipRect, pStr0, textEnd, (float)(0.0f), cpuFineClip ? (byte)1 : (byte)0);
+					ImGui.RenderTextNative(@this, (ImDrawList*)pdrawList, size, pos, col, clipRect, pStr0, textEnd, (float)(0.0f), flags);
 					if (pStrSize0 >= Utils.MaxStackallocSize)
 					{
 						Utils.Free(pStr0);
@@ -1872,13 +3318,13 @@ namespace Dalamud.Bindings.ImGui
 		/// <summary>
 		/// To be documented.
 		/// </summary>
-		public unsafe void RenderText(ImDrawListPtr drawList, float size, Vector2 pos, uint col, Vector4 clipRect, byte* textBegin, ref byte textEnd, float wrapWidth, bool cpuFineClip)
+		public unsafe void RenderText(ImDrawListPtr drawList, float size, Vector2 pos, uint col, Vector4 clipRect, byte* textBegin, in byte textEnd, float wrapWidth, ImDrawTextFlags flags)
 		{
 			fixed (ImFont* @this = &this)
 			{
 				fixed (byte* ptextEnd = &textEnd)
 				{
-					ImGui.RenderTextNative(@this, drawList, size, pos, col, clipRect, textBegin, (byte*)ptextEnd, wrapWidth, cpuFineClip ? (byte)1 : (byte)0);
+					ImGui.RenderTextNative(@this, (ImDrawList*)drawList, size, pos, col, clipRect, textBegin, (byte*)ptextEnd, wrapWidth, flags);
 				}
 			}
 		}
@@ -1886,13 +3332,13 @@ namespace Dalamud.Bindings.ImGui
 		/// <summary>
 		/// To be documented.
 		/// </summary>
-		public unsafe void RenderText(ImDrawListPtr drawList, float size, Vector2 pos, uint col, Vector4 clipRect, byte* textBegin, ref byte textEnd, float wrapWidth)
+		public unsafe void RenderText(ImDrawListPtr drawList, float size, Vector2 pos, uint col, Vector4 clipRect, byte* textBegin, in byte textEnd, float wrapWidth)
 		{
 			fixed (ImFont* @this = &this)
 			{
 				fixed (byte* ptextEnd = &textEnd)
 				{
-					ImGui.RenderTextNative(@this, drawList, size, pos, col, clipRect, textBegin, (byte*)ptextEnd, wrapWidth, (byte)(0));
+					ImGui.RenderTextNative(@this, (ImDrawList*)drawList, size, pos, col, clipRect, textBegin, (byte*)ptextEnd, wrapWidth, (ImDrawTextFlags)(0));
 				}
 			}
 		}
@@ -1900,13 +3346,13 @@ namespace Dalamud.Bindings.ImGui
 		/// <summary>
 		/// To be documented.
 		/// </summary>
-		public unsafe void RenderText(ImDrawListPtr drawList, float size, Vector2 pos, uint col, Vector4 clipRect, byte* textBegin, ref byte textEnd)
+		public unsafe void RenderText(ImDrawListPtr drawList, float size, Vector2 pos, uint col, Vector4 clipRect, byte* textBegin, in byte textEnd)
 		{
 			fixed (ImFont* @this = &this)
 			{
 				fixed (byte* ptextEnd = &textEnd)
 				{
-					ImGui.RenderTextNative(@this, drawList, size, pos, col, clipRect, textBegin, (byte*)ptextEnd, (float)(0.0f), (byte)(0));
+					ImGui.RenderTextNative(@this, (ImDrawList*)drawList, size, pos, col, clipRect, textBegin, (byte*)ptextEnd, (float)(0.0f), (ImDrawTextFlags)(0));
 				}
 			}
 		}
@@ -1914,13 +3360,13 @@ namespace Dalamud.Bindings.ImGui
 		/// <summary>
 		/// To be documented.
 		/// </summary>
-		public unsafe void RenderText(ImDrawListPtr drawList, float size, Vector2 pos, uint col, Vector4 clipRect, byte* textBegin, ref byte textEnd, bool cpuFineClip)
+		public unsafe void RenderText(ImDrawListPtr drawList, float size, Vector2 pos, uint col, Vector4 clipRect, byte* textBegin, in byte textEnd, ImDrawTextFlags flags)
 		{
 			fixed (ImFont* @this = &this)
 			{
 				fixed (byte* ptextEnd = &textEnd)
 				{
-					ImGui.RenderTextNative(@this, drawList, size, pos, col, clipRect, textBegin, (byte*)ptextEnd, (float)(0.0f), cpuFineClip ? (byte)1 : (byte)0);
+					ImGui.RenderTextNative(@this, (ImDrawList*)drawList, size, pos, col, clipRect, textBegin, (byte*)ptextEnd, (float)(0.0f), flags);
 				}
 			}
 		}
@@ -1928,13 +3374,13 @@ namespace Dalamud.Bindings.ImGui
 		/// <summary>
 		/// To be documented.
 		/// </summary>
-		public unsafe void RenderText(ImDrawListPtr drawList, float size, Vector2 pos, uint col, Vector4 clipRect, byte* textBegin, ReadOnlySpan<byte> textEnd, float wrapWidth, bool cpuFineClip)
+		public unsafe void RenderText(ImDrawListPtr drawList, float size, Vector2 pos, uint col, Vector4 clipRect, byte* textBegin, ReadOnlySpan<byte> textEnd, float wrapWidth, ImDrawTextFlags flags)
 		{
 			fixed (ImFont* @this = &this)
 			{
 				fixed (byte* ptextEnd = textEnd)
 				{
-					ImGui.RenderTextNative(@this, drawList, size, pos, col, clipRect, textBegin, (byte*)ptextEnd, wrapWidth, cpuFineClip ? (byte)1 : (byte)0);
+					ImGui.RenderTextNative(@this, (ImDrawList*)drawList, size, pos, col, clipRect, textBegin, (byte*)ptextEnd, wrapWidth, flags);
 				}
 			}
 		}
@@ -1948,7 +3394,7 @@ namespace Dalamud.Bindings.ImGui
 			{
 				fixed (byte* ptextEnd = textEnd)
 				{
-					ImGui.RenderTextNative(@this, drawList, size, pos, col, clipRect, textBegin, (byte*)ptextEnd, wrapWidth, (byte)(0));
+					ImGui.RenderTextNative(@this, (ImDrawList*)drawList, size, pos, col, clipRect, textBegin, (byte*)ptextEnd, wrapWidth, (ImDrawTextFlags)(0));
 				}
 			}
 		}
@@ -1962,7 +3408,7 @@ namespace Dalamud.Bindings.ImGui
 			{
 				fixed (byte* ptextEnd = textEnd)
 				{
-					ImGui.RenderTextNative(@this, drawList, size, pos, col, clipRect, textBegin, (byte*)ptextEnd, (float)(0.0f), (byte)(0));
+					ImGui.RenderTextNative(@this, (ImDrawList*)drawList, size, pos, col, clipRect, textBegin, (byte*)ptextEnd, (float)(0.0f), (ImDrawTextFlags)(0));
 				}
 			}
 		}
@@ -1970,13 +3416,13 @@ namespace Dalamud.Bindings.ImGui
 		/// <summary>
 		/// To be documented.
 		/// </summary>
-		public unsafe void RenderText(ImDrawListPtr drawList, float size, Vector2 pos, uint col, Vector4 clipRect, byte* textBegin, ReadOnlySpan<byte> textEnd, bool cpuFineClip)
+		public unsafe void RenderText(ImDrawListPtr drawList, float size, Vector2 pos, uint col, Vector4 clipRect, byte* textBegin, ReadOnlySpan<byte> textEnd, ImDrawTextFlags flags)
 		{
 			fixed (ImFont* @this = &this)
 			{
 				fixed (byte* ptextEnd = textEnd)
 				{
-					ImGui.RenderTextNative(@this, drawList, size, pos, col, clipRect, textBegin, (byte*)ptextEnd, (float)(0.0f), cpuFineClip ? (byte)1 : (byte)0);
+					ImGui.RenderTextNative(@this, (ImDrawList*)drawList, size, pos, col, clipRect, textBegin, (byte*)ptextEnd, (float)(0.0f), flags);
 				}
 			}
 		}
@@ -1984,7 +3430,7 @@ namespace Dalamud.Bindings.ImGui
 		/// <summary>
 		/// To be documented.
 		/// </summary>
-		public unsafe void RenderText(ImDrawListPtr drawList, float size, Vector2 pos, uint col, Vector4 clipRect, byte* textBegin, string textEnd, float wrapWidth, bool cpuFineClip)
+		public unsafe void RenderText(ImDrawListPtr drawList, float size, Vector2 pos, uint col, Vector4 clipRect, byte* textBegin, string textEnd, float wrapWidth, ImDrawTextFlags flags)
 		{
 			fixed (ImFont* @this = &this)
 			{
@@ -2005,7 +3451,7 @@ namespace Dalamud.Bindings.ImGui
 					int pStrOffset0 = Utils.EncodeStringUTF8(textEnd, pStr0, pStrSize0);
 					pStr0[pStrOffset0] = 0;
 				}
-				ImGui.RenderTextNative(@this, drawList, size, pos, col, clipRect, textBegin, pStr0, wrapWidth, cpuFineClip ? (byte)1 : (byte)0);
+				ImGui.RenderTextNative(@this, (ImDrawList*)drawList, size, pos, col, clipRect, textBegin, pStr0, wrapWidth, flags);
 				if (pStrSize0 >= Utils.MaxStackallocSize)
 				{
 					Utils.Free(pStr0);
@@ -2037,7 +3483,7 @@ namespace Dalamud.Bindings.ImGui
 					int pStrOffset0 = Utils.EncodeStringUTF8(textEnd, pStr0, pStrSize0);
 					pStr0[pStrOffset0] = 0;
 				}
-				ImGui.RenderTextNative(@this, drawList, size, pos, col, clipRect, textBegin, pStr0, wrapWidth, (byte)(0));
+				ImGui.RenderTextNative(@this, (ImDrawList*)drawList, size, pos, col, clipRect, textBegin, pStr0, wrapWidth, (ImDrawTextFlags)(0));
 				if (pStrSize0 >= Utils.MaxStackallocSize)
 				{
 					Utils.Free(pStr0);
@@ -2069,7 +3515,7 @@ namespace Dalamud.Bindings.ImGui
 					int pStrOffset0 = Utils.EncodeStringUTF8(textEnd, pStr0, pStrSize0);
 					pStr0[pStrOffset0] = 0;
 				}
-				ImGui.RenderTextNative(@this, drawList, size, pos, col, clipRect, textBegin, pStr0, (float)(0.0f), (byte)(0));
+				ImGui.RenderTextNative(@this, (ImDrawList*)drawList, size, pos, col, clipRect, textBegin, pStr0, (float)(0.0f), (ImDrawTextFlags)(0));
 				if (pStrSize0 >= Utils.MaxStackallocSize)
 				{
 					Utils.Free(pStr0);
@@ -2080,7 +3526,7 @@ namespace Dalamud.Bindings.ImGui
 		/// <summary>
 		/// To be documented.
 		/// </summary>
-		public unsafe void RenderText(ImDrawListPtr drawList, float size, Vector2 pos, uint col, Vector4 clipRect, byte* textBegin, string textEnd, bool cpuFineClip)
+		public unsafe void RenderText(ImDrawListPtr drawList, float size, Vector2 pos, uint col, Vector4 clipRect, byte* textBegin, string textEnd, ImDrawTextFlags flags)
 		{
 			fixed (ImFont* @this = &this)
 			{
@@ -2101,7 +3547,7 @@ namespace Dalamud.Bindings.ImGui
 					int pStrOffset0 = Utils.EncodeStringUTF8(textEnd, pStr0, pStrSize0);
 					pStr0[pStrOffset0] = 0;
 				}
-				ImGui.RenderTextNative(@this, drawList, size, pos, col, clipRect, textBegin, pStr0, (float)(0.0f), cpuFineClip ? (byte)1 : (byte)0);
+				ImGui.RenderTextNative(@this, (ImDrawList*)drawList, size, pos, col, clipRect, textBegin, pStr0, (float)(0.0f), flags);
 				if (pStrSize0 >= Utils.MaxStackallocSize)
 				{
 					Utils.Free(pStr0);
@@ -2112,7 +3558,7 @@ namespace Dalamud.Bindings.ImGui
 		/// <summary>
 		/// To be documented.
 		/// </summary>
-		public unsafe void RenderText(ref ImDrawList drawList, float size, Vector2 pos, uint col, Vector4 clipRect, byte* textBegin, ref byte textEnd, float wrapWidth, bool cpuFineClip)
+		public unsafe void RenderText(ref ImDrawList drawList, float size, Vector2 pos, uint col, Vector4 clipRect, byte* textBegin, in byte textEnd, float wrapWidth, ImDrawTextFlags flags)
 		{
 			fixed (ImFont* @this = &this)
 			{
@@ -2120,7 +3566,7 @@ namespace Dalamud.Bindings.ImGui
 				{
 					fixed (byte* ptextEnd = &textEnd)
 					{
-						ImGui.RenderTextNative(@this, (ImDrawList*)pdrawList, size, pos, col, clipRect, textBegin, (byte*)ptextEnd, wrapWidth, cpuFineClip ? (byte)1 : (byte)0);
+						ImGui.RenderTextNative(@this, (ImDrawList*)pdrawList, size, pos, col, clipRect, textBegin, (byte*)ptextEnd, wrapWidth, flags);
 					}
 				}
 			}
@@ -2129,7 +3575,7 @@ namespace Dalamud.Bindings.ImGui
 		/// <summary>
 		/// To be documented.
 		/// </summary>
-		public unsafe void RenderText(ref ImDrawList drawList, float size, Vector2 pos, uint col, Vector4 clipRect, byte* textBegin, ref byte textEnd, float wrapWidth)
+		public unsafe void RenderText(ref ImDrawList drawList, float size, Vector2 pos, uint col, Vector4 clipRect, byte* textBegin, in byte textEnd, float wrapWidth)
 		{
 			fixed (ImFont* @this = &this)
 			{
@@ -2137,7 +3583,7 @@ namespace Dalamud.Bindings.ImGui
 				{
 					fixed (byte* ptextEnd = &textEnd)
 					{
-						ImGui.RenderTextNative(@this, (ImDrawList*)pdrawList, size, pos, col, clipRect, textBegin, (byte*)ptextEnd, wrapWidth, (byte)(0));
+						ImGui.RenderTextNative(@this, (ImDrawList*)pdrawList, size, pos, col, clipRect, textBegin, (byte*)ptextEnd, wrapWidth, (ImDrawTextFlags)(0));
 					}
 				}
 			}
@@ -2146,7 +3592,7 @@ namespace Dalamud.Bindings.ImGui
 		/// <summary>
 		/// To be documented.
 		/// </summary>
-		public unsafe void RenderText(ref ImDrawList drawList, float size, Vector2 pos, uint col, Vector4 clipRect, byte* textBegin, ref byte textEnd)
+		public unsafe void RenderText(ref ImDrawList drawList, float size, Vector2 pos, uint col, Vector4 clipRect, byte* textBegin, in byte textEnd)
 		{
 			fixed (ImFont* @this = &this)
 			{
@@ -2154,7 +3600,7 @@ namespace Dalamud.Bindings.ImGui
 				{
 					fixed (byte* ptextEnd = &textEnd)
 					{
-						ImGui.RenderTextNative(@this, (ImDrawList*)pdrawList, size, pos, col, clipRect, textBegin, (byte*)ptextEnd, (float)(0.0f), (byte)(0));
+						ImGui.RenderTextNative(@this, (ImDrawList*)pdrawList, size, pos, col, clipRect, textBegin, (byte*)ptextEnd, (float)(0.0f), (ImDrawTextFlags)(0));
 					}
 				}
 			}
@@ -2163,7 +3609,7 @@ namespace Dalamud.Bindings.ImGui
 		/// <summary>
 		/// To be documented.
 		/// </summary>
-		public unsafe void RenderText(ref ImDrawList drawList, float size, Vector2 pos, uint col, Vector4 clipRect, byte* textBegin, ref byte textEnd, bool cpuFineClip)
+		public unsafe void RenderText(ref ImDrawList drawList, float size, Vector2 pos, uint col, Vector4 clipRect, byte* textBegin, in byte textEnd, ImDrawTextFlags flags)
 		{
 			fixed (ImFont* @this = &this)
 			{
@@ -2171,7 +3617,7 @@ namespace Dalamud.Bindings.ImGui
 				{
 					fixed (byte* ptextEnd = &textEnd)
 					{
-						ImGui.RenderTextNative(@this, (ImDrawList*)pdrawList, size, pos, col, clipRect, textBegin, (byte*)ptextEnd, (float)(0.0f), cpuFineClip ? (byte)1 : (byte)0);
+						ImGui.RenderTextNative(@this, (ImDrawList*)pdrawList, size, pos, col, clipRect, textBegin, (byte*)ptextEnd, (float)(0.0f), flags);
 					}
 				}
 			}
@@ -2180,7 +3626,7 @@ namespace Dalamud.Bindings.ImGui
 		/// <summary>
 		/// To be documented.
 		/// </summary>
-		public unsafe void RenderText(ref ImDrawList drawList, float size, Vector2 pos, uint col, Vector4 clipRect, byte* textBegin, ReadOnlySpan<byte> textEnd, float wrapWidth, bool cpuFineClip)
+		public unsafe void RenderText(ref ImDrawList drawList, float size, Vector2 pos, uint col, Vector4 clipRect, byte* textBegin, ReadOnlySpan<byte> textEnd, float wrapWidth, ImDrawTextFlags flags)
 		{
 			fixed (ImFont* @this = &this)
 			{
@@ -2188,7 +3634,7 @@ namespace Dalamud.Bindings.ImGui
 				{
 					fixed (byte* ptextEnd = textEnd)
 					{
-						ImGui.RenderTextNative(@this, (ImDrawList*)pdrawList, size, pos, col, clipRect, textBegin, (byte*)ptextEnd, wrapWidth, cpuFineClip ? (byte)1 : (byte)0);
+						ImGui.RenderTextNative(@this, (ImDrawList*)pdrawList, size, pos, col, clipRect, textBegin, (byte*)ptextEnd, wrapWidth, flags);
 					}
 				}
 			}
@@ -2205,7 +3651,7 @@ namespace Dalamud.Bindings.ImGui
 				{
 					fixed (byte* ptextEnd = textEnd)
 					{
-						ImGui.RenderTextNative(@this, (ImDrawList*)pdrawList, size, pos, col, clipRect, textBegin, (byte*)ptextEnd, wrapWidth, (byte)(0));
+						ImGui.RenderTextNative(@this, (ImDrawList*)pdrawList, size, pos, col, clipRect, textBegin, (byte*)ptextEnd, wrapWidth, (ImDrawTextFlags)(0));
 					}
 				}
 			}
@@ -2222,7 +3668,7 @@ namespace Dalamud.Bindings.ImGui
 				{
 					fixed (byte* ptextEnd = textEnd)
 					{
-						ImGui.RenderTextNative(@this, (ImDrawList*)pdrawList, size, pos, col, clipRect, textBegin, (byte*)ptextEnd, (float)(0.0f), (byte)(0));
+						ImGui.RenderTextNative(@this, (ImDrawList*)pdrawList, size, pos, col, clipRect, textBegin, (byte*)ptextEnd, (float)(0.0f), (ImDrawTextFlags)(0));
 					}
 				}
 			}
@@ -2231,7 +3677,7 @@ namespace Dalamud.Bindings.ImGui
 		/// <summary>
 		/// To be documented.
 		/// </summary>
-		public unsafe void RenderText(ref ImDrawList drawList, float size, Vector2 pos, uint col, Vector4 clipRect, byte* textBegin, ReadOnlySpan<byte> textEnd, bool cpuFineClip)
+		public unsafe void RenderText(ref ImDrawList drawList, float size, Vector2 pos, uint col, Vector4 clipRect, byte* textBegin, ReadOnlySpan<byte> textEnd, ImDrawTextFlags flags)
 		{
 			fixed (ImFont* @this = &this)
 			{
@@ -2239,7 +3685,7 @@ namespace Dalamud.Bindings.ImGui
 				{
 					fixed (byte* ptextEnd = textEnd)
 					{
-						ImGui.RenderTextNative(@this, (ImDrawList*)pdrawList, size, pos, col, clipRect, textBegin, (byte*)ptextEnd, (float)(0.0f), cpuFineClip ? (byte)1 : (byte)0);
+						ImGui.RenderTextNative(@this, (ImDrawList*)pdrawList, size, pos, col, clipRect, textBegin, (byte*)ptextEnd, (float)(0.0f), flags);
 					}
 				}
 			}
@@ -2248,7 +3694,7 @@ namespace Dalamud.Bindings.ImGui
 		/// <summary>
 		/// To be documented.
 		/// </summary>
-		public unsafe void RenderText(ref ImDrawList drawList, float size, Vector2 pos, uint col, Vector4 clipRect, byte* textBegin, string textEnd, float wrapWidth, bool cpuFineClip)
+		public unsafe void RenderText(ref ImDrawList drawList, float size, Vector2 pos, uint col, Vector4 clipRect, byte* textBegin, string textEnd, float wrapWidth, ImDrawTextFlags flags)
 		{
 			fixed (ImFont* @this = &this)
 			{
@@ -2271,7 +3717,7 @@ namespace Dalamud.Bindings.ImGui
 						int pStrOffset0 = Utils.EncodeStringUTF8(textEnd, pStr0, pStrSize0);
 						pStr0[pStrOffset0] = 0;
 					}
-					ImGui.RenderTextNative(@this, (ImDrawList*)pdrawList, size, pos, col, clipRect, textBegin, pStr0, wrapWidth, cpuFineClip ? (byte)1 : (byte)0);
+					ImGui.RenderTextNative(@this, (ImDrawList*)pdrawList, size, pos, col, clipRect, textBegin, pStr0, wrapWidth, flags);
 					if (pStrSize0 >= Utils.MaxStackallocSize)
 					{
 						Utils.Free(pStr0);
@@ -2306,7 +3752,7 @@ namespace Dalamud.Bindings.ImGui
 						int pStrOffset0 = Utils.EncodeStringUTF8(textEnd, pStr0, pStrSize0);
 						pStr0[pStrOffset0] = 0;
 					}
-					ImGui.RenderTextNative(@this, (ImDrawList*)pdrawList, size, pos, col, clipRect, textBegin, pStr0, wrapWidth, (byte)(0));
+					ImGui.RenderTextNative(@this, (ImDrawList*)pdrawList, size, pos, col, clipRect, textBegin, pStr0, wrapWidth, (ImDrawTextFlags)(0));
 					if (pStrSize0 >= Utils.MaxStackallocSize)
 					{
 						Utils.Free(pStr0);
@@ -2341,7 +3787,7 @@ namespace Dalamud.Bindings.ImGui
 						int pStrOffset0 = Utils.EncodeStringUTF8(textEnd, pStr0, pStrSize0);
 						pStr0[pStrOffset0] = 0;
 					}
-					ImGui.RenderTextNative(@this, (ImDrawList*)pdrawList, size, pos, col, clipRect, textBegin, pStr0, (float)(0.0f), (byte)(0));
+					ImGui.RenderTextNative(@this, (ImDrawList*)pdrawList, size, pos, col, clipRect, textBegin, pStr0, (float)(0.0f), (ImDrawTextFlags)(0));
 					if (pStrSize0 >= Utils.MaxStackallocSize)
 					{
 						Utils.Free(pStr0);
@@ -2353,7 +3799,7 @@ namespace Dalamud.Bindings.ImGui
 		/// <summary>
 		/// To be documented.
 		/// </summary>
-		public unsafe void RenderText(ref ImDrawList drawList, float size, Vector2 pos, uint col, Vector4 clipRect, byte* textBegin, string textEnd, bool cpuFineClip)
+		public unsafe void RenderText(ref ImDrawList drawList, float size, Vector2 pos, uint col, Vector4 clipRect, byte* textBegin, string textEnd, ImDrawTextFlags flags)
 		{
 			fixed (ImFont* @this = &this)
 			{
@@ -2376,7 +3822,7 @@ namespace Dalamud.Bindings.ImGui
 						int pStrOffset0 = Utils.EncodeStringUTF8(textEnd, pStr0, pStrSize0);
 						pStr0[pStrOffset0] = 0;
 					}
-					ImGui.RenderTextNative(@this, (ImDrawList*)pdrawList, size, pos, col, clipRect, textBegin, pStr0, (float)(0.0f), cpuFineClip ? (byte)1 : (byte)0);
+					ImGui.RenderTextNative(@this, (ImDrawList*)pdrawList, size, pos, col, clipRect, textBegin, pStr0, (float)(0.0f), flags);
 					if (pStrSize0 >= Utils.MaxStackallocSize)
 					{
 						Utils.Free(pStr0);
@@ -2388,7 +3834,7 @@ namespace Dalamud.Bindings.ImGui
 		/// <summary>
 		/// To be documented.
 		/// </summary>
-		public unsafe void RenderText(ImDrawListPtr drawList, float size, Vector2 pos, uint col, Vector4 clipRect, ref byte textBegin, ref byte textEnd, float wrapWidth, bool cpuFineClip)
+		public unsafe void RenderText(ImDrawListPtr drawList, float size, Vector2 pos, uint col, Vector4 clipRect, in byte textBegin, in byte textEnd, float wrapWidth, ImDrawTextFlags flags)
 		{
 			fixed (ImFont* @this = &this)
 			{
@@ -2396,7 +3842,7 @@ namespace Dalamud.Bindings.ImGui
 				{
 					fixed (byte* ptextEnd = &textEnd)
 					{
-						ImGui.RenderTextNative(@this, drawList, size, pos, col, clipRect, (byte*)ptextBegin, (byte*)ptextEnd, wrapWidth, cpuFineClip ? (byte)1 : (byte)0);
+						ImGui.RenderTextNative(@this, (ImDrawList*)drawList, size, pos, col, clipRect, (byte*)ptextBegin, (byte*)ptextEnd, wrapWidth, flags);
 					}
 				}
 			}
@@ -2405,7 +3851,7 @@ namespace Dalamud.Bindings.ImGui
 		/// <summary>
 		/// To be documented.
 		/// </summary>
-		public unsafe void RenderText(ImDrawListPtr drawList, float size, Vector2 pos, uint col, Vector4 clipRect, ref byte textBegin, ref byte textEnd, float wrapWidth)
+		public unsafe void RenderText(ImDrawListPtr drawList, float size, Vector2 pos, uint col, Vector4 clipRect, in byte textBegin, in byte textEnd, float wrapWidth)
 		{
 			fixed (ImFont* @this = &this)
 			{
@@ -2413,7 +3859,7 @@ namespace Dalamud.Bindings.ImGui
 				{
 					fixed (byte* ptextEnd = &textEnd)
 					{
-						ImGui.RenderTextNative(@this, drawList, size, pos, col, clipRect, (byte*)ptextBegin, (byte*)ptextEnd, wrapWidth, (byte)(0));
+						ImGui.RenderTextNative(@this, (ImDrawList*)drawList, size, pos, col, clipRect, (byte*)ptextBegin, (byte*)ptextEnd, wrapWidth, (ImDrawTextFlags)(0));
 					}
 				}
 			}
@@ -2422,7 +3868,7 @@ namespace Dalamud.Bindings.ImGui
 		/// <summary>
 		/// To be documented.
 		/// </summary>
-		public unsafe void RenderText(ImDrawListPtr drawList, float size, Vector2 pos, uint col, Vector4 clipRect, ref byte textBegin, ref byte textEnd)
+		public unsafe void RenderText(ImDrawListPtr drawList, float size, Vector2 pos, uint col, Vector4 clipRect, in byte textBegin, in byte textEnd)
 		{
 			fixed (ImFont* @this = &this)
 			{
@@ -2430,7 +3876,7 @@ namespace Dalamud.Bindings.ImGui
 				{
 					fixed (byte* ptextEnd = &textEnd)
 					{
-						ImGui.RenderTextNative(@this, drawList, size, pos, col, clipRect, (byte*)ptextBegin, (byte*)ptextEnd, (float)(0.0f), (byte)(0));
+						ImGui.RenderTextNative(@this, (ImDrawList*)drawList, size, pos, col, clipRect, (byte*)ptextBegin, (byte*)ptextEnd, (float)(0.0f), (ImDrawTextFlags)(0));
 					}
 				}
 			}
@@ -2439,7 +3885,7 @@ namespace Dalamud.Bindings.ImGui
 		/// <summary>
 		/// To be documented.
 		/// </summary>
-		public unsafe void RenderText(ImDrawListPtr drawList, float size, Vector2 pos, uint col, Vector4 clipRect, ref byte textBegin, ref byte textEnd, bool cpuFineClip)
+		public unsafe void RenderText(ImDrawListPtr drawList, float size, Vector2 pos, uint col, Vector4 clipRect, in byte textBegin, in byte textEnd, ImDrawTextFlags flags)
 		{
 			fixed (ImFont* @this = &this)
 			{
@@ -2447,7 +3893,7 @@ namespace Dalamud.Bindings.ImGui
 				{
 					fixed (byte* ptextEnd = &textEnd)
 					{
-						ImGui.RenderTextNative(@this, drawList, size, pos, col, clipRect, (byte*)ptextBegin, (byte*)ptextEnd, (float)(0.0f), cpuFineClip ? (byte)1 : (byte)0);
+						ImGui.RenderTextNative(@this, (ImDrawList*)drawList, size, pos, col, clipRect, (byte*)ptextBegin, (byte*)ptextEnd, (float)(0.0f), flags);
 					}
 				}
 			}
@@ -2456,7 +3902,7 @@ namespace Dalamud.Bindings.ImGui
 		/// <summary>
 		/// To be documented.
 		/// </summary>
-		public unsafe void RenderText(ImDrawListPtr drawList, float size, Vector2 pos, uint col, Vector4 clipRect, ReadOnlySpan<byte> textBegin, ReadOnlySpan<byte> textEnd, float wrapWidth, bool cpuFineClip)
+		public unsafe void RenderText(ImDrawListPtr drawList, float size, Vector2 pos, uint col, Vector4 clipRect, ReadOnlySpan<byte> textBegin, ReadOnlySpan<byte> textEnd, float wrapWidth, ImDrawTextFlags flags)
 		{
 			fixed (ImFont* @this = &this)
 			{
@@ -2464,7 +3910,7 @@ namespace Dalamud.Bindings.ImGui
 				{
 					fixed (byte* ptextEnd = textEnd)
 					{
-						ImGui.RenderTextNative(@this, drawList, size, pos, col, clipRect, (byte*)ptextBegin, (byte*)ptextEnd, wrapWidth, cpuFineClip ? (byte)1 : (byte)0);
+						ImGui.RenderTextNative(@this, (ImDrawList*)drawList, size, pos, col, clipRect, (byte*)ptextBegin, (byte*)ptextEnd, wrapWidth, flags);
 					}
 				}
 			}
@@ -2481,7 +3927,7 @@ namespace Dalamud.Bindings.ImGui
 				{
 					fixed (byte* ptextEnd = textEnd)
 					{
-						ImGui.RenderTextNative(@this, drawList, size, pos, col, clipRect, (byte*)ptextBegin, (byte*)ptextEnd, wrapWidth, (byte)(0));
+						ImGui.RenderTextNative(@this, (ImDrawList*)drawList, size, pos, col, clipRect, (byte*)ptextBegin, (byte*)ptextEnd, wrapWidth, (ImDrawTextFlags)(0));
 					}
 				}
 			}
@@ -2498,7 +3944,7 @@ namespace Dalamud.Bindings.ImGui
 				{
 					fixed (byte* ptextEnd = textEnd)
 					{
-						ImGui.RenderTextNative(@this, drawList, size, pos, col, clipRect, (byte*)ptextBegin, (byte*)ptextEnd, (float)(0.0f), (byte)(0));
+						ImGui.RenderTextNative(@this, (ImDrawList*)drawList, size, pos, col, clipRect, (byte*)ptextBegin, (byte*)ptextEnd, (float)(0.0f), (ImDrawTextFlags)(0));
 					}
 				}
 			}
@@ -2507,7 +3953,7 @@ namespace Dalamud.Bindings.ImGui
 		/// <summary>
 		/// To be documented.
 		/// </summary>
-		public unsafe void RenderText(ImDrawListPtr drawList, float size, Vector2 pos, uint col, Vector4 clipRect, ReadOnlySpan<byte> textBegin, ReadOnlySpan<byte> textEnd, bool cpuFineClip)
+		public unsafe void RenderText(ImDrawListPtr drawList, float size, Vector2 pos, uint col, Vector4 clipRect, ReadOnlySpan<byte> textBegin, ReadOnlySpan<byte> textEnd, ImDrawTextFlags flags)
 		{
 			fixed (ImFont* @this = &this)
 			{
@@ -2515,7 +3961,7 @@ namespace Dalamud.Bindings.ImGui
 				{
 					fixed (byte* ptextEnd = textEnd)
 					{
-						ImGui.RenderTextNative(@this, drawList, size, pos, col, clipRect, (byte*)ptextBegin, (byte*)ptextEnd, (float)(0.0f), cpuFineClip ? (byte)1 : (byte)0);
+						ImGui.RenderTextNative(@this, (ImDrawList*)drawList, size, pos, col, clipRect, (byte*)ptextBegin, (byte*)ptextEnd, (float)(0.0f), flags);
 					}
 				}
 			}
@@ -2524,7 +3970,7 @@ namespace Dalamud.Bindings.ImGui
 		/// <summary>
 		/// To be documented.
 		/// </summary>
-		public unsafe void RenderText(ImDrawListPtr drawList, float size, Vector2 pos, uint col, Vector4 clipRect, string textBegin, string textEnd, float wrapWidth, bool cpuFineClip)
+		public unsafe void RenderText(ImDrawListPtr drawList, float size, Vector2 pos, uint col, Vector4 clipRect, string textBegin, string textEnd, float wrapWidth, ImDrawTextFlags flags)
 		{
 			fixed (ImFont* @this = &this)
 			{
@@ -2562,7 +4008,7 @@ namespace Dalamud.Bindings.ImGui
 					int pStrOffset1 = Utils.EncodeStringUTF8(textEnd, pStr1, pStrSize1);
 					pStr1[pStrOffset1] = 0;
 				}
-				ImGui.RenderTextNative(@this, drawList, size, pos, col, clipRect, pStr0, pStr1, wrapWidth, cpuFineClip ? (byte)1 : (byte)0);
+				ImGui.RenderTextNative(@this, (ImDrawList*)drawList, size, pos, col, clipRect, pStr0, pStr1, wrapWidth, flags);
 				if (pStrSize1 >= Utils.MaxStackallocSize)
 				{
 					Utils.Free(pStr1);
@@ -2615,7 +4061,7 @@ namespace Dalamud.Bindings.ImGui
 					int pStrOffset1 = Utils.EncodeStringUTF8(textEnd, pStr1, pStrSize1);
 					pStr1[pStrOffset1] = 0;
 				}
-				ImGui.RenderTextNative(@this, drawList, size, pos, col, clipRect, pStr0, pStr1, wrapWidth, (byte)(0));
+				ImGui.RenderTextNative(@this, (ImDrawList*)drawList, size, pos, col, clipRect, pStr0, pStr1, wrapWidth, (ImDrawTextFlags)(0));
 				if (pStrSize1 >= Utils.MaxStackallocSize)
 				{
 					Utils.Free(pStr1);
@@ -2668,7 +4114,7 @@ namespace Dalamud.Bindings.ImGui
 					int pStrOffset1 = Utils.EncodeStringUTF8(textEnd, pStr1, pStrSize1);
 					pStr1[pStrOffset1] = 0;
 				}
-				ImGui.RenderTextNative(@this, drawList, size, pos, col, clipRect, pStr0, pStr1, (float)(0.0f), (byte)(0));
+				ImGui.RenderTextNative(@this, (ImDrawList*)drawList, size, pos, col, clipRect, pStr0, pStr1, (float)(0.0f), (ImDrawTextFlags)(0));
 				if (pStrSize1 >= Utils.MaxStackallocSize)
 				{
 					Utils.Free(pStr1);
@@ -2683,7 +4129,7 @@ namespace Dalamud.Bindings.ImGui
 		/// <summary>
 		/// To be documented.
 		/// </summary>
-		public unsafe void RenderText(ImDrawListPtr drawList, float size, Vector2 pos, uint col, Vector4 clipRect, string textBegin, string textEnd, bool cpuFineClip)
+		public unsafe void RenderText(ImDrawListPtr drawList, float size, Vector2 pos, uint col, Vector4 clipRect, string textBegin, string textEnd, ImDrawTextFlags flags)
 		{
 			fixed (ImFont* @this = &this)
 			{
@@ -2721,7 +4167,7 @@ namespace Dalamud.Bindings.ImGui
 					int pStrOffset1 = Utils.EncodeStringUTF8(textEnd, pStr1, pStrSize1);
 					pStr1[pStrOffset1] = 0;
 				}
-				ImGui.RenderTextNative(@this, drawList, size, pos, col, clipRect, pStr0, pStr1, (float)(0.0f), cpuFineClip ? (byte)1 : (byte)0);
+				ImGui.RenderTextNative(@this, (ImDrawList*)drawList, size, pos, col, clipRect, pStr0, pStr1, (float)(0.0f), flags);
 				if (pStrSize1 >= Utils.MaxStackallocSize)
 				{
 					Utils.Free(pStr1);
@@ -2736,7 +4182,7 @@ namespace Dalamud.Bindings.ImGui
 		/// <summary>
 		/// To be documented.
 		/// </summary>
-		public unsafe void RenderText(ImDrawListPtr drawList, float size, Vector2 pos, uint col, Vector4 clipRect, ref byte textBegin, ReadOnlySpan<byte> textEnd, float wrapWidth, bool cpuFineClip)
+		public unsafe void RenderText(ImDrawListPtr drawList, float size, Vector2 pos, uint col, Vector4 clipRect, in byte textBegin, ReadOnlySpan<byte> textEnd, float wrapWidth, ImDrawTextFlags flags)
 		{
 			fixed (ImFont* @this = &this)
 			{
@@ -2744,7 +4190,7 @@ namespace Dalamud.Bindings.ImGui
 				{
 					fixed (byte* ptextEnd = textEnd)
 					{
-						ImGui.RenderTextNative(@this, drawList, size, pos, col, clipRect, (byte*)ptextBegin, (byte*)ptextEnd, wrapWidth, cpuFineClip ? (byte)1 : (byte)0);
+						ImGui.RenderTextNative(@this, (ImDrawList*)drawList, size, pos, col, clipRect, (byte*)ptextBegin, (byte*)ptextEnd, wrapWidth, flags);
 					}
 				}
 			}
@@ -2753,7 +4199,7 @@ namespace Dalamud.Bindings.ImGui
 		/// <summary>
 		/// To be documented.
 		/// </summary>
-		public unsafe void RenderText(ImDrawListPtr drawList, float size, Vector2 pos, uint col, Vector4 clipRect, ref byte textBegin, ReadOnlySpan<byte> textEnd, float wrapWidth)
+		public unsafe void RenderText(ImDrawListPtr drawList, float size, Vector2 pos, uint col, Vector4 clipRect, in byte textBegin, ReadOnlySpan<byte> textEnd, float wrapWidth)
 		{
 			fixed (ImFont* @this = &this)
 			{
@@ -2761,7 +4207,7 @@ namespace Dalamud.Bindings.ImGui
 				{
 					fixed (byte* ptextEnd = textEnd)
 					{
-						ImGui.RenderTextNative(@this, drawList, size, pos, col, clipRect, (byte*)ptextBegin, (byte*)ptextEnd, wrapWidth, (byte)(0));
+						ImGui.RenderTextNative(@this, (ImDrawList*)drawList, size, pos, col, clipRect, (byte*)ptextBegin, (byte*)ptextEnd, wrapWidth, (ImDrawTextFlags)(0));
 					}
 				}
 			}
@@ -2770,7 +4216,7 @@ namespace Dalamud.Bindings.ImGui
 		/// <summary>
 		/// To be documented.
 		/// </summary>
-		public unsafe void RenderText(ImDrawListPtr drawList, float size, Vector2 pos, uint col, Vector4 clipRect, ref byte textBegin, ReadOnlySpan<byte> textEnd)
+		public unsafe void RenderText(ImDrawListPtr drawList, float size, Vector2 pos, uint col, Vector4 clipRect, in byte textBegin, ReadOnlySpan<byte> textEnd)
 		{
 			fixed (ImFont* @this = &this)
 			{
@@ -2778,7 +4224,7 @@ namespace Dalamud.Bindings.ImGui
 				{
 					fixed (byte* ptextEnd = textEnd)
 					{
-						ImGui.RenderTextNative(@this, drawList, size, pos, col, clipRect, (byte*)ptextBegin, (byte*)ptextEnd, (float)(0.0f), (byte)(0));
+						ImGui.RenderTextNative(@this, (ImDrawList*)drawList, size, pos, col, clipRect, (byte*)ptextBegin, (byte*)ptextEnd, (float)(0.0f), (ImDrawTextFlags)(0));
 					}
 				}
 			}
@@ -2787,7 +4233,7 @@ namespace Dalamud.Bindings.ImGui
 		/// <summary>
 		/// To be documented.
 		/// </summary>
-		public unsafe void RenderText(ImDrawListPtr drawList, float size, Vector2 pos, uint col, Vector4 clipRect, ref byte textBegin, ReadOnlySpan<byte> textEnd, bool cpuFineClip)
+		public unsafe void RenderText(ImDrawListPtr drawList, float size, Vector2 pos, uint col, Vector4 clipRect, in byte textBegin, ReadOnlySpan<byte> textEnd, ImDrawTextFlags flags)
 		{
 			fixed (ImFont* @this = &this)
 			{
@@ -2795,7 +4241,7 @@ namespace Dalamud.Bindings.ImGui
 				{
 					fixed (byte* ptextEnd = textEnd)
 					{
-						ImGui.RenderTextNative(@this, drawList, size, pos, col, clipRect, (byte*)ptextBegin, (byte*)ptextEnd, (float)(0.0f), cpuFineClip ? (byte)1 : (byte)0);
+						ImGui.RenderTextNative(@this, (ImDrawList*)drawList, size, pos, col, clipRect, (byte*)ptextBegin, (byte*)ptextEnd, (float)(0.0f), flags);
 					}
 				}
 			}
@@ -2804,7 +4250,7 @@ namespace Dalamud.Bindings.ImGui
 		/// <summary>
 		/// To be documented.
 		/// </summary>
-		public unsafe void RenderText(ImDrawListPtr drawList, float size, Vector2 pos, uint col, Vector4 clipRect, ref byte textBegin, string textEnd, float wrapWidth, bool cpuFineClip)
+		public unsafe void RenderText(ImDrawListPtr drawList, float size, Vector2 pos, uint col, Vector4 clipRect, in byte textBegin, string textEnd, float wrapWidth, ImDrawTextFlags flags)
 		{
 			fixed (ImFont* @this = &this)
 			{
@@ -2827,7 +4273,7 @@ namespace Dalamud.Bindings.ImGui
 						int pStrOffset0 = Utils.EncodeStringUTF8(textEnd, pStr0, pStrSize0);
 						pStr0[pStrOffset0] = 0;
 					}
-					ImGui.RenderTextNative(@this, drawList, size, pos, col, clipRect, (byte*)ptextBegin, pStr0, wrapWidth, cpuFineClip ? (byte)1 : (byte)0);
+					ImGui.RenderTextNative(@this, (ImDrawList*)drawList, size, pos, col, clipRect, (byte*)ptextBegin, pStr0, wrapWidth, flags);
 					if (pStrSize0 >= Utils.MaxStackallocSize)
 					{
 						Utils.Free(pStr0);
@@ -2839,7 +4285,7 @@ namespace Dalamud.Bindings.ImGui
 		/// <summary>
 		/// To be documented.
 		/// </summary>
-		public unsafe void RenderText(ImDrawListPtr drawList, float size, Vector2 pos, uint col, Vector4 clipRect, ref byte textBegin, string textEnd, float wrapWidth)
+		public unsafe void RenderText(ImDrawListPtr drawList, float size, Vector2 pos, uint col, Vector4 clipRect, in byte textBegin, string textEnd, float wrapWidth)
 		{
 			fixed (ImFont* @this = &this)
 			{
@@ -2862,7 +4308,7 @@ namespace Dalamud.Bindings.ImGui
 						int pStrOffset0 = Utils.EncodeStringUTF8(textEnd, pStr0, pStrSize0);
 						pStr0[pStrOffset0] = 0;
 					}
-					ImGui.RenderTextNative(@this, drawList, size, pos, col, clipRect, (byte*)ptextBegin, pStr0, wrapWidth, (byte)(0));
+					ImGui.RenderTextNative(@this, (ImDrawList*)drawList, size, pos, col, clipRect, (byte*)ptextBegin, pStr0, wrapWidth, (ImDrawTextFlags)(0));
 					if (pStrSize0 >= Utils.MaxStackallocSize)
 					{
 						Utils.Free(pStr0);
@@ -2874,7 +4320,7 @@ namespace Dalamud.Bindings.ImGui
 		/// <summary>
 		/// To be documented.
 		/// </summary>
-		public unsafe void RenderText(ImDrawListPtr drawList, float size, Vector2 pos, uint col, Vector4 clipRect, ref byte textBegin, string textEnd)
+		public unsafe void RenderText(ImDrawListPtr drawList, float size, Vector2 pos, uint col, Vector4 clipRect, in byte textBegin, string textEnd)
 		{
 			fixed (ImFont* @this = &this)
 			{
@@ -2897,7 +4343,7 @@ namespace Dalamud.Bindings.ImGui
 						int pStrOffset0 = Utils.EncodeStringUTF8(textEnd, pStr0, pStrSize0);
 						pStr0[pStrOffset0] = 0;
 					}
-					ImGui.RenderTextNative(@this, drawList, size, pos, col, clipRect, (byte*)ptextBegin, pStr0, (float)(0.0f), (byte)(0));
+					ImGui.RenderTextNative(@this, (ImDrawList*)drawList, size, pos, col, clipRect, (byte*)ptextBegin, pStr0, (float)(0.0f), (ImDrawTextFlags)(0));
 					if (pStrSize0 >= Utils.MaxStackallocSize)
 					{
 						Utils.Free(pStr0);
@@ -2909,7 +4355,7 @@ namespace Dalamud.Bindings.ImGui
 		/// <summary>
 		/// To be documented.
 		/// </summary>
-		public unsafe void RenderText(ImDrawListPtr drawList, float size, Vector2 pos, uint col, Vector4 clipRect, ref byte textBegin, string textEnd, bool cpuFineClip)
+		public unsafe void RenderText(ImDrawListPtr drawList, float size, Vector2 pos, uint col, Vector4 clipRect, in byte textBegin, string textEnd, ImDrawTextFlags flags)
 		{
 			fixed (ImFont* @this = &this)
 			{
@@ -2932,7 +4378,7 @@ namespace Dalamud.Bindings.ImGui
 						int pStrOffset0 = Utils.EncodeStringUTF8(textEnd, pStr0, pStrSize0);
 						pStr0[pStrOffset0] = 0;
 					}
-					ImGui.RenderTextNative(@this, drawList, size, pos, col, clipRect, (byte*)ptextBegin, pStr0, (float)(0.0f), cpuFineClip ? (byte)1 : (byte)0);
+					ImGui.RenderTextNative(@this, (ImDrawList*)drawList, size, pos, col, clipRect, (byte*)ptextBegin, pStr0, (float)(0.0f), flags);
 					if (pStrSize0 >= Utils.MaxStackallocSize)
 					{
 						Utils.Free(pStr0);
@@ -2944,7 +4390,7 @@ namespace Dalamud.Bindings.ImGui
 		/// <summary>
 		/// To be documented.
 		/// </summary>
-		public unsafe void RenderText(ImDrawListPtr drawList, float size, Vector2 pos, uint col, Vector4 clipRect, ReadOnlySpan<byte> textBegin, ref byte textEnd, float wrapWidth, bool cpuFineClip)
+		public unsafe void RenderText(ImDrawListPtr drawList, float size, Vector2 pos, uint col, Vector4 clipRect, ReadOnlySpan<byte> textBegin, in byte textEnd, float wrapWidth, ImDrawTextFlags flags)
 		{
 			fixed (ImFont* @this = &this)
 			{
@@ -2952,7 +4398,7 @@ namespace Dalamud.Bindings.ImGui
 				{
 					fixed (byte* ptextEnd = &textEnd)
 					{
-						ImGui.RenderTextNative(@this, drawList, size, pos, col, clipRect, (byte*)ptextBegin, (byte*)ptextEnd, wrapWidth, cpuFineClip ? (byte)1 : (byte)0);
+						ImGui.RenderTextNative(@this, (ImDrawList*)drawList, size, pos, col, clipRect, (byte*)ptextBegin, (byte*)ptextEnd, wrapWidth, flags);
 					}
 				}
 			}
@@ -2961,7 +4407,7 @@ namespace Dalamud.Bindings.ImGui
 		/// <summary>
 		/// To be documented.
 		/// </summary>
-		public unsafe void RenderText(ImDrawListPtr drawList, float size, Vector2 pos, uint col, Vector4 clipRect, ReadOnlySpan<byte> textBegin, ref byte textEnd, float wrapWidth)
+		public unsafe void RenderText(ImDrawListPtr drawList, float size, Vector2 pos, uint col, Vector4 clipRect, ReadOnlySpan<byte> textBegin, in byte textEnd, float wrapWidth)
 		{
 			fixed (ImFont* @this = &this)
 			{
@@ -2969,7 +4415,7 @@ namespace Dalamud.Bindings.ImGui
 				{
 					fixed (byte* ptextEnd = &textEnd)
 					{
-						ImGui.RenderTextNative(@this, drawList, size, pos, col, clipRect, (byte*)ptextBegin, (byte*)ptextEnd, wrapWidth, (byte)(0));
+						ImGui.RenderTextNative(@this, (ImDrawList*)drawList, size, pos, col, clipRect, (byte*)ptextBegin, (byte*)ptextEnd, wrapWidth, (ImDrawTextFlags)(0));
 					}
 				}
 			}
@@ -2978,7 +4424,7 @@ namespace Dalamud.Bindings.ImGui
 		/// <summary>
 		/// To be documented.
 		/// </summary>
-		public unsafe void RenderText(ImDrawListPtr drawList, float size, Vector2 pos, uint col, Vector4 clipRect, ReadOnlySpan<byte> textBegin, ref byte textEnd)
+		public unsafe void RenderText(ImDrawListPtr drawList, float size, Vector2 pos, uint col, Vector4 clipRect, ReadOnlySpan<byte> textBegin, in byte textEnd)
 		{
 			fixed (ImFont* @this = &this)
 			{
@@ -2986,7 +4432,7 @@ namespace Dalamud.Bindings.ImGui
 				{
 					fixed (byte* ptextEnd = &textEnd)
 					{
-						ImGui.RenderTextNative(@this, drawList, size, pos, col, clipRect, (byte*)ptextBegin, (byte*)ptextEnd, (float)(0.0f), (byte)(0));
+						ImGui.RenderTextNative(@this, (ImDrawList*)drawList, size, pos, col, clipRect, (byte*)ptextBegin, (byte*)ptextEnd, (float)(0.0f), (ImDrawTextFlags)(0));
 					}
 				}
 			}
@@ -2995,7 +4441,7 @@ namespace Dalamud.Bindings.ImGui
 		/// <summary>
 		/// To be documented.
 		/// </summary>
-		public unsafe void RenderText(ImDrawListPtr drawList, float size, Vector2 pos, uint col, Vector4 clipRect, ReadOnlySpan<byte> textBegin, ref byte textEnd, bool cpuFineClip)
+		public unsafe void RenderText(ImDrawListPtr drawList, float size, Vector2 pos, uint col, Vector4 clipRect, ReadOnlySpan<byte> textBegin, in byte textEnd, ImDrawTextFlags flags)
 		{
 			fixed (ImFont* @this = &this)
 			{
@@ -3003,7 +4449,7 @@ namespace Dalamud.Bindings.ImGui
 				{
 					fixed (byte* ptextEnd = &textEnd)
 					{
-						ImGui.RenderTextNative(@this, drawList, size, pos, col, clipRect, (byte*)ptextBegin, (byte*)ptextEnd, (float)(0.0f), cpuFineClip ? (byte)1 : (byte)0);
+						ImGui.RenderTextNative(@this, (ImDrawList*)drawList, size, pos, col, clipRect, (byte*)ptextBegin, (byte*)ptextEnd, (float)(0.0f), flags);
 					}
 				}
 			}
@@ -3012,7 +4458,7 @@ namespace Dalamud.Bindings.ImGui
 		/// <summary>
 		/// To be documented.
 		/// </summary>
-		public unsafe void RenderText(ImDrawListPtr drawList, float size, Vector2 pos, uint col, Vector4 clipRect, ReadOnlySpan<byte> textBegin, string textEnd, float wrapWidth, bool cpuFineClip)
+		public unsafe void RenderText(ImDrawListPtr drawList, float size, Vector2 pos, uint col, Vector4 clipRect, ReadOnlySpan<byte> textBegin, string textEnd, float wrapWidth, ImDrawTextFlags flags)
 		{
 			fixed (ImFont* @this = &this)
 			{
@@ -3035,7 +4481,7 @@ namespace Dalamud.Bindings.ImGui
 						int pStrOffset0 = Utils.EncodeStringUTF8(textEnd, pStr0, pStrSize0);
 						pStr0[pStrOffset0] = 0;
 					}
-					ImGui.RenderTextNative(@this, drawList, size, pos, col, clipRect, (byte*)ptextBegin, pStr0, wrapWidth, cpuFineClip ? (byte)1 : (byte)0);
+					ImGui.RenderTextNative(@this, (ImDrawList*)drawList, size, pos, col, clipRect, (byte*)ptextBegin, pStr0, wrapWidth, flags);
 					if (pStrSize0 >= Utils.MaxStackallocSize)
 					{
 						Utils.Free(pStr0);
@@ -3070,7 +4516,7 @@ namespace Dalamud.Bindings.ImGui
 						int pStrOffset0 = Utils.EncodeStringUTF8(textEnd, pStr0, pStrSize0);
 						pStr0[pStrOffset0] = 0;
 					}
-					ImGui.RenderTextNative(@this, drawList, size, pos, col, clipRect, (byte*)ptextBegin, pStr0, wrapWidth, (byte)(0));
+					ImGui.RenderTextNative(@this, (ImDrawList*)drawList, size, pos, col, clipRect, (byte*)ptextBegin, pStr0, wrapWidth, (ImDrawTextFlags)(0));
 					if (pStrSize0 >= Utils.MaxStackallocSize)
 					{
 						Utils.Free(pStr0);
@@ -3105,7 +4551,7 @@ namespace Dalamud.Bindings.ImGui
 						int pStrOffset0 = Utils.EncodeStringUTF8(textEnd, pStr0, pStrSize0);
 						pStr0[pStrOffset0] = 0;
 					}
-					ImGui.RenderTextNative(@this, drawList, size, pos, col, clipRect, (byte*)ptextBegin, pStr0, (float)(0.0f), (byte)(0));
+					ImGui.RenderTextNative(@this, (ImDrawList*)drawList, size, pos, col, clipRect, (byte*)ptextBegin, pStr0, (float)(0.0f), (ImDrawTextFlags)(0));
 					if (pStrSize0 >= Utils.MaxStackallocSize)
 					{
 						Utils.Free(pStr0);
@@ -3117,7 +4563,7 @@ namespace Dalamud.Bindings.ImGui
 		/// <summary>
 		/// To be documented.
 		/// </summary>
-		public unsafe void RenderText(ImDrawListPtr drawList, float size, Vector2 pos, uint col, Vector4 clipRect, ReadOnlySpan<byte> textBegin, string textEnd, bool cpuFineClip)
+		public unsafe void RenderText(ImDrawListPtr drawList, float size, Vector2 pos, uint col, Vector4 clipRect, ReadOnlySpan<byte> textBegin, string textEnd, ImDrawTextFlags flags)
 		{
 			fixed (ImFont* @this = &this)
 			{
@@ -3140,7 +4586,7 @@ namespace Dalamud.Bindings.ImGui
 						int pStrOffset0 = Utils.EncodeStringUTF8(textEnd, pStr0, pStrSize0);
 						pStr0[pStrOffset0] = 0;
 					}
-					ImGui.RenderTextNative(@this, drawList, size, pos, col, clipRect, (byte*)ptextBegin, pStr0, (float)(0.0f), cpuFineClip ? (byte)1 : (byte)0);
+					ImGui.RenderTextNative(@this, (ImDrawList*)drawList, size, pos, col, clipRect, (byte*)ptextBegin, pStr0, (float)(0.0f), flags);
 					if (pStrSize0 >= Utils.MaxStackallocSize)
 					{
 						Utils.Free(pStr0);
@@ -3152,7 +4598,7 @@ namespace Dalamud.Bindings.ImGui
 		/// <summary>
 		/// To be documented.
 		/// </summary>
-		public unsafe void RenderText(ImDrawListPtr drawList, float size, Vector2 pos, uint col, Vector4 clipRect, string textBegin, ref byte textEnd, float wrapWidth, bool cpuFineClip)
+		public unsafe void RenderText(ImDrawListPtr drawList, float size, Vector2 pos, uint col, Vector4 clipRect, string textBegin, in byte textEnd, float wrapWidth, ImDrawTextFlags flags)
 		{
 			fixed (ImFont* @this = &this)
 			{
@@ -3175,7 +4621,7 @@ namespace Dalamud.Bindings.ImGui
 				}
 				fixed (byte* ptextEnd = &textEnd)
 				{
-					ImGui.RenderTextNative(@this, drawList, size, pos, col, clipRect, pStr0, (byte*)ptextEnd, wrapWidth, cpuFineClip ? (byte)1 : (byte)0);
+					ImGui.RenderTextNative(@this, (ImDrawList*)drawList, size, pos, col, clipRect, pStr0, (byte*)ptextEnd, wrapWidth, flags);
 					if (pStrSize0 >= Utils.MaxStackallocSize)
 					{
 						Utils.Free(pStr0);
@@ -3187,7 +4633,7 @@ namespace Dalamud.Bindings.ImGui
 		/// <summary>
 		/// To be documented.
 		/// </summary>
-		public unsafe void RenderText(ImDrawListPtr drawList, float size, Vector2 pos, uint col, Vector4 clipRect, string textBegin, ref byte textEnd, float wrapWidth)
+		public unsafe void RenderText(ImDrawListPtr drawList, float size, Vector2 pos, uint col, Vector4 clipRect, string textBegin, in byte textEnd, float wrapWidth)
 		{
 			fixed (ImFont* @this = &this)
 			{
@@ -3210,7 +4656,7 @@ namespace Dalamud.Bindings.ImGui
 				}
 				fixed (byte* ptextEnd = &textEnd)
 				{
-					ImGui.RenderTextNative(@this, drawList, size, pos, col, clipRect, pStr0, (byte*)ptextEnd, wrapWidth, (byte)(0));
+					ImGui.RenderTextNative(@this, (ImDrawList*)drawList, size, pos, col, clipRect, pStr0, (byte*)ptextEnd, wrapWidth, (ImDrawTextFlags)(0));
 					if (pStrSize0 >= Utils.MaxStackallocSize)
 					{
 						Utils.Free(pStr0);
@@ -3222,7 +4668,7 @@ namespace Dalamud.Bindings.ImGui
 		/// <summary>
 		/// To be documented.
 		/// </summary>
-		public unsafe void RenderText(ImDrawListPtr drawList, float size, Vector2 pos, uint col, Vector4 clipRect, string textBegin, ref byte textEnd)
+		public unsafe void RenderText(ImDrawListPtr drawList, float size, Vector2 pos, uint col, Vector4 clipRect, string textBegin, in byte textEnd)
 		{
 			fixed (ImFont* @this = &this)
 			{
@@ -3245,7 +4691,7 @@ namespace Dalamud.Bindings.ImGui
 				}
 				fixed (byte* ptextEnd = &textEnd)
 				{
-					ImGui.RenderTextNative(@this, drawList, size, pos, col, clipRect, pStr0, (byte*)ptextEnd, (float)(0.0f), (byte)(0));
+					ImGui.RenderTextNative(@this, (ImDrawList*)drawList, size, pos, col, clipRect, pStr0, (byte*)ptextEnd, (float)(0.0f), (ImDrawTextFlags)(0));
 					if (pStrSize0 >= Utils.MaxStackallocSize)
 					{
 						Utils.Free(pStr0);
@@ -3257,7 +4703,7 @@ namespace Dalamud.Bindings.ImGui
 		/// <summary>
 		/// To be documented.
 		/// </summary>
-		public unsafe void RenderText(ImDrawListPtr drawList, float size, Vector2 pos, uint col, Vector4 clipRect, string textBegin, ref byte textEnd, bool cpuFineClip)
+		public unsafe void RenderText(ImDrawListPtr drawList, float size, Vector2 pos, uint col, Vector4 clipRect, string textBegin, in byte textEnd, ImDrawTextFlags flags)
 		{
 			fixed (ImFont* @this = &this)
 			{
@@ -3280,7 +4726,7 @@ namespace Dalamud.Bindings.ImGui
 				}
 				fixed (byte* ptextEnd = &textEnd)
 				{
-					ImGui.RenderTextNative(@this, drawList, size, pos, col, clipRect, pStr0, (byte*)ptextEnd, (float)(0.0f), cpuFineClip ? (byte)1 : (byte)0);
+					ImGui.RenderTextNative(@this, (ImDrawList*)drawList, size, pos, col, clipRect, pStr0, (byte*)ptextEnd, (float)(0.0f), flags);
 					if (pStrSize0 >= Utils.MaxStackallocSize)
 					{
 						Utils.Free(pStr0);
@@ -3292,7 +4738,7 @@ namespace Dalamud.Bindings.ImGui
 		/// <summary>
 		/// To be documented.
 		/// </summary>
-		public unsafe void RenderText(ImDrawListPtr drawList, float size, Vector2 pos, uint col, Vector4 clipRect, string textBegin, ReadOnlySpan<byte> textEnd, float wrapWidth, bool cpuFineClip)
+		public unsafe void RenderText(ImDrawListPtr drawList, float size, Vector2 pos, uint col, Vector4 clipRect, string textBegin, ReadOnlySpan<byte> textEnd, float wrapWidth, ImDrawTextFlags flags)
 		{
 			fixed (ImFont* @this = &this)
 			{
@@ -3315,7 +4761,7 @@ namespace Dalamud.Bindings.ImGui
 				}
 				fixed (byte* ptextEnd = textEnd)
 				{
-					ImGui.RenderTextNative(@this, drawList, size, pos, col, clipRect, pStr0, (byte*)ptextEnd, wrapWidth, cpuFineClip ? (byte)1 : (byte)0);
+					ImGui.RenderTextNative(@this, (ImDrawList*)drawList, size, pos, col, clipRect, pStr0, (byte*)ptextEnd, wrapWidth, flags);
 					if (pStrSize0 >= Utils.MaxStackallocSize)
 					{
 						Utils.Free(pStr0);
@@ -3350,7 +4796,7 @@ namespace Dalamud.Bindings.ImGui
 				}
 				fixed (byte* ptextEnd = textEnd)
 				{
-					ImGui.RenderTextNative(@this, drawList, size, pos, col, clipRect, pStr0, (byte*)ptextEnd, wrapWidth, (byte)(0));
+					ImGui.RenderTextNative(@this, (ImDrawList*)drawList, size, pos, col, clipRect, pStr0, (byte*)ptextEnd, wrapWidth, (ImDrawTextFlags)(0));
 					if (pStrSize0 >= Utils.MaxStackallocSize)
 					{
 						Utils.Free(pStr0);
@@ -3385,7 +4831,7 @@ namespace Dalamud.Bindings.ImGui
 				}
 				fixed (byte* ptextEnd = textEnd)
 				{
-					ImGui.RenderTextNative(@this, drawList, size, pos, col, clipRect, pStr0, (byte*)ptextEnd, (float)(0.0f), (byte)(0));
+					ImGui.RenderTextNative(@this, (ImDrawList*)drawList, size, pos, col, clipRect, pStr0, (byte*)ptextEnd, (float)(0.0f), (ImDrawTextFlags)(0));
 					if (pStrSize0 >= Utils.MaxStackallocSize)
 					{
 						Utils.Free(pStr0);
@@ -3397,7 +4843,7 @@ namespace Dalamud.Bindings.ImGui
 		/// <summary>
 		/// To be documented.
 		/// </summary>
-		public unsafe void RenderText(ImDrawListPtr drawList, float size, Vector2 pos, uint col, Vector4 clipRect, string textBegin, ReadOnlySpan<byte> textEnd, bool cpuFineClip)
+		public unsafe void RenderText(ImDrawListPtr drawList, float size, Vector2 pos, uint col, Vector4 clipRect, string textBegin, ReadOnlySpan<byte> textEnd, ImDrawTextFlags flags)
 		{
 			fixed (ImFont* @this = &this)
 			{
@@ -3420,7 +4866,7 @@ namespace Dalamud.Bindings.ImGui
 				}
 				fixed (byte* ptextEnd = textEnd)
 				{
-					ImGui.RenderTextNative(@this, drawList, size, pos, col, clipRect, pStr0, (byte*)ptextEnd, (float)(0.0f), cpuFineClip ? (byte)1 : (byte)0);
+					ImGui.RenderTextNative(@this, (ImDrawList*)drawList, size, pos, col, clipRect, pStr0, (byte*)ptextEnd, (float)(0.0f), flags);
 					if (pStrSize0 >= Utils.MaxStackallocSize)
 					{
 						Utils.Free(pStr0);
@@ -3432,7 +4878,7 @@ namespace Dalamud.Bindings.ImGui
 		/// <summary>
 		/// To be documented.
 		/// </summary>
-		public unsafe void RenderText(ref ImDrawList drawList, float size, Vector2 pos, uint col, Vector4 clipRect, ref byte textBegin, ref byte textEnd, float wrapWidth, bool cpuFineClip)
+		public unsafe void RenderText(ref ImDrawList drawList, float size, Vector2 pos, uint col, Vector4 clipRect, in byte textBegin, in byte textEnd, float wrapWidth, ImDrawTextFlags flags)
 		{
 			fixed (ImFont* @this = &this)
 			{
@@ -3442,7 +4888,7 @@ namespace Dalamud.Bindings.ImGui
 					{
 						fixed (byte* ptextEnd = &textEnd)
 						{
-							ImGui.RenderTextNative(@this, (ImDrawList*)pdrawList, size, pos, col, clipRect, (byte*)ptextBegin, (byte*)ptextEnd, wrapWidth, cpuFineClip ? (byte)1 : (byte)0);
+							ImGui.RenderTextNative(@this, (ImDrawList*)pdrawList, size, pos, col, clipRect, (byte*)ptextBegin, (byte*)ptextEnd, wrapWidth, flags);
 						}
 					}
 				}
@@ -3452,7 +4898,7 @@ namespace Dalamud.Bindings.ImGui
 		/// <summary>
 		/// To be documented.
 		/// </summary>
-		public unsafe void RenderText(ref ImDrawList drawList, float size, Vector2 pos, uint col, Vector4 clipRect, ref byte textBegin, ref byte textEnd, float wrapWidth)
+		public unsafe void RenderText(ref ImDrawList drawList, float size, Vector2 pos, uint col, Vector4 clipRect, in byte textBegin, in byte textEnd, float wrapWidth)
 		{
 			fixed (ImFont* @this = &this)
 			{
@@ -3462,7 +4908,7 @@ namespace Dalamud.Bindings.ImGui
 					{
 						fixed (byte* ptextEnd = &textEnd)
 						{
-							ImGui.RenderTextNative(@this, (ImDrawList*)pdrawList, size, pos, col, clipRect, (byte*)ptextBegin, (byte*)ptextEnd, wrapWidth, (byte)(0));
+							ImGui.RenderTextNative(@this, (ImDrawList*)pdrawList, size, pos, col, clipRect, (byte*)ptextBegin, (byte*)ptextEnd, wrapWidth, (ImDrawTextFlags)(0));
 						}
 					}
 				}
@@ -3472,7 +4918,7 @@ namespace Dalamud.Bindings.ImGui
 		/// <summary>
 		/// To be documented.
 		/// </summary>
-		public unsafe void RenderText(ref ImDrawList drawList, float size, Vector2 pos, uint col, Vector4 clipRect, ref byte textBegin, ref byte textEnd)
+		public unsafe void RenderText(ref ImDrawList drawList, float size, Vector2 pos, uint col, Vector4 clipRect, in byte textBegin, in byte textEnd)
 		{
 			fixed (ImFont* @this = &this)
 			{
@@ -3482,7 +4928,7 @@ namespace Dalamud.Bindings.ImGui
 					{
 						fixed (byte* ptextEnd = &textEnd)
 						{
-							ImGui.RenderTextNative(@this, (ImDrawList*)pdrawList, size, pos, col, clipRect, (byte*)ptextBegin, (byte*)ptextEnd, (float)(0.0f), (byte)(0));
+							ImGui.RenderTextNative(@this, (ImDrawList*)pdrawList, size, pos, col, clipRect, (byte*)ptextBegin, (byte*)ptextEnd, (float)(0.0f), (ImDrawTextFlags)(0));
 						}
 					}
 				}
@@ -3492,7 +4938,7 @@ namespace Dalamud.Bindings.ImGui
 		/// <summary>
 		/// To be documented.
 		/// </summary>
-		public unsafe void RenderText(ref ImDrawList drawList, float size, Vector2 pos, uint col, Vector4 clipRect, ref byte textBegin, ref byte textEnd, bool cpuFineClip)
+		public unsafe void RenderText(ref ImDrawList drawList, float size, Vector2 pos, uint col, Vector4 clipRect, in byte textBegin, in byte textEnd, ImDrawTextFlags flags)
 		{
 			fixed (ImFont* @this = &this)
 			{
@@ -3502,7 +4948,7 @@ namespace Dalamud.Bindings.ImGui
 					{
 						fixed (byte* ptextEnd = &textEnd)
 						{
-							ImGui.RenderTextNative(@this, (ImDrawList*)pdrawList, size, pos, col, clipRect, (byte*)ptextBegin, (byte*)ptextEnd, (float)(0.0f), cpuFineClip ? (byte)1 : (byte)0);
+							ImGui.RenderTextNative(@this, (ImDrawList*)pdrawList, size, pos, col, clipRect, (byte*)ptextBegin, (byte*)ptextEnd, (float)(0.0f), flags);
 						}
 					}
 				}
@@ -3512,7 +4958,7 @@ namespace Dalamud.Bindings.ImGui
 		/// <summary>
 		/// To be documented.
 		/// </summary>
-		public unsafe void RenderText(ref ImDrawList drawList, float size, Vector2 pos, uint col, Vector4 clipRect, ReadOnlySpan<byte> textBegin, ReadOnlySpan<byte> textEnd, float wrapWidth, bool cpuFineClip)
+		public unsafe void RenderText(ref ImDrawList drawList, float size, Vector2 pos, uint col, Vector4 clipRect, ReadOnlySpan<byte> textBegin, ReadOnlySpan<byte> textEnd, float wrapWidth, ImDrawTextFlags flags)
 		{
 			fixed (ImFont* @this = &this)
 			{
@@ -3522,7 +4968,7 @@ namespace Dalamud.Bindings.ImGui
 					{
 						fixed (byte* ptextEnd = textEnd)
 						{
-							ImGui.RenderTextNative(@this, (ImDrawList*)pdrawList, size, pos, col, clipRect, (byte*)ptextBegin, (byte*)ptextEnd, wrapWidth, cpuFineClip ? (byte)1 : (byte)0);
+							ImGui.RenderTextNative(@this, (ImDrawList*)pdrawList, size, pos, col, clipRect, (byte*)ptextBegin, (byte*)ptextEnd, wrapWidth, flags);
 						}
 					}
 				}
@@ -3542,7 +4988,7 @@ namespace Dalamud.Bindings.ImGui
 					{
 						fixed (byte* ptextEnd = textEnd)
 						{
-							ImGui.RenderTextNative(@this, (ImDrawList*)pdrawList, size, pos, col, clipRect, (byte*)ptextBegin, (byte*)ptextEnd, wrapWidth, (byte)(0));
+							ImGui.RenderTextNative(@this, (ImDrawList*)pdrawList, size, pos, col, clipRect, (byte*)ptextBegin, (byte*)ptextEnd, wrapWidth, (ImDrawTextFlags)(0));
 						}
 					}
 				}
@@ -3562,7 +5008,7 @@ namespace Dalamud.Bindings.ImGui
 					{
 						fixed (byte* ptextEnd = textEnd)
 						{
-							ImGui.RenderTextNative(@this, (ImDrawList*)pdrawList, size, pos, col, clipRect, (byte*)ptextBegin, (byte*)ptextEnd, (float)(0.0f), (byte)(0));
+							ImGui.RenderTextNative(@this, (ImDrawList*)pdrawList, size, pos, col, clipRect, (byte*)ptextBegin, (byte*)ptextEnd, (float)(0.0f), (ImDrawTextFlags)(0));
 						}
 					}
 				}
@@ -3572,7 +5018,7 @@ namespace Dalamud.Bindings.ImGui
 		/// <summary>
 		/// To be documented.
 		/// </summary>
-		public unsafe void RenderText(ref ImDrawList drawList, float size, Vector2 pos, uint col, Vector4 clipRect, ReadOnlySpan<byte> textBegin, ReadOnlySpan<byte> textEnd, bool cpuFineClip)
+		public unsafe void RenderText(ref ImDrawList drawList, float size, Vector2 pos, uint col, Vector4 clipRect, ReadOnlySpan<byte> textBegin, ReadOnlySpan<byte> textEnd, ImDrawTextFlags flags)
 		{
 			fixed (ImFont* @this = &this)
 			{
@@ -3582,7 +5028,7 @@ namespace Dalamud.Bindings.ImGui
 					{
 						fixed (byte* ptextEnd = textEnd)
 						{
-							ImGui.RenderTextNative(@this, (ImDrawList*)pdrawList, size, pos, col, clipRect, (byte*)ptextBegin, (byte*)ptextEnd, (float)(0.0f), cpuFineClip ? (byte)1 : (byte)0);
+							ImGui.RenderTextNative(@this, (ImDrawList*)pdrawList, size, pos, col, clipRect, (byte*)ptextBegin, (byte*)ptextEnd, (float)(0.0f), flags);
 						}
 					}
 				}
@@ -3592,7 +5038,7 @@ namespace Dalamud.Bindings.ImGui
 		/// <summary>
 		/// To be documented.
 		/// </summary>
-		public unsafe void RenderText(ref ImDrawList drawList, float size, Vector2 pos, uint col, Vector4 clipRect, string textBegin, string textEnd, float wrapWidth, bool cpuFineClip)
+		public unsafe void RenderText(ref ImDrawList drawList, float size, Vector2 pos, uint col, Vector4 clipRect, string textBegin, string textEnd, float wrapWidth, ImDrawTextFlags flags)
 		{
 			fixed (ImFont* @this = &this)
 			{
@@ -3632,7 +5078,7 @@ namespace Dalamud.Bindings.ImGui
 						int pStrOffset1 = Utils.EncodeStringUTF8(textEnd, pStr1, pStrSize1);
 						pStr1[pStrOffset1] = 0;
 					}
-					ImGui.RenderTextNative(@this, (ImDrawList*)pdrawList, size, pos, col, clipRect, pStr0, pStr1, wrapWidth, cpuFineClip ? (byte)1 : (byte)0);
+					ImGui.RenderTextNative(@this, (ImDrawList*)pdrawList, size, pos, col, clipRect, pStr0, pStr1, wrapWidth, flags);
 					if (pStrSize1 >= Utils.MaxStackallocSize)
 					{
 						Utils.Free(pStr1);
@@ -3688,7 +5134,7 @@ namespace Dalamud.Bindings.ImGui
 						int pStrOffset1 = Utils.EncodeStringUTF8(textEnd, pStr1, pStrSize1);
 						pStr1[pStrOffset1] = 0;
 					}
-					ImGui.RenderTextNative(@this, (ImDrawList*)pdrawList, size, pos, col, clipRect, pStr0, pStr1, wrapWidth, (byte)(0));
+					ImGui.RenderTextNative(@this, (ImDrawList*)pdrawList, size, pos, col, clipRect, pStr0, pStr1, wrapWidth, (ImDrawTextFlags)(0));
 					if (pStrSize1 >= Utils.MaxStackallocSize)
 					{
 						Utils.Free(pStr1);
@@ -3744,7 +5190,7 @@ namespace Dalamud.Bindings.ImGui
 						int pStrOffset1 = Utils.EncodeStringUTF8(textEnd, pStr1, pStrSize1);
 						pStr1[pStrOffset1] = 0;
 					}
-					ImGui.RenderTextNative(@this, (ImDrawList*)pdrawList, size, pos, col, clipRect, pStr0, pStr1, (float)(0.0f), (byte)(0));
+					ImGui.RenderTextNative(@this, (ImDrawList*)pdrawList, size, pos, col, clipRect, pStr0, pStr1, (float)(0.0f), (ImDrawTextFlags)(0));
 					if (pStrSize1 >= Utils.MaxStackallocSize)
 					{
 						Utils.Free(pStr1);
@@ -3760,7 +5206,7 @@ namespace Dalamud.Bindings.ImGui
 		/// <summary>
 		/// To be documented.
 		/// </summary>
-		public unsafe void RenderText(ref ImDrawList drawList, float size, Vector2 pos, uint col, Vector4 clipRect, string textBegin, string textEnd, bool cpuFineClip)
+		public unsafe void RenderText(ref ImDrawList drawList, float size, Vector2 pos, uint col, Vector4 clipRect, string textBegin, string textEnd, ImDrawTextFlags flags)
 		{
 			fixed (ImFont* @this = &this)
 			{
@@ -3800,7 +5246,7 @@ namespace Dalamud.Bindings.ImGui
 						int pStrOffset1 = Utils.EncodeStringUTF8(textEnd, pStr1, pStrSize1);
 						pStr1[pStrOffset1] = 0;
 					}
-					ImGui.RenderTextNative(@this, (ImDrawList*)pdrawList, size, pos, col, clipRect, pStr0, pStr1, (float)(0.0f), cpuFineClip ? (byte)1 : (byte)0);
+					ImGui.RenderTextNative(@this, (ImDrawList*)pdrawList, size, pos, col, clipRect, pStr0, pStr1, (float)(0.0f), flags);
 					if (pStrSize1 >= Utils.MaxStackallocSize)
 					{
 						Utils.Free(pStr1);
@@ -3816,7 +5262,7 @@ namespace Dalamud.Bindings.ImGui
 		/// <summary>
 		/// To be documented.
 		/// </summary>
-		public unsafe void RenderText(ref ImDrawList drawList, float size, Vector2 pos, uint col, Vector4 clipRect, ref byte textBegin, ReadOnlySpan<byte> textEnd, float wrapWidth, bool cpuFineClip)
+		public unsafe void RenderText(ref ImDrawList drawList, float size, Vector2 pos, uint col, Vector4 clipRect, in byte textBegin, ReadOnlySpan<byte> textEnd, float wrapWidth, ImDrawTextFlags flags)
 		{
 			fixed (ImFont* @this = &this)
 			{
@@ -3826,7 +5272,7 @@ namespace Dalamud.Bindings.ImGui
 					{
 						fixed (byte* ptextEnd = textEnd)
 						{
-							ImGui.RenderTextNative(@this, (ImDrawList*)pdrawList, size, pos, col, clipRect, (byte*)ptextBegin, (byte*)ptextEnd, wrapWidth, cpuFineClip ? (byte)1 : (byte)0);
+							ImGui.RenderTextNative(@this, (ImDrawList*)pdrawList, size, pos, col, clipRect, (byte*)ptextBegin, (byte*)ptextEnd, wrapWidth, flags);
 						}
 					}
 				}
@@ -3836,7 +5282,7 @@ namespace Dalamud.Bindings.ImGui
 		/// <summary>
 		/// To be documented.
 		/// </summary>
-		public unsafe void RenderText(ref ImDrawList drawList, float size, Vector2 pos, uint col, Vector4 clipRect, ref byte textBegin, ReadOnlySpan<byte> textEnd, float wrapWidth)
+		public unsafe void RenderText(ref ImDrawList drawList, float size, Vector2 pos, uint col, Vector4 clipRect, in byte textBegin, ReadOnlySpan<byte> textEnd, float wrapWidth)
 		{
 			fixed (ImFont* @this = &this)
 			{
@@ -3846,7 +5292,7 @@ namespace Dalamud.Bindings.ImGui
 					{
 						fixed (byte* ptextEnd = textEnd)
 						{
-							ImGui.RenderTextNative(@this, (ImDrawList*)pdrawList, size, pos, col, clipRect, (byte*)ptextBegin, (byte*)ptextEnd, wrapWidth, (byte)(0));
+							ImGui.RenderTextNative(@this, (ImDrawList*)pdrawList, size, pos, col, clipRect, (byte*)ptextBegin, (byte*)ptextEnd, wrapWidth, (ImDrawTextFlags)(0));
 						}
 					}
 				}
@@ -3856,7 +5302,7 @@ namespace Dalamud.Bindings.ImGui
 		/// <summary>
 		/// To be documented.
 		/// </summary>
-		public unsafe void RenderText(ref ImDrawList drawList, float size, Vector2 pos, uint col, Vector4 clipRect, ref byte textBegin, ReadOnlySpan<byte> textEnd)
+		public unsafe void RenderText(ref ImDrawList drawList, float size, Vector2 pos, uint col, Vector4 clipRect, in byte textBegin, ReadOnlySpan<byte> textEnd)
 		{
 			fixed (ImFont* @this = &this)
 			{
@@ -3866,7 +5312,7 @@ namespace Dalamud.Bindings.ImGui
 					{
 						fixed (byte* ptextEnd = textEnd)
 						{
-							ImGui.RenderTextNative(@this, (ImDrawList*)pdrawList, size, pos, col, clipRect, (byte*)ptextBegin, (byte*)ptextEnd, (float)(0.0f), (byte)(0));
+							ImGui.RenderTextNative(@this, (ImDrawList*)pdrawList, size, pos, col, clipRect, (byte*)ptextBegin, (byte*)ptextEnd, (float)(0.0f), (ImDrawTextFlags)(0));
 						}
 					}
 				}
@@ -3876,7 +5322,7 @@ namespace Dalamud.Bindings.ImGui
 		/// <summary>
 		/// To be documented.
 		/// </summary>
-		public unsafe void RenderText(ref ImDrawList drawList, float size, Vector2 pos, uint col, Vector4 clipRect, ref byte textBegin, ReadOnlySpan<byte> textEnd, bool cpuFineClip)
+		public unsafe void RenderText(ref ImDrawList drawList, float size, Vector2 pos, uint col, Vector4 clipRect, in byte textBegin, ReadOnlySpan<byte> textEnd, ImDrawTextFlags flags)
 		{
 			fixed (ImFont* @this = &this)
 			{
@@ -3886,7 +5332,7 @@ namespace Dalamud.Bindings.ImGui
 					{
 						fixed (byte* ptextEnd = textEnd)
 						{
-							ImGui.RenderTextNative(@this, (ImDrawList*)pdrawList, size, pos, col, clipRect, (byte*)ptextBegin, (byte*)ptextEnd, (float)(0.0f), cpuFineClip ? (byte)1 : (byte)0);
+							ImGui.RenderTextNative(@this, (ImDrawList*)pdrawList, size, pos, col, clipRect, (byte*)ptextBegin, (byte*)ptextEnd, (float)(0.0f), flags);
 						}
 					}
 				}
@@ -3896,7 +5342,7 @@ namespace Dalamud.Bindings.ImGui
 		/// <summary>
 		/// To be documented.
 		/// </summary>
-		public unsafe void RenderText(ref ImDrawList drawList, float size, Vector2 pos, uint col, Vector4 clipRect, ref byte textBegin, string textEnd, float wrapWidth, bool cpuFineClip)
+		public unsafe void RenderText(ref ImDrawList drawList, float size, Vector2 pos, uint col, Vector4 clipRect, in byte textBegin, string textEnd, float wrapWidth, ImDrawTextFlags flags)
 		{
 			fixed (ImFont* @this = &this)
 			{
@@ -3921,7 +5367,7 @@ namespace Dalamud.Bindings.ImGui
 							int pStrOffset0 = Utils.EncodeStringUTF8(textEnd, pStr0, pStrSize0);
 							pStr0[pStrOffset0] = 0;
 						}
-						ImGui.RenderTextNative(@this, (ImDrawList*)pdrawList, size, pos, col, clipRect, (byte*)ptextBegin, pStr0, wrapWidth, cpuFineClip ? (byte)1 : (byte)0);
+						ImGui.RenderTextNative(@this, (ImDrawList*)pdrawList, size, pos, col, clipRect, (byte*)ptextBegin, pStr0, wrapWidth, flags);
 						if (pStrSize0 >= Utils.MaxStackallocSize)
 						{
 							Utils.Free(pStr0);
@@ -3934,7 +5380,7 @@ namespace Dalamud.Bindings.ImGui
 		/// <summary>
 		/// To be documented.
 		/// </summary>
-		public unsafe void RenderText(ref ImDrawList drawList, float size, Vector2 pos, uint col, Vector4 clipRect, ref byte textBegin, string textEnd, float wrapWidth)
+		public unsafe void RenderText(ref ImDrawList drawList, float size, Vector2 pos, uint col, Vector4 clipRect, in byte textBegin, string textEnd, float wrapWidth)
 		{
 			fixed (ImFont* @this = &this)
 			{
@@ -3959,7 +5405,7 @@ namespace Dalamud.Bindings.ImGui
 							int pStrOffset0 = Utils.EncodeStringUTF8(textEnd, pStr0, pStrSize0);
 							pStr0[pStrOffset0] = 0;
 						}
-						ImGui.RenderTextNative(@this, (ImDrawList*)pdrawList, size, pos, col, clipRect, (byte*)ptextBegin, pStr0, wrapWidth, (byte)(0));
+						ImGui.RenderTextNative(@this, (ImDrawList*)pdrawList, size, pos, col, clipRect, (byte*)ptextBegin, pStr0, wrapWidth, (ImDrawTextFlags)(0));
 						if (pStrSize0 >= Utils.MaxStackallocSize)
 						{
 							Utils.Free(pStr0);
@@ -3972,7 +5418,7 @@ namespace Dalamud.Bindings.ImGui
 		/// <summary>
 		/// To be documented.
 		/// </summary>
-		public unsafe void RenderText(ref ImDrawList drawList, float size, Vector2 pos, uint col, Vector4 clipRect, ref byte textBegin, string textEnd)
+		public unsafe void RenderText(ref ImDrawList drawList, float size, Vector2 pos, uint col, Vector4 clipRect, in byte textBegin, string textEnd)
 		{
 			fixed (ImFont* @this = &this)
 			{
@@ -3997,7 +5443,7 @@ namespace Dalamud.Bindings.ImGui
 							int pStrOffset0 = Utils.EncodeStringUTF8(textEnd, pStr0, pStrSize0);
 							pStr0[pStrOffset0] = 0;
 						}
-						ImGui.RenderTextNative(@this, (ImDrawList*)pdrawList, size, pos, col, clipRect, (byte*)ptextBegin, pStr0, (float)(0.0f), (byte)(0));
+						ImGui.RenderTextNative(@this, (ImDrawList*)pdrawList, size, pos, col, clipRect, (byte*)ptextBegin, pStr0, (float)(0.0f), (ImDrawTextFlags)(0));
 						if (pStrSize0 >= Utils.MaxStackallocSize)
 						{
 							Utils.Free(pStr0);
@@ -4010,7 +5456,7 @@ namespace Dalamud.Bindings.ImGui
 		/// <summary>
 		/// To be documented.
 		/// </summary>
-		public unsafe void RenderText(ref ImDrawList drawList, float size, Vector2 pos, uint col, Vector4 clipRect, ref byte textBegin, string textEnd, bool cpuFineClip)
+		public unsafe void RenderText(ref ImDrawList drawList, float size, Vector2 pos, uint col, Vector4 clipRect, in byte textBegin, string textEnd, ImDrawTextFlags flags)
 		{
 			fixed (ImFont* @this = &this)
 			{
@@ -4035,7 +5481,7 @@ namespace Dalamud.Bindings.ImGui
 							int pStrOffset0 = Utils.EncodeStringUTF8(textEnd, pStr0, pStrSize0);
 							pStr0[pStrOffset0] = 0;
 						}
-						ImGui.RenderTextNative(@this, (ImDrawList*)pdrawList, size, pos, col, clipRect, (byte*)ptextBegin, pStr0, (float)(0.0f), cpuFineClip ? (byte)1 : (byte)0);
+						ImGui.RenderTextNative(@this, (ImDrawList*)pdrawList, size, pos, col, clipRect, (byte*)ptextBegin, pStr0, (float)(0.0f), flags);
 						if (pStrSize0 >= Utils.MaxStackallocSize)
 						{
 							Utils.Free(pStr0);
@@ -4048,7 +5494,7 @@ namespace Dalamud.Bindings.ImGui
 		/// <summary>
 		/// To be documented.
 		/// </summary>
-		public unsafe void RenderText(ref ImDrawList drawList, float size, Vector2 pos, uint col, Vector4 clipRect, ReadOnlySpan<byte> textBegin, ref byte textEnd, float wrapWidth, bool cpuFineClip)
+		public unsafe void RenderText(ref ImDrawList drawList, float size, Vector2 pos, uint col, Vector4 clipRect, ReadOnlySpan<byte> textBegin, in byte textEnd, float wrapWidth, ImDrawTextFlags flags)
 		{
 			fixed (ImFont* @this = &this)
 			{
@@ -4058,7 +5504,7 @@ namespace Dalamud.Bindings.ImGui
 					{
 						fixed (byte* ptextEnd = &textEnd)
 						{
-							ImGui.RenderTextNative(@this, (ImDrawList*)pdrawList, size, pos, col, clipRect, (byte*)ptextBegin, (byte*)ptextEnd, wrapWidth, cpuFineClip ? (byte)1 : (byte)0);
+							ImGui.RenderTextNative(@this, (ImDrawList*)pdrawList, size, pos, col, clipRect, (byte*)ptextBegin, (byte*)ptextEnd, wrapWidth, flags);
 						}
 					}
 				}
@@ -4068,7 +5514,7 @@ namespace Dalamud.Bindings.ImGui
 		/// <summary>
 		/// To be documented.
 		/// </summary>
-		public unsafe void RenderText(ref ImDrawList drawList, float size, Vector2 pos, uint col, Vector4 clipRect, ReadOnlySpan<byte> textBegin, ref byte textEnd, float wrapWidth)
+		public unsafe void RenderText(ref ImDrawList drawList, float size, Vector2 pos, uint col, Vector4 clipRect, ReadOnlySpan<byte> textBegin, in byte textEnd, float wrapWidth)
 		{
 			fixed (ImFont* @this = &this)
 			{
@@ -4078,7 +5524,7 @@ namespace Dalamud.Bindings.ImGui
 					{
 						fixed (byte* ptextEnd = &textEnd)
 						{
-							ImGui.RenderTextNative(@this, (ImDrawList*)pdrawList, size, pos, col, clipRect, (byte*)ptextBegin, (byte*)ptextEnd, wrapWidth, (byte)(0));
+							ImGui.RenderTextNative(@this, (ImDrawList*)pdrawList, size, pos, col, clipRect, (byte*)ptextBegin, (byte*)ptextEnd, wrapWidth, (ImDrawTextFlags)(0));
 						}
 					}
 				}
@@ -4088,7 +5534,7 @@ namespace Dalamud.Bindings.ImGui
 		/// <summary>
 		/// To be documented.
 		/// </summary>
-		public unsafe void RenderText(ref ImDrawList drawList, float size, Vector2 pos, uint col, Vector4 clipRect, ReadOnlySpan<byte> textBegin, ref byte textEnd)
+		public unsafe void RenderText(ref ImDrawList drawList, float size, Vector2 pos, uint col, Vector4 clipRect, ReadOnlySpan<byte> textBegin, in byte textEnd)
 		{
 			fixed (ImFont* @this = &this)
 			{
@@ -4098,7 +5544,7 @@ namespace Dalamud.Bindings.ImGui
 					{
 						fixed (byte* ptextEnd = &textEnd)
 						{
-							ImGui.RenderTextNative(@this, (ImDrawList*)pdrawList, size, pos, col, clipRect, (byte*)ptextBegin, (byte*)ptextEnd, (float)(0.0f), (byte)(0));
+							ImGui.RenderTextNative(@this, (ImDrawList*)pdrawList, size, pos, col, clipRect, (byte*)ptextBegin, (byte*)ptextEnd, (float)(0.0f), (ImDrawTextFlags)(0));
 						}
 					}
 				}
@@ -4108,7 +5554,7 @@ namespace Dalamud.Bindings.ImGui
 		/// <summary>
 		/// To be documented.
 		/// </summary>
-		public unsafe void RenderText(ref ImDrawList drawList, float size, Vector2 pos, uint col, Vector4 clipRect, ReadOnlySpan<byte> textBegin, ref byte textEnd, bool cpuFineClip)
+		public unsafe void RenderText(ref ImDrawList drawList, float size, Vector2 pos, uint col, Vector4 clipRect, ReadOnlySpan<byte> textBegin, in byte textEnd, ImDrawTextFlags flags)
 		{
 			fixed (ImFont* @this = &this)
 			{
@@ -4118,7 +5564,7 @@ namespace Dalamud.Bindings.ImGui
 					{
 						fixed (byte* ptextEnd = &textEnd)
 						{
-							ImGui.RenderTextNative(@this, (ImDrawList*)pdrawList, size, pos, col, clipRect, (byte*)ptextBegin, (byte*)ptextEnd, (float)(0.0f), cpuFineClip ? (byte)1 : (byte)0);
+							ImGui.RenderTextNative(@this, (ImDrawList*)pdrawList, size, pos, col, clipRect, (byte*)ptextBegin, (byte*)ptextEnd, (float)(0.0f), flags);
 						}
 					}
 				}
@@ -4128,7 +5574,7 @@ namespace Dalamud.Bindings.ImGui
 		/// <summary>
 		/// To be documented.
 		/// </summary>
-		public unsafe void RenderText(ref ImDrawList drawList, float size, Vector2 pos, uint col, Vector4 clipRect, ReadOnlySpan<byte> textBegin, string textEnd, float wrapWidth, bool cpuFineClip)
+		public unsafe void RenderText(ref ImDrawList drawList, float size, Vector2 pos, uint col, Vector4 clipRect, ReadOnlySpan<byte> textBegin, string textEnd, float wrapWidth, ImDrawTextFlags flags)
 		{
 			fixed (ImFont* @this = &this)
 			{
@@ -4153,7 +5599,7 @@ namespace Dalamud.Bindings.ImGui
 							int pStrOffset0 = Utils.EncodeStringUTF8(textEnd, pStr0, pStrSize0);
 							pStr0[pStrOffset0] = 0;
 						}
-						ImGui.RenderTextNative(@this, (ImDrawList*)pdrawList, size, pos, col, clipRect, (byte*)ptextBegin, pStr0, wrapWidth, cpuFineClip ? (byte)1 : (byte)0);
+						ImGui.RenderTextNative(@this, (ImDrawList*)pdrawList, size, pos, col, clipRect, (byte*)ptextBegin, pStr0, wrapWidth, flags);
 						if (pStrSize0 >= Utils.MaxStackallocSize)
 						{
 							Utils.Free(pStr0);
@@ -4191,7 +5637,7 @@ namespace Dalamud.Bindings.ImGui
 							int pStrOffset0 = Utils.EncodeStringUTF8(textEnd, pStr0, pStrSize0);
 							pStr0[pStrOffset0] = 0;
 						}
-						ImGui.RenderTextNative(@this, (ImDrawList*)pdrawList, size, pos, col, clipRect, (byte*)ptextBegin, pStr0, wrapWidth, (byte)(0));
+						ImGui.RenderTextNative(@this, (ImDrawList*)pdrawList, size, pos, col, clipRect, (byte*)ptextBegin, pStr0, wrapWidth, (ImDrawTextFlags)(0));
 						if (pStrSize0 >= Utils.MaxStackallocSize)
 						{
 							Utils.Free(pStr0);
@@ -4229,7 +5675,7 @@ namespace Dalamud.Bindings.ImGui
 							int pStrOffset0 = Utils.EncodeStringUTF8(textEnd, pStr0, pStrSize0);
 							pStr0[pStrOffset0] = 0;
 						}
-						ImGui.RenderTextNative(@this, (ImDrawList*)pdrawList, size, pos, col, clipRect, (byte*)ptextBegin, pStr0, (float)(0.0f), (byte)(0));
+						ImGui.RenderTextNative(@this, (ImDrawList*)pdrawList, size, pos, col, clipRect, (byte*)ptextBegin, pStr0, (float)(0.0f), (ImDrawTextFlags)(0));
 						if (pStrSize0 >= Utils.MaxStackallocSize)
 						{
 							Utils.Free(pStr0);
@@ -4242,7 +5688,7 @@ namespace Dalamud.Bindings.ImGui
 		/// <summary>
 		/// To be documented.
 		/// </summary>
-		public unsafe void RenderText(ref ImDrawList drawList, float size, Vector2 pos, uint col, Vector4 clipRect, ReadOnlySpan<byte> textBegin, string textEnd, bool cpuFineClip)
+		public unsafe void RenderText(ref ImDrawList drawList, float size, Vector2 pos, uint col, Vector4 clipRect, ReadOnlySpan<byte> textBegin, string textEnd, ImDrawTextFlags flags)
 		{
 			fixed (ImFont* @this = &this)
 			{
@@ -4267,7 +5713,7 @@ namespace Dalamud.Bindings.ImGui
 							int pStrOffset0 = Utils.EncodeStringUTF8(textEnd, pStr0, pStrSize0);
 							pStr0[pStrOffset0] = 0;
 						}
-						ImGui.RenderTextNative(@this, (ImDrawList*)pdrawList, size, pos, col, clipRect, (byte*)ptextBegin, pStr0, (float)(0.0f), cpuFineClip ? (byte)1 : (byte)0);
+						ImGui.RenderTextNative(@this, (ImDrawList*)pdrawList, size, pos, col, clipRect, (byte*)ptextBegin, pStr0, (float)(0.0f), flags);
 						if (pStrSize0 >= Utils.MaxStackallocSize)
 						{
 							Utils.Free(pStr0);
@@ -4280,7 +5726,7 @@ namespace Dalamud.Bindings.ImGui
 		/// <summary>
 		/// To be documented.
 		/// </summary>
-		public unsafe void RenderText(ref ImDrawList drawList, float size, Vector2 pos, uint col, Vector4 clipRect, string textBegin, ref byte textEnd, float wrapWidth, bool cpuFineClip)
+		public unsafe void RenderText(ref ImDrawList drawList, float size, Vector2 pos, uint col, Vector4 clipRect, string textBegin, in byte textEnd, float wrapWidth, ImDrawTextFlags flags)
 		{
 			fixed (ImFont* @this = &this)
 			{
@@ -4305,7 +5751,7 @@ namespace Dalamud.Bindings.ImGui
 					}
 					fixed (byte* ptextEnd = &textEnd)
 					{
-						ImGui.RenderTextNative(@this, (ImDrawList*)pdrawList, size, pos, col, clipRect, pStr0, (byte*)ptextEnd, wrapWidth, cpuFineClip ? (byte)1 : (byte)0);
+						ImGui.RenderTextNative(@this, (ImDrawList*)pdrawList, size, pos, col, clipRect, pStr0, (byte*)ptextEnd, wrapWidth, flags);
 						if (pStrSize0 >= Utils.MaxStackallocSize)
 						{
 							Utils.Free(pStr0);
@@ -4318,7 +5764,7 @@ namespace Dalamud.Bindings.ImGui
 		/// <summary>
 		/// To be documented.
 		/// </summary>
-		public unsafe void RenderText(ref ImDrawList drawList, float size, Vector2 pos, uint col, Vector4 clipRect, string textBegin, ref byte textEnd, float wrapWidth)
+		public unsafe void RenderText(ref ImDrawList drawList, float size, Vector2 pos, uint col, Vector4 clipRect, string textBegin, in byte textEnd, float wrapWidth)
 		{
 			fixed (ImFont* @this = &this)
 			{
@@ -4343,7 +5789,7 @@ namespace Dalamud.Bindings.ImGui
 					}
 					fixed (byte* ptextEnd = &textEnd)
 					{
-						ImGui.RenderTextNative(@this, (ImDrawList*)pdrawList, size, pos, col, clipRect, pStr0, (byte*)ptextEnd, wrapWidth, (byte)(0));
+						ImGui.RenderTextNative(@this, (ImDrawList*)pdrawList, size, pos, col, clipRect, pStr0, (byte*)ptextEnd, wrapWidth, (ImDrawTextFlags)(0));
 						if (pStrSize0 >= Utils.MaxStackallocSize)
 						{
 							Utils.Free(pStr0);
@@ -4356,7 +5802,7 @@ namespace Dalamud.Bindings.ImGui
 		/// <summary>
 		/// To be documented.
 		/// </summary>
-		public unsafe void RenderText(ref ImDrawList drawList, float size, Vector2 pos, uint col, Vector4 clipRect, string textBegin, ref byte textEnd)
+		public unsafe void RenderText(ref ImDrawList drawList, float size, Vector2 pos, uint col, Vector4 clipRect, string textBegin, in byte textEnd)
 		{
 			fixed (ImFont* @this = &this)
 			{
@@ -4381,7 +5827,7 @@ namespace Dalamud.Bindings.ImGui
 					}
 					fixed (byte* ptextEnd = &textEnd)
 					{
-						ImGui.RenderTextNative(@this, (ImDrawList*)pdrawList, size, pos, col, clipRect, pStr0, (byte*)ptextEnd, (float)(0.0f), (byte)(0));
+						ImGui.RenderTextNative(@this, (ImDrawList*)pdrawList, size, pos, col, clipRect, pStr0, (byte*)ptextEnd, (float)(0.0f), (ImDrawTextFlags)(0));
 						if (pStrSize0 >= Utils.MaxStackallocSize)
 						{
 							Utils.Free(pStr0);
@@ -4394,7 +5840,7 @@ namespace Dalamud.Bindings.ImGui
 		/// <summary>
 		/// To be documented.
 		/// </summary>
-		public unsafe void RenderText(ref ImDrawList drawList, float size, Vector2 pos, uint col, Vector4 clipRect, string textBegin, ref byte textEnd, bool cpuFineClip)
+		public unsafe void RenderText(ref ImDrawList drawList, float size, Vector2 pos, uint col, Vector4 clipRect, string textBegin, in byte textEnd, ImDrawTextFlags flags)
 		{
 			fixed (ImFont* @this = &this)
 			{
@@ -4419,7 +5865,7 @@ namespace Dalamud.Bindings.ImGui
 					}
 					fixed (byte* ptextEnd = &textEnd)
 					{
-						ImGui.RenderTextNative(@this, (ImDrawList*)pdrawList, size, pos, col, clipRect, pStr0, (byte*)ptextEnd, (float)(0.0f), cpuFineClip ? (byte)1 : (byte)0);
+						ImGui.RenderTextNative(@this, (ImDrawList*)pdrawList, size, pos, col, clipRect, pStr0, (byte*)ptextEnd, (float)(0.0f), flags);
 						if (pStrSize0 >= Utils.MaxStackallocSize)
 						{
 							Utils.Free(pStr0);
@@ -4432,7 +5878,7 @@ namespace Dalamud.Bindings.ImGui
 		/// <summary>
 		/// To be documented.
 		/// </summary>
-		public unsafe void RenderText(ref ImDrawList drawList, float size, Vector2 pos, uint col, Vector4 clipRect, string textBegin, ReadOnlySpan<byte> textEnd, float wrapWidth, bool cpuFineClip)
+		public unsafe void RenderText(ref ImDrawList drawList, float size, Vector2 pos, uint col, Vector4 clipRect, string textBegin, ReadOnlySpan<byte> textEnd, float wrapWidth, ImDrawTextFlags flags)
 		{
 			fixed (ImFont* @this = &this)
 			{
@@ -4457,7 +5903,7 @@ namespace Dalamud.Bindings.ImGui
 					}
 					fixed (byte* ptextEnd = textEnd)
 					{
-						ImGui.RenderTextNative(@this, (ImDrawList*)pdrawList, size, pos, col, clipRect, pStr0, (byte*)ptextEnd, wrapWidth, cpuFineClip ? (byte)1 : (byte)0);
+						ImGui.RenderTextNative(@this, (ImDrawList*)pdrawList, size, pos, col, clipRect, pStr0, (byte*)ptextEnd, wrapWidth, flags);
 						if (pStrSize0 >= Utils.MaxStackallocSize)
 						{
 							Utils.Free(pStr0);
@@ -4495,7 +5941,7 @@ namespace Dalamud.Bindings.ImGui
 					}
 					fixed (byte* ptextEnd = textEnd)
 					{
-						ImGui.RenderTextNative(@this, (ImDrawList*)pdrawList, size, pos, col, clipRect, pStr0, (byte*)ptextEnd, wrapWidth, (byte)(0));
+						ImGui.RenderTextNative(@this, (ImDrawList*)pdrawList, size, pos, col, clipRect, pStr0, (byte*)ptextEnd, wrapWidth, (ImDrawTextFlags)(0));
 						if (pStrSize0 >= Utils.MaxStackallocSize)
 						{
 							Utils.Free(pStr0);
@@ -4533,7 +5979,7 @@ namespace Dalamud.Bindings.ImGui
 					}
 					fixed (byte* ptextEnd = textEnd)
 					{
-						ImGui.RenderTextNative(@this, (ImDrawList*)pdrawList, size, pos, col, clipRect, pStr0, (byte*)ptextEnd, (float)(0.0f), (byte)(0));
+						ImGui.RenderTextNative(@this, (ImDrawList*)pdrawList, size, pos, col, clipRect, pStr0, (byte*)ptextEnd, (float)(0.0f), (ImDrawTextFlags)(0));
 						if (pStrSize0 >= Utils.MaxStackallocSize)
 						{
 							Utils.Free(pStr0);
@@ -4546,7 +5992,7 @@ namespace Dalamud.Bindings.ImGui
 		/// <summary>
 		/// To be documented.
 		/// </summary>
-		public unsafe void RenderText(ref ImDrawList drawList, float size, Vector2 pos, uint col, Vector4 clipRect, string textBegin, ReadOnlySpan<byte> textEnd, bool cpuFineClip)
+		public unsafe void RenderText(ref ImDrawList drawList, float size, Vector2 pos, uint col, Vector4 clipRect, string textBegin, ReadOnlySpan<byte> textEnd, ImDrawTextFlags flags)
 		{
 			fixed (ImFont* @this = &this)
 			{
@@ -4571,24 +6017,13 @@ namespace Dalamud.Bindings.ImGui
 					}
 					fixed (byte* ptextEnd = textEnd)
 					{
-						ImGui.RenderTextNative(@this, (ImDrawList*)pdrawList, size, pos, col, clipRect, pStr0, (byte*)ptextEnd, (float)(0.0f), cpuFineClip ? (byte)1 : (byte)0);
+						ImGui.RenderTextNative(@this, (ImDrawList*)pdrawList, size, pos, col, clipRect, pStr0, (byte*)ptextEnd, (float)(0.0f), flags);
 						if (pStrSize0 >= Utils.MaxStackallocSize)
 						{
 							Utils.Free(pStr0);
 						}
 					}
 				}
-			}
-		}
-
-		/// <summary>
-		/// To be documented.
-		/// </summary>
-		public unsafe void SetGlyphVisible(ushort c, bool visible)
-		{
-			fixed (ImFont* @this = &this)
-			{
-				ImGui.SetGlyphVisibleNative(@this, c, visible ? (byte)1 : (byte)0);
 			}
 		}
 
@@ -4638,51 +6073,31 @@ namespace Dalamud.Bindings.ImGui
 		/// <summary>
 		/// To be documented.
 		/// </summary>
-		public ref ImVector<ImFontGlyphHotData> IndexedHotData => ref Unsafe.AsRef<ImVector<ImFontGlyphHotData>>(&Handle->IndexedHotData);
+		public ref ImFontBakedPtr LastBaked => ref Unsafe.AsRef<ImFontBakedPtr>(&Handle->LastBaked);
 		/// <summary>
 		/// To be documented.
 		/// </summary>
-		public ref ImVector<float> FrequentKerningPairs => ref Unsafe.AsRef<ImVector<float>>(&Handle->FrequentKerningPairs);
+		public ref ImFontAtlasPtr OwnerAtlas => ref Unsafe.AsRef<ImFontAtlasPtr>(&Handle->OwnerAtlas);
 		/// <summary>
 		/// To be documented.
 		/// </summary>
-		public ref float FontSize => ref Unsafe.AsRef<float>(&Handle->FontSize);
+		public ref ImFontFlags Flags => ref Unsafe.AsRef<ImFontFlags>(&Handle->Flags);
 		/// <summary>
 		/// To be documented.
 		/// </summary>
-		public ref ImVector<ushort> IndexLookup => ref Unsafe.AsRef<ImVector<ushort>>(&Handle->IndexLookup);
+		public ref float CurrentRasterizerDensity => ref Unsafe.AsRef<float>(&Handle->CurrentRasterizerDensity);
 		/// <summary>
 		/// To be documented.
 		/// </summary>
-		public ref ImVector<ImFontGlyph> Glyphs => ref Unsafe.AsRef<ImVector<ImFontGlyph>>(&Handle->Glyphs);
+		public ref uint FontId => ref Unsafe.AsRef<uint>(&Handle->FontId);
 		/// <summary>
 		/// To be documented.
 		/// </summary>
-		public ref ImFontGlyphPtr FallbackGlyph => ref Unsafe.AsRef<ImFontGlyphPtr>(&Handle->FallbackGlyph);
+		public ref float LegacySize => ref Unsafe.AsRef<float>(&Handle->LegacySize);
 		/// <summary>
 		/// To be documented.
 		/// </summary>
-		public ref ImFontGlyphHotDataPtr FallbackHotData => ref Unsafe.AsRef<ImFontGlyphHotDataPtr>(&Handle->FallbackHotData);
-		/// <summary>
-		/// To be documented.
-		/// </summary>
-		public ref ImVector<ImFontKerningPair> KerningPairs => ref Unsafe.AsRef<ImVector<ImFontKerningPair>>(&Handle->KerningPairs);
-		/// <summary>
-		/// To be documented.
-		/// </summary>
-		public ref ImFontAtlasPtr ContainerAtlas => ref Unsafe.AsRef<ImFontAtlasPtr>(&Handle->ContainerAtlas);
-		/// <summary>
-		/// To be documented.
-		/// </summary>
-		public ref ImFontConfigPtr ConfigData => ref Unsafe.AsRef<ImFontConfigPtr>(&Handle->ConfigData);
-		/// <summary>
-		/// To be documented.
-		/// </summary>
-		public ref short ConfigDataCount => ref Unsafe.AsRef<short>(&Handle->ConfigDataCount);
-		/// <summary>
-		/// To be documented.
-		/// </summary>
-		public ref ushort FallbackChar => ref Unsafe.AsRef<ushort>(&Handle->FallbackChar);
+		public ref ImVector<ImFontConfigPtr> Sources => ref Unsafe.AsRef<ImVector<ImFontConfigPtr>>(&Handle->Sources);
 		/// <summary>
 		/// To be documented.
 		/// </summary>
@@ -4690,115 +6105,78 @@ namespace Dalamud.Bindings.ImGui
 		/// <summary>
 		/// To be documented.
 		/// </summary>
-		public ref ushort DotChar => ref Unsafe.AsRef<ushort>(&Handle->DotChar);
+		public ref ushort FallbackChar => ref Unsafe.AsRef<ushort>(&Handle->FallbackChar);
 		/// <summary>
 		/// To be documented.
 		/// </summary>
-		public ref bool DirtyLookupTables => ref Unsafe.AsRef<bool>(&Handle->DirtyLookupTables);
-		/// <summary>
-		/// To be documented.
-		/// </summary>
-		public ref float Scale => ref Unsafe.AsRef<float>(&Handle->Scale);
-		/// <summary>
-		/// To be documented.
-		/// </summary>
-		public ref float Ascent => ref Unsafe.AsRef<float>(&Handle->Ascent);
-		/// <summary>
-		/// To be documented.
-		/// </summary>
-		public ref float Descent => ref Unsafe.AsRef<float>(&Handle->Descent);
-		/// <summary>
-		/// To be documented.
-		/// </summary>
-		public ref int MetricsTotalSurface => ref Unsafe.AsRef<int>(&Handle->MetricsTotalSurface);
-		/// <summary>
-		/// To be documented.
-		/// </summary>
-		public unsafe Span<byte> Used4kPagesMap
+		public unsafe Span<byte> Used8kPagesMap
 		
 		{
 			get
 			{
-				return new Span<byte>(&Handle->Used4kPagesMap_0, 2);
+				return new Span<byte>(&Handle->Used8kPagesMap_0, 17);
 			}
 		}
 		/// <summary>
 		/// To be documented.
 		/// </summary>
-		public unsafe void AddGlyph(ImFontConfig* srcCfg, ushort c, int textureIndex, float x0, float y0, float x1, float y1, float u0, float v0, float u1, float v1, float advanceX)
+		public ref bool EllipsisAutoBake => ref Unsafe.AsRef<bool>(&Handle->EllipsisAutoBake);
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		public ref ImGuiStorage RemapPairs => ref Unsafe.AsRef<ImGuiStorage>(&Handle->RemapPairs);
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		public unsafe void AddRemapChar(ushort fromCodepoint, ushort toCodepoint)
 		{
-			ImGui.AddGlyphNative(Handle, srcCfg, c, textureIndex, x0, y0, x1, y1, u0, v0, u1, v1, advanceX);
+			ImGui.AddRemapCharNative(Handle, fromCodepoint, toCodepoint);
 		}
 
 		/// <summary>
 		/// To be documented.
 		/// </summary>
-		public unsafe void AddGlyph(ref ImFontConfig srcCfg, ushort c, int textureIndex, float x0, float y0, float x1, float y1, float u0, float v0, float u1, float v1, float advanceX)
+		public unsafe Vector2 CalcTextSizeA(float size, float maxWidth, float wrapWidth, byte* textBegin, byte* textEnd, byte** outRemaining)
 		{
-			fixed (ImFontConfig* psrcCfg = &srcCfg)
-			{
-				ImGui.AddGlyphNative(Handle, (ImFontConfig*)psrcCfg, c, textureIndex, x0, y0, x1, y1, u0, v0, u1, v1, advanceX);
-			}
-		}
-
-		/// <summary>
-		/// To be documented.
-		/// </summary>
-		public unsafe void AddKerningPair(ushort leftC, ushort rightC, float distanceAdjustment)
-		{
-			ImGui.AddKerningPairNative(Handle, leftC, rightC, distanceAdjustment);
-		}
-
-		/// <summary>
-		/// To be documented.
-		/// </summary>
-		public unsafe void AddRemapChar(ushort dst, ushort src, bool overwriteDst)
-		{
-			ImGui.AddRemapCharNative(Handle, dst, src, overwriteDst ? (byte)1 : (byte)0);
-		}
-
-		/// <summary>
-		/// To be documented.
-		/// </summary>
-		public unsafe void AddRemapChar(ushort dst, ushort src)
-		{
-			ImGui.AddRemapCharNative(Handle, dst, src, (byte)(1));
-		}
-
-		/// <summary>
-		/// To be documented.
-		/// </summary>
-		public unsafe void BuildLookupTable()
-		{
-			ImGui.BuildLookupTableNative(Handle);
-		}
-
-		/// <summary>
-		/// To be documented.
-		/// </summary>
-		public unsafe byte* CalcWordWrapPositionA(float scale, byte* text, byte* textEnd, float wrapWidth)
-		{
-			byte* ret = ImGui.CalcWordWrapPositionANative(Handle, scale, text, textEnd, wrapWidth);
+			Vector2 ret = ImGui.CalcTextSizeANative(Handle, size, maxWidth, wrapWidth, textBegin, textEnd, outRemaining);
 			return ret;
 		}
 
 		/// <summary>
 		/// To be documented.
 		/// </summary>
-		public unsafe string CalcWordWrapPositionAS(float scale, byte* text, byte* textEnd, float wrapWidth)
+		public unsafe Vector2 CalcTextSizeA(float size, float maxWidth, float wrapWidth, byte* textBegin, byte* textEnd)
 		{
-			string ret = Utils.DecodeStringUTF8(ImGui.CalcWordWrapPositionANative(Handle, scale, text, textEnd, wrapWidth));
+			Vector2 ret = ImGui.CalcTextSizeANative(Handle, size, maxWidth, wrapWidth, textBegin, textEnd, (byte**)(default));
 			return ret;
 		}
 
 		/// <summary>
 		/// To be documented.
 		/// </summary>
-		public unsafe byte* CalcWordWrapPositionA(float scale, ref byte text, byte* textEnd, float wrapWidth)
+		public unsafe Vector2 CalcTextSizeA(float size, float maxWidth, float wrapWidth, byte* textBegin)
 		{
-			fixed (byte* ptext = &text)
+			Vector2 ret = ImGui.CalcTextSizeANative(Handle, size, maxWidth, wrapWidth, textBegin, (byte*)(default), (byte**)(default));
+			return ret;
+		}
+
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		public unsafe Vector2 CalcTextSizeA(float size, float maxWidth, float wrapWidth, byte* textBegin, byte** outRemaining)
+		{
+			Vector2 ret = ImGui.CalcTextSizeANative(Handle, size, maxWidth, wrapWidth, textBegin, (byte*)(default), outRemaining);
+			return ret;
+		}
+
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		public unsafe Vector2 CalcTextSizeA(float size, float maxWidth, float wrapWidth, in byte textBegin, byte* textEnd, byte** outRemaining)
+		{
+			fixed (byte* ptextBegin = &textBegin)
 			{
-				byte* ret = ImGui.CalcWordWrapPositionANative(Handle, scale, (byte*)ptext, textEnd, wrapWidth);
+				Vector2 ret = ImGui.CalcTextSizeANative(Handle, size, maxWidth, wrapWidth, (byte*)ptextBegin, textEnd, outRemaining);
 				return ret;
 			}
 		}
@@ -4806,11 +6184,11 @@ namespace Dalamud.Bindings.ImGui
 		/// <summary>
 		/// To be documented.
 		/// </summary>
-		public unsafe string CalcWordWrapPositionAS(float scale, ref byte text, byte* textEnd, float wrapWidth)
+		public unsafe Vector2 CalcTextSizeA(float size, float maxWidth, float wrapWidth, in byte textBegin, byte* textEnd)
 		{
-			fixed (byte* ptext = &text)
+			fixed (byte* ptextBegin = &textBegin)
 			{
-				string ret = Utils.DecodeStringUTF8(ImGui.CalcWordWrapPositionANative(Handle, scale, (byte*)ptext, textEnd, wrapWidth));
+				Vector2 ret = ImGui.CalcTextSizeANative(Handle, size, maxWidth, wrapWidth, (byte*)ptextBegin, textEnd, (byte**)(default));
 				return ret;
 			}
 		}
@@ -4818,11 +6196,11 @@ namespace Dalamud.Bindings.ImGui
 		/// <summary>
 		/// To be documented.
 		/// </summary>
-		public unsafe byte* CalcWordWrapPositionA(float scale, ReadOnlySpan<byte> text, byte* textEnd, float wrapWidth)
+		public unsafe Vector2 CalcTextSizeA(float size, float maxWidth, float wrapWidth, in byte textBegin)
 		{
-			fixed (byte* ptext = text)
+			fixed (byte* ptextBegin = &textBegin)
 			{
-				byte* ret = ImGui.CalcWordWrapPositionANative(Handle, scale, (byte*)ptext, textEnd, wrapWidth);
+				Vector2 ret = ImGui.CalcTextSizeANative(Handle, size, maxWidth, wrapWidth, (byte*)ptextBegin, (byte*)(default), (byte**)(default));
 				return ret;
 			}
 		}
@@ -4830,11 +6208,11 @@ namespace Dalamud.Bindings.ImGui
 		/// <summary>
 		/// To be documented.
 		/// </summary>
-		public unsafe string CalcWordWrapPositionAS(float scale, ReadOnlySpan<byte> text, byte* textEnd, float wrapWidth)
+		public unsafe Vector2 CalcTextSizeA(float size, float maxWidth, float wrapWidth, in byte textBegin, byte** outRemaining)
 		{
-			fixed (byte* ptext = text)
+			fixed (byte* ptextBegin = &textBegin)
 			{
-				string ret = Utils.DecodeStringUTF8(ImGui.CalcWordWrapPositionANative(Handle, scale, (byte*)ptext, textEnd, wrapWidth));
+				Vector2 ret = ImGui.CalcTextSizeANative(Handle, size, maxWidth, wrapWidth, (byte*)ptextBegin, (byte*)(default), outRemaining);
 				return ret;
 			}
 		}
@@ -4842,13 +6220,61 @@ namespace Dalamud.Bindings.ImGui
 		/// <summary>
 		/// To be documented.
 		/// </summary>
-		public unsafe byte* CalcWordWrapPositionA(float scale, string text, byte* textEnd, float wrapWidth)
+		public unsafe Vector2 CalcTextSizeA(float size, float maxWidth, float wrapWidth, ReadOnlySpan<byte> textBegin, byte* textEnd, byte** outRemaining)
+		{
+			fixed (byte* ptextBegin = textBegin)
+			{
+				Vector2 ret = ImGui.CalcTextSizeANative(Handle, size, maxWidth, wrapWidth, (byte*)ptextBegin, textEnd, outRemaining);
+				return ret;
+			}
+		}
+
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		public unsafe Vector2 CalcTextSizeA(float size, float maxWidth, float wrapWidth, ReadOnlySpan<byte> textBegin, byte* textEnd)
+		{
+			fixed (byte* ptextBegin = textBegin)
+			{
+				Vector2 ret = ImGui.CalcTextSizeANative(Handle, size, maxWidth, wrapWidth, (byte*)ptextBegin, textEnd, (byte**)(default));
+				return ret;
+			}
+		}
+
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		public unsafe Vector2 CalcTextSizeA(float size, float maxWidth, float wrapWidth, ReadOnlySpan<byte> textBegin)
+		{
+			fixed (byte* ptextBegin = textBegin)
+			{
+				Vector2 ret = ImGui.CalcTextSizeANative(Handle, size, maxWidth, wrapWidth, (byte*)ptextBegin, (byte*)(default), (byte**)(default));
+				return ret;
+			}
+		}
+
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		public unsafe Vector2 CalcTextSizeA(float size, float maxWidth, float wrapWidth, ReadOnlySpan<byte> textBegin, byte** outRemaining)
+		{
+			fixed (byte* ptextBegin = textBegin)
+			{
+				Vector2 ret = ImGui.CalcTextSizeANative(Handle, size, maxWidth, wrapWidth, (byte*)ptextBegin, (byte*)(default), outRemaining);
+				return ret;
+			}
+		}
+
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		public unsafe Vector2 CalcTextSizeA(float size, float maxWidth, float wrapWidth, string textBegin, byte* textEnd, byte** outRemaining)
 		{
 			byte* pStr0 = null;
 			int pStrSize0 = 0;
-			if (text != null)
+			if (textBegin != null)
 			{
-				pStrSize0 = Utils.GetByteCountUTF8(text);
+				pStrSize0 = Utils.GetByteCountUTF8(textBegin);
 				if (pStrSize0 >= Utils.MaxStackallocSize)
 				{
 					pStr0 = Utils.Alloc<byte>(pStrSize0 + 1);
@@ -4858,10 +6284,10 @@ namespace Dalamud.Bindings.ImGui
 					byte* pStrStack0 = stackalloc byte[pStrSize0 + 1];
 					pStr0 = pStrStack0;
 				}
-				int pStrOffset0 = Utils.EncodeStringUTF8(text, pStr0, pStrSize0);
+				int pStrOffset0 = Utils.EncodeStringUTF8(textBegin, pStr0, pStrSize0);
 				pStr0[pStrOffset0] = 0;
 			}
-			byte* ret = ImGui.CalcWordWrapPositionANative(Handle, scale, pStr0, textEnd, wrapWidth);
+			Vector2 ret = ImGui.CalcTextSizeANative(Handle, size, maxWidth, wrapWidth, pStr0, textEnd, outRemaining);
 			if (pStrSize0 >= Utils.MaxStackallocSize)
 			{
 				Utils.Free(pStr0);
@@ -4872,13 +6298,13 @@ namespace Dalamud.Bindings.ImGui
 		/// <summary>
 		/// To be documented.
 		/// </summary>
-		public unsafe string CalcWordWrapPositionAS(float scale, string text, byte* textEnd, float wrapWidth)
+		public unsafe Vector2 CalcTextSizeA(float size, float maxWidth, float wrapWidth, string textBegin, byte* textEnd)
 		{
 			byte* pStr0 = null;
 			int pStrSize0 = 0;
-			if (text != null)
+			if (textBegin != null)
 			{
-				pStrSize0 = Utils.GetByteCountUTF8(text);
+				pStrSize0 = Utils.GetByteCountUTF8(textBegin);
 				if (pStrSize0 >= Utils.MaxStackallocSize)
 				{
 					pStr0 = Utils.Alloc<byte>(pStrSize0 + 1);
@@ -4888,10 +6314,10 @@ namespace Dalamud.Bindings.ImGui
 					byte* pStrStack0 = stackalloc byte[pStrSize0 + 1];
 					pStr0 = pStrStack0;
 				}
-				int pStrOffset0 = Utils.EncodeStringUTF8(text, pStr0, pStrSize0);
+				int pStrOffset0 = Utils.EncodeStringUTF8(textBegin, pStr0, pStrSize0);
 				pStr0[pStrOffset0] = 0;
 			}
-			string ret = Utils.DecodeStringUTF8(ImGui.CalcWordWrapPositionANative(Handle, scale, pStr0, textEnd, wrapWidth));
+			Vector2 ret = ImGui.CalcTextSizeANative(Handle, size, maxWidth, wrapWidth, pStr0, textEnd, (byte**)(default));
 			if (pStrSize0 >= Utils.MaxStackallocSize)
 			{
 				Utils.Free(pStr0);
@@ -4902,11 +6328,71 @@ namespace Dalamud.Bindings.ImGui
 		/// <summary>
 		/// To be documented.
 		/// </summary>
-		public unsafe byte* CalcWordWrapPositionA(float scale, byte* text, ref byte textEnd, float wrapWidth)
+		public unsafe Vector2 CalcTextSizeA(float size, float maxWidth, float wrapWidth, string textBegin)
+		{
+			byte* pStr0 = null;
+			int pStrSize0 = 0;
+			if (textBegin != null)
+			{
+				pStrSize0 = Utils.GetByteCountUTF8(textBegin);
+				if (pStrSize0 >= Utils.MaxStackallocSize)
+				{
+					pStr0 = Utils.Alloc<byte>(pStrSize0 + 1);
+				}
+				else
+				{
+					byte* pStrStack0 = stackalloc byte[pStrSize0 + 1];
+					pStr0 = pStrStack0;
+				}
+				int pStrOffset0 = Utils.EncodeStringUTF8(textBegin, pStr0, pStrSize0);
+				pStr0[pStrOffset0] = 0;
+			}
+			Vector2 ret = ImGui.CalcTextSizeANative(Handle, size, maxWidth, wrapWidth, pStr0, (byte*)(default), (byte**)(default));
+			if (pStrSize0 >= Utils.MaxStackallocSize)
+			{
+				Utils.Free(pStr0);
+			}
+			return ret;
+		}
+
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		public unsafe Vector2 CalcTextSizeA(float size, float maxWidth, float wrapWidth, string textBegin, byte** outRemaining)
+		{
+			byte* pStr0 = null;
+			int pStrSize0 = 0;
+			if (textBegin != null)
+			{
+				pStrSize0 = Utils.GetByteCountUTF8(textBegin);
+				if (pStrSize0 >= Utils.MaxStackallocSize)
+				{
+					pStr0 = Utils.Alloc<byte>(pStrSize0 + 1);
+				}
+				else
+				{
+					byte* pStrStack0 = stackalloc byte[pStrSize0 + 1];
+					pStr0 = pStrStack0;
+				}
+				int pStrOffset0 = Utils.EncodeStringUTF8(textBegin, pStr0, pStrSize0);
+				pStr0[pStrOffset0] = 0;
+			}
+			Vector2 ret = ImGui.CalcTextSizeANative(Handle, size, maxWidth, wrapWidth, pStr0, (byte*)(default), outRemaining);
+			if (pStrSize0 >= Utils.MaxStackallocSize)
+			{
+				Utils.Free(pStr0);
+			}
+			return ret;
+		}
+
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		public unsafe Vector2 CalcTextSizeA(float size, float maxWidth, float wrapWidth, byte* textBegin, in byte textEnd, byte** outRemaining)
 		{
 			fixed (byte* ptextEnd = &textEnd)
 			{
-				byte* ret = ImGui.CalcWordWrapPositionANative(Handle, scale, text, (byte*)ptextEnd, wrapWidth);
+				Vector2 ret = ImGui.CalcTextSizeANative(Handle, size, maxWidth, wrapWidth, textBegin, (byte*)ptextEnd, outRemaining);
 				return ret;
 			}
 		}
@@ -4914,11 +6400,11 @@ namespace Dalamud.Bindings.ImGui
 		/// <summary>
 		/// To be documented.
 		/// </summary>
-		public unsafe string CalcWordWrapPositionAS(float scale, byte* text, ref byte textEnd, float wrapWidth)
+		public unsafe Vector2 CalcTextSizeA(float size, float maxWidth, float wrapWidth, byte* textBegin, in byte textEnd)
 		{
 			fixed (byte* ptextEnd = &textEnd)
 			{
-				string ret = Utils.DecodeStringUTF8(ImGui.CalcWordWrapPositionANative(Handle, scale, text, (byte*)ptextEnd, wrapWidth));
+				Vector2 ret = ImGui.CalcTextSizeANative(Handle, size, maxWidth, wrapWidth, textBegin, (byte*)ptextEnd, (byte**)(default));
 				return ret;
 			}
 		}
@@ -4926,11 +6412,11 @@ namespace Dalamud.Bindings.ImGui
 		/// <summary>
 		/// To be documented.
 		/// </summary>
-		public unsafe byte* CalcWordWrapPositionA(float scale, byte* text, ReadOnlySpan<byte> textEnd, float wrapWidth)
+		public unsafe Vector2 CalcTextSizeA(float size, float maxWidth, float wrapWidth, byte* textBegin, ReadOnlySpan<byte> textEnd, byte** outRemaining)
 		{
 			fixed (byte* ptextEnd = textEnd)
 			{
-				byte* ret = ImGui.CalcWordWrapPositionANative(Handle, scale, text, (byte*)ptextEnd, wrapWidth);
+				Vector2 ret = ImGui.CalcTextSizeANative(Handle, size, maxWidth, wrapWidth, textBegin, (byte*)ptextEnd, outRemaining);
 				return ret;
 			}
 		}
@@ -4938,11 +6424,11 @@ namespace Dalamud.Bindings.ImGui
 		/// <summary>
 		/// To be documented.
 		/// </summary>
-		public unsafe string CalcWordWrapPositionAS(float scale, byte* text, ReadOnlySpan<byte> textEnd, float wrapWidth)
+		public unsafe Vector2 CalcTextSizeA(float size, float maxWidth, float wrapWidth, byte* textBegin, ReadOnlySpan<byte> textEnd)
 		{
 			fixed (byte* ptextEnd = textEnd)
 			{
-				string ret = Utils.DecodeStringUTF8(ImGui.CalcWordWrapPositionANative(Handle, scale, text, (byte*)ptextEnd, wrapWidth));
+				Vector2 ret = ImGui.CalcTextSizeANative(Handle, size, maxWidth, wrapWidth, textBegin, (byte*)ptextEnd, (byte**)(default));
 				return ret;
 			}
 		}
@@ -4950,7 +6436,7 @@ namespace Dalamud.Bindings.ImGui
 		/// <summary>
 		/// To be documented.
 		/// </summary>
-		public unsafe byte* CalcWordWrapPositionA(float scale, byte* text, string textEnd, float wrapWidth)
+		public unsafe Vector2 CalcTextSizeA(float size, float maxWidth, float wrapWidth, byte* textBegin, string textEnd, byte** outRemaining)
 		{
 			byte* pStr0 = null;
 			int pStrSize0 = 0;
@@ -4969,7 +6455,7 @@ namespace Dalamud.Bindings.ImGui
 				int pStrOffset0 = Utils.EncodeStringUTF8(textEnd, pStr0, pStrSize0);
 				pStr0[pStrOffset0] = 0;
 			}
-			byte* ret = ImGui.CalcWordWrapPositionANative(Handle, scale, text, pStr0, wrapWidth);
+			Vector2 ret = ImGui.CalcTextSizeANative(Handle, size, maxWidth, wrapWidth, textBegin, pStr0, outRemaining);
 			if (pStrSize0 >= Utils.MaxStackallocSize)
 			{
 				Utils.Free(pStr0);
@@ -4980,7 +6466,7 @@ namespace Dalamud.Bindings.ImGui
 		/// <summary>
 		/// To be documented.
 		/// </summary>
-		public unsafe string CalcWordWrapPositionAS(float scale, byte* text, string textEnd, float wrapWidth)
+		public unsafe Vector2 CalcTextSizeA(float size, float maxWidth, float wrapWidth, byte* textBegin, string textEnd)
 		{
 			byte* pStr0 = null;
 			int pStrSize0 = 0;
@@ -4999,7 +6485,7 @@ namespace Dalamud.Bindings.ImGui
 				int pStrOffset0 = Utils.EncodeStringUTF8(textEnd, pStr0, pStrSize0);
 				pStr0[pStrOffset0] = 0;
 			}
-			string ret = Utils.DecodeStringUTF8(ImGui.CalcWordWrapPositionANative(Handle, scale, text, pStr0, wrapWidth));
+			Vector2 ret = ImGui.CalcTextSizeANative(Handle, size, maxWidth, wrapWidth, textBegin, pStr0, (byte**)(default));
 			if (pStrSize0 >= Utils.MaxStackallocSize)
 			{
 				Utils.Free(pStr0);
@@ -5010,13 +6496,1216 @@ namespace Dalamud.Bindings.ImGui
 		/// <summary>
 		/// To be documented.
 		/// </summary>
-		public unsafe byte* CalcWordWrapPositionA(float scale, ref byte text, ref byte textEnd, float wrapWidth)
+		public unsafe Vector2 CalcTextSizeA(float size, float maxWidth, float wrapWidth, in byte textBegin, in byte textEnd, byte** outRemaining)
+		{
+			fixed (byte* ptextBegin = &textBegin)
+			{
+				fixed (byte* ptextEnd = &textEnd)
+				{
+					Vector2 ret = ImGui.CalcTextSizeANative(Handle, size, maxWidth, wrapWidth, (byte*)ptextBegin, (byte*)ptextEnd, outRemaining);
+					return ret;
+				}
+			}
+		}
+
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		public unsafe Vector2 CalcTextSizeA(float size, float maxWidth, float wrapWidth, in byte textBegin, in byte textEnd)
+		{
+			fixed (byte* ptextBegin = &textBegin)
+			{
+				fixed (byte* ptextEnd = &textEnd)
+				{
+					Vector2 ret = ImGui.CalcTextSizeANative(Handle, size, maxWidth, wrapWidth, (byte*)ptextBegin, (byte*)ptextEnd, (byte**)(default));
+					return ret;
+				}
+			}
+		}
+
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		public unsafe Vector2 CalcTextSizeA(float size, float maxWidth, float wrapWidth, ReadOnlySpan<byte> textBegin, ReadOnlySpan<byte> textEnd, byte** outRemaining)
+		{
+			fixed (byte* ptextBegin = textBegin)
+			{
+				fixed (byte* ptextEnd = textEnd)
+				{
+					Vector2 ret = ImGui.CalcTextSizeANative(Handle, size, maxWidth, wrapWidth, (byte*)ptextBegin, (byte*)ptextEnd, outRemaining);
+					return ret;
+				}
+			}
+		}
+
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		public unsafe Vector2 CalcTextSizeA(float size, float maxWidth, float wrapWidth, ReadOnlySpan<byte> textBegin, ReadOnlySpan<byte> textEnd)
+		{
+			fixed (byte* ptextBegin = textBegin)
+			{
+				fixed (byte* ptextEnd = textEnd)
+				{
+					Vector2 ret = ImGui.CalcTextSizeANative(Handle, size, maxWidth, wrapWidth, (byte*)ptextBegin, (byte*)ptextEnd, (byte**)(default));
+					return ret;
+				}
+			}
+		}
+
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		public unsafe Vector2 CalcTextSizeA(float size, float maxWidth, float wrapWidth, string textBegin, string textEnd, byte** outRemaining)
+		{
+			byte* pStr0 = null;
+			int pStrSize0 = 0;
+			if (textBegin != null)
+			{
+				pStrSize0 = Utils.GetByteCountUTF8(textBegin);
+				if (pStrSize0 >= Utils.MaxStackallocSize)
+				{
+					pStr0 = Utils.Alloc<byte>(pStrSize0 + 1);
+				}
+				else
+				{
+					byte* pStrStack0 = stackalloc byte[pStrSize0 + 1];
+					pStr0 = pStrStack0;
+				}
+				int pStrOffset0 = Utils.EncodeStringUTF8(textBegin, pStr0, pStrSize0);
+				pStr0[pStrOffset0] = 0;
+			}
+			byte* pStr1 = null;
+			int pStrSize1 = 0;
+			if (textEnd != null)
+			{
+				pStrSize1 = Utils.GetByteCountUTF8(textEnd);
+				if (pStrSize1 >= Utils.MaxStackallocSize)
+				{
+					pStr1 = Utils.Alloc<byte>(pStrSize1 + 1);
+				}
+				else
+				{
+					byte* pStrStack1 = stackalloc byte[pStrSize1 + 1];
+					pStr1 = pStrStack1;
+				}
+				int pStrOffset1 = Utils.EncodeStringUTF8(textEnd, pStr1, pStrSize1);
+				pStr1[pStrOffset1] = 0;
+			}
+			Vector2 ret = ImGui.CalcTextSizeANative(Handle, size, maxWidth, wrapWidth, pStr0, pStr1, outRemaining);
+			if (pStrSize1 >= Utils.MaxStackallocSize)
+			{
+				Utils.Free(pStr1);
+			}
+			if (pStrSize0 >= Utils.MaxStackallocSize)
+			{
+				Utils.Free(pStr0);
+			}
+			return ret;
+		}
+
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		public unsafe Vector2 CalcTextSizeA(float size, float maxWidth, float wrapWidth, string textBegin, string textEnd)
+		{
+			byte* pStr0 = null;
+			int pStrSize0 = 0;
+			if (textBegin != null)
+			{
+				pStrSize0 = Utils.GetByteCountUTF8(textBegin);
+				if (pStrSize0 >= Utils.MaxStackallocSize)
+				{
+					pStr0 = Utils.Alloc<byte>(pStrSize0 + 1);
+				}
+				else
+				{
+					byte* pStrStack0 = stackalloc byte[pStrSize0 + 1];
+					pStr0 = pStrStack0;
+				}
+				int pStrOffset0 = Utils.EncodeStringUTF8(textBegin, pStr0, pStrSize0);
+				pStr0[pStrOffset0] = 0;
+			}
+			byte* pStr1 = null;
+			int pStrSize1 = 0;
+			if (textEnd != null)
+			{
+				pStrSize1 = Utils.GetByteCountUTF8(textEnd);
+				if (pStrSize1 >= Utils.MaxStackallocSize)
+				{
+					pStr1 = Utils.Alloc<byte>(pStrSize1 + 1);
+				}
+				else
+				{
+					byte* pStrStack1 = stackalloc byte[pStrSize1 + 1];
+					pStr1 = pStrStack1;
+				}
+				int pStrOffset1 = Utils.EncodeStringUTF8(textEnd, pStr1, pStrSize1);
+				pStr1[pStrOffset1] = 0;
+			}
+			Vector2 ret = ImGui.CalcTextSizeANative(Handle, size, maxWidth, wrapWidth, pStr0, pStr1, (byte**)(default));
+			if (pStrSize1 >= Utils.MaxStackallocSize)
+			{
+				Utils.Free(pStr1);
+			}
+			if (pStrSize0 >= Utils.MaxStackallocSize)
+			{
+				Utils.Free(pStr0);
+			}
+			return ret;
+		}
+
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		public unsafe Vector2 CalcTextSizeA(float size, float maxWidth, float wrapWidth, in byte textBegin, ReadOnlySpan<byte> textEnd, byte** outRemaining)
+		{
+			fixed (byte* ptextBegin = &textBegin)
+			{
+				fixed (byte* ptextEnd = textEnd)
+				{
+					Vector2 ret = ImGui.CalcTextSizeANative(Handle, size, maxWidth, wrapWidth, (byte*)ptextBegin, (byte*)ptextEnd, outRemaining);
+					return ret;
+				}
+			}
+		}
+
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		public unsafe Vector2 CalcTextSizeA(float size, float maxWidth, float wrapWidth, in byte textBegin, ReadOnlySpan<byte> textEnd)
+		{
+			fixed (byte* ptextBegin = &textBegin)
+			{
+				fixed (byte* ptextEnd = textEnd)
+				{
+					Vector2 ret = ImGui.CalcTextSizeANative(Handle, size, maxWidth, wrapWidth, (byte*)ptextBegin, (byte*)ptextEnd, (byte**)(default));
+					return ret;
+				}
+			}
+		}
+
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		public unsafe Vector2 CalcTextSizeA(float size, float maxWidth, float wrapWidth, in byte textBegin, string textEnd, byte** outRemaining)
+		{
+			fixed (byte* ptextBegin = &textBegin)
+			{
+				byte* pStr0 = null;
+				int pStrSize0 = 0;
+				if (textEnd != null)
+				{
+					pStrSize0 = Utils.GetByteCountUTF8(textEnd);
+					if (pStrSize0 >= Utils.MaxStackallocSize)
+					{
+						pStr0 = Utils.Alloc<byte>(pStrSize0 + 1);
+					}
+					else
+					{
+						byte* pStrStack0 = stackalloc byte[pStrSize0 + 1];
+						pStr0 = pStrStack0;
+					}
+					int pStrOffset0 = Utils.EncodeStringUTF8(textEnd, pStr0, pStrSize0);
+					pStr0[pStrOffset0] = 0;
+				}
+				Vector2 ret = ImGui.CalcTextSizeANative(Handle, size, maxWidth, wrapWidth, (byte*)ptextBegin, pStr0, outRemaining);
+				if (pStrSize0 >= Utils.MaxStackallocSize)
+				{
+					Utils.Free(pStr0);
+				}
+				return ret;
+			}
+		}
+
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		public unsafe Vector2 CalcTextSizeA(float size, float maxWidth, float wrapWidth, in byte textBegin, string textEnd)
+		{
+			fixed (byte* ptextBegin = &textBegin)
+			{
+				byte* pStr0 = null;
+				int pStrSize0 = 0;
+				if (textEnd != null)
+				{
+					pStrSize0 = Utils.GetByteCountUTF8(textEnd);
+					if (pStrSize0 >= Utils.MaxStackallocSize)
+					{
+						pStr0 = Utils.Alloc<byte>(pStrSize0 + 1);
+					}
+					else
+					{
+						byte* pStrStack0 = stackalloc byte[pStrSize0 + 1];
+						pStr0 = pStrStack0;
+					}
+					int pStrOffset0 = Utils.EncodeStringUTF8(textEnd, pStr0, pStrSize0);
+					pStr0[pStrOffset0] = 0;
+				}
+				Vector2 ret = ImGui.CalcTextSizeANative(Handle, size, maxWidth, wrapWidth, (byte*)ptextBegin, pStr0, (byte**)(default));
+				if (pStrSize0 >= Utils.MaxStackallocSize)
+				{
+					Utils.Free(pStr0);
+				}
+				return ret;
+			}
+		}
+
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		public unsafe Vector2 CalcTextSizeA(float size, float maxWidth, float wrapWidth, ReadOnlySpan<byte> textBegin, in byte textEnd, byte** outRemaining)
+		{
+			fixed (byte* ptextBegin = textBegin)
+			{
+				fixed (byte* ptextEnd = &textEnd)
+				{
+					Vector2 ret = ImGui.CalcTextSizeANative(Handle, size, maxWidth, wrapWidth, (byte*)ptextBegin, (byte*)ptextEnd, outRemaining);
+					return ret;
+				}
+			}
+		}
+
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		public unsafe Vector2 CalcTextSizeA(float size, float maxWidth, float wrapWidth, ReadOnlySpan<byte> textBegin, in byte textEnd)
+		{
+			fixed (byte* ptextBegin = textBegin)
+			{
+				fixed (byte* ptextEnd = &textEnd)
+				{
+					Vector2 ret = ImGui.CalcTextSizeANative(Handle, size, maxWidth, wrapWidth, (byte*)ptextBegin, (byte*)ptextEnd, (byte**)(default));
+					return ret;
+				}
+			}
+		}
+
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		public unsafe Vector2 CalcTextSizeA(float size, float maxWidth, float wrapWidth, ReadOnlySpan<byte> textBegin, string textEnd, byte** outRemaining)
+		{
+			fixed (byte* ptextBegin = textBegin)
+			{
+				byte* pStr0 = null;
+				int pStrSize0 = 0;
+				if (textEnd != null)
+				{
+					pStrSize0 = Utils.GetByteCountUTF8(textEnd);
+					if (pStrSize0 >= Utils.MaxStackallocSize)
+					{
+						pStr0 = Utils.Alloc<byte>(pStrSize0 + 1);
+					}
+					else
+					{
+						byte* pStrStack0 = stackalloc byte[pStrSize0 + 1];
+						pStr0 = pStrStack0;
+					}
+					int pStrOffset0 = Utils.EncodeStringUTF8(textEnd, pStr0, pStrSize0);
+					pStr0[pStrOffset0] = 0;
+				}
+				Vector2 ret = ImGui.CalcTextSizeANative(Handle, size, maxWidth, wrapWidth, (byte*)ptextBegin, pStr0, outRemaining);
+				if (pStrSize0 >= Utils.MaxStackallocSize)
+				{
+					Utils.Free(pStr0);
+				}
+				return ret;
+			}
+		}
+
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		public unsafe Vector2 CalcTextSizeA(float size, float maxWidth, float wrapWidth, ReadOnlySpan<byte> textBegin, string textEnd)
+		{
+			fixed (byte* ptextBegin = textBegin)
+			{
+				byte* pStr0 = null;
+				int pStrSize0 = 0;
+				if (textEnd != null)
+				{
+					pStrSize0 = Utils.GetByteCountUTF8(textEnd);
+					if (pStrSize0 >= Utils.MaxStackallocSize)
+					{
+						pStr0 = Utils.Alloc<byte>(pStrSize0 + 1);
+					}
+					else
+					{
+						byte* pStrStack0 = stackalloc byte[pStrSize0 + 1];
+						pStr0 = pStrStack0;
+					}
+					int pStrOffset0 = Utils.EncodeStringUTF8(textEnd, pStr0, pStrSize0);
+					pStr0[pStrOffset0] = 0;
+				}
+				Vector2 ret = ImGui.CalcTextSizeANative(Handle, size, maxWidth, wrapWidth, (byte*)ptextBegin, pStr0, (byte**)(default));
+				if (pStrSize0 >= Utils.MaxStackallocSize)
+				{
+					Utils.Free(pStr0);
+				}
+				return ret;
+			}
+		}
+
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		public unsafe Vector2 CalcTextSizeA(float size, float maxWidth, float wrapWidth, string textBegin, in byte textEnd, byte** outRemaining)
+		{
+			byte* pStr0 = null;
+			int pStrSize0 = 0;
+			if (textBegin != null)
+			{
+				pStrSize0 = Utils.GetByteCountUTF8(textBegin);
+				if (pStrSize0 >= Utils.MaxStackallocSize)
+				{
+					pStr0 = Utils.Alloc<byte>(pStrSize0 + 1);
+				}
+				else
+				{
+					byte* pStrStack0 = stackalloc byte[pStrSize0 + 1];
+					pStr0 = pStrStack0;
+				}
+				int pStrOffset0 = Utils.EncodeStringUTF8(textBegin, pStr0, pStrSize0);
+				pStr0[pStrOffset0] = 0;
+			}
+			fixed (byte* ptextEnd = &textEnd)
+			{
+				Vector2 ret = ImGui.CalcTextSizeANative(Handle, size, maxWidth, wrapWidth, pStr0, (byte*)ptextEnd, outRemaining);
+				if (pStrSize0 >= Utils.MaxStackallocSize)
+				{
+					Utils.Free(pStr0);
+				}
+				return ret;
+			}
+		}
+
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		public unsafe Vector2 CalcTextSizeA(float size, float maxWidth, float wrapWidth, string textBegin, in byte textEnd)
+		{
+			byte* pStr0 = null;
+			int pStrSize0 = 0;
+			if (textBegin != null)
+			{
+				pStrSize0 = Utils.GetByteCountUTF8(textBegin);
+				if (pStrSize0 >= Utils.MaxStackallocSize)
+				{
+					pStr0 = Utils.Alloc<byte>(pStrSize0 + 1);
+				}
+				else
+				{
+					byte* pStrStack0 = stackalloc byte[pStrSize0 + 1];
+					pStr0 = pStrStack0;
+				}
+				int pStrOffset0 = Utils.EncodeStringUTF8(textBegin, pStr0, pStrSize0);
+				pStr0[pStrOffset0] = 0;
+			}
+			fixed (byte* ptextEnd = &textEnd)
+			{
+				Vector2 ret = ImGui.CalcTextSizeANative(Handle, size, maxWidth, wrapWidth, pStr0, (byte*)ptextEnd, (byte**)(default));
+				if (pStrSize0 >= Utils.MaxStackallocSize)
+				{
+					Utils.Free(pStr0);
+				}
+				return ret;
+			}
+		}
+
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		public unsafe Vector2 CalcTextSizeA(float size, float maxWidth, float wrapWidth, string textBegin, ReadOnlySpan<byte> textEnd, byte** outRemaining)
+		{
+			byte* pStr0 = null;
+			int pStrSize0 = 0;
+			if (textBegin != null)
+			{
+				pStrSize0 = Utils.GetByteCountUTF8(textBegin);
+				if (pStrSize0 >= Utils.MaxStackallocSize)
+				{
+					pStr0 = Utils.Alloc<byte>(pStrSize0 + 1);
+				}
+				else
+				{
+					byte* pStrStack0 = stackalloc byte[pStrSize0 + 1];
+					pStr0 = pStrStack0;
+				}
+				int pStrOffset0 = Utils.EncodeStringUTF8(textBegin, pStr0, pStrSize0);
+				pStr0[pStrOffset0] = 0;
+			}
+			fixed (byte* ptextEnd = textEnd)
+			{
+				Vector2 ret = ImGui.CalcTextSizeANative(Handle, size, maxWidth, wrapWidth, pStr0, (byte*)ptextEnd, outRemaining);
+				if (pStrSize0 >= Utils.MaxStackallocSize)
+				{
+					Utils.Free(pStr0);
+				}
+				return ret;
+			}
+		}
+
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		public unsafe Vector2 CalcTextSizeA(float size, float maxWidth, float wrapWidth, string textBegin, ReadOnlySpan<byte> textEnd)
+		{
+			byte* pStr0 = null;
+			int pStrSize0 = 0;
+			if (textBegin != null)
+			{
+				pStrSize0 = Utils.GetByteCountUTF8(textBegin);
+				if (pStrSize0 >= Utils.MaxStackallocSize)
+				{
+					pStr0 = Utils.Alloc<byte>(pStrSize0 + 1);
+				}
+				else
+				{
+					byte* pStrStack0 = stackalloc byte[pStrSize0 + 1];
+					pStr0 = pStrStack0;
+				}
+				int pStrOffset0 = Utils.EncodeStringUTF8(textBegin, pStr0, pStrSize0);
+				pStr0[pStrOffset0] = 0;
+			}
+			fixed (byte* ptextEnd = textEnd)
+			{
+				Vector2 ret = ImGui.CalcTextSizeANative(Handle, size, maxWidth, wrapWidth, pStr0, (byte*)ptextEnd, (byte**)(default));
+				if (pStrSize0 >= Utils.MaxStackallocSize)
+				{
+					Utils.Free(pStr0);
+				}
+				return ret;
+			}
+		}
+
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		public unsafe Vector2 CalcTextSizeA(float size, float maxWidth, float wrapWidth, byte* textBegin, byte* textEnd, ref byte* outRemaining)
+		{
+			fixed (byte** poutRemaining = &outRemaining)
+			{
+				Vector2 ret = ImGui.CalcTextSizeANative(Handle, size, maxWidth, wrapWidth, textBegin, textEnd, (byte**)poutRemaining);
+				return ret;
+			}
+		}
+
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		public unsafe Vector2 CalcTextSizeA(float size, float maxWidth, float wrapWidth, byte* textBegin, ref byte* outRemaining)
+		{
+			fixed (byte** poutRemaining = &outRemaining)
+			{
+				Vector2 ret = ImGui.CalcTextSizeANative(Handle, size, maxWidth, wrapWidth, textBegin, (byte*)(default), (byte**)poutRemaining);
+				return ret;
+			}
+		}
+
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		public unsafe Vector2 CalcTextSizeA(float size, float maxWidth, float wrapWidth, in byte textBegin, byte* textEnd, ref byte* outRemaining)
+		{
+			fixed (byte* ptextBegin = &textBegin)
+			{
+				fixed (byte** poutRemaining = &outRemaining)
+				{
+					Vector2 ret = ImGui.CalcTextSizeANative(Handle, size, maxWidth, wrapWidth, (byte*)ptextBegin, textEnd, (byte**)poutRemaining);
+					return ret;
+				}
+			}
+		}
+
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		public unsafe Vector2 CalcTextSizeA(float size, float maxWidth, float wrapWidth, in byte textBegin, ref byte* outRemaining)
+		{
+			fixed (byte* ptextBegin = &textBegin)
+			{
+				fixed (byte** poutRemaining = &outRemaining)
+				{
+					Vector2 ret = ImGui.CalcTextSizeANative(Handle, size, maxWidth, wrapWidth, (byte*)ptextBegin, (byte*)(default), (byte**)poutRemaining);
+					return ret;
+				}
+			}
+		}
+
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		public unsafe Vector2 CalcTextSizeA(float size, float maxWidth, float wrapWidth, ReadOnlySpan<byte> textBegin, byte* textEnd, ref byte* outRemaining)
+		{
+			fixed (byte* ptextBegin = textBegin)
+			{
+				fixed (byte** poutRemaining = &outRemaining)
+				{
+					Vector2 ret = ImGui.CalcTextSizeANative(Handle, size, maxWidth, wrapWidth, (byte*)ptextBegin, textEnd, (byte**)poutRemaining);
+					return ret;
+				}
+			}
+		}
+
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		public unsafe Vector2 CalcTextSizeA(float size, float maxWidth, float wrapWidth, ReadOnlySpan<byte> textBegin, ref byte* outRemaining)
+		{
+			fixed (byte* ptextBegin = textBegin)
+			{
+				fixed (byte** poutRemaining = &outRemaining)
+				{
+					Vector2 ret = ImGui.CalcTextSizeANative(Handle, size, maxWidth, wrapWidth, (byte*)ptextBegin, (byte*)(default), (byte**)poutRemaining);
+					return ret;
+				}
+			}
+		}
+
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		public unsafe Vector2 CalcTextSizeA(float size, float maxWidth, float wrapWidth, string textBegin, byte* textEnd, ref byte* outRemaining)
+		{
+			byte* pStr0 = null;
+			int pStrSize0 = 0;
+			if (textBegin != null)
+			{
+				pStrSize0 = Utils.GetByteCountUTF8(textBegin);
+				if (pStrSize0 >= Utils.MaxStackallocSize)
+				{
+					pStr0 = Utils.Alloc<byte>(pStrSize0 + 1);
+				}
+				else
+				{
+					byte* pStrStack0 = stackalloc byte[pStrSize0 + 1];
+					pStr0 = pStrStack0;
+				}
+				int pStrOffset0 = Utils.EncodeStringUTF8(textBegin, pStr0, pStrSize0);
+				pStr0[pStrOffset0] = 0;
+			}
+			fixed (byte** poutRemaining = &outRemaining)
+			{
+				Vector2 ret = ImGui.CalcTextSizeANative(Handle, size, maxWidth, wrapWidth, pStr0, textEnd, (byte**)poutRemaining);
+				if (pStrSize0 >= Utils.MaxStackallocSize)
+				{
+					Utils.Free(pStr0);
+				}
+				return ret;
+			}
+		}
+
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		public unsafe Vector2 CalcTextSizeA(float size, float maxWidth, float wrapWidth, string textBegin, ref byte* outRemaining)
+		{
+			byte* pStr0 = null;
+			int pStrSize0 = 0;
+			if (textBegin != null)
+			{
+				pStrSize0 = Utils.GetByteCountUTF8(textBegin);
+				if (pStrSize0 >= Utils.MaxStackallocSize)
+				{
+					pStr0 = Utils.Alloc<byte>(pStrSize0 + 1);
+				}
+				else
+				{
+					byte* pStrStack0 = stackalloc byte[pStrSize0 + 1];
+					pStr0 = pStrStack0;
+				}
+				int pStrOffset0 = Utils.EncodeStringUTF8(textBegin, pStr0, pStrSize0);
+				pStr0[pStrOffset0] = 0;
+			}
+			fixed (byte** poutRemaining = &outRemaining)
+			{
+				Vector2 ret = ImGui.CalcTextSizeANative(Handle, size, maxWidth, wrapWidth, pStr0, (byte*)(default), (byte**)poutRemaining);
+				if (pStrSize0 >= Utils.MaxStackallocSize)
+				{
+					Utils.Free(pStr0);
+				}
+				return ret;
+			}
+		}
+
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		public unsafe Vector2 CalcTextSizeA(float size, float maxWidth, float wrapWidth, byte* textBegin, in byte textEnd, ref byte* outRemaining)
+		{
+			fixed (byte* ptextEnd = &textEnd)
+			{
+				fixed (byte** poutRemaining = &outRemaining)
+				{
+					Vector2 ret = ImGui.CalcTextSizeANative(Handle, size, maxWidth, wrapWidth, textBegin, (byte*)ptextEnd, (byte**)poutRemaining);
+					return ret;
+				}
+			}
+		}
+
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		public unsafe Vector2 CalcTextSizeA(float size, float maxWidth, float wrapWidth, byte* textBegin, ReadOnlySpan<byte> textEnd, ref byte* outRemaining)
+		{
+			fixed (byte* ptextEnd = textEnd)
+			{
+				fixed (byte** poutRemaining = &outRemaining)
+				{
+					Vector2 ret = ImGui.CalcTextSizeANative(Handle, size, maxWidth, wrapWidth, textBegin, (byte*)ptextEnd, (byte**)poutRemaining);
+					return ret;
+				}
+			}
+		}
+
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		public unsafe Vector2 CalcTextSizeA(float size, float maxWidth, float wrapWidth, byte* textBegin, string textEnd, ref byte* outRemaining)
+		{
+			byte* pStr0 = null;
+			int pStrSize0 = 0;
+			if (textEnd != null)
+			{
+				pStrSize0 = Utils.GetByteCountUTF8(textEnd);
+				if (pStrSize0 >= Utils.MaxStackallocSize)
+				{
+					pStr0 = Utils.Alloc<byte>(pStrSize0 + 1);
+				}
+				else
+				{
+					byte* pStrStack0 = stackalloc byte[pStrSize0 + 1];
+					pStr0 = pStrStack0;
+				}
+				int pStrOffset0 = Utils.EncodeStringUTF8(textEnd, pStr0, pStrSize0);
+				pStr0[pStrOffset0] = 0;
+			}
+			fixed (byte** poutRemaining = &outRemaining)
+			{
+				Vector2 ret = ImGui.CalcTextSizeANative(Handle, size, maxWidth, wrapWidth, textBegin, pStr0, (byte**)poutRemaining);
+				if (pStrSize0 >= Utils.MaxStackallocSize)
+				{
+					Utils.Free(pStr0);
+				}
+				return ret;
+			}
+		}
+
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		public unsafe Vector2 CalcTextSizeA(float size, float maxWidth, float wrapWidth, in byte textBegin, in byte textEnd, ref byte* outRemaining)
+		{
+			fixed (byte* ptextBegin = &textBegin)
+			{
+				fixed (byte* ptextEnd = &textEnd)
+				{
+					fixed (byte** poutRemaining = &outRemaining)
+					{
+						Vector2 ret = ImGui.CalcTextSizeANative(Handle, size, maxWidth, wrapWidth, (byte*)ptextBegin, (byte*)ptextEnd, (byte**)poutRemaining);
+						return ret;
+					}
+				}
+			}
+		}
+
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		public unsafe Vector2 CalcTextSizeA(float size, float maxWidth, float wrapWidth, ReadOnlySpan<byte> textBegin, ReadOnlySpan<byte> textEnd, ref byte* outRemaining)
+		{
+			fixed (byte* ptextBegin = textBegin)
+			{
+				fixed (byte* ptextEnd = textEnd)
+				{
+					fixed (byte** poutRemaining = &outRemaining)
+					{
+						Vector2 ret = ImGui.CalcTextSizeANative(Handle, size, maxWidth, wrapWidth, (byte*)ptextBegin, (byte*)ptextEnd, (byte**)poutRemaining);
+						return ret;
+					}
+				}
+			}
+		}
+
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		public unsafe Vector2 CalcTextSizeA(float size, float maxWidth, float wrapWidth, string textBegin, string textEnd, ref byte* outRemaining)
+		{
+			byte* pStr0 = null;
+			int pStrSize0 = 0;
+			if (textBegin != null)
+			{
+				pStrSize0 = Utils.GetByteCountUTF8(textBegin);
+				if (pStrSize0 >= Utils.MaxStackallocSize)
+				{
+					pStr0 = Utils.Alloc<byte>(pStrSize0 + 1);
+				}
+				else
+				{
+					byte* pStrStack0 = stackalloc byte[pStrSize0 + 1];
+					pStr0 = pStrStack0;
+				}
+				int pStrOffset0 = Utils.EncodeStringUTF8(textBegin, pStr0, pStrSize0);
+				pStr0[pStrOffset0] = 0;
+			}
+			byte* pStr1 = null;
+			int pStrSize1 = 0;
+			if (textEnd != null)
+			{
+				pStrSize1 = Utils.GetByteCountUTF8(textEnd);
+				if (pStrSize1 >= Utils.MaxStackallocSize)
+				{
+					pStr1 = Utils.Alloc<byte>(pStrSize1 + 1);
+				}
+				else
+				{
+					byte* pStrStack1 = stackalloc byte[pStrSize1 + 1];
+					pStr1 = pStrStack1;
+				}
+				int pStrOffset1 = Utils.EncodeStringUTF8(textEnd, pStr1, pStrSize1);
+				pStr1[pStrOffset1] = 0;
+			}
+			fixed (byte** poutRemaining = &outRemaining)
+			{
+				Vector2 ret = ImGui.CalcTextSizeANative(Handle, size, maxWidth, wrapWidth, pStr0, pStr1, (byte**)poutRemaining);
+				if (pStrSize1 >= Utils.MaxStackallocSize)
+				{
+					Utils.Free(pStr1);
+				}
+				if (pStrSize0 >= Utils.MaxStackallocSize)
+				{
+					Utils.Free(pStr0);
+				}
+				return ret;
+			}
+		}
+
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		public unsafe Vector2 CalcTextSizeA(float size, float maxWidth, float wrapWidth, in byte textBegin, ReadOnlySpan<byte> textEnd, ref byte* outRemaining)
+		{
+			fixed (byte* ptextBegin = &textBegin)
+			{
+				fixed (byte* ptextEnd = textEnd)
+				{
+					fixed (byte** poutRemaining = &outRemaining)
+					{
+						Vector2 ret = ImGui.CalcTextSizeANative(Handle, size, maxWidth, wrapWidth, (byte*)ptextBegin, (byte*)ptextEnd, (byte**)poutRemaining);
+						return ret;
+					}
+				}
+			}
+		}
+
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		public unsafe Vector2 CalcTextSizeA(float size, float maxWidth, float wrapWidth, in byte textBegin, string textEnd, ref byte* outRemaining)
+		{
+			fixed (byte* ptextBegin = &textBegin)
+			{
+				byte* pStr0 = null;
+				int pStrSize0 = 0;
+				if (textEnd != null)
+				{
+					pStrSize0 = Utils.GetByteCountUTF8(textEnd);
+					if (pStrSize0 >= Utils.MaxStackallocSize)
+					{
+						pStr0 = Utils.Alloc<byte>(pStrSize0 + 1);
+					}
+					else
+					{
+						byte* pStrStack0 = stackalloc byte[pStrSize0 + 1];
+						pStr0 = pStrStack0;
+					}
+					int pStrOffset0 = Utils.EncodeStringUTF8(textEnd, pStr0, pStrSize0);
+					pStr0[pStrOffset0] = 0;
+				}
+				fixed (byte** poutRemaining = &outRemaining)
+				{
+					Vector2 ret = ImGui.CalcTextSizeANative(Handle, size, maxWidth, wrapWidth, (byte*)ptextBegin, pStr0, (byte**)poutRemaining);
+					if (pStrSize0 >= Utils.MaxStackallocSize)
+					{
+						Utils.Free(pStr0);
+					}
+					return ret;
+				}
+			}
+		}
+
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		public unsafe Vector2 CalcTextSizeA(float size, float maxWidth, float wrapWidth, ReadOnlySpan<byte> textBegin, in byte textEnd, ref byte* outRemaining)
+		{
+			fixed (byte* ptextBegin = textBegin)
+			{
+				fixed (byte* ptextEnd = &textEnd)
+				{
+					fixed (byte** poutRemaining = &outRemaining)
+					{
+						Vector2 ret = ImGui.CalcTextSizeANative(Handle, size, maxWidth, wrapWidth, (byte*)ptextBegin, (byte*)ptextEnd, (byte**)poutRemaining);
+						return ret;
+					}
+				}
+			}
+		}
+
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		public unsafe Vector2 CalcTextSizeA(float size, float maxWidth, float wrapWidth, ReadOnlySpan<byte> textBegin, string textEnd, ref byte* outRemaining)
+		{
+			fixed (byte* ptextBegin = textBegin)
+			{
+				byte* pStr0 = null;
+				int pStrSize0 = 0;
+				if (textEnd != null)
+				{
+					pStrSize0 = Utils.GetByteCountUTF8(textEnd);
+					if (pStrSize0 >= Utils.MaxStackallocSize)
+					{
+						pStr0 = Utils.Alloc<byte>(pStrSize0 + 1);
+					}
+					else
+					{
+						byte* pStrStack0 = stackalloc byte[pStrSize0 + 1];
+						pStr0 = pStrStack0;
+					}
+					int pStrOffset0 = Utils.EncodeStringUTF8(textEnd, pStr0, pStrSize0);
+					pStr0[pStrOffset0] = 0;
+				}
+				fixed (byte** poutRemaining = &outRemaining)
+				{
+					Vector2 ret = ImGui.CalcTextSizeANative(Handle, size, maxWidth, wrapWidth, (byte*)ptextBegin, pStr0, (byte**)poutRemaining);
+					if (pStrSize0 >= Utils.MaxStackallocSize)
+					{
+						Utils.Free(pStr0);
+					}
+					return ret;
+				}
+			}
+		}
+
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		public unsafe Vector2 CalcTextSizeA(float size, float maxWidth, float wrapWidth, string textBegin, in byte textEnd, ref byte* outRemaining)
+		{
+			byte* pStr0 = null;
+			int pStrSize0 = 0;
+			if (textBegin != null)
+			{
+				pStrSize0 = Utils.GetByteCountUTF8(textBegin);
+				if (pStrSize0 >= Utils.MaxStackallocSize)
+				{
+					pStr0 = Utils.Alloc<byte>(pStrSize0 + 1);
+				}
+				else
+				{
+					byte* pStrStack0 = stackalloc byte[pStrSize0 + 1];
+					pStr0 = pStrStack0;
+				}
+				int pStrOffset0 = Utils.EncodeStringUTF8(textBegin, pStr0, pStrSize0);
+				pStr0[pStrOffset0] = 0;
+			}
+			fixed (byte* ptextEnd = &textEnd)
+			{
+				fixed (byte** poutRemaining = &outRemaining)
+				{
+					Vector2 ret = ImGui.CalcTextSizeANative(Handle, size, maxWidth, wrapWidth, pStr0, (byte*)ptextEnd, (byte**)poutRemaining);
+					if (pStrSize0 >= Utils.MaxStackallocSize)
+					{
+						Utils.Free(pStr0);
+					}
+					return ret;
+				}
+			}
+		}
+
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		public unsafe Vector2 CalcTextSizeA(float size, float maxWidth, float wrapWidth, string textBegin, ReadOnlySpan<byte> textEnd, ref byte* outRemaining)
+		{
+			byte* pStr0 = null;
+			int pStrSize0 = 0;
+			if (textBegin != null)
+			{
+				pStrSize0 = Utils.GetByteCountUTF8(textBegin);
+				if (pStrSize0 >= Utils.MaxStackallocSize)
+				{
+					pStr0 = Utils.Alloc<byte>(pStrSize0 + 1);
+				}
+				else
+				{
+					byte* pStrStack0 = stackalloc byte[pStrSize0 + 1];
+					pStr0 = pStrStack0;
+				}
+				int pStrOffset0 = Utils.EncodeStringUTF8(textBegin, pStr0, pStrSize0);
+				pStr0[pStrOffset0] = 0;
+			}
+			fixed (byte* ptextEnd = textEnd)
+			{
+				fixed (byte** poutRemaining = &outRemaining)
+				{
+					Vector2 ret = ImGui.CalcTextSizeANative(Handle, size, maxWidth, wrapWidth, pStr0, (byte*)ptextEnd, (byte**)poutRemaining);
+					if (pStrSize0 >= Utils.MaxStackallocSize)
+					{
+						Utils.Free(pStr0);
+					}
+					return ret;
+				}
+			}
+		}
+
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		public unsafe byte* CalcWordWrapPosition(float size, byte* text, byte* textEnd, float wrapWidth)
+		{
+			byte* ret = ImGui.CalcWordWrapPositionNative(Handle, size, text, textEnd, wrapWidth);
+			return ret;
+		}
+
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		public unsafe string CalcWordWrapPositionS(float size, byte* text, byte* textEnd, float wrapWidth)
+		{
+			string ret = Utils.DecodeStringUTF8(ImGui.CalcWordWrapPositionNative(Handle, size, text, textEnd, wrapWidth));
+			return ret;
+		}
+
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		public unsafe byte* CalcWordWrapPosition(float size, in byte text, byte* textEnd, float wrapWidth)
+		{
+			fixed (byte* ptext = &text)
+			{
+				byte* ret = ImGui.CalcWordWrapPositionNative(Handle, size, (byte*)ptext, textEnd, wrapWidth);
+				return ret;
+			}
+		}
+
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		public unsafe string CalcWordWrapPositionS(float size, in byte text, byte* textEnd, float wrapWidth)
+		{
+			fixed (byte* ptext = &text)
+			{
+				string ret = Utils.DecodeStringUTF8(ImGui.CalcWordWrapPositionNative(Handle, size, (byte*)ptext, textEnd, wrapWidth));
+				return ret;
+			}
+		}
+
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		public unsafe byte* CalcWordWrapPosition(float size, ReadOnlySpan<byte> text, byte* textEnd, float wrapWidth)
+		{
+			fixed (byte* ptext = text)
+			{
+				byte* ret = ImGui.CalcWordWrapPositionNative(Handle, size, (byte*)ptext, textEnd, wrapWidth);
+				return ret;
+			}
+		}
+
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		public unsafe string CalcWordWrapPositionS(float size, ReadOnlySpan<byte> text, byte* textEnd, float wrapWidth)
+		{
+			fixed (byte* ptext = text)
+			{
+				string ret = Utils.DecodeStringUTF8(ImGui.CalcWordWrapPositionNative(Handle, size, (byte*)ptext, textEnd, wrapWidth));
+				return ret;
+			}
+		}
+
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		public unsafe byte* CalcWordWrapPosition(float size, string text, byte* textEnd, float wrapWidth)
+		{
+			byte* pStr0 = null;
+			int pStrSize0 = 0;
+			if (text != null)
+			{
+				pStrSize0 = Utils.GetByteCountUTF8(text);
+				if (pStrSize0 >= Utils.MaxStackallocSize)
+				{
+					pStr0 = Utils.Alloc<byte>(pStrSize0 + 1);
+				}
+				else
+				{
+					byte* pStrStack0 = stackalloc byte[pStrSize0 + 1];
+					pStr0 = pStrStack0;
+				}
+				int pStrOffset0 = Utils.EncodeStringUTF8(text, pStr0, pStrSize0);
+				pStr0[pStrOffset0] = 0;
+			}
+			byte* ret = ImGui.CalcWordWrapPositionNative(Handle, size, pStr0, textEnd, wrapWidth);
+			if (pStrSize0 >= Utils.MaxStackallocSize)
+			{
+				Utils.Free(pStr0);
+			}
+			return ret;
+		}
+
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		public unsafe string CalcWordWrapPositionS(float size, string text, byte* textEnd, float wrapWidth)
+		{
+			byte* pStr0 = null;
+			int pStrSize0 = 0;
+			if (text != null)
+			{
+				pStrSize0 = Utils.GetByteCountUTF8(text);
+				if (pStrSize0 >= Utils.MaxStackallocSize)
+				{
+					pStr0 = Utils.Alloc<byte>(pStrSize0 + 1);
+				}
+				else
+				{
+					byte* pStrStack0 = stackalloc byte[pStrSize0 + 1];
+					pStr0 = pStrStack0;
+				}
+				int pStrOffset0 = Utils.EncodeStringUTF8(text, pStr0, pStrSize0);
+				pStr0[pStrOffset0] = 0;
+			}
+			string ret = Utils.DecodeStringUTF8(ImGui.CalcWordWrapPositionNative(Handle, size, pStr0, textEnd, wrapWidth));
+			if (pStrSize0 >= Utils.MaxStackallocSize)
+			{
+				Utils.Free(pStr0);
+			}
+			return ret;
+		}
+
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		public unsafe byte* CalcWordWrapPosition(float size, byte* text, in byte textEnd, float wrapWidth)
+		{
+			fixed (byte* ptextEnd = &textEnd)
+			{
+				byte* ret = ImGui.CalcWordWrapPositionNative(Handle, size, text, (byte*)ptextEnd, wrapWidth);
+				return ret;
+			}
+		}
+
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		public unsafe string CalcWordWrapPositionS(float size, byte* text, in byte textEnd, float wrapWidth)
+		{
+			fixed (byte* ptextEnd = &textEnd)
+			{
+				string ret = Utils.DecodeStringUTF8(ImGui.CalcWordWrapPositionNative(Handle, size, text, (byte*)ptextEnd, wrapWidth));
+				return ret;
+			}
+		}
+
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		public unsafe byte* CalcWordWrapPosition(float size, byte* text, ReadOnlySpan<byte> textEnd, float wrapWidth)
+		{
+			fixed (byte* ptextEnd = textEnd)
+			{
+				byte* ret = ImGui.CalcWordWrapPositionNative(Handle, size, text, (byte*)ptextEnd, wrapWidth);
+				return ret;
+			}
+		}
+
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		public unsafe string CalcWordWrapPositionS(float size, byte* text, ReadOnlySpan<byte> textEnd, float wrapWidth)
+		{
+			fixed (byte* ptextEnd = textEnd)
+			{
+				string ret = Utils.DecodeStringUTF8(ImGui.CalcWordWrapPositionNative(Handle, size, text, (byte*)ptextEnd, wrapWidth));
+				return ret;
+			}
+		}
+
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		public unsafe byte* CalcWordWrapPosition(float size, byte* text, string textEnd, float wrapWidth)
+		{
+			byte* pStr0 = null;
+			int pStrSize0 = 0;
+			if (textEnd != null)
+			{
+				pStrSize0 = Utils.GetByteCountUTF8(textEnd);
+				if (pStrSize0 >= Utils.MaxStackallocSize)
+				{
+					pStr0 = Utils.Alloc<byte>(pStrSize0 + 1);
+				}
+				else
+				{
+					byte* pStrStack0 = stackalloc byte[pStrSize0 + 1];
+					pStr0 = pStrStack0;
+				}
+				int pStrOffset0 = Utils.EncodeStringUTF8(textEnd, pStr0, pStrSize0);
+				pStr0[pStrOffset0] = 0;
+			}
+			byte* ret = ImGui.CalcWordWrapPositionNative(Handle, size, text, pStr0, wrapWidth);
+			if (pStrSize0 >= Utils.MaxStackallocSize)
+			{
+				Utils.Free(pStr0);
+			}
+			return ret;
+		}
+
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		public unsafe string CalcWordWrapPositionS(float size, byte* text, string textEnd, float wrapWidth)
+		{
+			byte* pStr0 = null;
+			int pStrSize0 = 0;
+			if (textEnd != null)
+			{
+				pStrSize0 = Utils.GetByteCountUTF8(textEnd);
+				if (pStrSize0 >= Utils.MaxStackallocSize)
+				{
+					pStr0 = Utils.Alloc<byte>(pStrSize0 + 1);
+				}
+				else
+				{
+					byte* pStrStack0 = stackalloc byte[pStrSize0 + 1];
+					pStr0 = pStrStack0;
+				}
+				int pStrOffset0 = Utils.EncodeStringUTF8(textEnd, pStr0, pStrSize0);
+				pStr0[pStrOffset0] = 0;
+			}
+			string ret = Utils.DecodeStringUTF8(ImGui.CalcWordWrapPositionNative(Handle, size, text, pStr0, wrapWidth));
+			if (pStrSize0 >= Utils.MaxStackallocSize)
+			{
+				Utils.Free(pStr0);
+			}
+			return ret;
+		}
+
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		public unsafe byte* CalcWordWrapPosition(float size, in byte text, in byte textEnd, float wrapWidth)
 		{
 			fixed (byte* ptext = &text)
 			{
 				fixed (byte* ptextEnd = &textEnd)
 				{
-					byte* ret = ImGui.CalcWordWrapPositionANative(Handle, scale, (byte*)ptext, (byte*)ptextEnd, wrapWidth);
+					byte* ret = ImGui.CalcWordWrapPositionNative(Handle, size, (byte*)ptext, (byte*)ptextEnd, wrapWidth);
 					return ret;
 				}
 			}
@@ -5025,13 +7714,13 @@ namespace Dalamud.Bindings.ImGui
 		/// <summary>
 		/// To be documented.
 		/// </summary>
-		public unsafe string CalcWordWrapPositionAS(float scale, ref byte text, ref byte textEnd, float wrapWidth)
+		public unsafe string CalcWordWrapPositionS(float size, in byte text, in byte textEnd, float wrapWidth)
 		{
 			fixed (byte* ptext = &text)
 			{
 				fixed (byte* ptextEnd = &textEnd)
 				{
-					string ret = Utils.DecodeStringUTF8(ImGui.CalcWordWrapPositionANative(Handle, scale, (byte*)ptext, (byte*)ptextEnd, wrapWidth));
+					string ret = Utils.DecodeStringUTF8(ImGui.CalcWordWrapPositionNative(Handle, size, (byte*)ptext, (byte*)ptextEnd, wrapWidth));
 					return ret;
 				}
 			}
@@ -5040,13 +7729,13 @@ namespace Dalamud.Bindings.ImGui
 		/// <summary>
 		/// To be documented.
 		/// </summary>
-		public unsafe byte* CalcWordWrapPositionA(float scale, ReadOnlySpan<byte> text, ReadOnlySpan<byte> textEnd, float wrapWidth)
+		public unsafe byte* CalcWordWrapPosition(float size, ReadOnlySpan<byte> text, ReadOnlySpan<byte> textEnd, float wrapWidth)
 		{
 			fixed (byte* ptext = text)
 			{
 				fixed (byte* ptextEnd = textEnd)
 				{
-					byte* ret = ImGui.CalcWordWrapPositionANative(Handle, scale, (byte*)ptext, (byte*)ptextEnd, wrapWidth);
+					byte* ret = ImGui.CalcWordWrapPositionNative(Handle, size, (byte*)ptext, (byte*)ptextEnd, wrapWidth);
 					return ret;
 				}
 			}
@@ -5055,13 +7744,13 @@ namespace Dalamud.Bindings.ImGui
 		/// <summary>
 		/// To be documented.
 		/// </summary>
-		public unsafe string CalcWordWrapPositionAS(float scale, ReadOnlySpan<byte> text, ReadOnlySpan<byte> textEnd, float wrapWidth)
+		public unsafe string CalcWordWrapPositionS(float size, ReadOnlySpan<byte> text, ReadOnlySpan<byte> textEnd, float wrapWidth)
 		{
 			fixed (byte* ptext = text)
 			{
 				fixed (byte* ptextEnd = textEnd)
 				{
-					string ret = Utils.DecodeStringUTF8(ImGui.CalcWordWrapPositionANative(Handle, scale, (byte*)ptext, (byte*)ptextEnd, wrapWidth));
+					string ret = Utils.DecodeStringUTF8(ImGui.CalcWordWrapPositionNative(Handle, size, (byte*)ptext, (byte*)ptextEnd, wrapWidth));
 					return ret;
 				}
 			}
@@ -5070,7 +7759,7 @@ namespace Dalamud.Bindings.ImGui
 		/// <summary>
 		/// To be documented.
 		/// </summary>
-		public unsafe byte* CalcWordWrapPositionA(float scale, string text, string textEnd, float wrapWidth)
+		public unsafe byte* CalcWordWrapPosition(float size, string text, string textEnd, float wrapWidth)
 		{
 			byte* pStr0 = null;
 			int pStrSize0 = 0;
@@ -5106,7 +7795,7 @@ namespace Dalamud.Bindings.ImGui
 				int pStrOffset1 = Utils.EncodeStringUTF8(textEnd, pStr1, pStrSize1);
 				pStr1[pStrOffset1] = 0;
 			}
-			byte* ret = ImGui.CalcWordWrapPositionANative(Handle, scale, pStr0, pStr1, wrapWidth);
+			byte* ret = ImGui.CalcWordWrapPositionNative(Handle, size, pStr0, pStr1, wrapWidth);
 			if (pStrSize1 >= Utils.MaxStackallocSize)
 			{
 				Utils.Free(pStr1);
@@ -5121,7 +7810,7 @@ namespace Dalamud.Bindings.ImGui
 		/// <summary>
 		/// To be documented.
 		/// </summary>
-		public unsafe string CalcWordWrapPositionAS(float scale, string text, string textEnd, float wrapWidth)
+		public unsafe string CalcWordWrapPositionS(float size, string text, string textEnd, float wrapWidth)
 		{
 			byte* pStr0 = null;
 			int pStrSize0 = 0;
@@ -5157,7 +7846,7 @@ namespace Dalamud.Bindings.ImGui
 				int pStrOffset1 = Utils.EncodeStringUTF8(textEnd, pStr1, pStrSize1);
 				pStr1[pStrOffset1] = 0;
 			}
-			string ret = Utils.DecodeStringUTF8(ImGui.CalcWordWrapPositionANative(Handle, scale, pStr0, pStr1, wrapWidth));
+			string ret = Utils.DecodeStringUTF8(ImGui.CalcWordWrapPositionNative(Handle, size, pStr0, pStr1, wrapWidth));
 			if (pStrSize1 >= Utils.MaxStackallocSize)
 			{
 				Utils.Free(pStr1);
@@ -5172,13 +7861,13 @@ namespace Dalamud.Bindings.ImGui
 		/// <summary>
 		/// To be documented.
 		/// </summary>
-		public unsafe byte* CalcWordWrapPositionA(float scale, ref byte text, ReadOnlySpan<byte> textEnd, float wrapWidth)
+		public unsafe byte* CalcWordWrapPosition(float size, in byte text, ReadOnlySpan<byte> textEnd, float wrapWidth)
 		{
 			fixed (byte* ptext = &text)
 			{
 				fixed (byte* ptextEnd = textEnd)
 				{
-					byte* ret = ImGui.CalcWordWrapPositionANative(Handle, scale, (byte*)ptext, (byte*)ptextEnd, wrapWidth);
+					byte* ret = ImGui.CalcWordWrapPositionNative(Handle, size, (byte*)ptext, (byte*)ptextEnd, wrapWidth);
 					return ret;
 				}
 			}
@@ -5187,13 +7876,13 @@ namespace Dalamud.Bindings.ImGui
 		/// <summary>
 		/// To be documented.
 		/// </summary>
-		public unsafe string CalcWordWrapPositionAS(float scale, ref byte text, ReadOnlySpan<byte> textEnd, float wrapWidth)
+		public unsafe string CalcWordWrapPositionS(float size, in byte text, ReadOnlySpan<byte> textEnd, float wrapWidth)
 		{
 			fixed (byte* ptext = &text)
 			{
 				fixed (byte* ptextEnd = textEnd)
 				{
-					string ret = Utils.DecodeStringUTF8(ImGui.CalcWordWrapPositionANative(Handle, scale, (byte*)ptext, (byte*)ptextEnd, wrapWidth));
+					string ret = Utils.DecodeStringUTF8(ImGui.CalcWordWrapPositionNative(Handle, size, (byte*)ptext, (byte*)ptextEnd, wrapWidth));
 					return ret;
 				}
 			}
@@ -5202,7 +7891,7 @@ namespace Dalamud.Bindings.ImGui
 		/// <summary>
 		/// To be documented.
 		/// </summary>
-		public unsafe byte* CalcWordWrapPositionA(float scale, ref byte text, string textEnd, float wrapWidth)
+		public unsafe byte* CalcWordWrapPosition(float size, in byte text, string textEnd, float wrapWidth)
 		{
 			fixed (byte* ptext = &text)
 			{
@@ -5223,7 +7912,7 @@ namespace Dalamud.Bindings.ImGui
 					int pStrOffset0 = Utils.EncodeStringUTF8(textEnd, pStr0, pStrSize0);
 					pStr0[pStrOffset0] = 0;
 				}
-				byte* ret = ImGui.CalcWordWrapPositionANative(Handle, scale, (byte*)ptext, pStr0, wrapWidth);
+				byte* ret = ImGui.CalcWordWrapPositionNative(Handle, size, (byte*)ptext, pStr0, wrapWidth);
 				if (pStrSize0 >= Utils.MaxStackallocSize)
 				{
 					Utils.Free(pStr0);
@@ -5235,7 +7924,7 @@ namespace Dalamud.Bindings.ImGui
 		/// <summary>
 		/// To be documented.
 		/// </summary>
-		public unsafe string CalcWordWrapPositionAS(float scale, ref byte text, string textEnd, float wrapWidth)
+		public unsafe string CalcWordWrapPositionS(float size, in byte text, string textEnd, float wrapWidth)
 		{
 			fixed (byte* ptext = &text)
 			{
@@ -5256,7 +7945,7 @@ namespace Dalamud.Bindings.ImGui
 					int pStrOffset0 = Utils.EncodeStringUTF8(textEnd, pStr0, pStrSize0);
 					pStr0[pStrOffset0] = 0;
 				}
-				string ret = Utils.DecodeStringUTF8(ImGui.CalcWordWrapPositionANative(Handle, scale, (byte*)ptext, pStr0, wrapWidth));
+				string ret = Utils.DecodeStringUTF8(ImGui.CalcWordWrapPositionNative(Handle, size, (byte*)ptext, pStr0, wrapWidth));
 				if (pStrSize0 >= Utils.MaxStackallocSize)
 				{
 					Utils.Free(pStr0);
@@ -5268,13 +7957,13 @@ namespace Dalamud.Bindings.ImGui
 		/// <summary>
 		/// To be documented.
 		/// </summary>
-		public unsafe byte* CalcWordWrapPositionA(float scale, ReadOnlySpan<byte> text, ref byte textEnd, float wrapWidth)
+		public unsafe byte* CalcWordWrapPosition(float size, ReadOnlySpan<byte> text, in byte textEnd, float wrapWidth)
 		{
 			fixed (byte* ptext = text)
 			{
 				fixed (byte* ptextEnd = &textEnd)
 				{
-					byte* ret = ImGui.CalcWordWrapPositionANative(Handle, scale, (byte*)ptext, (byte*)ptextEnd, wrapWidth);
+					byte* ret = ImGui.CalcWordWrapPositionNative(Handle, size, (byte*)ptext, (byte*)ptextEnd, wrapWidth);
 					return ret;
 				}
 			}
@@ -5283,13 +7972,13 @@ namespace Dalamud.Bindings.ImGui
 		/// <summary>
 		/// To be documented.
 		/// </summary>
-		public unsafe string CalcWordWrapPositionAS(float scale, ReadOnlySpan<byte> text, ref byte textEnd, float wrapWidth)
+		public unsafe string CalcWordWrapPositionS(float size, ReadOnlySpan<byte> text, in byte textEnd, float wrapWidth)
 		{
 			fixed (byte* ptext = text)
 			{
 				fixed (byte* ptextEnd = &textEnd)
 				{
-					string ret = Utils.DecodeStringUTF8(ImGui.CalcWordWrapPositionANative(Handle, scale, (byte*)ptext, (byte*)ptextEnd, wrapWidth));
+					string ret = Utils.DecodeStringUTF8(ImGui.CalcWordWrapPositionNative(Handle, size, (byte*)ptext, (byte*)ptextEnd, wrapWidth));
 					return ret;
 				}
 			}
@@ -5298,7 +7987,7 @@ namespace Dalamud.Bindings.ImGui
 		/// <summary>
 		/// To be documented.
 		/// </summary>
-		public unsafe byte* CalcWordWrapPositionA(float scale, ReadOnlySpan<byte> text, string textEnd, float wrapWidth)
+		public unsafe byte* CalcWordWrapPosition(float size, ReadOnlySpan<byte> text, string textEnd, float wrapWidth)
 		{
 			fixed (byte* ptext = text)
 			{
@@ -5319,7 +8008,7 @@ namespace Dalamud.Bindings.ImGui
 					int pStrOffset0 = Utils.EncodeStringUTF8(textEnd, pStr0, pStrSize0);
 					pStr0[pStrOffset0] = 0;
 				}
-				byte* ret = ImGui.CalcWordWrapPositionANative(Handle, scale, (byte*)ptext, pStr0, wrapWidth);
+				byte* ret = ImGui.CalcWordWrapPositionNative(Handle, size, (byte*)ptext, pStr0, wrapWidth);
 				if (pStrSize0 >= Utils.MaxStackallocSize)
 				{
 					Utils.Free(pStr0);
@@ -5331,7 +8020,7 @@ namespace Dalamud.Bindings.ImGui
 		/// <summary>
 		/// To be documented.
 		/// </summary>
-		public unsafe string CalcWordWrapPositionAS(float scale, ReadOnlySpan<byte> text, string textEnd, float wrapWidth)
+		public unsafe string CalcWordWrapPositionS(float size, ReadOnlySpan<byte> text, string textEnd, float wrapWidth)
 		{
 			fixed (byte* ptext = text)
 			{
@@ -5352,7 +8041,7 @@ namespace Dalamud.Bindings.ImGui
 					int pStrOffset0 = Utils.EncodeStringUTF8(textEnd, pStr0, pStrSize0);
 					pStr0[pStrOffset0] = 0;
 				}
-				string ret = Utils.DecodeStringUTF8(ImGui.CalcWordWrapPositionANative(Handle, scale, (byte*)ptext, pStr0, wrapWidth));
+				string ret = Utils.DecodeStringUTF8(ImGui.CalcWordWrapPositionNative(Handle, size, (byte*)ptext, pStr0, wrapWidth));
 				if (pStrSize0 >= Utils.MaxStackallocSize)
 				{
 					Utils.Free(pStr0);
@@ -5364,7 +8053,7 @@ namespace Dalamud.Bindings.ImGui
 		/// <summary>
 		/// To be documented.
 		/// </summary>
-		public unsafe byte* CalcWordWrapPositionA(float scale, string text, ref byte textEnd, float wrapWidth)
+		public unsafe byte* CalcWordWrapPosition(float size, string text, in byte textEnd, float wrapWidth)
 		{
 			byte* pStr0 = null;
 			int pStrSize0 = 0;
@@ -5385,7 +8074,7 @@ namespace Dalamud.Bindings.ImGui
 			}
 			fixed (byte* ptextEnd = &textEnd)
 			{
-				byte* ret = ImGui.CalcWordWrapPositionANative(Handle, scale, pStr0, (byte*)ptextEnd, wrapWidth);
+				byte* ret = ImGui.CalcWordWrapPositionNative(Handle, size, pStr0, (byte*)ptextEnd, wrapWidth);
 				if (pStrSize0 >= Utils.MaxStackallocSize)
 				{
 					Utils.Free(pStr0);
@@ -5397,7 +8086,7 @@ namespace Dalamud.Bindings.ImGui
 		/// <summary>
 		/// To be documented.
 		/// </summary>
-		public unsafe string CalcWordWrapPositionAS(float scale, string text, ref byte textEnd, float wrapWidth)
+		public unsafe string CalcWordWrapPositionS(float size, string text, in byte textEnd, float wrapWidth)
 		{
 			byte* pStr0 = null;
 			int pStrSize0 = 0;
@@ -5418,7 +8107,7 @@ namespace Dalamud.Bindings.ImGui
 			}
 			fixed (byte* ptextEnd = &textEnd)
 			{
-				string ret = Utils.DecodeStringUTF8(ImGui.CalcWordWrapPositionANative(Handle, scale, pStr0, (byte*)ptextEnd, wrapWidth));
+				string ret = Utils.DecodeStringUTF8(ImGui.CalcWordWrapPositionNative(Handle, size, pStr0, (byte*)ptextEnd, wrapWidth));
 				if (pStrSize0 >= Utils.MaxStackallocSize)
 				{
 					Utils.Free(pStr0);
@@ -5430,7 +8119,7 @@ namespace Dalamud.Bindings.ImGui
 		/// <summary>
 		/// To be documented.
 		/// </summary>
-		public unsafe byte* CalcWordWrapPositionA(float scale, string text, ReadOnlySpan<byte> textEnd, float wrapWidth)
+		public unsafe byte* CalcWordWrapPosition(float size, string text, ReadOnlySpan<byte> textEnd, float wrapWidth)
 		{
 			byte* pStr0 = null;
 			int pStrSize0 = 0;
@@ -5451,7 +8140,7 @@ namespace Dalamud.Bindings.ImGui
 			}
 			fixed (byte* ptextEnd = textEnd)
 			{
-				byte* ret = ImGui.CalcWordWrapPositionANative(Handle, scale, pStr0, (byte*)ptextEnd, wrapWidth);
+				byte* ret = ImGui.CalcWordWrapPositionNative(Handle, size, pStr0, (byte*)ptextEnd, wrapWidth);
 				if (pStrSize0 >= Utils.MaxStackallocSize)
 				{
 					Utils.Free(pStr0);
@@ -5463,7 +8152,7 @@ namespace Dalamud.Bindings.ImGui
 		/// <summary>
 		/// To be documented.
 		/// </summary>
-		public unsafe string CalcWordWrapPositionAS(float scale, string text, ReadOnlySpan<byte> textEnd, float wrapWidth)
+		public unsafe string CalcWordWrapPositionS(float size, string text, ReadOnlySpan<byte> textEnd, float wrapWidth)
 		{
 			byte* pStr0 = null;
 			int pStrSize0 = 0;
@@ -5484,7 +8173,7 @@ namespace Dalamud.Bindings.ImGui
 			}
 			fixed (byte* ptextEnd = textEnd)
 			{
-				string ret = Utils.DecodeStringUTF8(ImGui.CalcWordWrapPositionANative(Handle, scale, pStr0, (byte*)ptextEnd, wrapWidth));
+				string ret = Utils.DecodeStringUTF8(ImGui.CalcWordWrapPositionNative(Handle, size, pStr0, (byte*)ptextEnd, wrapWidth));
 				if (pStrSize0 >= Utils.MaxStackallocSize)
 				{
 					Utils.Free(pStr0);
@@ -5512,33 +8201,6 @@ namespace Dalamud.Bindings.ImGui
 		/// <summary>
 		/// To be documented.
 		/// </summary>
-		public unsafe ImFontGlyph* FindGlyph(ushort c)
-		{
-			ImFontGlyph* ret = ImGui.FindGlyphNative(Handle, c);
-			return ret;
-		}
-
-		/// <summary>
-		/// To be documented.
-		/// </summary>
-		public unsafe ImFontGlyph* FindGlyphNoFallback(ushort c)
-		{
-			ImFontGlyph* ret = ImGui.FindGlyphNoFallbackNative(Handle, c);
-			return ret;
-		}
-
-		/// <summary>
-		/// To be documented.
-		/// </summary>
-		public unsafe float GetCharAdvance(ushort c)
-		{
-			float ret = ImGui.GetCharAdvanceNative(Handle, c);
-			return ret;
-		}
-
-		/// <summary>
-		/// To be documented.
-		/// </summary>
 		public unsafe byte* GetDebugName()
 		{
 			byte* ret = ImGui.GetDebugNameNative(Handle);
@@ -5557,39 +8219,28 @@ namespace Dalamud.Bindings.ImGui
 		/// <summary>
 		/// To be documented.
 		/// </summary>
-		public unsafe float GetDistanceAdjustmentForPair(ushort leftC, ushort rightC)
+		public unsafe ImFontBaked* GetFontBaked(float fontSize, float density)
 		{
-			float ret = ImGui.GetDistanceAdjustmentForPairNative(Handle, leftC, rightC);
+			ImFontBaked* ret = ImGui.GetFontBakedNative(Handle, fontSize, density);
 			return ret;
 		}
 
 		/// <summary>
 		/// To be documented.
 		/// </summary>
-		public unsafe float GetDistanceAdjustmentForPairFromHotData(ushort leftC, ImFontGlyphHotData* rightCInfo)
+		public unsafe ImFontBaked* GetFontBaked(float fontSize)
 		{
-			float ret = ImGui.GetDistanceAdjustmentForPairFromHotDataNative(Handle, leftC, rightCInfo);
+			ImFontBaked* ret = ImGui.GetFontBakedNative(Handle, fontSize, (float)(-1.0f));
 			return ret;
 		}
 
 		/// <summary>
 		/// To be documented.
 		/// </summary>
-		public unsafe float GetDistanceAdjustmentForPairFromHotData(ushort leftC, ref ImFontGlyphHotData rightCInfo)
+		public unsafe bool IsGlyphInFont(ushort c)
 		{
-			fixed (ImFontGlyphHotData* prightCInfo = &rightCInfo)
-			{
-				float ret = ImGui.GetDistanceAdjustmentForPairFromHotDataNative(Handle, leftC, (ImFontGlyphHotData*)prightCInfo);
-				return ret;
-			}
-		}
-
-		/// <summary>
-		/// To be documented.
-		/// </summary>
-		public unsafe void GrowIndex(int newSize)
-		{
-			ImGui.GrowIndexNative(Handle, newSize);
+			byte ret = ImGui.IsGlyphInFontNative(Handle, c);
+			return ret != 0;
 		}
 
 		/// <summary>
@@ -5613,9 +8264,28 @@ namespace Dalamud.Bindings.ImGui
 		/// <summary>
 		/// To be documented.
 		/// </summary>
+		public unsafe void RenderChar(ImDrawListPtr drawList, float size, Vector2 pos, uint col, ushort c, Vector4* cpuFineClip)
+		{
+			ImGui.RenderCharNative(Handle, (ImDrawList*)drawList, size, pos, col, c, cpuFineClip);
+		}
+
+		/// <summary>
+		/// To be documented.
+		/// </summary>
 		public unsafe void RenderChar(ImDrawListPtr drawList, float size, Vector2 pos, uint col, ushort c)
 		{
-			ImGui.RenderCharNative(Handle, drawList, size, pos, col, c);
+			ImGui.RenderCharNative(Handle, (ImDrawList*)drawList, size, pos, col, c, (Vector4*)(default));
+		}
+
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		public unsafe void RenderChar(ref ImDrawList drawList, float size, Vector2 pos, uint col, ushort c, Vector4* cpuFineClip)
+		{
+			fixed (ImDrawList* pdrawList = &drawList)
+			{
+				ImGui.RenderCharNative(Handle, (ImDrawList*)pdrawList, size, pos, col, c, cpuFineClip);
+			}
 		}
 
 		/// <summary>
@@ -5625,16 +8295,41 @@ namespace Dalamud.Bindings.ImGui
 		{
 			fixed (ImDrawList* pdrawList = &drawList)
 			{
-				ImGui.RenderCharNative(Handle, (ImDrawList*)pdrawList, size, pos, col, c);
+				ImGui.RenderCharNative(Handle, (ImDrawList*)pdrawList, size, pos, col, c, (Vector4*)(default));
 			}
 		}
 
 		/// <summary>
 		/// To be documented.
 		/// </summary>
-		public unsafe void RenderText(ImDrawListPtr drawList, float size, Vector2 pos, uint col, Vector4 clipRect, byte* textBegin, byte* textEnd, float wrapWidth, bool cpuFineClip)
+		public unsafe void RenderChar(ImDrawListPtr drawList, float size, Vector2 pos, uint col, ushort c, in Vector4 cpuFineClip)
 		{
-			ImGui.RenderTextNative(Handle, drawList, size, pos, col, clipRect, textBegin, textEnd, wrapWidth, cpuFineClip ? (byte)1 : (byte)0);
+			fixed (Vector4* pcpuFineClip = &cpuFineClip)
+			{
+				ImGui.RenderCharNative(Handle, (ImDrawList*)drawList, size, pos, col, c, (Vector4*)pcpuFineClip);
+			}
+		}
+
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		public unsafe void RenderChar(ref ImDrawList drawList, float size, Vector2 pos, uint col, ushort c, in Vector4 cpuFineClip)
+		{
+			fixed (ImDrawList* pdrawList = &drawList)
+			{
+				fixed (Vector4* pcpuFineClip = &cpuFineClip)
+				{
+					ImGui.RenderCharNative(Handle, (ImDrawList*)pdrawList, size, pos, col, c, (Vector4*)pcpuFineClip);
+				}
+			}
+		}
+
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		public unsafe void RenderText(ImDrawListPtr drawList, float size, Vector2 pos, uint col, Vector4 clipRect, byte* textBegin, byte* textEnd, float wrapWidth, ImDrawTextFlags flags)
+		{
+			ImGui.RenderTextNative(Handle, (ImDrawList*)drawList, size, pos, col, clipRect, textBegin, textEnd, wrapWidth, flags);
 		}
 
 		/// <summary>
@@ -5642,7 +8337,7 @@ namespace Dalamud.Bindings.ImGui
 		/// </summary>
 		public unsafe void RenderText(ImDrawListPtr drawList, float size, Vector2 pos, uint col, Vector4 clipRect, byte* textBegin, byte* textEnd, float wrapWidth)
 		{
-			ImGui.RenderTextNative(Handle, drawList, size, pos, col, clipRect, textBegin, textEnd, wrapWidth, (byte)(0));
+			ImGui.RenderTextNative(Handle, (ImDrawList*)drawList, size, pos, col, clipRect, textBegin, textEnd, wrapWidth, (ImDrawTextFlags)(0));
 		}
 
 		/// <summary>
@@ -5650,25 +8345,25 @@ namespace Dalamud.Bindings.ImGui
 		/// </summary>
 		public unsafe void RenderText(ImDrawListPtr drawList, float size, Vector2 pos, uint col, Vector4 clipRect, byte* textBegin, byte* textEnd)
 		{
-			ImGui.RenderTextNative(Handle, drawList, size, pos, col, clipRect, textBegin, textEnd, (float)(0.0f), (byte)(0));
+			ImGui.RenderTextNative(Handle, (ImDrawList*)drawList, size, pos, col, clipRect, textBegin, textEnd, (float)(0.0f), (ImDrawTextFlags)(0));
 		}
 
 		/// <summary>
 		/// To be documented.
 		/// </summary>
-		public unsafe void RenderText(ImDrawListPtr drawList, float size, Vector2 pos, uint col, Vector4 clipRect, byte* textBegin, byte* textEnd, bool cpuFineClip)
+		public unsafe void RenderText(ImDrawListPtr drawList, float size, Vector2 pos, uint col, Vector4 clipRect, byte* textBegin, byte* textEnd, ImDrawTextFlags flags)
 		{
-			ImGui.RenderTextNative(Handle, drawList, size, pos, col, clipRect, textBegin, textEnd, (float)(0.0f), cpuFineClip ? (byte)1 : (byte)0);
+			ImGui.RenderTextNative(Handle, (ImDrawList*)drawList, size, pos, col, clipRect, textBegin, textEnd, (float)(0.0f), flags);
 		}
 
 		/// <summary>
 		/// To be documented.
 		/// </summary>
-		public unsafe void RenderText(ref ImDrawList drawList, float size, Vector2 pos, uint col, Vector4 clipRect, byte* textBegin, byte* textEnd, float wrapWidth, bool cpuFineClip)
+		public unsafe void RenderText(ref ImDrawList drawList, float size, Vector2 pos, uint col, Vector4 clipRect, byte* textBegin, byte* textEnd, float wrapWidth, ImDrawTextFlags flags)
 		{
 			fixed (ImDrawList* pdrawList = &drawList)
 			{
-				ImGui.RenderTextNative(Handle, (ImDrawList*)pdrawList, size, pos, col, clipRect, textBegin, textEnd, wrapWidth, cpuFineClip ? (byte)1 : (byte)0);
+				ImGui.RenderTextNative(Handle, (ImDrawList*)pdrawList, size, pos, col, clipRect, textBegin, textEnd, wrapWidth, flags);
 			}
 		}
 
@@ -5679,7 +8374,7 @@ namespace Dalamud.Bindings.ImGui
 		{
 			fixed (ImDrawList* pdrawList = &drawList)
 			{
-				ImGui.RenderTextNative(Handle, (ImDrawList*)pdrawList, size, pos, col, clipRect, textBegin, textEnd, wrapWidth, (byte)(0));
+				ImGui.RenderTextNative(Handle, (ImDrawList*)pdrawList, size, pos, col, clipRect, textBegin, textEnd, wrapWidth, (ImDrawTextFlags)(0));
 			}
 		}
 
@@ -5690,73 +8385,73 @@ namespace Dalamud.Bindings.ImGui
 		{
 			fixed (ImDrawList* pdrawList = &drawList)
 			{
-				ImGui.RenderTextNative(Handle, (ImDrawList*)pdrawList, size, pos, col, clipRect, textBegin, textEnd, (float)(0.0f), (byte)(0));
+				ImGui.RenderTextNative(Handle, (ImDrawList*)pdrawList, size, pos, col, clipRect, textBegin, textEnd, (float)(0.0f), (ImDrawTextFlags)(0));
 			}
 		}
 
 		/// <summary>
 		/// To be documented.
 		/// </summary>
-		public unsafe void RenderText(ref ImDrawList drawList, float size, Vector2 pos, uint col, Vector4 clipRect, byte* textBegin, byte* textEnd, bool cpuFineClip)
+		public unsafe void RenderText(ref ImDrawList drawList, float size, Vector2 pos, uint col, Vector4 clipRect, byte* textBegin, byte* textEnd, ImDrawTextFlags flags)
 		{
 			fixed (ImDrawList* pdrawList = &drawList)
 			{
-				ImGui.RenderTextNative(Handle, (ImDrawList*)pdrawList, size, pos, col, clipRect, textBegin, textEnd, (float)(0.0f), cpuFineClip ? (byte)1 : (byte)0);
+				ImGui.RenderTextNative(Handle, (ImDrawList*)pdrawList, size, pos, col, clipRect, textBegin, textEnd, (float)(0.0f), flags);
 			}
 		}
 
 		/// <summary>
 		/// To be documented.
 		/// </summary>
-		public unsafe void RenderText(ImDrawListPtr drawList, float size, Vector2 pos, uint col, Vector4 clipRect, ref byte textBegin, byte* textEnd, float wrapWidth, bool cpuFineClip)
+		public unsafe void RenderText(ImDrawListPtr drawList, float size, Vector2 pos, uint col, Vector4 clipRect, in byte textBegin, byte* textEnd, float wrapWidth, ImDrawTextFlags flags)
 		{
 			fixed (byte* ptextBegin = &textBegin)
 			{
-				ImGui.RenderTextNative(Handle, drawList, size, pos, col, clipRect, (byte*)ptextBegin, textEnd, wrapWidth, cpuFineClip ? (byte)1 : (byte)0);
+				ImGui.RenderTextNative(Handle, (ImDrawList*)drawList, size, pos, col, clipRect, (byte*)ptextBegin, textEnd, wrapWidth, flags);
 			}
 		}
 
 		/// <summary>
 		/// To be documented.
 		/// </summary>
-		public unsafe void RenderText(ImDrawListPtr drawList, float size, Vector2 pos, uint col, Vector4 clipRect, ref byte textBegin, byte* textEnd, float wrapWidth)
+		public unsafe void RenderText(ImDrawListPtr drawList, float size, Vector2 pos, uint col, Vector4 clipRect, in byte textBegin, byte* textEnd, float wrapWidth)
 		{
 			fixed (byte* ptextBegin = &textBegin)
 			{
-				ImGui.RenderTextNative(Handle, drawList, size, pos, col, clipRect, (byte*)ptextBegin, textEnd, wrapWidth, (byte)(0));
+				ImGui.RenderTextNative(Handle, (ImDrawList*)drawList, size, pos, col, clipRect, (byte*)ptextBegin, textEnd, wrapWidth, (ImDrawTextFlags)(0));
 			}
 		}
 
 		/// <summary>
 		/// To be documented.
 		/// </summary>
-		public unsafe void RenderText(ImDrawListPtr drawList, float size, Vector2 pos, uint col, Vector4 clipRect, ref byte textBegin, byte* textEnd)
+		public unsafe void RenderText(ImDrawListPtr drawList, float size, Vector2 pos, uint col, Vector4 clipRect, in byte textBegin, byte* textEnd)
 		{
 			fixed (byte* ptextBegin = &textBegin)
 			{
-				ImGui.RenderTextNative(Handle, drawList, size, pos, col, clipRect, (byte*)ptextBegin, textEnd, (float)(0.0f), (byte)(0));
+				ImGui.RenderTextNative(Handle, (ImDrawList*)drawList, size, pos, col, clipRect, (byte*)ptextBegin, textEnd, (float)(0.0f), (ImDrawTextFlags)(0));
 			}
 		}
 
 		/// <summary>
 		/// To be documented.
 		/// </summary>
-		public unsafe void RenderText(ImDrawListPtr drawList, float size, Vector2 pos, uint col, Vector4 clipRect, ref byte textBegin, byte* textEnd, bool cpuFineClip)
+		public unsafe void RenderText(ImDrawListPtr drawList, float size, Vector2 pos, uint col, Vector4 clipRect, in byte textBegin, byte* textEnd, ImDrawTextFlags flags)
 		{
 			fixed (byte* ptextBegin = &textBegin)
 			{
-				ImGui.RenderTextNative(Handle, drawList, size, pos, col, clipRect, (byte*)ptextBegin, textEnd, (float)(0.0f), cpuFineClip ? (byte)1 : (byte)0);
+				ImGui.RenderTextNative(Handle, (ImDrawList*)drawList, size, pos, col, clipRect, (byte*)ptextBegin, textEnd, (float)(0.0f), flags);
 			}
 		}
 
 		/// <summary>
 		/// To be documented.
 		/// </summary>
-		public unsafe void RenderText(ImDrawListPtr drawList, float size, Vector2 pos, uint col, Vector4 clipRect, ReadOnlySpan<byte> textBegin, byte* textEnd, float wrapWidth, bool cpuFineClip)
+		public unsafe void RenderText(ImDrawListPtr drawList, float size, Vector2 pos, uint col, Vector4 clipRect, ReadOnlySpan<byte> textBegin, byte* textEnd, float wrapWidth, ImDrawTextFlags flags)
 		{
 			fixed (byte* ptextBegin = textBegin)
 			{
-				ImGui.RenderTextNative(Handle, drawList, size, pos, col, clipRect, (byte*)ptextBegin, textEnd, wrapWidth, cpuFineClip ? (byte)1 : (byte)0);
+				ImGui.RenderTextNative(Handle, (ImDrawList*)drawList, size, pos, col, clipRect, (byte*)ptextBegin, textEnd, wrapWidth, flags);
 			}
 		}
 
@@ -5767,7 +8462,7 @@ namespace Dalamud.Bindings.ImGui
 		{
 			fixed (byte* ptextBegin = textBegin)
 			{
-				ImGui.RenderTextNative(Handle, drawList, size, pos, col, clipRect, (byte*)ptextBegin, textEnd, wrapWidth, (byte)(0));
+				ImGui.RenderTextNative(Handle, (ImDrawList*)drawList, size, pos, col, clipRect, (byte*)ptextBegin, textEnd, wrapWidth, (ImDrawTextFlags)(0));
 			}
 		}
 
@@ -5778,25 +8473,25 @@ namespace Dalamud.Bindings.ImGui
 		{
 			fixed (byte* ptextBegin = textBegin)
 			{
-				ImGui.RenderTextNative(Handle, drawList, size, pos, col, clipRect, (byte*)ptextBegin, textEnd, (float)(0.0f), (byte)(0));
+				ImGui.RenderTextNative(Handle, (ImDrawList*)drawList, size, pos, col, clipRect, (byte*)ptextBegin, textEnd, (float)(0.0f), (ImDrawTextFlags)(0));
 			}
 		}
 
 		/// <summary>
 		/// To be documented.
 		/// </summary>
-		public unsafe void RenderText(ImDrawListPtr drawList, float size, Vector2 pos, uint col, Vector4 clipRect, ReadOnlySpan<byte> textBegin, byte* textEnd, bool cpuFineClip)
+		public unsafe void RenderText(ImDrawListPtr drawList, float size, Vector2 pos, uint col, Vector4 clipRect, ReadOnlySpan<byte> textBegin, byte* textEnd, ImDrawTextFlags flags)
 		{
 			fixed (byte* ptextBegin = textBegin)
 			{
-				ImGui.RenderTextNative(Handle, drawList, size, pos, col, clipRect, (byte*)ptextBegin, textEnd, (float)(0.0f), cpuFineClip ? (byte)1 : (byte)0);
+				ImGui.RenderTextNative(Handle, (ImDrawList*)drawList, size, pos, col, clipRect, (byte*)ptextBegin, textEnd, (float)(0.0f), flags);
 			}
 		}
 
 		/// <summary>
 		/// To be documented.
 		/// </summary>
-		public unsafe void RenderText(ImDrawListPtr drawList, float size, Vector2 pos, uint col, Vector4 clipRect, string textBegin, byte* textEnd, float wrapWidth, bool cpuFineClip)
+		public unsafe void RenderText(ImDrawListPtr drawList, float size, Vector2 pos, uint col, Vector4 clipRect, string textBegin, byte* textEnd, float wrapWidth, ImDrawTextFlags flags)
 		{
 			byte* pStr0 = null;
 			int pStrSize0 = 0;
@@ -5815,7 +8510,7 @@ namespace Dalamud.Bindings.ImGui
 				int pStrOffset0 = Utils.EncodeStringUTF8(textBegin, pStr0, pStrSize0);
 				pStr0[pStrOffset0] = 0;
 			}
-			ImGui.RenderTextNative(Handle, drawList, size, pos, col, clipRect, pStr0, textEnd, wrapWidth, cpuFineClip ? (byte)1 : (byte)0);
+			ImGui.RenderTextNative(Handle, (ImDrawList*)drawList, size, pos, col, clipRect, pStr0, textEnd, wrapWidth, flags);
 			if (pStrSize0 >= Utils.MaxStackallocSize)
 			{
 				Utils.Free(pStr0);
@@ -5844,7 +8539,7 @@ namespace Dalamud.Bindings.ImGui
 				int pStrOffset0 = Utils.EncodeStringUTF8(textBegin, pStr0, pStrSize0);
 				pStr0[pStrOffset0] = 0;
 			}
-			ImGui.RenderTextNative(Handle, drawList, size, pos, col, clipRect, pStr0, textEnd, wrapWidth, (byte)(0));
+			ImGui.RenderTextNative(Handle, (ImDrawList*)drawList, size, pos, col, clipRect, pStr0, textEnd, wrapWidth, (ImDrawTextFlags)(0));
 			if (pStrSize0 >= Utils.MaxStackallocSize)
 			{
 				Utils.Free(pStr0);
@@ -5873,7 +8568,7 @@ namespace Dalamud.Bindings.ImGui
 				int pStrOffset0 = Utils.EncodeStringUTF8(textBegin, pStr0, pStrSize0);
 				pStr0[pStrOffset0] = 0;
 			}
-			ImGui.RenderTextNative(Handle, drawList, size, pos, col, clipRect, pStr0, textEnd, (float)(0.0f), (byte)(0));
+			ImGui.RenderTextNative(Handle, (ImDrawList*)drawList, size, pos, col, clipRect, pStr0, textEnd, (float)(0.0f), (ImDrawTextFlags)(0));
 			if (pStrSize0 >= Utils.MaxStackallocSize)
 			{
 				Utils.Free(pStr0);
@@ -5883,7 +8578,7 @@ namespace Dalamud.Bindings.ImGui
 		/// <summary>
 		/// To be documented.
 		/// </summary>
-		public unsafe void RenderText(ImDrawListPtr drawList, float size, Vector2 pos, uint col, Vector4 clipRect, string textBegin, byte* textEnd, bool cpuFineClip)
+		public unsafe void RenderText(ImDrawListPtr drawList, float size, Vector2 pos, uint col, Vector4 clipRect, string textBegin, byte* textEnd, ImDrawTextFlags flags)
 		{
 			byte* pStr0 = null;
 			int pStrSize0 = 0;
@@ -5902,7 +8597,7 @@ namespace Dalamud.Bindings.ImGui
 				int pStrOffset0 = Utils.EncodeStringUTF8(textBegin, pStr0, pStrSize0);
 				pStr0[pStrOffset0] = 0;
 			}
-			ImGui.RenderTextNative(Handle, drawList, size, pos, col, clipRect, pStr0, textEnd, (float)(0.0f), cpuFineClip ? (byte)1 : (byte)0);
+			ImGui.RenderTextNative(Handle, (ImDrawList*)drawList, size, pos, col, clipRect, pStr0, textEnd, (float)(0.0f), flags);
 			if (pStrSize0 >= Utils.MaxStackallocSize)
 			{
 				Utils.Free(pStr0);
@@ -5912,13 +8607,13 @@ namespace Dalamud.Bindings.ImGui
 		/// <summary>
 		/// To be documented.
 		/// </summary>
-		public unsafe void RenderText(ref ImDrawList drawList, float size, Vector2 pos, uint col, Vector4 clipRect, ref byte textBegin, byte* textEnd, float wrapWidth, bool cpuFineClip)
+		public unsafe void RenderText(ref ImDrawList drawList, float size, Vector2 pos, uint col, Vector4 clipRect, in byte textBegin, byte* textEnd, float wrapWidth, ImDrawTextFlags flags)
 		{
 			fixed (ImDrawList* pdrawList = &drawList)
 			{
 				fixed (byte* ptextBegin = &textBegin)
 				{
-					ImGui.RenderTextNative(Handle, (ImDrawList*)pdrawList, size, pos, col, clipRect, (byte*)ptextBegin, textEnd, wrapWidth, cpuFineClip ? (byte)1 : (byte)0);
+					ImGui.RenderTextNative(Handle, (ImDrawList*)pdrawList, size, pos, col, clipRect, (byte*)ptextBegin, textEnd, wrapWidth, flags);
 				}
 			}
 		}
@@ -5926,13 +8621,13 @@ namespace Dalamud.Bindings.ImGui
 		/// <summary>
 		/// To be documented.
 		/// </summary>
-		public unsafe void RenderText(ref ImDrawList drawList, float size, Vector2 pos, uint col, Vector4 clipRect, ref byte textBegin, byte* textEnd, float wrapWidth)
+		public unsafe void RenderText(ref ImDrawList drawList, float size, Vector2 pos, uint col, Vector4 clipRect, in byte textBegin, byte* textEnd, float wrapWidth)
 		{
 			fixed (ImDrawList* pdrawList = &drawList)
 			{
 				fixed (byte* ptextBegin = &textBegin)
 				{
-					ImGui.RenderTextNative(Handle, (ImDrawList*)pdrawList, size, pos, col, clipRect, (byte*)ptextBegin, textEnd, wrapWidth, (byte)(0));
+					ImGui.RenderTextNative(Handle, (ImDrawList*)pdrawList, size, pos, col, clipRect, (byte*)ptextBegin, textEnd, wrapWidth, (ImDrawTextFlags)(0));
 				}
 			}
 		}
@@ -5940,13 +8635,13 @@ namespace Dalamud.Bindings.ImGui
 		/// <summary>
 		/// To be documented.
 		/// </summary>
-		public unsafe void RenderText(ref ImDrawList drawList, float size, Vector2 pos, uint col, Vector4 clipRect, ref byte textBegin, byte* textEnd)
+		public unsafe void RenderText(ref ImDrawList drawList, float size, Vector2 pos, uint col, Vector4 clipRect, in byte textBegin, byte* textEnd)
 		{
 			fixed (ImDrawList* pdrawList = &drawList)
 			{
 				fixed (byte* ptextBegin = &textBegin)
 				{
-					ImGui.RenderTextNative(Handle, (ImDrawList*)pdrawList, size, pos, col, clipRect, (byte*)ptextBegin, textEnd, (float)(0.0f), (byte)(0));
+					ImGui.RenderTextNative(Handle, (ImDrawList*)pdrawList, size, pos, col, clipRect, (byte*)ptextBegin, textEnd, (float)(0.0f), (ImDrawTextFlags)(0));
 				}
 			}
 		}
@@ -5954,13 +8649,13 @@ namespace Dalamud.Bindings.ImGui
 		/// <summary>
 		/// To be documented.
 		/// </summary>
-		public unsafe void RenderText(ref ImDrawList drawList, float size, Vector2 pos, uint col, Vector4 clipRect, ref byte textBegin, byte* textEnd, bool cpuFineClip)
+		public unsafe void RenderText(ref ImDrawList drawList, float size, Vector2 pos, uint col, Vector4 clipRect, in byte textBegin, byte* textEnd, ImDrawTextFlags flags)
 		{
 			fixed (ImDrawList* pdrawList = &drawList)
 			{
 				fixed (byte* ptextBegin = &textBegin)
 				{
-					ImGui.RenderTextNative(Handle, (ImDrawList*)pdrawList, size, pos, col, clipRect, (byte*)ptextBegin, textEnd, (float)(0.0f), cpuFineClip ? (byte)1 : (byte)0);
+					ImGui.RenderTextNative(Handle, (ImDrawList*)pdrawList, size, pos, col, clipRect, (byte*)ptextBegin, textEnd, (float)(0.0f), flags);
 				}
 			}
 		}
@@ -5968,13 +8663,13 @@ namespace Dalamud.Bindings.ImGui
 		/// <summary>
 		/// To be documented.
 		/// </summary>
-		public unsafe void RenderText(ref ImDrawList drawList, float size, Vector2 pos, uint col, Vector4 clipRect, ReadOnlySpan<byte> textBegin, byte* textEnd, float wrapWidth, bool cpuFineClip)
+		public unsafe void RenderText(ref ImDrawList drawList, float size, Vector2 pos, uint col, Vector4 clipRect, ReadOnlySpan<byte> textBegin, byte* textEnd, float wrapWidth, ImDrawTextFlags flags)
 		{
 			fixed (ImDrawList* pdrawList = &drawList)
 			{
 				fixed (byte* ptextBegin = textBegin)
 				{
-					ImGui.RenderTextNative(Handle, (ImDrawList*)pdrawList, size, pos, col, clipRect, (byte*)ptextBegin, textEnd, wrapWidth, cpuFineClip ? (byte)1 : (byte)0);
+					ImGui.RenderTextNative(Handle, (ImDrawList*)pdrawList, size, pos, col, clipRect, (byte*)ptextBegin, textEnd, wrapWidth, flags);
 				}
 			}
 		}
@@ -5988,7 +8683,7 @@ namespace Dalamud.Bindings.ImGui
 			{
 				fixed (byte* ptextBegin = textBegin)
 				{
-					ImGui.RenderTextNative(Handle, (ImDrawList*)pdrawList, size, pos, col, clipRect, (byte*)ptextBegin, textEnd, wrapWidth, (byte)(0));
+					ImGui.RenderTextNative(Handle, (ImDrawList*)pdrawList, size, pos, col, clipRect, (byte*)ptextBegin, textEnd, wrapWidth, (ImDrawTextFlags)(0));
 				}
 			}
 		}
@@ -6002,7 +8697,7 @@ namespace Dalamud.Bindings.ImGui
 			{
 				fixed (byte* ptextBegin = textBegin)
 				{
-					ImGui.RenderTextNative(Handle, (ImDrawList*)pdrawList, size, pos, col, clipRect, (byte*)ptextBegin, textEnd, (float)(0.0f), (byte)(0));
+					ImGui.RenderTextNative(Handle, (ImDrawList*)pdrawList, size, pos, col, clipRect, (byte*)ptextBegin, textEnd, (float)(0.0f), (ImDrawTextFlags)(0));
 				}
 			}
 		}
@@ -6010,13 +8705,13 @@ namespace Dalamud.Bindings.ImGui
 		/// <summary>
 		/// To be documented.
 		/// </summary>
-		public unsafe void RenderText(ref ImDrawList drawList, float size, Vector2 pos, uint col, Vector4 clipRect, ReadOnlySpan<byte> textBegin, byte* textEnd, bool cpuFineClip)
+		public unsafe void RenderText(ref ImDrawList drawList, float size, Vector2 pos, uint col, Vector4 clipRect, ReadOnlySpan<byte> textBegin, byte* textEnd, ImDrawTextFlags flags)
 		{
 			fixed (ImDrawList* pdrawList = &drawList)
 			{
 				fixed (byte* ptextBegin = textBegin)
 				{
-					ImGui.RenderTextNative(Handle, (ImDrawList*)pdrawList, size, pos, col, clipRect, (byte*)ptextBegin, textEnd, (float)(0.0f), cpuFineClip ? (byte)1 : (byte)0);
+					ImGui.RenderTextNative(Handle, (ImDrawList*)pdrawList, size, pos, col, clipRect, (byte*)ptextBegin, textEnd, (float)(0.0f), flags);
 				}
 			}
 		}
@@ -6024,7 +8719,7 @@ namespace Dalamud.Bindings.ImGui
 		/// <summary>
 		/// To be documented.
 		/// </summary>
-		public unsafe void RenderText(ref ImDrawList drawList, float size, Vector2 pos, uint col, Vector4 clipRect, string textBegin, byte* textEnd, float wrapWidth, bool cpuFineClip)
+		public unsafe void RenderText(ref ImDrawList drawList, float size, Vector2 pos, uint col, Vector4 clipRect, string textBegin, byte* textEnd, float wrapWidth, ImDrawTextFlags flags)
 		{
 			fixed (ImDrawList* pdrawList = &drawList)
 			{
@@ -6045,7 +8740,7 @@ namespace Dalamud.Bindings.ImGui
 					int pStrOffset0 = Utils.EncodeStringUTF8(textBegin, pStr0, pStrSize0);
 					pStr0[pStrOffset0] = 0;
 				}
-				ImGui.RenderTextNative(Handle, (ImDrawList*)pdrawList, size, pos, col, clipRect, pStr0, textEnd, wrapWidth, cpuFineClip ? (byte)1 : (byte)0);
+				ImGui.RenderTextNative(Handle, (ImDrawList*)pdrawList, size, pos, col, clipRect, pStr0, textEnd, wrapWidth, flags);
 				if (pStrSize0 >= Utils.MaxStackallocSize)
 				{
 					Utils.Free(pStr0);
@@ -6077,7 +8772,7 @@ namespace Dalamud.Bindings.ImGui
 					int pStrOffset0 = Utils.EncodeStringUTF8(textBegin, pStr0, pStrSize0);
 					pStr0[pStrOffset0] = 0;
 				}
-				ImGui.RenderTextNative(Handle, (ImDrawList*)pdrawList, size, pos, col, clipRect, pStr0, textEnd, wrapWidth, (byte)(0));
+				ImGui.RenderTextNative(Handle, (ImDrawList*)pdrawList, size, pos, col, clipRect, pStr0, textEnd, wrapWidth, (ImDrawTextFlags)(0));
 				if (pStrSize0 >= Utils.MaxStackallocSize)
 				{
 					Utils.Free(pStr0);
@@ -6109,7 +8804,7 @@ namespace Dalamud.Bindings.ImGui
 					int pStrOffset0 = Utils.EncodeStringUTF8(textBegin, pStr0, pStrSize0);
 					pStr0[pStrOffset0] = 0;
 				}
-				ImGui.RenderTextNative(Handle, (ImDrawList*)pdrawList, size, pos, col, clipRect, pStr0, textEnd, (float)(0.0f), (byte)(0));
+				ImGui.RenderTextNative(Handle, (ImDrawList*)pdrawList, size, pos, col, clipRect, pStr0, textEnd, (float)(0.0f), (ImDrawTextFlags)(0));
 				if (pStrSize0 >= Utils.MaxStackallocSize)
 				{
 					Utils.Free(pStr0);
@@ -6120,7 +8815,7 @@ namespace Dalamud.Bindings.ImGui
 		/// <summary>
 		/// To be documented.
 		/// </summary>
-		public unsafe void RenderText(ref ImDrawList drawList, float size, Vector2 pos, uint col, Vector4 clipRect, string textBegin, byte* textEnd, bool cpuFineClip)
+		public unsafe void RenderText(ref ImDrawList drawList, float size, Vector2 pos, uint col, Vector4 clipRect, string textBegin, byte* textEnd, ImDrawTextFlags flags)
 		{
 			fixed (ImDrawList* pdrawList = &drawList)
 			{
@@ -6141,7 +8836,7 @@ namespace Dalamud.Bindings.ImGui
 					int pStrOffset0 = Utils.EncodeStringUTF8(textBegin, pStr0, pStrSize0);
 					pStr0[pStrOffset0] = 0;
 				}
-				ImGui.RenderTextNative(Handle, (ImDrawList*)pdrawList, size, pos, col, clipRect, pStr0, textEnd, (float)(0.0f), cpuFineClip ? (byte)1 : (byte)0);
+				ImGui.RenderTextNative(Handle, (ImDrawList*)pdrawList, size, pos, col, clipRect, pStr0, textEnd, (float)(0.0f), flags);
 				if (pStrSize0 >= Utils.MaxStackallocSize)
 				{
 					Utils.Free(pStr0);
@@ -6152,55 +8847,55 @@ namespace Dalamud.Bindings.ImGui
 		/// <summary>
 		/// To be documented.
 		/// </summary>
-		public unsafe void RenderText(ImDrawListPtr drawList, float size, Vector2 pos, uint col, Vector4 clipRect, byte* textBegin, ref byte textEnd, float wrapWidth, bool cpuFineClip)
+		public unsafe void RenderText(ImDrawListPtr drawList, float size, Vector2 pos, uint col, Vector4 clipRect, byte* textBegin, in byte textEnd, float wrapWidth, ImDrawTextFlags flags)
 		{
 			fixed (byte* ptextEnd = &textEnd)
 			{
-				ImGui.RenderTextNative(Handle, drawList, size, pos, col, clipRect, textBegin, (byte*)ptextEnd, wrapWidth, cpuFineClip ? (byte)1 : (byte)0);
+				ImGui.RenderTextNative(Handle, (ImDrawList*)drawList, size, pos, col, clipRect, textBegin, (byte*)ptextEnd, wrapWidth, flags);
 			}
 		}
 
 		/// <summary>
 		/// To be documented.
 		/// </summary>
-		public unsafe void RenderText(ImDrawListPtr drawList, float size, Vector2 pos, uint col, Vector4 clipRect, byte* textBegin, ref byte textEnd, float wrapWidth)
+		public unsafe void RenderText(ImDrawListPtr drawList, float size, Vector2 pos, uint col, Vector4 clipRect, byte* textBegin, in byte textEnd, float wrapWidth)
 		{
 			fixed (byte* ptextEnd = &textEnd)
 			{
-				ImGui.RenderTextNative(Handle, drawList, size, pos, col, clipRect, textBegin, (byte*)ptextEnd, wrapWidth, (byte)(0));
+				ImGui.RenderTextNative(Handle, (ImDrawList*)drawList, size, pos, col, clipRect, textBegin, (byte*)ptextEnd, wrapWidth, (ImDrawTextFlags)(0));
 			}
 		}
 
 		/// <summary>
 		/// To be documented.
 		/// </summary>
-		public unsafe void RenderText(ImDrawListPtr drawList, float size, Vector2 pos, uint col, Vector4 clipRect, byte* textBegin, ref byte textEnd)
+		public unsafe void RenderText(ImDrawListPtr drawList, float size, Vector2 pos, uint col, Vector4 clipRect, byte* textBegin, in byte textEnd)
 		{
 			fixed (byte* ptextEnd = &textEnd)
 			{
-				ImGui.RenderTextNative(Handle, drawList, size, pos, col, clipRect, textBegin, (byte*)ptextEnd, (float)(0.0f), (byte)(0));
+				ImGui.RenderTextNative(Handle, (ImDrawList*)drawList, size, pos, col, clipRect, textBegin, (byte*)ptextEnd, (float)(0.0f), (ImDrawTextFlags)(0));
 			}
 		}
 
 		/// <summary>
 		/// To be documented.
 		/// </summary>
-		public unsafe void RenderText(ImDrawListPtr drawList, float size, Vector2 pos, uint col, Vector4 clipRect, byte* textBegin, ref byte textEnd, bool cpuFineClip)
+		public unsafe void RenderText(ImDrawListPtr drawList, float size, Vector2 pos, uint col, Vector4 clipRect, byte* textBegin, in byte textEnd, ImDrawTextFlags flags)
 		{
 			fixed (byte* ptextEnd = &textEnd)
 			{
-				ImGui.RenderTextNative(Handle, drawList, size, pos, col, clipRect, textBegin, (byte*)ptextEnd, (float)(0.0f), cpuFineClip ? (byte)1 : (byte)0);
+				ImGui.RenderTextNative(Handle, (ImDrawList*)drawList, size, pos, col, clipRect, textBegin, (byte*)ptextEnd, (float)(0.0f), flags);
 			}
 		}
 
 		/// <summary>
 		/// To be documented.
 		/// </summary>
-		public unsafe void RenderText(ImDrawListPtr drawList, float size, Vector2 pos, uint col, Vector4 clipRect, byte* textBegin, ReadOnlySpan<byte> textEnd, float wrapWidth, bool cpuFineClip)
+		public unsafe void RenderText(ImDrawListPtr drawList, float size, Vector2 pos, uint col, Vector4 clipRect, byte* textBegin, ReadOnlySpan<byte> textEnd, float wrapWidth, ImDrawTextFlags flags)
 		{
 			fixed (byte* ptextEnd = textEnd)
 			{
-				ImGui.RenderTextNative(Handle, drawList, size, pos, col, clipRect, textBegin, (byte*)ptextEnd, wrapWidth, cpuFineClip ? (byte)1 : (byte)0);
+				ImGui.RenderTextNative(Handle, (ImDrawList*)drawList, size, pos, col, clipRect, textBegin, (byte*)ptextEnd, wrapWidth, flags);
 			}
 		}
 
@@ -6211,7 +8906,7 @@ namespace Dalamud.Bindings.ImGui
 		{
 			fixed (byte* ptextEnd = textEnd)
 			{
-				ImGui.RenderTextNative(Handle, drawList, size, pos, col, clipRect, textBegin, (byte*)ptextEnd, wrapWidth, (byte)(0));
+				ImGui.RenderTextNative(Handle, (ImDrawList*)drawList, size, pos, col, clipRect, textBegin, (byte*)ptextEnd, wrapWidth, (ImDrawTextFlags)(0));
 			}
 		}
 
@@ -6222,25 +8917,25 @@ namespace Dalamud.Bindings.ImGui
 		{
 			fixed (byte* ptextEnd = textEnd)
 			{
-				ImGui.RenderTextNative(Handle, drawList, size, pos, col, clipRect, textBegin, (byte*)ptextEnd, (float)(0.0f), (byte)(0));
+				ImGui.RenderTextNative(Handle, (ImDrawList*)drawList, size, pos, col, clipRect, textBegin, (byte*)ptextEnd, (float)(0.0f), (ImDrawTextFlags)(0));
 			}
 		}
 
 		/// <summary>
 		/// To be documented.
 		/// </summary>
-		public unsafe void RenderText(ImDrawListPtr drawList, float size, Vector2 pos, uint col, Vector4 clipRect, byte* textBegin, ReadOnlySpan<byte> textEnd, bool cpuFineClip)
+		public unsafe void RenderText(ImDrawListPtr drawList, float size, Vector2 pos, uint col, Vector4 clipRect, byte* textBegin, ReadOnlySpan<byte> textEnd, ImDrawTextFlags flags)
 		{
 			fixed (byte* ptextEnd = textEnd)
 			{
-				ImGui.RenderTextNative(Handle, drawList, size, pos, col, clipRect, textBegin, (byte*)ptextEnd, (float)(0.0f), cpuFineClip ? (byte)1 : (byte)0);
+				ImGui.RenderTextNative(Handle, (ImDrawList*)drawList, size, pos, col, clipRect, textBegin, (byte*)ptextEnd, (float)(0.0f), flags);
 			}
 		}
 
 		/// <summary>
 		/// To be documented.
 		/// </summary>
-		public unsafe void RenderText(ImDrawListPtr drawList, float size, Vector2 pos, uint col, Vector4 clipRect, byte* textBegin, string textEnd, float wrapWidth, bool cpuFineClip)
+		public unsafe void RenderText(ImDrawListPtr drawList, float size, Vector2 pos, uint col, Vector4 clipRect, byte* textBegin, string textEnd, float wrapWidth, ImDrawTextFlags flags)
 		{
 			byte* pStr0 = null;
 			int pStrSize0 = 0;
@@ -6259,7 +8954,7 @@ namespace Dalamud.Bindings.ImGui
 				int pStrOffset0 = Utils.EncodeStringUTF8(textEnd, pStr0, pStrSize0);
 				pStr0[pStrOffset0] = 0;
 			}
-			ImGui.RenderTextNative(Handle, drawList, size, pos, col, clipRect, textBegin, pStr0, wrapWidth, cpuFineClip ? (byte)1 : (byte)0);
+			ImGui.RenderTextNative(Handle, (ImDrawList*)drawList, size, pos, col, clipRect, textBegin, pStr0, wrapWidth, flags);
 			if (pStrSize0 >= Utils.MaxStackallocSize)
 			{
 				Utils.Free(pStr0);
@@ -6288,7 +8983,7 @@ namespace Dalamud.Bindings.ImGui
 				int pStrOffset0 = Utils.EncodeStringUTF8(textEnd, pStr0, pStrSize0);
 				pStr0[pStrOffset0] = 0;
 			}
-			ImGui.RenderTextNative(Handle, drawList, size, pos, col, clipRect, textBegin, pStr0, wrapWidth, (byte)(0));
+			ImGui.RenderTextNative(Handle, (ImDrawList*)drawList, size, pos, col, clipRect, textBegin, pStr0, wrapWidth, (ImDrawTextFlags)(0));
 			if (pStrSize0 >= Utils.MaxStackallocSize)
 			{
 				Utils.Free(pStr0);
@@ -6317,7 +9012,7 @@ namespace Dalamud.Bindings.ImGui
 				int pStrOffset0 = Utils.EncodeStringUTF8(textEnd, pStr0, pStrSize0);
 				pStr0[pStrOffset0] = 0;
 			}
-			ImGui.RenderTextNative(Handle, drawList, size, pos, col, clipRect, textBegin, pStr0, (float)(0.0f), (byte)(0));
+			ImGui.RenderTextNative(Handle, (ImDrawList*)drawList, size, pos, col, clipRect, textBegin, pStr0, (float)(0.0f), (ImDrawTextFlags)(0));
 			if (pStrSize0 >= Utils.MaxStackallocSize)
 			{
 				Utils.Free(pStr0);
@@ -6327,7 +9022,7 @@ namespace Dalamud.Bindings.ImGui
 		/// <summary>
 		/// To be documented.
 		/// </summary>
-		public unsafe void RenderText(ImDrawListPtr drawList, float size, Vector2 pos, uint col, Vector4 clipRect, byte* textBegin, string textEnd, bool cpuFineClip)
+		public unsafe void RenderText(ImDrawListPtr drawList, float size, Vector2 pos, uint col, Vector4 clipRect, byte* textBegin, string textEnd, ImDrawTextFlags flags)
 		{
 			byte* pStr0 = null;
 			int pStrSize0 = 0;
@@ -6346,7 +9041,7 @@ namespace Dalamud.Bindings.ImGui
 				int pStrOffset0 = Utils.EncodeStringUTF8(textEnd, pStr0, pStrSize0);
 				pStr0[pStrOffset0] = 0;
 			}
-			ImGui.RenderTextNative(Handle, drawList, size, pos, col, clipRect, textBegin, pStr0, (float)(0.0f), cpuFineClip ? (byte)1 : (byte)0);
+			ImGui.RenderTextNative(Handle, (ImDrawList*)drawList, size, pos, col, clipRect, textBegin, pStr0, (float)(0.0f), flags);
 			if (pStrSize0 >= Utils.MaxStackallocSize)
 			{
 				Utils.Free(pStr0);
@@ -6356,13 +9051,13 @@ namespace Dalamud.Bindings.ImGui
 		/// <summary>
 		/// To be documented.
 		/// </summary>
-		public unsafe void RenderText(ref ImDrawList drawList, float size, Vector2 pos, uint col, Vector4 clipRect, byte* textBegin, ref byte textEnd, float wrapWidth, bool cpuFineClip)
+		public unsafe void RenderText(ref ImDrawList drawList, float size, Vector2 pos, uint col, Vector4 clipRect, byte* textBegin, in byte textEnd, float wrapWidth, ImDrawTextFlags flags)
 		{
 			fixed (ImDrawList* pdrawList = &drawList)
 			{
 				fixed (byte* ptextEnd = &textEnd)
 				{
-					ImGui.RenderTextNative(Handle, (ImDrawList*)pdrawList, size, pos, col, clipRect, textBegin, (byte*)ptextEnd, wrapWidth, cpuFineClip ? (byte)1 : (byte)0);
+					ImGui.RenderTextNative(Handle, (ImDrawList*)pdrawList, size, pos, col, clipRect, textBegin, (byte*)ptextEnd, wrapWidth, flags);
 				}
 			}
 		}
@@ -6370,13 +9065,13 @@ namespace Dalamud.Bindings.ImGui
 		/// <summary>
 		/// To be documented.
 		/// </summary>
-		public unsafe void RenderText(ref ImDrawList drawList, float size, Vector2 pos, uint col, Vector4 clipRect, byte* textBegin, ref byte textEnd, float wrapWidth)
+		public unsafe void RenderText(ref ImDrawList drawList, float size, Vector2 pos, uint col, Vector4 clipRect, byte* textBegin, in byte textEnd, float wrapWidth)
 		{
 			fixed (ImDrawList* pdrawList = &drawList)
 			{
 				fixed (byte* ptextEnd = &textEnd)
 				{
-					ImGui.RenderTextNative(Handle, (ImDrawList*)pdrawList, size, pos, col, clipRect, textBegin, (byte*)ptextEnd, wrapWidth, (byte)(0));
+					ImGui.RenderTextNative(Handle, (ImDrawList*)pdrawList, size, pos, col, clipRect, textBegin, (byte*)ptextEnd, wrapWidth, (ImDrawTextFlags)(0));
 				}
 			}
 		}
@@ -6384,13 +9079,13 @@ namespace Dalamud.Bindings.ImGui
 		/// <summary>
 		/// To be documented.
 		/// </summary>
-		public unsafe void RenderText(ref ImDrawList drawList, float size, Vector2 pos, uint col, Vector4 clipRect, byte* textBegin, ref byte textEnd)
+		public unsafe void RenderText(ref ImDrawList drawList, float size, Vector2 pos, uint col, Vector4 clipRect, byte* textBegin, in byte textEnd)
 		{
 			fixed (ImDrawList* pdrawList = &drawList)
 			{
 				fixed (byte* ptextEnd = &textEnd)
 				{
-					ImGui.RenderTextNative(Handle, (ImDrawList*)pdrawList, size, pos, col, clipRect, textBegin, (byte*)ptextEnd, (float)(0.0f), (byte)(0));
+					ImGui.RenderTextNative(Handle, (ImDrawList*)pdrawList, size, pos, col, clipRect, textBegin, (byte*)ptextEnd, (float)(0.0f), (ImDrawTextFlags)(0));
 				}
 			}
 		}
@@ -6398,13 +9093,13 @@ namespace Dalamud.Bindings.ImGui
 		/// <summary>
 		/// To be documented.
 		/// </summary>
-		public unsafe void RenderText(ref ImDrawList drawList, float size, Vector2 pos, uint col, Vector4 clipRect, byte* textBegin, ref byte textEnd, bool cpuFineClip)
+		public unsafe void RenderText(ref ImDrawList drawList, float size, Vector2 pos, uint col, Vector4 clipRect, byte* textBegin, in byte textEnd, ImDrawTextFlags flags)
 		{
 			fixed (ImDrawList* pdrawList = &drawList)
 			{
 				fixed (byte* ptextEnd = &textEnd)
 				{
-					ImGui.RenderTextNative(Handle, (ImDrawList*)pdrawList, size, pos, col, clipRect, textBegin, (byte*)ptextEnd, (float)(0.0f), cpuFineClip ? (byte)1 : (byte)0);
+					ImGui.RenderTextNative(Handle, (ImDrawList*)pdrawList, size, pos, col, clipRect, textBegin, (byte*)ptextEnd, (float)(0.0f), flags);
 				}
 			}
 		}
@@ -6412,13 +9107,13 @@ namespace Dalamud.Bindings.ImGui
 		/// <summary>
 		/// To be documented.
 		/// </summary>
-		public unsafe void RenderText(ref ImDrawList drawList, float size, Vector2 pos, uint col, Vector4 clipRect, byte* textBegin, ReadOnlySpan<byte> textEnd, float wrapWidth, bool cpuFineClip)
+		public unsafe void RenderText(ref ImDrawList drawList, float size, Vector2 pos, uint col, Vector4 clipRect, byte* textBegin, ReadOnlySpan<byte> textEnd, float wrapWidth, ImDrawTextFlags flags)
 		{
 			fixed (ImDrawList* pdrawList = &drawList)
 			{
 				fixed (byte* ptextEnd = textEnd)
 				{
-					ImGui.RenderTextNative(Handle, (ImDrawList*)pdrawList, size, pos, col, clipRect, textBegin, (byte*)ptextEnd, wrapWidth, cpuFineClip ? (byte)1 : (byte)0);
+					ImGui.RenderTextNative(Handle, (ImDrawList*)pdrawList, size, pos, col, clipRect, textBegin, (byte*)ptextEnd, wrapWidth, flags);
 				}
 			}
 		}
@@ -6432,7 +9127,7 @@ namespace Dalamud.Bindings.ImGui
 			{
 				fixed (byte* ptextEnd = textEnd)
 				{
-					ImGui.RenderTextNative(Handle, (ImDrawList*)pdrawList, size, pos, col, clipRect, textBegin, (byte*)ptextEnd, wrapWidth, (byte)(0));
+					ImGui.RenderTextNative(Handle, (ImDrawList*)pdrawList, size, pos, col, clipRect, textBegin, (byte*)ptextEnd, wrapWidth, (ImDrawTextFlags)(0));
 				}
 			}
 		}
@@ -6446,7 +9141,7 @@ namespace Dalamud.Bindings.ImGui
 			{
 				fixed (byte* ptextEnd = textEnd)
 				{
-					ImGui.RenderTextNative(Handle, (ImDrawList*)pdrawList, size, pos, col, clipRect, textBegin, (byte*)ptextEnd, (float)(0.0f), (byte)(0));
+					ImGui.RenderTextNative(Handle, (ImDrawList*)pdrawList, size, pos, col, clipRect, textBegin, (byte*)ptextEnd, (float)(0.0f), (ImDrawTextFlags)(0));
 				}
 			}
 		}
@@ -6454,13 +9149,13 @@ namespace Dalamud.Bindings.ImGui
 		/// <summary>
 		/// To be documented.
 		/// </summary>
-		public unsafe void RenderText(ref ImDrawList drawList, float size, Vector2 pos, uint col, Vector4 clipRect, byte* textBegin, ReadOnlySpan<byte> textEnd, bool cpuFineClip)
+		public unsafe void RenderText(ref ImDrawList drawList, float size, Vector2 pos, uint col, Vector4 clipRect, byte* textBegin, ReadOnlySpan<byte> textEnd, ImDrawTextFlags flags)
 		{
 			fixed (ImDrawList* pdrawList = &drawList)
 			{
 				fixed (byte* ptextEnd = textEnd)
 				{
-					ImGui.RenderTextNative(Handle, (ImDrawList*)pdrawList, size, pos, col, clipRect, textBegin, (byte*)ptextEnd, (float)(0.0f), cpuFineClip ? (byte)1 : (byte)0);
+					ImGui.RenderTextNative(Handle, (ImDrawList*)pdrawList, size, pos, col, clipRect, textBegin, (byte*)ptextEnd, (float)(0.0f), flags);
 				}
 			}
 		}
@@ -6468,7 +9163,7 @@ namespace Dalamud.Bindings.ImGui
 		/// <summary>
 		/// To be documented.
 		/// </summary>
-		public unsafe void RenderText(ref ImDrawList drawList, float size, Vector2 pos, uint col, Vector4 clipRect, byte* textBegin, string textEnd, float wrapWidth, bool cpuFineClip)
+		public unsafe void RenderText(ref ImDrawList drawList, float size, Vector2 pos, uint col, Vector4 clipRect, byte* textBegin, string textEnd, float wrapWidth, ImDrawTextFlags flags)
 		{
 			fixed (ImDrawList* pdrawList = &drawList)
 			{
@@ -6489,7 +9184,7 @@ namespace Dalamud.Bindings.ImGui
 					int pStrOffset0 = Utils.EncodeStringUTF8(textEnd, pStr0, pStrSize0);
 					pStr0[pStrOffset0] = 0;
 				}
-				ImGui.RenderTextNative(Handle, (ImDrawList*)pdrawList, size, pos, col, clipRect, textBegin, pStr0, wrapWidth, cpuFineClip ? (byte)1 : (byte)0);
+				ImGui.RenderTextNative(Handle, (ImDrawList*)pdrawList, size, pos, col, clipRect, textBegin, pStr0, wrapWidth, flags);
 				if (pStrSize0 >= Utils.MaxStackallocSize)
 				{
 					Utils.Free(pStr0);
@@ -6521,7 +9216,7 @@ namespace Dalamud.Bindings.ImGui
 					int pStrOffset0 = Utils.EncodeStringUTF8(textEnd, pStr0, pStrSize0);
 					pStr0[pStrOffset0] = 0;
 				}
-				ImGui.RenderTextNative(Handle, (ImDrawList*)pdrawList, size, pos, col, clipRect, textBegin, pStr0, wrapWidth, (byte)(0));
+				ImGui.RenderTextNative(Handle, (ImDrawList*)pdrawList, size, pos, col, clipRect, textBegin, pStr0, wrapWidth, (ImDrawTextFlags)(0));
 				if (pStrSize0 >= Utils.MaxStackallocSize)
 				{
 					Utils.Free(pStr0);
@@ -6553,7 +9248,7 @@ namespace Dalamud.Bindings.ImGui
 					int pStrOffset0 = Utils.EncodeStringUTF8(textEnd, pStr0, pStrSize0);
 					pStr0[pStrOffset0] = 0;
 				}
-				ImGui.RenderTextNative(Handle, (ImDrawList*)pdrawList, size, pos, col, clipRect, textBegin, pStr0, (float)(0.0f), (byte)(0));
+				ImGui.RenderTextNative(Handle, (ImDrawList*)pdrawList, size, pos, col, clipRect, textBegin, pStr0, (float)(0.0f), (ImDrawTextFlags)(0));
 				if (pStrSize0 >= Utils.MaxStackallocSize)
 				{
 					Utils.Free(pStr0);
@@ -6564,7 +9259,7 @@ namespace Dalamud.Bindings.ImGui
 		/// <summary>
 		/// To be documented.
 		/// </summary>
-		public unsafe void RenderText(ref ImDrawList drawList, float size, Vector2 pos, uint col, Vector4 clipRect, byte* textBegin, string textEnd, bool cpuFineClip)
+		public unsafe void RenderText(ref ImDrawList drawList, float size, Vector2 pos, uint col, Vector4 clipRect, byte* textBegin, string textEnd, ImDrawTextFlags flags)
 		{
 			fixed (ImDrawList* pdrawList = &drawList)
 			{
@@ -6585,7 +9280,7 @@ namespace Dalamud.Bindings.ImGui
 					int pStrOffset0 = Utils.EncodeStringUTF8(textEnd, pStr0, pStrSize0);
 					pStr0[pStrOffset0] = 0;
 				}
-				ImGui.RenderTextNative(Handle, (ImDrawList*)pdrawList, size, pos, col, clipRect, textBegin, pStr0, (float)(0.0f), cpuFineClip ? (byte)1 : (byte)0);
+				ImGui.RenderTextNative(Handle, (ImDrawList*)pdrawList, size, pos, col, clipRect, textBegin, pStr0, (float)(0.0f), flags);
 				if (pStrSize0 >= Utils.MaxStackallocSize)
 				{
 					Utils.Free(pStr0);
@@ -6596,13 +9291,13 @@ namespace Dalamud.Bindings.ImGui
 		/// <summary>
 		/// To be documented.
 		/// </summary>
-		public unsafe void RenderText(ImDrawListPtr drawList, float size, Vector2 pos, uint col, Vector4 clipRect, ref byte textBegin, ref byte textEnd, float wrapWidth, bool cpuFineClip)
+		public unsafe void RenderText(ImDrawListPtr drawList, float size, Vector2 pos, uint col, Vector4 clipRect, in byte textBegin, in byte textEnd, float wrapWidth, ImDrawTextFlags flags)
 		{
 			fixed (byte* ptextBegin = &textBegin)
 			{
 				fixed (byte* ptextEnd = &textEnd)
 				{
-					ImGui.RenderTextNative(Handle, drawList, size, pos, col, clipRect, (byte*)ptextBegin, (byte*)ptextEnd, wrapWidth, cpuFineClip ? (byte)1 : (byte)0);
+					ImGui.RenderTextNative(Handle, (ImDrawList*)drawList, size, pos, col, clipRect, (byte*)ptextBegin, (byte*)ptextEnd, wrapWidth, flags);
 				}
 			}
 		}
@@ -6610,13 +9305,13 @@ namespace Dalamud.Bindings.ImGui
 		/// <summary>
 		/// To be documented.
 		/// </summary>
-		public unsafe void RenderText(ImDrawListPtr drawList, float size, Vector2 pos, uint col, Vector4 clipRect, ref byte textBegin, ref byte textEnd, float wrapWidth)
+		public unsafe void RenderText(ImDrawListPtr drawList, float size, Vector2 pos, uint col, Vector4 clipRect, in byte textBegin, in byte textEnd, float wrapWidth)
 		{
 			fixed (byte* ptextBegin = &textBegin)
 			{
 				fixed (byte* ptextEnd = &textEnd)
 				{
-					ImGui.RenderTextNative(Handle, drawList, size, pos, col, clipRect, (byte*)ptextBegin, (byte*)ptextEnd, wrapWidth, (byte)(0));
+					ImGui.RenderTextNative(Handle, (ImDrawList*)drawList, size, pos, col, clipRect, (byte*)ptextBegin, (byte*)ptextEnd, wrapWidth, (ImDrawTextFlags)(0));
 				}
 			}
 		}
@@ -6624,13 +9319,13 @@ namespace Dalamud.Bindings.ImGui
 		/// <summary>
 		/// To be documented.
 		/// </summary>
-		public unsafe void RenderText(ImDrawListPtr drawList, float size, Vector2 pos, uint col, Vector4 clipRect, ref byte textBegin, ref byte textEnd)
+		public unsafe void RenderText(ImDrawListPtr drawList, float size, Vector2 pos, uint col, Vector4 clipRect, in byte textBegin, in byte textEnd)
 		{
 			fixed (byte* ptextBegin = &textBegin)
 			{
 				fixed (byte* ptextEnd = &textEnd)
 				{
-					ImGui.RenderTextNative(Handle, drawList, size, pos, col, clipRect, (byte*)ptextBegin, (byte*)ptextEnd, (float)(0.0f), (byte)(0));
+					ImGui.RenderTextNative(Handle, (ImDrawList*)drawList, size, pos, col, clipRect, (byte*)ptextBegin, (byte*)ptextEnd, (float)(0.0f), (ImDrawTextFlags)(0));
 				}
 			}
 		}
@@ -6638,13 +9333,13 @@ namespace Dalamud.Bindings.ImGui
 		/// <summary>
 		/// To be documented.
 		/// </summary>
-		public unsafe void RenderText(ImDrawListPtr drawList, float size, Vector2 pos, uint col, Vector4 clipRect, ref byte textBegin, ref byte textEnd, bool cpuFineClip)
+		public unsafe void RenderText(ImDrawListPtr drawList, float size, Vector2 pos, uint col, Vector4 clipRect, in byte textBegin, in byte textEnd, ImDrawTextFlags flags)
 		{
 			fixed (byte* ptextBegin = &textBegin)
 			{
 				fixed (byte* ptextEnd = &textEnd)
 				{
-					ImGui.RenderTextNative(Handle, drawList, size, pos, col, clipRect, (byte*)ptextBegin, (byte*)ptextEnd, (float)(0.0f), cpuFineClip ? (byte)1 : (byte)0);
+					ImGui.RenderTextNative(Handle, (ImDrawList*)drawList, size, pos, col, clipRect, (byte*)ptextBegin, (byte*)ptextEnd, (float)(0.0f), flags);
 				}
 			}
 		}
@@ -6652,13 +9347,13 @@ namespace Dalamud.Bindings.ImGui
 		/// <summary>
 		/// To be documented.
 		/// </summary>
-		public unsafe void RenderText(ImDrawListPtr drawList, float size, Vector2 pos, uint col, Vector4 clipRect, ReadOnlySpan<byte> textBegin, ReadOnlySpan<byte> textEnd, float wrapWidth, bool cpuFineClip)
+		public unsafe void RenderText(ImDrawListPtr drawList, float size, Vector2 pos, uint col, Vector4 clipRect, ReadOnlySpan<byte> textBegin, ReadOnlySpan<byte> textEnd, float wrapWidth, ImDrawTextFlags flags)
 		{
 			fixed (byte* ptextBegin = textBegin)
 			{
 				fixed (byte* ptextEnd = textEnd)
 				{
-					ImGui.RenderTextNative(Handle, drawList, size, pos, col, clipRect, (byte*)ptextBegin, (byte*)ptextEnd, wrapWidth, cpuFineClip ? (byte)1 : (byte)0);
+					ImGui.RenderTextNative(Handle, (ImDrawList*)drawList, size, pos, col, clipRect, (byte*)ptextBegin, (byte*)ptextEnd, wrapWidth, flags);
 				}
 			}
 		}
@@ -6672,7 +9367,7 @@ namespace Dalamud.Bindings.ImGui
 			{
 				fixed (byte* ptextEnd = textEnd)
 				{
-					ImGui.RenderTextNative(Handle, drawList, size, pos, col, clipRect, (byte*)ptextBegin, (byte*)ptextEnd, wrapWidth, (byte)(0));
+					ImGui.RenderTextNative(Handle, (ImDrawList*)drawList, size, pos, col, clipRect, (byte*)ptextBegin, (byte*)ptextEnd, wrapWidth, (ImDrawTextFlags)(0));
 				}
 			}
 		}
@@ -6686,7 +9381,7 @@ namespace Dalamud.Bindings.ImGui
 			{
 				fixed (byte* ptextEnd = textEnd)
 				{
-					ImGui.RenderTextNative(Handle, drawList, size, pos, col, clipRect, (byte*)ptextBegin, (byte*)ptextEnd, (float)(0.0f), (byte)(0));
+					ImGui.RenderTextNative(Handle, (ImDrawList*)drawList, size, pos, col, clipRect, (byte*)ptextBegin, (byte*)ptextEnd, (float)(0.0f), (ImDrawTextFlags)(0));
 				}
 			}
 		}
@@ -6694,13 +9389,13 @@ namespace Dalamud.Bindings.ImGui
 		/// <summary>
 		/// To be documented.
 		/// </summary>
-		public unsafe void RenderText(ImDrawListPtr drawList, float size, Vector2 pos, uint col, Vector4 clipRect, ReadOnlySpan<byte> textBegin, ReadOnlySpan<byte> textEnd, bool cpuFineClip)
+		public unsafe void RenderText(ImDrawListPtr drawList, float size, Vector2 pos, uint col, Vector4 clipRect, ReadOnlySpan<byte> textBegin, ReadOnlySpan<byte> textEnd, ImDrawTextFlags flags)
 		{
 			fixed (byte* ptextBegin = textBegin)
 			{
 				fixed (byte* ptextEnd = textEnd)
 				{
-					ImGui.RenderTextNative(Handle, drawList, size, pos, col, clipRect, (byte*)ptextBegin, (byte*)ptextEnd, (float)(0.0f), cpuFineClip ? (byte)1 : (byte)0);
+					ImGui.RenderTextNative(Handle, (ImDrawList*)drawList, size, pos, col, clipRect, (byte*)ptextBegin, (byte*)ptextEnd, (float)(0.0f), flags);
 				}
 			}
 		}
@@ -6708,7 +9403,7 @@ namespace Dalamud.Bindings.ImGui
 		/// <summary>
 		/// To be documented.
 		/// </summary>
-		public unsafe void RenderText(ImDrawListPtr drawList, float size, Vector2 pos, uint col, Vector4 clipRect, string textBegin, string textEnd, float wrapWidth, bool cpuFineClip)
+		public unsafe void RenderText(ImDrawListPtr drawList, float size, Vector2 pos, uint col, Vector4 clipRect, string textBegin, string textEnd, float wrapWidth, ImDrawTextFlags flags)
 		{
 			byte* pStr0 = null;
 			int pStrSize0 = 0;
@@ -6744,7 +9439,7 @@ namespace Dalamud.Bindings.ImGui
 				int pStrOffset1 = Utils.EncodeStringUTF8(textEnd, pStr1, pStrSize1);
 				pStr1[pStrOffset1] = 0;
 			}
-			ImGui.RenderTextNative(Handle, drawList, size, pos, col, clipRect, pStr0, pStr1, wrapWidth, cpuFineClip ? (byte)1 : (byte)0);
+			ImGui.RenderTextNative(Handle, (ImDrawList*)drawList, size, pos, col, clipRect, pStr0, pStr1, wrapWidth, flags);
 			if (pStrSize1 >= Utils.MaxStackallocSize)
 			{
 				Utils.Free(pStr1);
@@ -6794,7 +9489,7 @@ namespace Dalamud.Bindings.ImGui
 				int pStrOffset1 = Utils.EncodeStringUTF8(textEnd, pStr1, pStrSize1);
 				pStr1[pStrOffset1] = 0;
 			}
-			ImGui.RenderTextNative(Handle, drawList, size, pos, col, clipRect, pStr0, pStr1, wrapWidth, (byte)(0));
+			ImGui.RenderTextNative(Handle, (ImDrawList*)drawList, size, pos, col, clipRect, pStr0, pStr1, wrapWidth, (ImDrawTextFlags)(0));
 			if (pStrSize1 >= Utils.MaxStackallocSize)
 			{
 				Utils.Free(pStr1);
@@ -6844,7 +9539,7 @@ namespace Dalamud.Bindings.ImGui
 				int pStrOffset1 = Utils.EncodeStringUTF8(textEnd, pStr1, pStrSize1);
 				pStr1[pStrOffset1] = 0;
 			}
-			ImGui.RenderTextNative(Handle, drawList, size, pos, col, clipRect, pStr0, pStr1, (float)(0.0f), (byte)(0));
+			ImGui.RenderTextNative(Handle, (ImDrawList*)drawList, size, pos, col, clipRect, pStr0, pStr1, (float)(0.0f), (ImDrawTextFlags)(0));
 			if (pStrSize1 >= Utils.MaxStackallocSize)
 			{
 				Utils.Free(pStr1);
@@ -6858,7 +9553,7 @@ namespace Dalamud.Bindings.ImGui
 		/// <summary>
 		/// To be documented.
 		/// </summary>
-		public unsafe void RenderText(ImDrawListPtr drawList, float size, Vector2 pos, uint col, Vector4 clipRect, string textBegin, string textEnd, bool cpuFineClip)
+		public unsafe void RenderText(ImDrawListPtr drawList, float size, Vector2 pos, uint col, Vector4 clipRect, string textBegin, string textEnd, ImDrawTextFlags flags)
 		{
 			byte* pStr0 = null;
 			int pStrSize0 = 0;
@@ -6894,7 +9589,7 @@ namespace Dalamud.Bindings.ImGui
 				int pStrOffset1 = Utils.EncodeStringUTF8(textEnd, pStr1, pStrSize1);
 				pStr1[pStrOffset1] = 0;
 			}
-			ImGui.RenderTextNative(Handle, drawList, size, pos, col, clipRect, pStr0, pStr1, (float)(0.0f), cpuFineClip ? (byte)1 : (byte)0);
+			ImGui.RenderTextNative(Handle, (ImDrawList*)drawList, size, pos, col, clipRect, pStr0, pStr1, (float)(0.0f), flags);
 			if (pStrSize1 >= Utils.MaxStackallocSize)
 			{
 				Utils.Free(pStr1);
@@ -6908,13 +9603,13 @@ namespace Dalamud.Bindings.ImGui
 		/// <summary>
 		/// To be documented.
 		/// </summary>
-		public unsafe void RenderText(ImDrawListPtr drawList, float size, Vector2 pos, uint col, Vector4 clipRect, ref byte textBegin, ReadOnlySpan<byte> textEnd, float wrapWidth, bool cpuFineClip)
+		public unsafe void RenderText(ImDrawListPtr drawList, float size, Vector2 pos, uint col, Vector4 clipRect, in byte textBegin, ReadOnlySpan<byte> textEnd, float wrapWidth, ImDrawTextFlags flags)
 		{
 			fixed (byte* ptextBegin = &textBegin)
 			{
 				fixed (byte* ptextEnd = textEnd)
 				{
-					ImGui.RenderTextNative(Handle, drawList, size, pos, col, clipRect, (byte*)ptextBegin, (byte*)ptextEnd, wrapWidth, cpuFineClip ? (byte)1 : (byte)0);
+					ImGui.RenderTextNative(Handle, (ImDrawList*)drawList, size, pos, col, clipRect, (byte*)ptextBegin, (byte*)ptextEnd, wrapWidth, flags);
 				}
 			}
 		}
@@ -6922,13 +9617,13 @@ namespace Dalamud.Bindings.ImGui
 		/// <summary>
 		/// To be documented.
 		/// </summary>
-		public unsafe void RenderText(ImDrawListPtr drawList, float size, Vector2 pos, uint col, Vector4 clipRect, ref byte textBegin, ReadOnlySpan<byte> textEnd, float wrapWidth)
+		public unsafe void RenderText(ImDrawListPtr drawList, float size, Vector2 pos, uint col, Vector4 clipRect, in byte textBegin, ReadOnlySpan<byte> textEnd, float wrapWidth)
 		{
 			fixed (byte* ptextBegin = &textBegin)
 			{
 				fixed (byte* ptextEnd = textEnd)
 				{
-					ImGui.RenderTextNative(Handle, drawList, size, pos, col, clipRect, (byte*)ptextBegin, (byte*)ptextEnd, wrapWidth, (byte)(0));
+					ImGui.RenderTextNative(Handle, (ImDrawList*)drawList, size, pos, col, clipRect, (byte*)ptextBegin, (byte*)ptextEnd, wrapWidth, (ImDrawTextFlags)(0));
 				}
 			}
 		}
@@ -6936,13 +9631,13 @@ namespace Dalamud.Bindings.ImGui
 		/// <summary>
 		/// To be documented.
 		/// </summary>
-		public unsafe void RenderText(ImDrawListPtr drawList, float size, Vector2 pos, uint col, Vector4 clipRect, ref byte textBegin, ReadOnlySpan<byte> textEnd)
+		public unsafe void RenderText(ImDrawListPtr drawList, float size, Vector2 pos, uint col, Vector4 clipRect, in byte textBegin, ReadOnlySpan<byte> textEnd)
 		{
 			fixed (byte* ptextBegin = &textBegin)
 			{
 				fixed (byte* ptextEnd = textEnd)
 				{
-					ImGui.RenderTextNative(Handle, drawList, size, pos, col, clipRect, (byte*)ptextBegin, (byte*)ptextEnd, (float)(0.0f), (byte)(0));
+					ImGui.RenderTextNative(Handle, (ImDrawList*)drawList, size, pos, col, clipRect, (byte*)ptextBegin, (byte*)ptextEnd, (float)(0.0f), (ImDrawTextFlags)(0));
 				}
 			}
 		}
@@ -6950,13 +9645,13 @@ namespace Dalamud.Bindings.ImGui
 		/// <summary>
 		/// To be documented.
 		/// </summary>
-		public unsafe void RenderText(ImDrawListPtr drawList, float size, Vector2 pos, uint col, Vector4 clipRect, ref byte textBegin, ReadOnlySpan<byte> textEnd, bool cpuFineClip)
+		public unsafe void RenderText(ImDrawListPtr drawList, float size, Vector2 pos, uint col, Vector4 clipRect, in byte textBegin, ReadOnlySpan<byte> textEnd, ImDrawTextFlags flags)
 		{
 			fixed (byte* ptextBegin = &textBegin)
 			{
 				fixed (byte* ptextEnd = textEnd)
 				{
-					ImGui.RenderTextNative(Handle, drawList, size, pos, col, clipRect, (byte*)ptextBegin, (byte*)ptextEnd, (float)(0.0f), cpuFineClip ? (byte)1 : (byte)0);
+					ImGui.RenderTextNative(Handle, (ImDrawList*)drawList, size, pos, col, clipRect, (byte*)ptextBegin, (byte*)ptextEnd, (float)(0.0f), flags);
 				}
 			}
 		}
@@ -6964,7 +9659,7 @@ namespace Dalamud.Bindings.ImGui
 		/// <summary>
 		/// To be documented.
 		/// </summary>
-		public unsafe void RenderText(ImDrawListPtr drawList, float size, Vector2 pos, uint col, Vector4 clipRect, ref byte textBegin, string textEnd, float wrapWidth, bool cpuFineClip)
+		public unsafe void RenderText(ImDrawListPtr drawList, float size, Vector2 pos, uint col, Vector4 clipRect, in byte textBegin, string textEnd, float wrapWidth, ImDrawTextFlags flags)
 		{
 			fixed (byte* ptextBegin = &textBegin)
 			{
@@ -6985,7 +9680,7 @@ namespace Dalamud.Bindings.ImGui
 					int pStrOffset0 = Utils.EncodeStringUTF8(textEnd, pStr0, pStrSize0);
 					pStr0[pStrOffset0] = 0;
 				}
-				ImGui.RenderTextNative(Handle, drawList, size, pos, col, clipRect, (byte*)ptextBegin, pStr0, wrapWidth, cpuFineClip ? (byte)1 : (byte)0);
+				ImGui.RenderTextNative(Handle, (ImDrawList*)drawList, size, pos, col, clipRect, (byte*)ptextBegin, pStr0, wrapWidth, flags);
 				if (pStrSize0 >= Utils.MaxStackallocSize)
 				{
 					Utils.Free(pStr0);
@@ -6996,7 +9691,7 @@ namespace Dalamud.Bindings.ImGui
 		/// <summary>
 		/// To be documented.
 		/// </summary>
-		public unsafe void RenderText(ImDrawListPtr drawList, float size, Vector2 pos, uint col, Vector4 clipRect, ref byte textBegin, string textEnd, float wrapWidth)
+		public unsafe void RenderText(ImDrawListPtr drawList, float size, Vector2 pos, uint col, Vector4 clipRect, in byte textBegin, string textEnd, float wrapWidth)
 		{
 			fixed (byte* ptextBegin = &textBegin)
 			{
@@ -7017,7 +9712,7 @@ namespace Dalamud.Bindings.ImGui
 					int pStrOffset0 = Utils.EncodeStringUTF8(textEnd, pStr0, pStrSize0);
 					pStr0[pStrOffset0] = 0;
 				}
-				ImGui.RenderTextNative(Handle, drawList, size, pos, col, clipRect, (byte*)ptextBegin, pStr0, wrapWidth, (byte)(0));
+				ImGui.RenderTextNative(Handle, (ImDrawList*)drawList, size, pos, col, clipRect, (byte*)ptextBegin, pStr0, wrapWidth, (ImDrawTextFlags)(0));
 				if (pStrSize0 >= Utils.MaxStackallocSize)
 				{
 					Utils.Free(pStr0);
@@ -7028,7 +9723,7 @@ namespace Dalamud.Bindings.ImGui
 		/// <summary>
 		/// To be documented.
 		/// </summary>
-		public unsafe void RenderText(ImDrawListPtr drawList, float size, Vector2 pos, uint col, Vector4 clipRect, ref byte textBegin, string textEnd)
+		public unsafe void RenderText(ImDrawListPtr drawList, float size, Vector2 pos, uint col, Vector4 clipRect, in byte textBegin, string textEnd)
 		{
 			fixed (byte* ptextBegin = &textBegin)
 			{
@@ -7049,7 +9744,7 @@ namespace Dalamud.Bindings.ImGui
 					int pStrOffset0 = Utils.EncodeStringUTF8(textEnd, pStr0, pStrSize0);
 					pStr0[pStrOffset0] = 0;
 				}
-				ImGui.RenderTextNative(Handle, drawList, size, pos, col, clipRect, (byte*)ptextBegin, pStr0, (float)(0.0f), (byte)(0));
+				ImGui.RenderTextNative(Handle, (ImDrawList*)drawList, size, pos, col, clipRect, (byte*)ptextBegin, pStr0, (float)(0.0f), (ImDrawTextFlags)(0));
 				if (pStrSize0 >= Utils.MaxStackallocSize)
 				{
 					Utils.Free(pStr0);
@@ -7060,7 +9755,7 @@ namespace Dalamud.Bindings.ImGui
 		/// <summary>
 		/// To be documented.
 		/// </summary>
-		public unsafe void RenderText(ImDrawListPtr drawList, float size, Vector2 pos, uint col, Vector4 clipRect, ref byte textBegin, string textEnd, bool cpuFineClip)
+		public unsafe void RenderText(ImDrawListPtr drawList, float size, Vector2 pos, uint col, Vector4 clipRect, in byte textBegin, string textEnd, ImDrawTextFlags flags)
 		{
 			fixed (byte* ptextBegin = &textBegin)
 			{
@@ -7081,7 +9776,7 @@ namespace Dalamud.Bindings.ImGui
 					int pStrOffset0 = Utils.EncodeStringUTF8(textEnd, pStr0, pStrSize0);
 					pStr0[pStrOffset0] = 0;
 				}
-				ImGui.RenderTextNative(Handle, drawList, size, pos, col, clipRect, (byte*)ptextBegin, pStr0, (float)(0.0f), cpuFineClip ? (byte)1 : (byte)0);
+				ImGui.RenderTextNative(Handle, (ImDrawList*)drawList, size, pos, col, clipRect, (byte*)ptextBegin, pStr0, (float)(0.0f), flags);
 				if (pStrSize0 >= Utils.MaxStackallocSize)
 				{
 					Utils.Free(pStr0);
@@ -7092,13 +9787,13 @@ namespace Dalamud.Bindings.ImGui
 		/// <summary>
 		/// To be documented.
 		/// </summary>
-		public unsafe void RenderText(ImDrawListPtr drawList, float size, Vector2 pos, uint col, Vector4 clipRect, ReadOnlySpan<byte> textBegin, ref byte textEnd, float wrapWidth, bool cpuFineClip)
+		public unsafe void RenderText(ImDrawListPtr drawList, float size, Vector2 pos, uint col, Vector4 clipRect, ReadOnlySpan<byte> textBegin, in byte textEnd, float wrapWidth, ImDrawTextFlags flags)
 		{
 			fixed (byte* ptextBegin = textBegin)
 			{
 				fixed (byte* ptextEnd = &textEnd)
 				{
-					ImGui.RenderTextNative(Handle, drawList, size, pos, col, clipRect, (byte*)ptextBegin, (byte*)ptextEnd, wrapWidth, cpuFineClip ? (byte)1 : (byte)0);
+					ImGui.RenderTextNative(Handle, (ImDrawList*)drawList, size, pos, col, clipRect, (byte*)ptextBegin, (byte*)ptextEnd, wrapWidth, flags);
 				}
 			}
 		}
@@ -7106,13 +9801,13 @@ namespace Dalamud.Bindings.ImGui
 		/// <summary>
 		/// To be documented.
 		/// </summary>
-		public unsafe void RenderText(ImDrawListPtr drawList, float size, Vector2 pos, uint col, Vector4 clipRect, ReadOnlySpan<byte> textBegin, ref byte textEnd, float wrapWidth)
+		public unsafe void RenderText(ImDrawListPtr drawList, float size, Vector2 pos, uint col, Vector4 clipRect, ReadOnlySpan<byte> textBegin, in byte textEnd, float wrapWidth)
 		{
 			fixed (byte* ptextBegin = textBegin)
 			{
 				fixed (byte* ptextEnd = &textEnd)
 				{
-					ImGui.RenderTextNative(Handle, drawList, size, pos, col, clipRect, (byte*)ptextBegin, (byte*)ptextEnd, wrapWidth, (byte)(0));
+					ImGui.RenderTextNative(Handle, (ImDrawList*)drawList, size, pos, col, clipRect, (byte*)ptextBegin, (byte*)ptextEnd, wrapWidth, (ImDrawTextFlags)(0));
 				}
 			}
 		}
@@ -7120,13 +9815,13 @@ namespace Dalamud.Bindings.ImGui
 		/// <summary>
 		/// To be documented.
 		/// </summary>
-		public unsafe void RenderText(ImDrawListPtr drawList, float size, Vector2 pos, uint col, Vector4 clipRect, ReadOnlySpan<byte> textBegin, ref byte textEnd)
+		public unsafe void RenderText(ImDrawListPtr drawList, float size, Vector2 pos, uint col, Vector4 clipRect, ReadOnlySpan<byte> textBegin, in byte textEnd)
 		{
 			fixed (byte* ptextBegin = textBegin)
 			{
 				fixed (byte* ptextEnd = &textEnd)
 				{
-					ImGui.RenderTextNative(Handle, drawList, size, pos, col, clipRect, (byte*)ptextBegin, (byte*)ptextEnd, (float)(0.0f), (byte)(0));
+					ImGui.RenderTextNative(Handle, (ImDrawList*)drawList, size, pos, col, clipRect, (byte*)ptextBegin, (byte*)ptextEnd, (float)(0.0f), (ImDrawTextFlags)(0));
 				}
 			}
 		}
@@ -7134,13 +9829,13 @@ namespace Dalamud.Bindings.ImGui
 		/// <summary>
 		/// To be documented.
 		/// </summary>
-		public unsafe void RenderText(ImDrawListPtr drawList, float size, Vector2 pos, uint col, Vector4 clipRect, ReadOnlySpan<byte> textBegin, ref byte textEnd, bool cpuFineClip)
+		public unsafe void RenderText(ImDrawListPtr drawList, float size, Vector2 pos, uint col, Vector4 clipRect, ReadOnlySpan<byte> textBegin, in byte textEnd, ImDrawTextFlags flags)
 		{
 			fixed (byte* ptextBegin = textBegin)
 			{
 				fixed (byte* ptextEnd = &textEnd)
 				{
-					ImGui.RenderTextNative(Handle, drawList, size, pos, col, clipRect, (byte*)ptextBegin, (byte*)ptextEnd, (float)(0.0f), cpuFineClip ? (byte)1 : (byte)0);
+					ImGui.RenderTextNative(Handle, (ImDrawList*)drawList, size, pos, col, clipRect, (byte*)ptextBegin, (byte*)ptextEnd, (float)(0.0f), flags);
 				}
 			}
 		}
@@ -7148,7 +9843,7 @@ namespace Dalamud.Bindings.ImGui
 		/// <summary>
 		/// To be documented.
 		/// </summary>
-		public unsafe void RenderText(ImDrawListPtr drawList, float size, Vector2 pos, uint col, Vector4 clipRect, ReadOnlySpan<byte> textBegin, string textEnd, float wrapWidth, bool cpuFineClip)
+		public unsafe void RenderText(ImDrawListPtr drawList, float size, Vector2 pos, uint col, Vector4 clipRect, ReadOnlySpan<byte> textBegin, string textEnd, float wrapWidth, ImDrawTextFlags flags)
 		{
 			fixed (byte* ptextBegin = textBegin)
 			{
@@ -7169,7 +9864,7 @@ namespace Dalamud.Bindings.ImGui
 					int pStrOffset0 = Utils.EncodeStringUTF8(textEnd, pStr0, pStrSize0);
 					pStr0[pStrOffset0] = 0;
 				}
-				ImGui.RenderTextNative(Handle, drawList, size, pos, col, clipRect, (byte*)ptextBegin, pStr0, wrapWidth, cpuFineClip ? (byte)1 : (byte)0);
+				ImGui.RenderTextNative(Handle, (ImDrawList*)drawList, size, pos, col, clipRect, (byte*)ptextBegin, pStr0, wrapWidth, flags);
 				if (pStrSize0 >= Utils.MaxStackallocSize)
 				{
 					Utils.Free(pStr0);
@@ -7201,7 +9896,7 @@ namespace Dalamud.Bindings.ImGui
 					int pStrOffset0 = Utils.EncodeStringUTF8(textEnd, pStr0, pStrSize0);
 					pStr0[pStrOffset0] = 0;
 				}
-				ImGui.RenderTextNative(Handle, drawList, size, pos, col, clipRect, (byte*)ptextBegin, pStr0, wrapWidth, (byte)(0));
+				ImGui.RenderTextNative(Handle, (ImDrawList*)drawList, size, pos, col, clipRect, (byte*)ptextBegin, pStr0, wrapWidth, (ImDrawTextFlags)(0));
 				if (pStrSize0 >= Utils.MaxStackallocSize)
 				{
 					Utils.Free(pStr0);
@@ -7233,7 +9928,7 @@ namespace Dalamud.Bindings.ImGui
 					int pStrOffset0 = Utils.EncodeStringUTF8(textEnd, pStr0, pStrSize0);
 					pStr0[pStrOffset0] = 0;
 				}
-				ImGui.RenderTextNative(Handle, drawList, size, pos, col, clipRect, (byte*)ptextBegin, pStr0, (float)(0.0f), (byte)(0));
+				ImGui.RenderTextNative(Handle, (ImDrawList*)drawList, size, pos, col, clipRect, (byte*)ptextBegin, pStr0, (float)(0.0f), (ImDrawTextFlags)(0));
 				if (pStrSize0 >= Utils.MaxStackallocSize)
 				{
 					Utils.Free(pStr0);
@@ -7244,7 +9939,7 @@ namespace Dalamud.Bindings.ImGui
 		/// <summary>
 		/// To be documented.
 		/// </summary>
-		public unsafe void RenderText(ImDrawListPtr drawList, float size, Vector2 pos, uint col, Vector4 clipRect, ReadOnlySpan<byte> textBegin, string textEnd, bool cpuFineClip)
+		public unsafe void RenderText(ImDrawListPtr drawList, float size, Vector2 pos, uint col, Vector4 clipRect, ReadOnlySpan<byte> textBegin, string textEnd, ImDrawTextFlags flags)
 		{
 			fixed (byte* ptextBegin = textBegin)
 			{
@@ -7265,7 +9960,7 @@ namespace Dalamud.Bindings.ImGui
 					int pStrOffset0 = Utils.EncodeStringUTF8(textEnd, pStr0, pStrSize0);
 					pStr0[pStrOffset0] = 0;
 				}
-				ImGui.RenderTextNative(Handle, drawList, size, pos, col, clipRect, (byte*)ptextBegin, pStr0, (float)(0.0f), cpuFineClip ? (byte)1 : (byte)0);
+				ImGui.RenderTextNative(Handle, (ImDrawList*)drawList, size, pos, col, clipRect, (byte*)ptextBegin, pStr0, (float)(0.0f), flags);
 				if (pStrSize0 >= Utils.MaxStackallocSize)
 				{
 					Utils.Free(pStr0);
@@ -7276,7 +9971,7 @@ namespace Dalamud.Bindings.ImGui
 		/// <summary>
 		/// To be documented.
 		/// </summary>
-		public unsafe void RenderText(ImDrawListPtr drawList, float size, Vector2 pos, uint col, Vector4 clipRect, string textBegin, ref byte textEnd, float wrapWidth, bool cpuFineClip)
+		public unsafe void RenderText(ImDrawListPtr drawList, float size, Vector2 pos, uint col, Vector4 clipRect, string textBegin, in byte textEnd, float wrapWidth, ImDrawTextFlags flags)
 		{
 			byte* pStr0 = null;
 			int pStrSize0 = 0;
@@ -7297,7 +9992,7 @@ namespace Dalamud.Bindings.ImGui
 			}
 			fixed (byte* ptextEnd = &textEnd)
 			{
-				ImGui.RenderTextNative(Handle, drawList, size, pos, col, clipRect, pStr0, (byte*)ptextEnd, wrapWidth, cpuFineClip ? (byte)1 : (byte)0);
+				ImGui.RenderTextNative(Handle, (ImDrawList*)drawList, size, pos, col, clipRect, pStr0, (byte*)ptextEnd, wrapWidth, flags);
 				if (pStrSize0 >= Utils.MaxStackallocSize)
 				{
 					Utils.Free(pStr0);
@@ -7308,7 +10003,7 @@ namespace Dalamud.Bindings.ImGui
 		/// <summary>
 		/// To be documented.
 		/// </summary>
-		public unsafe void RenderText(ImDrawListPtr drawList, float size, Vector2 pos, uint col, Vector4 clipRect, string textBegin, ref byte textEnd, float wrapWidth)
+		public unsafe void RenderText(ImDrawListPtr drawList, float size, Vector2 pos, uint col, Vector4 clipRect, string textBegin, in byte textEnd, float wrapWidth)
 		{
 			byte* pStr0 = null;
 			int pStrSize0 = 0;
@@ -7329,7 +10024,7 @@ namespace Dalamud.Bindings.ImGui
 			}
 			fixed (byte* ptextEnd = &textEnd)
 			{
-				ImGui.RenderTextNative(Handle, drawList, size, pos, col, clipRect, pStr0, (byte*)ptextEnd, wrapWidth, (byte)(0));
+				ImGui.RenderTextNative(Handle, (ImDrawList*)drawList, size, pos, col, clipRect, pStr0, (byte*)ptextEnd, wrapWidth, (ImDrawTextFlags)(0));
 				if (pStrSize0 >= Utils.MaxStackallocSize)
 				{
 					Utils.Free(pStr0);
@@ -7340,7 +10035,7 @@ namespace Dalamud.Bindings.ImGui
 		/// <summary>
 		/// To be documented.
 		/// </summary>
-		public unsafe void RenderText(ImDrawListPtr drawList, float size, Vector2 pos, uint col, Vector4 clipRect, string textBegin, ref byte textEnd)
+		public unsafe void RenderText(ImDrawListPtr drawList, float size, Vector2 pos, uint col, Vector4 clipRect, string textBegin, in byte textEnd)
 		{
 			byte* pStr0 = null;
 			int pStrSize0 = 0;
@@ -7361,7 +10056,7 @@ namespace Dalamud.Bindings.ImGui
 			}
 			fixed (byte* ptextEnd = &textEnd)
 			{
-				ImGui.RenderTextNative(Handle, drawList, size, pos, col, clipRect, pStr0, (byte*)ptextEnd, (float)(0.0f), (byte)(0));
+				ImGui.RenderTextNative(Handle, (ImDrawList*)drawList, size, pos, col, clipRect, pStr0, (byte*)ptextEnd, (float)(0.0f), (ImDrawTextFlags)(0));
 				if (pStrSize0 >= Utils.MaxStackallocSize)
 				{
 					Utils.Free(pStr0);
@@ -7372,7 +10067,7 @@ namespace Dalamud.Bindings.ImGui
 		/// <summary>
 		/// To be documented.
 		/// </summary>
-		public unsafe void RenderText(ImDrawListPtr drawList, float size, Vector2 pos, uint col, Vector4 clipRect, string textBegin, ref byte textEnd, bool cpuFineClip)
+		public unsafe void RenderText(ImDrawListPtr drawList, float size, Vector2 pos, uint col, Vector4 clipRect, string textBegin, in byte textEnd, ImDrawTextFlags flags)
 		{
 			byte* pStr0 = null;
 			int pStrSize0 = 0;
@@ -7393,7 +10088,7 @@ namespace Dalamud.Bindings.ImGui
 			}
 			fixed (byte* ptextEnd = &textEnd)
 			{
-				ImGui.RenderTextNative(Handle, drawList, size, pos, col, clipRect, pStr0, (byte*)ptextEnd, (float)(0.0f), cpuFineClip ? (byte)1 : (byte)0);
+				ImGui.RenderTextNative(Handle, (ImDrawList*)drawList, size, pos, col, clipRect, pStr0, (byte*)ptextEnd, (float)(0.0f), flags);
 				if (pStrSize0 >= Utils.MaxStackallocSize)
 				{
 					Utils.Free(pStr0);
@@ -7404,7 +10099,7 @@ namespace Dalamud.Bindings.ImGui
 		/// <summary>
 		/// To be documented.
 		/// </summary>
-		public unsafe void RenderText(ImDrawListPtr drawList, float size, Vector2 pos, uint col, Vector4 clipRect, string textBegin, ReadOnlySpan<byte> textEnd, float wrapWidth, bool cpuFineClip)
+		public unsafe void RenderText(ImDrawListPtr drawList, float size, Vector2 pos, uint col, Vector4 clipRect, string textBegin, ReadOnlySpan<byte> textEnd, float wrapWidth, ImDrawTextFlags flags)
 		{
 			byte* pStr0 = null;
 			int pStrSize0 = 0;
@@ -7425,7 +10120,7 @@ namespace Dalamud.Bindings.ImGui
 			}
 			fixed (byte* ptextEnd = textEnd)
 			{
-				ImGui.RenderTextNative(Handle, drawList, size, pos, col, clipRect, pStr0, (byte*)ptextEnd, wrapWidth, cpuFineClip ? (byte)1 : (byte)0);
+				ImGui.RenderTextNative(Handle, (ImDrawList*)drawList, size, pos, col, clipRect, pStr0, (byte*)ptextEnd, wrapWidth, flags);
 				if (pStrSize0 >= Utils.MaxStackallocSize)
 				{
 					Utils.Free(pStr0);
@@ -7457,7 +10152,7 @@ namespace Dalamud.Bindings.ImGui
 			}
 			fixed (byte* ptextEnd = textEnd)
 			{
-				ImGui.RenderTextNative(Handle, drawList, size, pos, col, clipRect, pStr0, (byte*)ptextEnd, wrapWidth, (byte)(0));
+				ImGui.RenderTextNative(Handle, (ImDrawList*)drawList, size, pos, col, clipRect, pStr0, (byte*)ptextEnd, wrapWidth, (ImDrawTextFlags)(0));
 				if (pStrSize0 >= Utils.MaxStackallocSize)
 				{
 					Utils.Free(pStr0);
@@ -7489,7 +10184,7 @@ namespace Dalamud.Bindings.ImGui
 			}
 			fixed (byte* ptextEnd = textEnd)
 			{
-				ImGui.RenderTextNative(Handle, drawList, size, pos, col, clipRect, pStr0, (byte*)ptextEnd, (float)(0.0f), (byte)(0));
+				ImGui.RenderTextNative(Handle, (ImDrawList*)drawList, size, pos, col, clipRect, pStr0, (byte*)ptextEnd, (float)(0.0f), (ImDrawTextFlags)(0));
 				if (pStrSize0 >= Utils.MaxStackallocSize)
 				{
 					Utils.Free(pStr0);
@@ -7500,7 +10195,7 @@ namespace Dalamud.Bindings.ImGui
 		/// <summary>
 		/// To be documented.
 		/// </summary>
-		public unsafe void RenderText(ImDrawListPtr drawList, float size, Vector2 pos, uint col, Vector4 clipRect, string textBegin, ReadOnlySpan<byte> textEnd, bool cpuFineClip)
+		public unsafe void RenderText(ImDrawListPtr drawList, float size, Vector2 pos, uint col, Vector4 clipRect, string textBegin, ReadOnlySpan<byte> textEnd, ImDrawTextFlags flags)
 		{
 			byte* pStr0 = null;
 			int pStrSize0 = 0;
@@ -7521,7 +10216,7 @@ namespace Dalamud.Bindings.ImGui
 			}
 			fixed (byte* ptextEnd = textEnd)
 			{
-				ImGui.RenderTextNative(Handle, drawList, size, pos, col, clipRect, pStr0, (byte*)ptextEnd, (float)(0.0f), cpuFineClip ? (byte)1 : (byte)0);
+				ImGui.RenderTextNative(Handle, (ImDrawList*)drawList, size, pos, col, clipRect, pStr0, (byte*)ptextEnd, (float)(0.0f), flags);
 				if (pStrSize0 >= Utils.MaxStackallocSize)
 				{
 					Utils.Free(pStr0);
@@ -7532,7 +10227,7 @@ namespace Dalamud.Bindings.ImGui
 		/// <summary>
 		/// To be documented.
 		/// </summary>
-		public unsafe void RenderText(ref ImDrawList drawList, float size, Vector2 pos, uint col, Vector4 clipRect, ref byte textBegin, ref byte textEnd, float wrapWidth, bool cpuFineClip)
+		public unsafe void RenderText(ref ImDrawList drawList, float size, Vector2 pos, uint col, Vector4 clipRect, in byte textBegin, in byte textEnd, float wrapWidth, ImDrawTextFlags flags)
 		{
 			fixed (ImDrawList* pdrawList = &drawList)
 			{
@@ -7540,7 +10235,7 @@ namespace Dalamud.Bindings.ImGui
 				{
 					fixed (byte* ptextEnd = &textEnd)
 					{
-						ImGui.RenderTextNative(Handle, (ImDrawList*)pdrawList, size, pos, col, clipRect, (byte*)ptextBegin, (byte*)ptextEnd, wrapWidth, cpuFineClip ? (byte)1 : (byte)0);
+						ImGui.RenderTextNative(Handle, (ImDrawList*)pdrawList, size, pos, col, clipRect, (byte*)ptextBegin, (byte*)ptextEnd, wrapWidth, flags);
 					}
 				}
 			}
@@ -7549,7 +10244,7 @@ namespace Dalamud.Bindings.ImGui
 		/// <summary>
 		/// To be documented.
 		/// </summary>
-		public unsafe void RenderText(ref ImDrawList drawList, float size, Vector2 pos, uint col, Vector4 clipRect, ref byte textBegin, ref byte textEnd, float wrapWidth)
+		public unsafe void RenderText(ref ImDrawList drawList, float size, Vector2 pos, uint col, Vector4 clipRect, in byte textBegin, in byte textEnd, float wrapWidth)
 		{
 			fixed (ImDrawList* pdrawList = &drawList)
 			{
@@ -7557,7 +10252,7 @@ namespace Dalamud.Bindings.ImGui
 				{
 					fixed (byte* ptextEnd = &textEnd)
 					{
-						ImGui.RenderTextNative(Handle, (ImDrawList*)pdrawList, size, pos, col, clipRect, (byte*)ptextBegin, (byte*)ptextEnd, wrapWidth, (byte)(0));
+						ImGui.RenderTextNative(Handle, (ImDrawList*)pdrawList, size, pos, col, clipRect, (byte*)ptextBegin, (byte*)ptextEnd, wrapWidth, (ImDrawTextFlags)(0));
 					}
 				}
 			}
@@ -7566,7 +10261,7 @@ namespace Dalamud.Bindings.ImGui
 		/// <summary>
 		/// To be documented.
 		/// </summary>
-		public unsafe void RenderText(ref ImDrawList drawList, float size, Vector2 pos, uint col, Vector4 clipRect, ref byte textBegin, ref byte textEnd)
+		public unsafe void RenderText(ref ImDrawList drawList, float size, Vector2 pos, uint col, Vector4 clipRect, in byte textBegin, in byte textEnd)
 		{
 			fixed (ImDrawList* pdrawList = &drawList)
 			{
@@ -7574,7 +10269,7 @@ namespace Dalamud.Bindings.ImGui
 				{
 					fixed (byte* ptextEnd = &textEnd)
 					{
-						ImGui.RenderTextNative(Handle, (ImDrawList*)pdrawList, size, pos, col, clipRect, (byte*)ptextBegin, (byte*)ptextEnd, (float)(0.0f), (byte)(0));
+						ImGui.RenderTextNative(Handle, (ImDrawList*)pdrawList, size, pos, col, clipRect, (byte*)ptextBegin, (byte*)ptextEnd, (float)(0.0f), (ImDrawTextFlags)(0));
 					}
 				}
 			}
@@ -7583,7 +10278,7 @@ namespace Dalamud.Bindings.ImGui
 		/// <summary>
 		/// To be documented.
 		/// </summary>
-		public unsafe void RenderText(ref ImDrawList drawList, float size, Vector2 pos, uint col, Vector4 clipRect, ref byte textBegin, ref byte textEnd, bool cpuFineClip)
+		public unsafe void RenderText(ref ImDrawList drawList, float size, Vector2 pos, uint col, Vector4 clipRect, in byte textBegin, in byte textEnd, ImDrawTextFlags flags)
 		{
 			fixed (ImDrawList* pdrawList = &drawList)
 			{
@@ -7591,7 +10286,7 @@ namespace Dalamud.Bindings.ImGui
 				{
 					fixed (byte* ptextEnd = &textEnd)
 					{
-						ImGui.RenderTextNative(Handle, (ImDrawList*)pdrawList, size, pos, col, clipRect, (byte*)ptextBegin, (byte*)ptextEnd, (float)(0.0f), cpuFineClip ? (byte)1 : (byte)0);
+						ImGui.RenderTextNative(Handle, (ImDrawList*)pdrawList, size, pos, col, clipRect, (byte*)ptextBegin, (byte*)ptextEnd, (float)(0.0f), flags);
 					}
 				}
 			}
@@ -7600,7 +10295,7 @@ namespace Dalamud.Bindings.ImGui
 		/// <summary>
 		/// To be documented.
 		/// </summary>
-		public unsafe void RenderText(ref ImDrawList drawList, float size, Vector2 pos, uint col, Vector4 clipRect, ReadOnlySpan<byte> textBegin, ReadOnlySpan<byte> textEnd, float wrapWidth, bool cpuFineClip)
+		public unsafe void RenderText(ref ImDrawList drawList, float size, Vector2 pos, uint col, Vector4 clipRect, ReadOnlySpan<byte> textBegin, ReadOnlySpan<byte> textEnd, float wrapWidth, ImDrawTextFlags flags)
 		{
 			fixed (ImDrawList* pdrawList = &drawList)
 			{
@@ -7608,7 +10303,7 @@ namespace Dalamud.Bindings.ImGui
 				{
 					fixed (byte* ptextEnd = textEnd)
 					{
-						ImGui.RenderTextNative(Handle, (ImDrawList*)pdrawList, size, pos, col, clipRect, (byte*)ptextBegin, (byte*)ptextEnd, wrapWidth, cpuFineClip ? (byte)1 : (byte)0);
+						ImGui.RenderTextNative(Handle, (ImDrawList*)pdrawList, size, pos, col, clipRect, (byte*)ptextBegin, (byte*)ptextEnd, wrapWidth, flags);
 					}
 				}
 			}
@@ -7625,7 +10320,7 @@ namespace Dalamud.Bindings.ImGui
 				{
 					fixed (byte* ptextEnd = textEnd)
 					{
-						ImGui.RenderTextNative(Handle, (ImDrawList*)pdrawList, size, pos, col, clipRect, (byte*)ptextBegin, (byte*)ptextEnd, wrapWidth, (byte)(0));
+						ImGui.RenderTextNative(Handle, (ImDrawList*)pdrawList, size, pos, col, clipRect, (byte*)ptextBegin, (byte*)ptextEnd, wrapWidth, (ImDrawTextFlags)(0));
 					}
 				}
 			}
@@ -7642,7 +10337,7 @@ namespace Dalamud.Bindings.ImGui
 				{
 					fixed (byte* ptextEnd = textEnd)
 					{
-						ImGui.RenderTextNative(Handle, (ImDrawList*)pdrawList, size, pos, col, clipRect, (byte*)ptextBegin, (byte*)ptextEnd, (float)(0.0f), (byte)(0));
+						ImGui.RenderTextNative(Handle, (ImDrawList*)pdrawList, size, pos, col, clipRect, (byte*)ptextBegin, (byte*)ptextEnd, (float)(0.0f), (ImDrawTextFlags)(0));
 					}
 				}
 			}
@@ -7651,7 +10346,7 @@ namespace Dalamud.Bindings.ImGui
 		/// <summary>
 		/// To be documented.
 		/// </summary>
-		public unsafe void RenderText(ref ImDrawList drawList, float size, Vector2 pos, uint col, Vector4 clipRect, ReadOnlySpan<byte> textBegin, ReadOnlySpan<byte> textEnd, bool cpuFineClip)
+		public unsafe void RenderText(ref ImDrawList drawList, float size, Vector2 pos, uint col, Vector4 clipRect, ReadOnlySpan<byte> textBegin, ReadOnlySpan<byte> textEnd, ImDrawTextFlags flags)
 		{
 			fixed (ImDrawList* pdrawList = &drawList)
 			{
@@ -7659,7 +10354,7 @@ namespace Dalamud.Bindings.ImGui
 				{
 					fixed (byte* ptextEnd = textEnd)
 					{
-						ImGui.RenderTextNative(Handle, (ImDrawList*)pdrawList, size, pos, col, clipRect, (byte*)ptextBegin, (byte*)ptextEnd, (float)(0.0f), cpuFineClip ? (byte)1 : (byte)0);
+						ImGui.RenderTextNative(Handle, (ImDrawList*)pdrawList, size, pos, col, clipRect, (byte*)ptextBegin, (byte*)ptextEnd, (float)(0.0f), flags);
 					}
 				}
 			}
@@ -7668,7 +10363,7 @@ namespace Dalamud.Bindings.ImGui
 		/// <summary>
 		/// To be documented.
 		/// </summary>
-		public unsafe void RenderText(ref ImDrawList drawList, float size, Vector2 pos, uint col, Vector4 clipRect, string textBegin, string textEnd, float wrapWidth, bool cpuFineClip)
+		public unsafe void RenderText(ref ImDrawList drawList, float size, Vector2 pos, uint col, Vector4 clipRect, string textBegin, string textEnd, float wrapWidth, ImDrawTextFlags flags)
 		{
 			fixed (ImDrawList* pdrawList = &drawList)
 			{
@@ -7706,7 +10401,7 @@ namespace Dalamud.Bindings.ImGui
 					int pStrOffset1 = Utils.EncodeStringUTF8(textEnd, pStr1, pStrSize1);
 					pStr1[pStrOffset1] = 0;
 				}
-				ImGui.RenderTextNative(Handle, (ImDrawList*)pdrawList, size, pos, col, clipRect, pStr0, pStr1, wrapWidth, cpuFineClip ? (byte)1 : (byte)0);
+				ImGui.RenderTextNative(Handle, (ImDrawList*)pdrawList, size, pos, col, clipRect, pStr0, pStr1, wrapWidth, flags);
 				if (pStrSize1 >= Utils.MaxStackallocSize)
 				{
 					Utils.Free(pStr1);
@@ -7759,7 +10454,7 @@ namespace Dalamud.Bindings.ImGui
 					int pStrOffset1 = Utils.EncodeStringUTF8(textEnd, pStr1, pStrSize1);
 					pStr1[pStrOffset1] = 0;
 				}
-				ImGui.RenderTextNative(Handle, (ImDrawList*)pdrawList, size, pos, col, clipRect, pStr0, pStr1, wrapWidth, (byte)(0));
+				ImGui.RenderTextNative(Handle, (ImDrawList*)pdrawList, size, pos, col, clipRect, pStr0, pStr1, wrapWidth, (ImDrawTextFlags)(0));
 				if (pStrSize1 >= Utils.MaxStackallocSize)
 				{
 					Utils.Free(pStr1);
@@ -7812,7 +10507,7 @@ namespace Dalamud.Bindings.ImGui
 					int pStrOffset1 = Utils.EncodeStringUTF8(textEnd, pStr1, pStrSize1);
 					pStr1[pStrOffset1] = 0;
 				}
-				ImGui.RenderTextNative(Handle, (ImDrawList*)pdrawList, size, pos, col, clipRect, pStr0, pStr1, (float)(0.0f), (byte)(0));
+				ImGui.RenderTextNative(Handle, (ImDrawList*)pdrawList, size, pos, col, clipRect, pStr0, pStr1, (float)(0.0f), (ImDrawTextFlags)(0));
 				if (pStrSize1 >= Utils.MaxStackallocSize)
 				{
 					Utils.Free(pStr1);
@@ -7827,7 +10522,7 @@ namespace Dalamud.Bindings.ImGui
 		/// <summary>
 		/// To be documented.
 		/// </summary>
-		public unsafe void RenderText(ref ImDrawList drawList, float size, Vector2 pos, uint col, Vector4 clipRect, string textBegin, string textEnd, bool cpuFineClip)
+		public unsafe void RenderText(ref ImDrawList drawList, float size, Vector2 pos, uint col, Vector4 clipRect, string textBegin, string textEnd, ImDrawTextFlags flags)
 		{
 			fixed (ImDrawList* pdrawList = &drawList)
 			{
@@ -7865,7 +10560,7 @@ namespace Dalamud.Bindings.ImGui
 					int pStrOffset1 = Utils.EncodeStringUTF8(textEnd, pStr1, pStrSize1);
 					pStr1[pStrOffset1] = 0;
 				}
-				ImGui.RenderTextNative(Handle, (ImDrawList*)pdrawList, size, pos, col, clipRect, pStr0, pStr1, (float)(0.0f), cpuFineClip ? (byte)1 : (byte)0);
+				ImGui.RenderTextNative(Handle, (ImDrawList*)pdrawList, size, pos, col, clipRect, pStr0, pStr1, (float)(0.0f), flags);
 				if (pStrSize1 >= Utils.MaxStackallocSize)
 				{
 					Utils.Free(pStr1);
@@ -7880,7 +10575,7 @@ namespace Dalamud.Bindings.ImGui
 		/// <summary>
 		/// To be documented.
 		/// </summary>
-		public unsafe void RenderText(ref ImDrawList drawList, float size, Vector2 pos, uint col, Vector4 clipRect, ref byte textBegin, ReadOnlySpan<byte> textEnd, float wrapWidth, bool cpuFineClip)
+		public unsafe void RenderText(ref ImDrawList drawList, float size, Vector2 pos, uint col, Vector4 clipRect, in byte textBegin, ReadOnlySpan<byte> textEnd, float wrapWidth, ImDrawTextFlags flags)
 		{
 			fixed (ImDrawList* pdrawList = &drawList)
 			{
@@ -7888,7 +10583,7 @@ namespace Dalamud.Bindings.ImGui
 				{
 					fixed (byte* ptextEnd = textEnd)
 					{
-						ImGui.RenderTextNative(Handle, (ImDrawList*)pdrawList, size, pos, col, clipRect, (byte*)ptextBegin, (byte*)ptextEnd, wrapWidth, cpuFineClip ? (byte)1 : (byte)0);
+						ImGui.RenderTextNative(Handle, (ImDrawList*)pdrawList, size, pos, col, clipRect, (byte*)ptextBegin, (byte*)ptextEnd, wrapWidth, flags);
 					}
 				}
 			}
@@ -7897,7 +10592,7 @@ namespace Dalamud.Bindings.ImGui
 		/// <summary>
 		/// To be documented.
 		/// </summary>
-		public unsafe void RenderText(ref ImDrawList drawList, float size, Vector2 pos, uint col, Vector4 clipRect, ref byte textBegin, ReadOnlySpan<byte> textEnd, float wrapWidth)
+		public unsafe void RenderText(ref ImDrawList drawList, float size, Vector2 pos, uint col, Vector4 clipRect, in byte textBegin, ReadOnlySpan<byte> textEnd, float wrapWidth)
 		{
 			fixed (ImDrawList* pdrawList = &drawList)
 			{
@@ -7905,7 +10600,7 @@ namespace Dalamud.Bindings.ImGui
 				{
 					fixed (byte* ptextEnd = textEnd)
 					{
-						ImGui.RenderTextNative(Handle, (ImDrawList*)pdrawList, size, pos, col, clipRect, (byte*)ptextBegin, (byte*)ptextEnd, wrapWidth, (byte)(0));
+						ImGui.RenderTextNative(Handle, (ImDrawList*)pdrawList, size, pos, col, clipRect, (byte*)ptextBegin, (byte*)ptextEnd, wrapWidth, (ImDrawTextFlags)(0));
 					}
 				}
 			}
@@ -7914,7 +10609,7 @@ namespace Dalamud.Bindings.ImGui
 		/// <summary>
 		/// To be documented.
 		/// </summary>
-		public unsafe void RenderText(ref ImDrawList drawList, float size, Vector2 pos, uint col, Vector4 clipRect, ref byte textBegin, ReadOnlySpan<byte> textEnd)
+		public unsafe void RenderText(ref ImDrawList drawList, float size, Vector2 pos, uint col, Vector4 clipRect, in byte textBegin, ReadOnlySpan<byte> textEnd)
 		{
 			fixed (ImDrawList* pdrawList = &drawList)
 			{
@@ -7922,7 +10617,7 @@ namespace Dalamud.Bindings.ImGui
 				{
 					fixed (byte* ptextEnd = textEnd)
 					{
-						ImGui.RenderTextNative(Handle, (ImDrawList*)pdrawList, size, pos, col, clipRect, (byte*)ptextBegin, (byte*)ptextEnd, (float)(0.0f), (byte)(0));
+						ImGui.RenderTextNative(Handle, (ImDrawList*)pdrawList, size, pos, col, clipRect, (byte*)ptextBegin, (byte*)ptextEnd, (float)(0.0f), (ImDrawTextFlags)(0));
 					}
 				}
 			}
@@ -7931,7 +10626,7 @@ namespace Dalamud.Bindings.ImGui
 		/// <summary>
 		/// To be documented.
 		/// </summary>
-		public unsafe void RenderText(ref ImDrawList drawList, float size, Vector2 pos, uint col, Vector4 clipRect, ref byte textBegin, ReadOnlySpan<byte> textEnd, bool cpuFineClip)
+		public unsafe void RenderText(ref ImDrawList drawList, float size, Vector2 pos, uint col, Vector4 clipRect, in byte textBegin, ReadOnlySpan<byte> textEnd, ImDrawTextFlags flags)
 		{
 			fixed (ImDrawList* pdrawList = &drawList)
 			{
@@ -7939,7 +10634,7 @@ namespace Dalamud.Bindings.ImGui
 				{
 					fixed (byte* ptextEnd = textEnd)
 					{
-						ImGui.RenderTextNative(Handle, (ImDrawList*)pdrawList, size, pos, col, clipRect, (byte*)ptextBegin, (byte*)ptextEnd, (float)(0.0f), cpuFineClip ? (byte)1 : (byte)0);
+						ImGui.RenderTextNative(Handle, (ImDrawList*)pdrawList, size, pos, col, clipRect, (byte*)ptextBegin, (byte*)ptextEnd, (float)(0.0f), flags);
 					}
 				}
 			}
@@ -7948,7 +10643,7 @@ namespace Dalamud.Bindings.ImGui
 		/// <summary>
 		/// To be documented.
 		/// </summary>
-		public unsafe void RenderText(ref ImDrawList drawList, float size, Vector2 pos, uint col, Vector4 clipRect, ref byte textBegin, string textEnd, float wrapWidth, bool cpuFineClip)
+		public unsafe void RenderText(ref ImDrawList drawList, float size, Vector2 pos, uint col, Vector4 clipRect, in byte textBegin, string textEnd, float wrapWidth, ImDrawTextFlags flags)
 		{
 			fixed (ImDrawList* pdrawList = &drawList)
 			{
@@ -7971,7 +10666,7 @@ namespace Dalamud.Bindings.ImGui
 						int pStrOffset0 = Utils.EncodeStringUTF8(textEnd, pStr0, pStrSize0);
 						pStr0[pStrOffset0] = 0;
 					}
-					ImGui.RenderTextNative(Handle, (ImDrawList*)pdrawList, size, pos, col, clipRect, (byte*)ptextBegin, pStr0, wrapWidth, cpuFineClip ? (byte)1 : (byte)0);
+					ImGui.RenderTextNative(Handle, (ImDrawList*)pdrawList, size, pos, col, clipRect, (byte*)ptextBegin, pStr0, wrapWidth, flags);
 					if (pStrSize0 >= Utils.MaxStackallocSize)
 					{
 						Utils.Free(pStr0);
@@ -7983,7 +10678,7 @@ namespace Dalamud.Bindings.ImGui
 		/// <summary>
 		/// To be documented.
 		/// </summary>
-		public unsafe void RenderText(ref ImDrawList drawList, float size, Vector2 pos, uint col, Vector4 clipRect, ref byte textBegin, string textEnd, float wrapWidth)
+		public unsafe void RenderText(ref ImDrawList drawList, float size, Vector2 pos, uint col, Vector4 clipRect, in byte textBegin, string textEnd, float wrapWidth)
 		{
 			fixed (ImDrawList* pdrawList = &drawList)
 			{
@@ -8006,7 +10701,7 @@ namespace Dalamud.Bindings.ImGui
 						int pStrOffset0 = Utils.EncodeStringUTF8(textEnd, pStr0, pStrSize0);
 						pStr0[pStrOffset0] = 0;
 					}
-					ImGui.RenderTextNative(Handle, (ImDrawList*)pdrawList, size, pos, col, clipRect, (byte*)ptextBegin, pStr0, wrapWidth, (byte)(0));
+					ImGui.RenderTextNative(Handle, (ImDrawList*)pdrawList, size, pos, col, clipRect, (byte*)ptextBegin, pStr0, wrapWidth, (ImDrawTextFlags)(0));
 					if (pStrSize0 >= Utils.MaxStackallocSize)
 					{
 						Utils.Free(pStr0);
@@ -8018,7 +10713,7 @@ namespace Dalamud.Bindings.ImGui
 		/// <summary>
 		/// To be documented.
 		/// </summary>
-		public unsafe void RenderText(ref ImDrawList drawList, float size, Vector2 pos, uint col, Vector4 clipRect, ref byte textBegin, string textEnd)
+		public unsafe void RenderText(ref ImDrawList drawList, float size, Vector2 pos, uint col, Vector4 clipRect, in byte textBegin, string textEnd)
 		{
 			fixed (ImDrawList* pdrawList = &drawList)
 			{
@@ -8041,7 +10736,7 @@ namespace Dalamud.Bindings.ImGui
 						int pStrOffset0 = Utils.EncodeStringUTF8(textEnd, pStr0, pStrSize0);
 						pStr0[pStrOffset0] = 0;
 					}
-					ImGui.RenderTextNative(Handle, (ImDrawList*)pdrawList, size, pos, col, clipRect, (byte*)ptextBegin, pStr0, (float)(0.0f), (byte)(0));
+					ImGui.RenderTextNative(Handle, (ImDrawList*)pdrawList, size, pos, col, clipRect, (byte*)ptextBegin, pStr0, (float)(0.0f), (ImDrawTextFlags)(0));
 					if (pStrSize0 >= Utils.MaxStackallocSize)
 					{
 						Utils.Free(pStr0);
@@ -8053,7 +10748,7 @@ namespace Dalamud.Bindings.ImGui
 		/// <summary>
 		/// To be documented.
 		/// </summary>
-		public unsafe void RenderText(ref ImDrawList drawList, float size, Vector2 pos, uint col, Vector4 clipRect, ref byte textBegin, string textEnd, bool cpuFineClip)
+		public unsafe void RenderText(ref ImDrawList drawList, float size, Vector2 pos, uint col, Vector4 clipRect, in byte textBegin, string textEnd, ImDrawTextFlags flags)
 		{
 			fixed (ImDrawList* pdrawList = &drawList)
 			{
@@ -8076,7 +10771,7 @@ namespace Dalamud.Bindings.ImGui
 						int pStrOffset0 = Utils.EncodeStringUTF8(textEnd, pStr0, pStrSize0);
 						pStr0[pStrOffset0] = 0;
 					}
-					ImGui.RenderTextNative(Handle, (ImDrawList*)pdrawList, size, pos, col, clipRect, (byte*)ptextBegin, pStr0, (float)(0.0f), cpuFineClip ? (byte)1 : (byte)0);
+					ImGui.RenderTextNative(Handle, (ImDrawList*)pdrawList, size, pos, col, clipRect, (byte*)ptextBegin, pStr0, (float)(0.0f), flags);
 					if (pStrSize0 >= Utils.MaxStackallocSize)
 					{
 						Utils.Free(pStr0);
@@ -8088,7 +10783,7 @@ namespace Dalamud.Bindings.ImGui
 		/// <summary>
 		/// To be documented.
 		/// </summary>
-		public unsafe void RenderText(ref ImDrawList drawList, float size, Vector2 pos, uint col, Vector4 clipRect, ReadOnlySpan<byte> textBegin, ref byte textEnd, float wrapWidth, bool cpuFineClip)
+		public unsafe void RenderText(ref ImDrawList drawList, float size, Vector2 pos, uint col, Vector4 clipRect, ReadOnlySpan<byte> textBegin, in byte textEnd, float wrapWidth, ImDrawTextFlags flags)
 		{
 			fixed (ImDrawList* pdrawList = &drawList)
 			{
@@ -8096,7 +10791,7 @@ namespace Dalamud.Bindings.ImGui
 				{
 					fixed (byte* ptextEnd = &textEnd)
 					{
-						ImGui.RenderTextNative(Handle, (ImDrawList*)pdrawList, size, pos, col, clipRect, (byte*)ptextBegin, (byte*)ptextEnd, wrapWidth, cpuFineClip ? (byte)1 : (byte)0);
+						ImGui.RenderTextNative(Handle, (ImDrawList*)pdrawList, size, pos, col, clipRect, (byte*)ptextBegin, (byte*)ptextEnd, wrapWidth, flags);
 					}
 				}
 			}
@@ -8105,7 +10800,7 @@ namespace Dalamud.Bindings.ImGui
 		/// <summary>
 		/// To be documented.
 		/// </summary>
-		public unsafe void RenderText(ref ImDrawList drawList, float size, Vector2 pos, uint col, Vector4 clipRect, ReadOnlySpan<byte> textBegin, ref byte textEnd, float wrapWidth)
+		public unsafe void RenderText(ref ImDrawList drawList, float size, Vector2 pos, uint col, Vector4 clipRect, ReadOnlySpan<byte> textBegin, in byte textEnd, float wrapWidth)
 		{
 			fixed (ImDrawList* pdrawList = &drawList)
 			{
@@ -8113,7 +10808,7 @@ namespace Dalamud.Bindings.ImGui
 				{
 					fixed (byte* ptextEnd = &textEnd)
 					{
-						ImGui.RenderTextNative(Handle, (ImDrawList*)pdrawList, size, pos, col, clipRect, (byte*)ptextBegin, (byte*)ptextEnd, wrapWidth, (byte)(0));
+						ImGui.RenderTextNative(Handle, (ImDrawList*)pdrawList, size, pos, col, clipRect, (byte*)ptextBegin, (byte*)ptextEnd, wrapWidth, (ImDrawTextFlags)(0));
 					}
 				}
 			}
@@ -8122,7 +10817,7 @@ namespace Dalamud.Bindings.ImGui
 		/// <summary>
 		/// To be documented.
 		/// </summary>
-		public unsafe void RenderText(ref ImDrawList drawList, float size, Vector2 pos, uint col, Vector4 clipRect, ReadOnlySpan<byte> textBegin, ref byte textEnd)
+		public unsafe void RenderText(ref ImDrawList drawList, float size, Vector2 pos, uint col, Vector4 clipRect, ReadOnlySpan<byte> textBegin, in byte textEnd)
 		{
 			fixed (ImDrawList* pdrawList = &drawList)
 			{
@@ -8130,7 +10825,7 @@ namespace Dalamud.Bindings.ImGui
 				{
 					fixed (byte* ptextEnd = &textEnd)
 					{
-						ImGui.RenderTextNative(Handle, (ImDrawList*)pdrawList, size, pos, col, clipRect, (byte*)ptextBegin, (byte*)ptextEnd, (float)(0.0f), (byte)(0));
+						ImGui.RenderTextNative(Handle, (ImDrawList*)pdrawList, size, pos, col, clipRect, (byte*)ptextBegin, (byte*)ptextEnd, (float)(0.0f), (ImDrawTextFlags)(0));
 					}
 				}
 			}
@@ -8139,7 +10834,7 @@ namespace Dalamud.Bindings.ImGui
 		/// <summary>
 		/// To be documented.
 		/// </summary>
-		public unsafe void RenderText(ref ImDrawList drawList, float size, Vector2 pos, uint col, Vector4 clipRect, ReadOnlySpan<byte> textBegin, ref byte textEnd, bool cpuFineClip)
+		public unsafe void RenderText(ref ImDrawList drawList, float size, Vector2 pos, uint col, Vector4 clipRect, ReadOnlySpan<byte> textBegin, in byte textEnd, ImDrawTextFlags flags)
 		{
 			fixed (ImDrawList* pdrawList = &drawList)
 			{
@@ -8147,7 +10842,7 @@ namespace Dalamud.Bindings.ImGui
 				{
 					fixed (byte* ptextEnd = &textEnd)
 					{
-						ImGui.RenderTextNative(Handle, (ImDrawList*)pdrawList, size, pos, col, clipRect, (byte*)ptextBegin, (byte*)ptextEnd, (float)(0.0f), cpuFineClip ? (byte)1 : (byte)0);
+						ImGui.RenderTextNative(Handle, (ImDrawList*)pdrawList, size, pos, col, clipRect, (byte*)ptextBegin, (byte*)ptextEnd, (float)(0.0f), flags);
 					}
 				}
 			}
@@ -8156,7 +10851,7 @@ namespace Dalamud.Bindings.ImGui
 		/// <summary>
 		/// To be documented.
 		/// </summary>
-		public unsafe void RenderText(ref ImDrawList drawList, float size, Vector2 pos, uint col, Vector4 clipRect, ReadOnlySpan<byte> textBegin, string textEnd, float wrapWidth, bool cpuFineClip)
+		public unsafe void RenderText(ref ImDrawList drawList, float size, Vector2 pos, uint col, Vector4 clipRect, ReadOnlySpan<byte> textBegin, string textEnd, float wrapWidth, ImDrawTextFlags flags)
 		{
 			fixed (ImDrawList* pdrawList = &drawList)
 			{
@@ -8179,7 +10874,7 @@ namespace Dalamud.Bindings.ImGui
 						int pStrOffset0 = Utils.EncodeStringUTF8(textEnd, pStr0, pStrSize0);
 						pStr0[pStrOffset0] = 0;
 					}
-					ImGui.RenderTextNative(Handle, (ImDrawList*)pdrawList, size, pos, col, clipRect, (byte*)ptextBegin, pStr0, wrapWidth, cpuFineClip ? (byte)1 : (byte)0);
+					ImGui.RenderTextNative(Handle, (ImDrawList*)pdrawList, size, pos, col, clipRect, (byte*)ptextBegin, pStr0, wrapWidth, flags);
 					if (pStrSize0 >= Utils.MaxStackallocSize)
 					{
 						Utils.Free(pStr0);
@@ -8214,7 +10909,7 @@ namespace Dalamud.Bindings.ImGui
 						int pStrOffset0 = Utils.EncodeStringUTF8(textEnd, pStr0, pStrSize0);
 						pStr0[pStrOffset0] = 0;
 					}
-					ImGui.RenderTextNative(Handle, (ImDrawList*)pdrawList, size, pos, col, clipRect, (byte*)ptextBegin, pStr0, wrapWidth, (byte)(0));
+					ImGui.RenderTextNative(Handle, (ImDrawList*)pdrawList, size, pos, col, clipRect, (byte*)ptextBegin, pStr0, wrapWidth, (ImDrawTextFlags)(0));
 					if (pStrSize0 >= Utils.MaxStackallocSize)
 					{
 						Utils.Free(pStr0);
@@ -8249,7 +10944,7 @@ namespace Dalamud.Bindings.ImGui
 						int pStrOffset0 = Utils.EncodeStringUTF8(textEnd, pStr0, pStrSize0);
 						pStr0[pStrOffset0] = 0;
 					}
-					ImGui.RenderTextNative(Handle, (ImDrawList*)pdrawList, size, pos, col, clipRect, (byte*)ptextBegin, pStr0, (float)(0.0f), (byte)(0));
+					ImGui.RenderTextNative(Handle, (ImDrawList*)pdrawList, size, pos, col, clipRect, (byte*)ptextBegin, pStr0, (float)(0.0f), (ImDrawTextFlags)(0));
 					if (pStrSize0 >= Utils.MaxStackallocSize)
 					{
 						Utils.Free(pStr0);
@@ -8261,7 +10956,7 @@ namespace Dalamud.Bindings.ImGui
 		/// <summary>
 		/// To be documented.
 		/// </summary>
-		public unsafe void RenderText(ref ImDrawList drawList, float size, Vector2 pos, uint col, Vector4 clipRect, ReadOnlySpan<byte> textBegin, string textEnd, bool cpuFineClip)
+		public unsafe void RenderText(ref ImDrawList drawList, float size, Vector2 pos, uint col, Vector4 clipRect, ReadOnlySpan<byte> textBegin, string textEnd, ImDrawTextFlags flags)
 		{
 			fixed (ImDrawList* pdrawList = &drawList)
 			{
@@ -8284,7 +10979,7 @@ namespace Dalamud.Bindings.ImGui
 						int pStrOffset0 = Utils.EncodeStringUTF8(textEnd, pStr0, pStrSize0);
 						pStr0[pStrOffset0] = 0;
 					}
-					ImGui.RenderTextNative(Handle, (ImDrawList*)pdrawList, size, pos, col, clipRect, (byte*)ptextBegin, pStr0, (float)(0.0f), cpuFineClip ? (byte)1 : (byte)0);
+					ImGui.RenderTextNative(Handle, (ImDrawList*)pdrawList, size, pos, col, clipRect, (byte*)ptextBegin, pStr0, (float)(0.0f), flags);
 					if (pStrSize0 >= Utils.MaxStackallocSize)
 					{
 						Utils.Free(pStr0);
@@ -8296,7 +10991,7 @@ namespace Dalamud.Bindings.ImGui
 		/// <summary>
 		/// To be documented.
 		/// </summary>
-		public unsafe void RenderText(ref ImDrawList drawList, float size, Vector2 pos, uint col, Vector4 clipRect, string textBegin, ref byte textEnd, float wrapWidth, bool cpuFineClip)
+		public unsafe void RenderText(ref ImDrawList drawList, float size, Vector2 pos, uint col, Vector4 clipRect, string textBegin, in byte textEnd, float wrapWidth, ImDrawTextFlags flags)
 		{
 			fixed (ImDrawList* pdrawList = &drawList)
 			{
@@ -8319,7 +11014,7 @@ namespace Dalamud.Bindings.ImGui
 				}
 				fixed (byte* ptextEnd = &textEnd)
 				{
-					ImGui.RenderTextNative(Handle, (ImDrawList*)pdrawList, size, pos, col, clipRect, pStr0, (byte*)ptextEnd, wrapWidth, cpuFineClip ? (byte)1 : (byte)0);
+					ImGui.RenderTextNative(Handle, (ImDrawList*)pdrawList, size, pos, col, clipRect, pStr0, (byte*)ptextEnd, wrapWidth, flags);
 					if (pStrSize0 >= Utils.MaxStackallocSize)
 					{
 						Utils.Free(pStr0);
@@ -8331,7 +11026,7 @@ namespace Dalamud.Bindings.ImGui
 		/// <summary>
 		/// To be documented.
 		/// </summary>
-		public unsafe void RenderText(ref ImDrawList drawList, float size, Vector2 pos, uint col, Vector4 clipRect, string textBegin, ref byte textEnd, float wrapWidth)
+		public unsafe void RenderText(ref ImDrawList drawList, float size, Vector2 pos, uint col, Vector4 clipRect, string textBegin, in byte textEnd, float wrapWidth)
 		{
 			fixed (ImDrawList* pdrawList = &drawList)
 			{
@@ -8354,7 +11049,7 @@ namespace Dalamud.Bindings.ImGui
 				}
 				fixed (byte* ptextEnd = &textEnd)
 				{
-					ImGui.RenderTextNative(Handle, (ImDrawList*)pdrawList, size, pos, col, clipRect, pStr0, (byte*)ptextEnd, wrapWidth, (byte)(0));
+					ImGui.RenderTextNative(Handle, (ImDrawList*)pdrawList, size, pos, col, clipRect, pStr0, (byte*)ptextEnd, wrapWidth, (ImDrawTextFlags)(0));
 					if (pStrSize0 >= Utils.MaxStackallocSize)
 					{
 						Utils.Free(pStr0);
@@ -8366,7 +11061,7 @@ namespace Dalamud.Bindings.ImGui
 		/// <summary>
 		/// To be documented.
 		/// </summary>
-		public unsafe void RenderText(ref ImDrawList drawList, float size, Vector2 pos, uint col, Vector4 clipRect, string textBegin, ref byte textEnd)
+		public unsafe void RenderText(ref ImDrawList drawList, float size, Vector2 pos, uint col, Vector4 clipRect, string textBegin, in byte textEnd)
 		{
 			fixed (ImDrawList* pdrawList = &drawList)
 			{
@@ -8389,7 +11084,7 @@ namespace Dalamud.Bindings.ImGui
 				}
 				fixed (byte* ptextEnd = &textEnd)
 				{
-					ImGui.RenderTextNative(Handle, (ImDrawList*)pdrawList, size, pos, col, clipRect, pStr0, (byte*)ptextEnd, (float)(0.0f), (byte)(0));
+					ImGui.RenderTextNative(Handle, (ImDrawList*)pdrawList, size, pos, col, clipRect, pStr0, (byte*)ptextEnd, (float)(0.0f), (ImDrawTextFlags)(0));
 					if (pStrSize0 >= Utils.MaxStackallocSize)
 					{
 						Utils.Free(pStr0);
@@ -8401,7 +11096,7 @@ namespace Dalamud.Bindings.ImGui
 		/// <summary>
 		/// To be documented.
 		/// </summary>
-		public unsafe void RenderText(ref ImDrawList drawList, float size, Vector2 pos, uint col, Vector4 clipRect, string textBegin, ref byte textEnd, bool cpuFineClip)
+		public unsafe void RenderText(ref ImDrawList drawList, float size, Vector2 pos, uint col, Vector4 clipRect, string textBegin, in byte textEnd, ImDrawTextFlags flags)
 		{
 			fixed (ImDrawList* pdrawList = &drawList)
 			{
@@ -8424,7 +11119,7 @@ namespace Dalamud.Bindings.ImGui
 				}
 				fixed (byte* ptextEnd = &textEnd)
 				{
-					ImGui.RenderTextNative(Handle, (ImDrawList*)pdrawList, size, pos, col, clipRect, pStr0, (byte*)ptextEnd, (float)(0.0f), cpuFineClip ? (byte)1 : (byte)0);
+					ImGui.RenderTextNative(Handle, (ImDrawList*)pdrawList, size, pos, col, clipRect, pStr0, (byte*)ptextEnd, (float)(0.0f), flags);
 					if (pStrSize0 >= Utils.MaxStackallocSize)
 					{
 						Utils.Free(pStr0);
@@ -8436,7 +11131,7 @@ namespace Dalamud.Bindings.ImGui
 		/// <summary>
 		/// To be documented.
 		/// </summary>
-		public unsafe void RenderText(ref ImDrawList drawList, float size, Vector2 pos, uint col, Vector4 clipRect, string textBegin, ReadOnlySpan<byte> textEnd, float wrapWidth, bool cpuFineClip)
+		public unsafe void RenderText(ref ImDrawList drawList, float size, Vector2 pos, uint col, Vector4 clipRect, string textBegin, ReadOnlySpan<byte> textEnd, float wrapWidth, ImDrawTextFlags flags)
 		{
 			fixed (ImDrawList* pdrawList = &drawList)
 			{
@@ -8459,7 +11154,7 @@ namespace Dalamud.Bindings.ImGui
 				}
 				fixed (byte* ptextEnd = textEnd)
 				{
-					ImGui.RenderTextNative(Handle, (ImDrawList*)pdrawList, size, pos, col, clipRect, pStr0, (byte*)ptextEnd, wrapWidth, cpuFineClip ? (byte)1 : (byte)0);
+					ImGui.RenderTextNative(Handle, (ImDrawList*)pdrawList, size, pos, col, clipRect, pStr0, (byte*)ptextEnd, wrapWidth, flags);
 					if (pStrSize0 >= Utils.MaxStackallocSize)
 					{
 						Utils.Free(pStr0);
@@ -8494,7 +11189,7 @@ namespace Dalamud.Bindings.ImGui
 				}
 				fixed (byte* ptextEnd = textEnd)
 				{
-					ImGui.RenderTextNative(Handle, (ImDrawList*)pdrawList, size, pos, col, clipRect, pStr0, (byte*)ptextEnd, wrapWidth, (byte)(0));
+					ImGui.RenderTextNative(Handle, (ImDrawList*)pdrawList, size, pos, col, clipRect, pStr0, (byte*)ptextEnd, wrapWidth, (ImDrawTextFlags)(0));
 					if (pStrSize0 >= Utils.MaxStackallocSize)
 					{
 						Utils.Free(pStr0);
@@ -8529,7 +11224,7 @@ namespace Dalamud.Bindings.ImGui
 				}
 				fixed (byte* ptextEnd = textEnd)
 				{
-					ImGui.RenderTextNative(Handle, (ImDrawList*)pdrawList, size, pos, col, clipRect, pStr0, (byte*)ptextEnd, (float)(0.0f), (byte)(0));
+					ImGui.RenderTextNative(Handle, (ImDrawList*)pdrawList, size, pos, col, clipRect, pStr0, (byte*)ptextEnd, (float)(0.0f), (ImDrawTextFlags)(0));
 					if (pStrSize0 >= Utils.MaxStackallocSize)
 					{
 						Utils.Free(pStr0);
@@ -8541,7 +11236,7 @@ namespace Dalamud.Bindings.ImGui
 		/// <summary>
 		/// To be documented.
 		/// </summary>
-		public unsafe void RenderText(ref ImDrawList drawList, float size, Vector2 pos, uint col, Vector4 clipRect, string textBegin, ReadOnlySpan<byte> textEnd, bool cpuFineClip)
+		public unsafe void RenderText(ref ImDrawList drawList, float size, Vector2 pos, uint col, Vector4 clipRect, string textBegin, ReadOnlySpan<byte> textEnd, ImDrawTextFlags flags)
 		{
 			fixed (ImDrawList* pdrawList = &drawList)
 			{
@@ -8564,21 +11259,13 @@ namespace Dalamud.Bindings.ImGui
 				}
 				fixed (byte* ptextEnd = textEnd)
 				{
-					ImGui.RenderTextNative(Handle, (ImDrawList*)pdrawList, size, pos, col, clipRect, pStr0, (byte*)ptextEnd, (float)(0.0f), cpuFineClip ? (byte)1 : (byte)0);
+					ImGui.RenderTextNative(Handle, (ImDrawList*)pdrawList, size, pos, col, clipRect, pStr0, (byte*)ptextEnd, (float)(0.0f), flags);
 					if (pStrSize0 >= Utils.MaxStackallocSize)
 					{
 						Utils.Free(pStr0);
 					}
 				}
 			}
-		}
-
-		/// <summary>
-		/// To be documented.
-		/// </summary>
-		public unsafe void SetGlyphVisible(ushort c, bool visible)
-		{
-			ImGui.SetGlyphVisibleNative(Handle, c, visible ? (byte)1 : (byte)0);
 		}
 
 	}

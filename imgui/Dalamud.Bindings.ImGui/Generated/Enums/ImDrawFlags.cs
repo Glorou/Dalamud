@@ -27,11 +27,6 @@ namespace Dalamud.Bindings.ImGui
 		/// <summary>
 		/// To be documented.
 		/// </summary>
-		Closed = unchecked(1),
-
-		/// <summary>
-		/// To be documented.
-		/// </summary>
 		RoundCornersTopLeft = unchecked(16),
 
 		/// <summary>
@@ -57,6 +52,16 @@ namespace Dalamud.Bindings.ImGui
 		/// <summary>
 		/// To be documented.
 		/// </summary>
+		RoundCornersAll = unchecked(240),
+
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		RoundCornersDefault = RoundCornersAll,
+
+		/// <summary>
+		/// To be documented.
+		/// </summary>
 		RoundCornersTop = unchecked(48),
 
 		/// <summary>
@@ -77,16 +82,16 @@ namespace Dalamud.Bindings.ImGui
 		/// <summary>
 		/// To be documented.
 		/// </summary>
-		RoundCornersAll = unchecked(240),
-
-		/// <summary>
-		/// To be documented.
-		/// </summary>
-		RoundCornersDefault = RoundCornersAll,
-
-		/// <summary>
-		/// To be documented.
-		/// </summary>
 		RoundCornersMask = unchecked(496),
+
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		Closed = unchecked(512),
+
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		InvalidMask = unchecked(-2147483633),
 	}
 }

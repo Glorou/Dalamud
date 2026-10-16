@@ -17,8 +17,7 @@ public static unsafe partial class ImGuiP
             var r = ImGuiPNative.PlotEx(
                 plotType,
                 labelPtr,
-                (delegate*<ImGuiPlotType, byte*, delegate*<void*, int, float>, void*, int, int, byte*, float, float,
-                    Vector2, float>)
+                (delegate*<void*, int, float>)
                 (nint)(delegate* unmanaged<void*, int, float>)&ImGui.GetFloatStatic,
                 &dataBuffer,
                 valuesCount,
@@ -49,8 +48,7 @@ public static unsafe partial class ImGuiP
             var r = ImGuiPNative.PlotEx(
                 plotType,
                 labelPtr,
-                (delegate*<ImGuiPlotType, byte*, delegate*<void*, int, float>, void*, int, int, byte*, float, float,
-                    Vector2, float>)
+                (delegate*<void*, int, float>)
                 (nint)(delegate* unmanaged<void*, int, float>)&ImGui.GetFloatInContextStatic,
                 &dataBuffer,
                 valuesCount,
@@ -81,8 +79,7 @@ public static unsafe partial class ImGuiP
             var r = ImGuiPNative.PlotEx(
                 plotType,
                 labelPtr,
-                (delegate*<ImGuiPlotType, byte*, delegate*<void*, int, float>, void*, int, int, byte*, float, float,
-                    Vector2, float>)
+                (delegate*<void*, int, float>)
                 (nint)(delegate* unmanaged<void*, int, float>)&ImGui.GetFloatRefContextStatic,
                 &dataBuffer,
                 valuesCount,

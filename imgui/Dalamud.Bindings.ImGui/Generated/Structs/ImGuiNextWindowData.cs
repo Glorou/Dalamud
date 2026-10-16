@@ -25,7 +25,7 @@ namespace Dalamud.Bindings.ImGui
 		/// <summary>
 		/// To be documented.
 		/// </summary>
-		public ImGuiNextWindowDataFlags Flags;
+		public ImGuiNextWindowDataFlags HasFlags;
 
 		/// <summary>
 		/// To be documented.
@@ -71,6 +71,16 @@ namespace Dalamud.Bindings.ImGui
 		/// To be documented.
 		/// </summary>
 		public Vector2 ScrollVal;
+
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		public ImGuiWindowFlags WindowFlags;
+
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		public ImGuiChildFlags ChildFlags;
 
 		/// <summary>
 		/// To be documented.
@@ -121,13 +131,18 @@ namespace Dalamud.Bindings.ImGui
 		/// </summary>
 		public Vector2 MenuBarOffsetMinVal;
 
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		public ImGuiWindowRefreshFlags RefreshFlagsVal;
+
 
 		/// <summary>
 		/// To be documented.
 		/// </summary>
-		public unsafe ImGuiNextWindowData(ImGuiNextWindowDataFlags flags = default, ImGuiCond posCond = default, ImGuiCond sizeCond = default, ImGuiCond collapsedCond = default, ImGuiCond dockCond = default, Vector2 posVal = default, Vector2 posPivotVal = default, Vector2 sizeVal = default, Vector2 contentSizeVal = default, Vector2 scrollVal = default, bool posUndock = default, bool collapsedVal = default, ImRect sizeConstraintRect = default, ImGuiSizeCallback sizeCallback = default, void* sizeCallbackUserData = default, float bgAlphaVal = default, uint viewportId = default, uint dockId = default, ImGuiWindowClass windowClass = default, Vector2 menuBarOffsetMinVal = default)
+		public unsafe ImGuiNextWindowData(ImGuiNextWindowDataFlags hasFlags = default, ImGuiCond posCond = default, ImGuiCond sizeCond = default, ImGuiCond collapsedCond = default, ImGuiCond dockCond = default, Vector2 posVal = default, Vector2 posPivotVal = default, Vector2 sizeVal = default, Vector2 contentSizeVal = default, Vector2 scrollVal = default, ImGuiWindowFlags windowFlags = default, ImGuiChildFlags childFlags = default, bool posUndock = default, bool collapsedVal = default, ImRect sizeConstraintRect = default, delegate*<ImGuiSizeCallbackData*, void> sizeCallback = default, void* sizeCallbackUserData = default, float bgAlphaVal = default, uint viewportId = default, uint dockId = default, ImGuiWindowClass windowClass = default, Vector2 menuBarOffsetMinVal = default, ImGuiWindowRefreshFlags refreshFlagsVal = default)
 		{
-			Flags = flags;
+			HasFlags = hasFlags;
 			PosCond = posCond;
 			SizeCond = sizeCond;
 			CollapsedCond = collapsedCond;
@@ -137,29 +152,21 @@ namespace Dalamud.Bindings.ImGui
 			SizeVal = sizeVal;
 			ContentSizeVal = contentSizeVal;
 			ScrollVal = scrollVal;
+			WindowFlags = windowFlags;
+			ChildFlags = childFlags;
 			PosUndock = posUndock ? (byte)1 : (byte)0;
 			CollapsedVal = collapsedVal ? (byte)1 : (byte)0;
 			SizeConstraintRect = sizeConstraintRect;
-			SizeCallback = (void*)Marshal.GetFunctionPointerForDelegate(sizeCallback);
+			SizeCallback = (delegate*<ImGuiSizeCallbackData*, void>)sizeCallback;
 			SizeCallbackUserData = sizeCallbackUserData;
 			BgAlphaVal = bgAlphaVal;
 			ViewportId = viewportId;
 			DockId = dockId;
 			WindowClass = windowClass;
 			MenuBarOffsetMinVal = menuBarOffsetMinVal;
+			RefreshFlagsVal = refreshFlagsVal;
 		}
 
-
-		/// <summary>
-		/// To be documented.
-		/// </summary>
-		public unsafe void Destroy()
-		{
-			fixed (ImGuiNextWindowData* @this = &this)
-			{
-				ImGui.DestroyNative(@this);
-			}
-		}
 
 	}
 
@@ -207,7 +214,7 @@ namespace Dalamud.Bindings.ImGui
 		/// <summary>
 		/// To be documented.
 		/// </summary>
-		public ref ImGuiNextWindowDataFlags Flags => ref Unsafe.AsRef<ImGuiNextWindowDataFlags>(&Handle->Flags);
+		public ref ImGuiNextWindowDataFlags HasFlags => ref Unsafe.AsRef<ImGuiNextWindowDataFlags>(&Handle->HasFlags);
 		/// <summary>
 		/// To be documented.
 		/// </summary>
@@ -244,6 +251,14 @@ namespace Dalamud.Bindings.ImGui
 		/// To be documented.
 		/// </summary>
 		public ref Vector2 ScrollVal => ref Unsafe.AsRef<Vector2>(&Handle->ScrollVal);
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		public ref ImGuiWindowFlags WindowFlags => ref Unsafe.AsRef<ImGuiWindowFlags>(&Handle->WindowFlags);
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		public ref ImGuiChildFlags ChildFlags => ref Unsafe.AsRef<ImGuiChildFlags>(&Handle->ChildFlags);
 		/// <summary>
 		/// To be documented.
 		/// </summary>
@@ -287,11 +302,7 @@ namespace Dalamud.Bindings.ImGui
 		/// <summary>
 		/// To be documented.
 		/// </summary>
-		public unsafe void Destroy()
-		{
-			ImGui.DestroyNative(Handle);
-		}
-
+		public ref ImGuiWindowRefreshFlags RefreshFlagsVal => ref Unsafe.AsRef<ImGuiWindowRefreshFlags>(&Handle->RefreshFlagsVal);
 	}
 
 }

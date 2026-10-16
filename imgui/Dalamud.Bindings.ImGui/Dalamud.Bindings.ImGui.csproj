@@ -15,27 +15,38 @@
     <ItemGroup>
       <Compile Remove="Generated\Functions\**" />
       <Compile Remove="Generated\Structs\**" />
-      <Compile Remove="Internals\Functions\**" />
-      <Compile Remove="Manual\Functions\**" />
     </ItemGroup>
 
     <ItemGroup>
       <EmbeddedResource Remove="Generated\Functions\**" />
       <EmbeddedResource Remove="Generated\Structs\**" />
-      <EmbeddedResource Remove="Internals\Functions\**" />
-      <EmbeddedResource Remove="Manual\Functions\**" />
     </ItemGroup>
 
     <ItemGroup>
       <None Remove="Generated\Functions\**" />
       <None Remove="Generated\Structs\**" />
-      <None Remove="Internals\Functions\**" />
-      <None Remove="Manual\Functions\**" />
-    </ItemGroup>
-
-    <ItemGroup>
-      <Folder Include="Internals\" />
-      <Folder Include="Manual\" />
+      <Compile Remove="Custom\Generated\Generated\Structs\ImFontAtlasCustomRectPtr.gen.cs" />
+      <None Include="Custom\Generated\Generated\Structs\ImFontAtlasCustomRectPtr.gen.cs" />
+      <Compile Remove="Custom\Generated\Generated\Structs\ImFontAtlasCustomRect.gen.cs" />
+      <None Include="Custom\Generated\Generated\Structs\ImFontAtlasCustomRect.gen.cs" />
+      <Compile Remove="Custom\Generated\Generated\Structs\ImColorPtr.gen.cs" />
+      <None Include="Custom\Generated\Generated\Structs\ImColorPtr.gen.cs" />
+      <Compile Remove="Custom\Generated\Generated\Structs\ImGuiStackSizes.gen.cs" />
+      <None Include="Custom\Generated\Generated\Structs\ImGuiStackSizes.gen.cs" />
+      <Compile Remove="Custom\Generated\Generated\Structs\ImGuiStackSizesPtr.gen.cs" />
+      <None Include="Custom\Generated\Generated\Structs\ImGuiStackSizesPtr.gen.cs" />
+      <Compile Remove="Custom\Generated\Generated\Structs\ImGuiStackTool.gen.cs" />
+      <None Include="Custom\Generated\Generated\Structs\ImGuiStackTool.gen.cs" />
+      <Compile Remove="Custom\Generated\Generated\Structs\ImGuiStackToolPtr.gen.cs" />
+      <None Include="Custom\Generated\Generated\Structs\ImGuiStackToolPtr.gen.cs" />
+      <Compile Remove="Custom\Generated\Generated\Structs\ImRectPtr.gen.cs" />
+      <None Include="Custom\Generated\Generated\Structs\ImRectPtr.gen.cs" />
+      <Compile Remove="Custom\Generated\Generated\Structs\ImGuiMetricsConfigPtr.gen.cs" />
+      <None Include="Custom\Generated\Generated\Structs\ImGuiMetricsConfigPtr.gen.cs" />
+      <Compile Remove="Custom\Generated\Internals\Functions\ImGuiP.gen.cs" />
+      <None Include="Custom\Generated\Internals\Functions\ImGuiP.gen.cs" />
+      <Compile Remove="Custom\Generated\Generated\Structs\ImGuiStoragePairAnonymous.gen.cs" />
+      <None Include="Custom\Generated\Generated\Structs\ImGuiStoragePairAnonymous.gen.cs" />
     </ItemGroup>
 
 </Project>

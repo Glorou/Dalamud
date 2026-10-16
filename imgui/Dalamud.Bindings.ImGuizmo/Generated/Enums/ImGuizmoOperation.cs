@@ -17,7 +17,6 @@ namespace Dalamud.Bindings.ImGuizmo
 	/// <summary>
 	/// To be documented.
 	/// </summary>
-	[Flags]
 	public enum ImGuizmoOperation : int
 	{
 		/// <summary>

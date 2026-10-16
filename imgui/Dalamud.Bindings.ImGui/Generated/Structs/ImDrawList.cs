@@ -55,27 +55,12 @@ namespace Dalamud.Bindings.ImGui
 		/// <summary>
 		/// To be documented.
 		/// </summary>
-		public unsafe byte* OwnerName;
-
-		/// <summary>
-		/// To be documented.
-		/// </summary>
 		public unsafe ImDrawVert* VtxWritePtr;
 
 		/// <summary>
 		/// To be documented.
 		/// </summary>
 		public unsafe ushort* IdxWritePtr;
-
-		/// <summary>
-		/// To be documented.
-		/// </summary>
-		public ImVector<Vector4> ClipRectStack;
-
-		/// <summary>
-		/// To be documented.
-		/// </summary>
-		public ImVector<ImTextureID> TextureIdStack;
 
 		/// <summary>
 		/// To be documented.
@@ -95,13 +80,33 @@ namespace Dalamud.Bindings.ImGui
 		/// <summary>
 		/// To be documented.
 		/// </summary>
+		public ImVector<Vector4> ClipRectStack;
+
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		public ImVector<ImTextureRef> TextureStack;
+
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		public ImVector<byte> CallbacksDataBuf;
+
+		/// <summary>
+		/// To be documented.
+		/// </summary>
 		public float FringeScale;
+
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		public unsafe byte* OwnerName;
 
 
 		/// <summary>
 		/// To be documented.
 		/// </summary>
-		public unsafe ImDrawList(ImVector<ImDrawCmd> cmdBuffer = default, ImVector<ushort> idxBuffer = default, ImVector<ImDrawVert> vtxBuffer = default, ImDrawListFlags flags = default, uint vtxCurrentIdx = default, ImDrawListSharedData* data = default, byte* ownerName = default, ImDrawVert* vtxWritePtr = default, ushort* idxWritePtr = default, ImVector<Vector4> clipRectStack = default, ImVector<ImTextureID> textureIdStack = default, ImVector<Vector2> path = default, ImDrawCmdHeader cmdHeader = default, ImDrawListSplitter splitter = default, float fringeScale = default)
+		public unsafe ImDrawList(ImVector<ImDrawCmd> cmdBuffer = default, ImVector<ushort> idxBuffer = default, ImVector<ImDrawVert> vtxBuffer = default, ImDrawListFlags flags = default, uint vtxCurrentIdx = default, ImDrawListSharedData* data = default, ImDrawVert* vtxWritePtr = default, ushort* idxWritePtr = default, ImVector<Vector2> path = default, ImDrawCmdHeader cmdHeader = default, ImDrawListSplitter splitter = default, ImVector<Vector4> clipRectStack = default, ImVector<ImTextureRef> textureStack = default, ImVector<byte> callbacksDataBuf = default, float fringeScale = default, byte* ownerName = default)
 		{
 			CmdBuffer = cmdBuffer;
 			IdxBuffer = idxBuffer;
@@ -109,15 +114,16 @@ namespace Dalamud.Bindings.ImGui
 			Flags = flags;
 			VtxCurrentIdx = vtxCurrentIdx;
 			Data = data;
-			OwnerName = ownerName;
 			VtxWritePtr = vtxWritePtr;
 			IdxWritePtr = idxWritePtr;
-			ClipRectStack = clipRectStack;
-			TextureIdStack = textureIdStack;
 			Path = path;
 			CmdHeader = cmdHeader;
 			Splitter = splitter;
+			ClipRectStack = clipRectStack;
+			TextureStack = textureStack;
+			CallbacksDataBuf = callbacksDataBuf;
 			FringeScale = fringeScale;
+			OwnerName = ownerName;
 		}
 
 
@@ -158,11 +164,11 @@ namespace Dalamud.Bindings.ImGui
 		/// <summary>
 		/// To be documented.
 		/// </summary>
-		public unsafe void _OnChangedTextureID()
+		public unsafe void _OnChangedTexture()
 		{
 			fixed (ImDrawList* @this = &this)
 			{
-				ImGui._OnChangedTextureIDNative(@this);
+				ImGui._OnChangedTextureNative(@this);
 			}
 		}
 
@@ -224,6 +230,42 @@ namespace Dalamud.Bindings.ImGui
 		/// <summary>
 		/// To be documented.
 		/// </summary>
+		public unsafe void _SetDrawListSharedData(ImDrawListSharedData* data)
+		{
+			fixed (ImDrawList* @this = &this)
+			{
+				ImGui._SetDrawListSharedDataNative(@this, data);
+			}
+		}
+
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		public unsafe void _SetDrawListSharedData(ref ImDrawListSharedData data)
+		{
+			fixed (ImDrawList* @this = &this)
+			{
+				fixed (ImDrawListSharedData* pdata = &data)
+				{
+					ImGui._SetDrawListSharedDataNative(@this, (ImDrawListSharedData*)pdata);
+				}
+			}
+		}
+
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		public unsafe void _SetTexture(ImTextureRef texRef)
+		{
+			fixed (ImDrawList* @this = &this)
+			{
+				ImGui._SetTextureNative(@this, texRef);
+			}
+		}
+
+		/// <summary>
+		/// To be documented.
+		/// </summary>
 		public unsafe void _TryMergeDrawCmds()
 		{
 			fixed (ImDrawList* @this = &this)
@@ -279,11 +321,132 @@ namespace Dalamud.Bindings.ImGui
 		/// <summary>
 		/// To be documented.
 		/// </summary>
-		public unsafe void AddCallback(ImDrawCallback callback, void* callbackData)
+		public unsafe void AddCallback(delegate*<ImDrawList*, ImDrawCmd*, void> callback, void* userdata, nuint userdataSize)
 		{
 			fixed (ImDrawList* @this = &this)
 			{
-				ImGui.AddCallbackNative(@this, callback, callbackData);
+				ImGui.AddCallbackNative(@this, callback, userdata, userdataSize);
+			}
+		}
+
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		public unsafe void AddCallback(delegate*<ImDrawList*, ImDrawCmd*, void> callback, void* userdata)
+		{
+			fixed (ImDrawList* @this = &this)
+			{
+				ImGui.AddCallbackNative(@this, callback, userdata, (nuint)(0));
+			}
+		}
+
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		public unsafe void AddCallback(delegate*<ImDrawList*, ImDrawCmd*, void> callback)
+		{
+			fixed (ImDrawList* @this = &this)
+			{
+				ImGui.AddCallbackNative(@this, callback, (void*)(default), (nuint)(0));
+			}
+		}
+
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		public unsafe void AddCallback(delegate*<ImDrawList*, ImDrawCmd*, void> callback, nuint userdataSize)
+		{
+			fixed (ImDrawList* @this = &this)
+			{
+				ImGui.AddCallbackNative(@this, callback, (void*)(default), userdataSize);
+			}
+		}
+
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		public unsafe void AddCallback(ImDrawCallback callback, void* userdata, nuint userdataSize)
+		{
+			fixed (ImDrawList* @this = &this)
+			{
+				ImGui.AddCallbackNative(@this, (delegate*<ImDrawList*, ImDrawCmd*, void>)Utils.GetFunctionPointerForDelegate(callback), userdata, userdataSize);
+			}
+		}
+
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		public unsafe void AddCallback(ImDrawCallback callback, void* userdata)
+		{
+			fixed (ImDrawList* @this = &this)
+			{
+				ImGui.AddCallbackNative(@this, (delegate*<ImDrawList*, ImDrawCmd*, void>)Utils.GetFunctionPointerForDelegate(callback), userdata, (nuint)(0));
+			}
+		}
+
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		public unsafe void AddCallback(ImDrawCallback callback)
+		{
+			fixed (ImDrawList* @this = &this)
+			{
+				ImGui.AddCallbackNative(@this, (delegate*<ImDrawList*, ImDrawCmd*, void>)Utils.GetFunctionPointerForDelegate(callback), (void*)(default), (nuint)(0));
+			}
+		}
+
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		public unsafe void AddCallback(ImDrawCallback callback, nuint userdataSize)
+		{
+			fixed (ImDrawList* @this = &this)
+			{
+				ImGui.AddCallbackNative(@this, (delegate*<ImDrawList*, ImDrawCmd*, void>)Utils.GetFunctionPointerForDelegate(callback), (void*)(default), userdataSize);
+			}
+		}
+
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		public unsafe void AddCallback(delegate*<ImDrawList*, ImDrawCmd*, void> callback, nint userdata, nuint userdataSize)
+		{
+			fixed (ImDrawList* @this = &this)
+			{
+				ImGui.AddCallbackNative(@this, callback, (void*)userdata, userdataSize);
+			}
+		}
+
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		public unsafe void AddCallback(delegate*<ImDrawList*, ImDrawCmd*, void> callback, nint userdata)
+		{
+			fixed (ImDrawList* @this = &this)
+			{
+				ImGui.AddCallbackNative(@this, callback, (void*)userdata, (nuint)(0));
+			}
+		}
+
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		public unsafe void AddCallback(ImDrawCallback callback, nint userdata, nuint userdataSize)
+		{
+			fixed (ImDrawList* @this = &this)
+			{
+				ImGui.AddCallbackNative(@this, (delegate*<ImDrawList*, ImDrawCmd*, void>)Utils.GetFunctionPointerForDelegate(callback), (void*)userdata, userdataSize);
+			}
+		}
+
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		public unsafe void AddCallback(ImDrawCallback callback, nint userdata)
+		{
+			fixed (ImDrawList* @this = &this)
+			{
+				ImGui.AddCallbackNative(@this, (delegate*<ImDrawList*, ImDrawCmd*, void>)Utils.GetFunctionPointerForDelegate(callback), (void*)userdata, (nuint)(0));
 			}
 		}
 
@@ -356,6 +519,31 @@ namespace Dalamud.Bindings.ImGui
 		/// <summary>
 		/// To be documented.
 		/// </summary>
+		public unsafe void AddConcavePolyFilled(Vector2* points, int numPoints, uint col)
+		{
+			fixed (ImDrawList* @this = &this)
+			{
+				ImGui.AddConcavePolyFilledNative(@this, points, numPoints, col);
+			}
+		}
+
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		public unsafe void AddConcavePolyFilled(in Vector2 points, int numPoints, uint col)
+		{
+			fixed (ImDrawList* @this = &this)
+			{
+				fixed (Vector2* ppoints = &points)
+				{
+					ImGui.AddConcavePolyFilledNative(@this, (Vector2*)ppoints, numPoints, col);
+				}
+			}
+		}
+
+		/// <summary>
+		/// To be documented.
+		/// </summary>
 		public unsafe void AddConvexPolyFilled(Vector2* points, int numPoints, uint col)
 		{
 			fixed (ImDrawList* @this = &this)
@@ -367,7 +555,7 @@ namespace Dalamud.Bindings.ImGui
 		/// <summary>
 		/// To be documented.
 		/// </summary>
-		public unsafe void AddConvexPolyFilled(ref Vector2 points, int numPoints, uint col)
+		public unsafe void AddConvexPolyFilled(in Vector2 points, int numPoints, uint col)
 		{
 			fixed (ImDrawList* @this = &this)
 			{
@@ -392,198 +580,319 @@ namespace Dalamud.Bindings.ImGui
 		/// <summary>
 		/// To be documented.
 		/// </summary>
-		public unsafe void AddImage(ImTextureID userTextureId, Vector2 pMin, Vector2 pMax, Vector2 uvMin, Vector2 uvMax, uint col)
+		public unsafe void AddEllipse(Vector2 center, Vector2 radius, uint col, float rot, int numSegments, float thickness)
 		{
 			fixed (ImDrawList* @this = &this)
 			{
-				ImGui.AddImageNative(@this, userTextureId, pMin, pMax, uvMin, uvMax, col);
+				ImGui.AddEllipseNative(@this, center, radius, col, rot, numSegments, thickness);
 			}
 		}
 
 		/// <summary>
 		/// To be documented.
 		/// </summary>
-		public unsafe void AddImage(ImTextureID userTextureId, Vector2 pMin, Vector2 pMax, Vector2 uvMin, Vector2 uvMax)
+		public unsafe void AddEllipse(Vector2 center, Vector2 radius, uint col, float rot, int numSegments)
 		{
 			fixed (ImDrawList* @this = &this)
 			{
-				ImGui.AddImageNative(@this, userTextureId, pMin, pMax, uvMin, uvMax, (uint)(4294967295));
+				ImGui.AddEllipseNative(@this, center, radius, col, rot, numSegments, (float)(1.0f));
 			}
 		}
 
 		/// <summary>
 		/// To be documented.
 		/// </summary>
-		public unsafe void AddImage(ImTextureID userTextureId, Vector2 pMin, Vector2 pMax, Vector2 uvMin)
+		public unsafe void AddEllipse(Vector2 center, Vector2 radius, uint col, float rot)
 		{
 			fixed (ImDrawList* @this = &this)
 			{
-				ImGui.AddImageNative(@this, userTextureId, pMin, pMax, uvMin, (Vector2)(new Vector2(1,1)), (uint)(4294967295));
+				ImGui.AddEllipseNative(@this, center, radius, col, rot, (int)(0), (float)(1.0f));
 			}
 		}
 
 		/// <summary>
 		/// To be documented.
 		/// </summary>
-		public unsafe void AddImage(ImTextureID userTextureId, Vector2 pMin, Vector2 pMax)
+		public unsafe void AddEllipse(Vector2 center, Vector2 radius, uint col)
 		{
 			fixed (ImDrawList* @this = &this)
 			{
-				ImGui.AddImageNative(@this, userTextureId, pMin, pMax, (Vector2)(new Vector2(0,0)), (Vector2)(new Vector2(1,1)), (uint)(4294967295));
+				ImGui.AddEllipseNative(@this, center, radius, col, (float)(0.0f), (int)(0), (float)(1.0f));
 			}
 		}
 
 		/// <summary>
 		/// To be documented.
 		/// </summary>
-		public unsafe void AddImage(ImTextureID userTextureId, Vector2 pMin, Vector2 pMax, Vector2 uvMin, uint col)
+		public unsafe void AddEllipse(Vector2 center, Vector2 radius, uint col, int numSegments)
 		{
 			fixed (ImDrawList* @this = &this)
 			{
-				ImGui.AddImageNative(@this, userTextureId, pMin, pMax, uvMin, (Vector2)(new Vector2(1,1)), col);
+				ImGui.AddEllipseNative(@this, center, radius, col, (float)(0.0f), numSegments, (float)(1.0f));
 			}
 		}
 
 		/// <summary>
 		/// To be documented.
 		/// </summary>
-		public unsafe void AddImage(ImTextureID userTextureId, Vector2 pMin, Vector2 pMax, uint col)
+		public unsafe void AddEllipse(Vector2 center, Vector2 radius, uint col, float rot, float thickness)
 		{
 			fixed (ImDrawList* @this = &this)
 			{
-				ImGui.AddImageNative(@this, userTextureId, pMin, pMax, (Vector2)(new Vector2(0,0)), (Vector2)(new Vector2(1,1)), col);
+				ImGui.AddEllipseNative(@this, center, radius, col, rot, (int)(0), thickness);
 			}
 		}
 
 		/// <summary>
 		/// To be documented.
 		/// </summary>
-		public unsafe void AddImageQuad(ImTextureID userTextureId, Vector2 p1, Vector2 p2, Vector2 p3, Vector2 p4, Vector2 uv1, Vector2 uv2, Vector2 uv3, Vector2 uv4, uint col)
+		public unsafe void AddEllipse(Vector2 center, Vector2 radius, uint col, int numSegments, float thickness)
 		{
 			fixed (ImDrawList* @this = &this)
 			{
-				ImGui.AddImageQuadNative(@this, userTextureId, p1, p2, p3, p4, uv1, uv2, uv3, uv4, col);
+				ImGui.AddEllipseNative(@this, center, radius, col, (float)(0.0f), numSegments, thickness);
 			}
 		}
 
 		/// <summary>
 		/// To be documented.
 		/// </summary>
-		public unsafe void AddImageQuad(ImTextureID userTextureId, Vector2 p1, Vector2 p2, Vector2 p3, Vector2 p4, Vector2 uv1, Vector2 uv2, Vector2 uv3, Vector2 uv4)
+		public unsafe void AddEllipseFilled(Vector2 center, Vector2 radius, uint col, float rot, int numSegments)
 		{
 			fixed (ImDrawList* @this = &this)
 			{
-				ImGui.AddImageQuadNative(@this, userTextureId, p1, p2, p3, p4, uv1, uv2, uv3, uv4, (uint)(4294967295));
+				ImGui.AddEllipseFilledNative(@this, center, radius, col, rot, numSegments);
 			}
 		}
 
 		/// <summary>
 		/// To be documented.
 		/// </summary>
-		public unsafe void AddImageQuad(ImTextureID userTextureId, Vector2 p1, Vector2 p2, Vector2 p3, Vector2 p4, Vector2 uv1, Vector2 uv2, Vector2 uv3)
+		public unsafe void AddEllipseFilled(Vector2 center, Vector2 radius, uint col, float rot)
 		{
 			fixed (ImDrawList* @this = &this)
 			{
-				ImGui.AddImageQuadNative(@this, userTextureId, p1, p2, p3, p4, uv1, uv2, uv3, (Vector2)(new Vector2(0,1)), (uint)(4294967295));
+				ImGui.AddEllipseFilledNative(@this, center, radius, col, rot, (int)(0));
 			}
 		}
 
 		/// <summary>
 		/// To be documented.
 		/// </summary>
-		public unsafe void AddImageQuad(ImTextureID userTextureId, Vector2 p1, Vector2 p2, Vector2 p3, Vector2 p4, Vector2 uv1, Vector2 uv2)
+		public unsafe void AddEllipseFilled(Vector2 center, Vector2 radius, uint col)
 		{
 			fixed (ImDrawList* @this = &this)
 			{
-				ImGui.AddImageQuadNative(@this, userTextureId, p1, p2, p3, p4, uv1, uv2, (Vector2)(new Vector2(1,1)), (Vector2)(new Vector2(0,1)), (uint)(4294967295));
+				ImGui.AddEllipseFilledNative(@this, center, radius, col, (float)(0.0f), (int)(0));
 			}
 		}
 
 		/// <summary>
 		/// To be documented.
 		/// </summary>
-		public unsafe void AddImageQuad(ImTextureID userTextureId, Vector2 p1, Vector2 p2, Vector2 p3, Vector2 p4, Vector2 uv1)
+		public unsafe void AddEllipseFilled(Vector2 center, Vector2 radius, uint col, int numSegments)
 		{
 			fixed (ImDrawList* @this = &this)
 			{
-				ImGui.AddImageQuadNative(@this, userTextureId, p1, p2, p3, p4, uv1, (Vector2)(new Vector2(1,0)), (Vector2)(new Vector2(1,1)), (Vector2)(new Vector2(0,1)), (uint)(4294967295));
+				ImGui.AddEllipseFilledNative(@this, center, radius, col, (float)(0.0f), numSegments);
 			}
 		}
 
 		/// <summary>
 		/// To be documented.
 		/// </summary>
-		public unsafe void AddImageQuad(ImTextureID userTextureId, Vector2 p1, Vector2 p2, Vector2 p3, Vector2 p4)
+		public unsafe void AddImage(ImTextureRef texRef, Vector2 pMin, Vector2 pMax, Vector2 uvMin, Vector2 uvMax, uint col)
 		{
 			fixed (ImDrawList* @this = &this)
 			{
-				ImGui.AddImageQuadNative(@this, userTextureId, p1, p2, p3, p4, (Vector2)(new Vector2(0,0)), (Vector2)(new Vector2(1,0)), (Vector2)(new Vector2(1,1)), (Vector2)(new Vector2(0,1)), (uint)(4294967295));
+				ImGui.AddImageNative(@this, texRef, pMin, pMax, uvMin, uvMax, col);
 			}
 		}
 
 		/// <summary>
 		/// To be documented.
 		/// </summary>
-		public unsafe void AddImageQuad(ImTextureID userTextureId, Vector2 p1, Vector2 p2, Vector2 p3, Vector2 p4, Vector2 uv1, Vector2 uv2, Vector2 uv3, uint col)
+		public unsafe void AddImage(ImTextureRef texRef, Vector2 pMin, Vector2 pMax, Vector2 uvMin, Vector2 uvMax)
 		{
 			fixed (ImDrawList* @this = &this)
 			{
-				ImGui.AddImageQuadNative(@this, userTextureId, p1, p2, p3, p4, uv1, uv2, uv3, (Vector2)(new Vector2(0,1)), col);
+				ImGui.AddImageNative(@this, texRef, pMin, pMax, uvMin, uvMax, (uint)(4294967295));
 			}
 		}
 
 		/// <summary>
 		/// To be documented.
 		/// </summary>
-		public unsafe void AddImageQuad(ImTextureID userTextureId, Vector2 p1, Vector2 p2, Vector2 p3, Vector2 p4, Vector2 uv1, Vector2 uv2, uint col)
+		public unsafe void AddImage(ImTextureRef texRef, Vector2 pMin, Vector2 pMax, Vector2 uvMin)
 		{
 			fixed (ImDrawList* @this = &this)
 			{
-				ImGui.AddImageQuadNative(@this, userTextureId, p1, p2, p3, p4, uv1, uv2, (Vector2)(new Vector2(1,1)), (Vector2)(new Vector2(0,1)), col);
+				ImGui.AddImageNative(@this, texRef, pMin, pMax, uvMin, (Vector2)(new Vector2(1,1)), (uint)(4294967295));
 			}
 		}
 
 		/// <summary>
 		/// To be documented.
 		/// </summary>
-		public unsafe void AddImageQuad(ImTextureID userTextureId, Vector2 p1, Vector2 p2, Vector2 p3, Vector2 p4, Vector2 uv1, uint col)
+		public unsafe void AddImage(ImTextureRef texRef, Vector2 pMin, Vector2 pMax)
 		{
 			fixed (ImDrawList* @this = &this)
 			{
-				ImGui.AddImageQuadNative(@this, userTextureId, p1, p2, p3, p4, uv1, (Vector2)(new Vector2(1,0)), (Vector2)(new Vector2(1,1)), (Vector2)(new Vector2(0,1)), col);
+				ImGui.AddImageNative(@this, texRef, pMin, pMax, (Vector2)(new Vector2(0,0)), (Vector2)(new Vector2(1,1)), (uint)(4294967295));
 			}
 		}
 
 		/// <summary>
 		/// To be documented.
 		/// </summary>
-		public unsafe void AddImageQuad(ImTextureID userTextureId, Vector2 p1, Vector2 p2, Vector2 p3, Vector2 p4, uint col)
+		public unsafe void AddImage(ImTextureRef texRef, Vector2 pMin, Vector2 pMax, Vector2 uvMin, uint col)
 		{
 			fixed (ImDrawList* @this = &this)
 			{
-				ImGui.AddImageQuadNative(@this, userTextureId, p1, p2, p3, p4, (Vector2)(new Vector2(0,0)), (Vector2)(new Vector2(1,0)), (Vector2)(new Vector2(1,1)), (Vector2)(new Vector2(0,1)), col);
+				ImGui.AddImageNative(@this, texRef, pMin, pMax, uvMin, (Vector2)(new Vector2(1,1)), col);
 			}
 		}
 
 		/// <summary>
 		/// To be documented.
 		/// </summary>
-		public unsafe void AddImageRounded(ImTextureID userTextureId, Vector2 pMin, Vector2 pMax, Vector2 uvMin, Vector2 uvMax, uint col, float rounding, ImDrawFlags flags)
+		public unsafe void AddImage(ImTextureRef texRef, Vector2 pMin, Vector2 pMax, uint col)
 		{
 			fixed (ImDrawList* @this = &this)
 			{
-				ImGui.AddImageRoundedNative(@this, userTextureId, pMin, pMax, uvMin, uvMax, col, rounding, flags);
+				ImGui.AddImageNative(@this, texRef, pMin, pMax, (Vector2)(new Vector2(0,0)), (Vector2)(new Vector2(1,1)), col);
 			}
 		}
 
 		/// <summary>
 		/// To be documented.
 		/// </summary>
-		public unsafe void AddImageRounded(ImTextureID userTextureId, Vector2 pMin, Vector2 pMax, Vector2 uvMin, Vector2 uvMax, uint col, float rounding)
+		public unsafe void AddImageQuad(ImTextureRef texRef, Vector2 p1, Vector2 p2, Vector2 p3, Vector2 p4, Vector2 uv1, Vector2 uv2, Vector2 uv3, Vector2 uv4, uint col)
 		{
 			fixed (ImDrawList* @this = &this)
 			{
-				ImGui.AddImageRoundedNative(@this, userTextureId, pMin, pMax, uvMin, uvMax, col, rounding, (ImDrawFlags)(0));
+				ImGui.AddImageQuadNative(@this, texRef, p1, p2, p3, p4, uv1, uv2, uv3, uv4, col);
+			}
+		}
+
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		public unsafe void AddImageQuad(ImTextureRef texRef, Vector2 p1, Vector2 p2, Vector2 p3, Vector2 p4, Vector2 uv1, Vector2 uv2, Vector2 uv3, Vector2 uv4)
+		{
+			fixed (ImDrawList* @this = &this)
+			{
+				ImGui.AddImageQuadNative(@this, texRef, p1, p2, p3, p4, uv1, uv2, uv3, uv4, (uint)(4294967295));
+			}
+		}
+
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		public unsafe void AddImageQuad(ImTextureRef texRef, Vector2 p1, Vector2 p2, Vector2 p3, Vector2 p4, Vector2 uv1, Vector2 uv2, Vector2 uv3)
+		{
+			fixed (ImDrawList* @this = &this)
+			{
+				ImGui.AddImageQuadNative(@this, texRef, p1, p2, p3, p4, uv1, uv2, uv3, (Vector2)(new Vector2(0,1)), (uint)(4294967295));
+			}
+		}
+
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		public unsafe void AddImageQuad(ImTextureRef texRef, Vector2 p1, Vector2 p2, Vector2 p3, Vector2 p4, Vector2 uv1, Vector2 uv2)
+		{
+			fixed (ImDrawList* @this = &this)
+			{
+				ImGui.AddImageQuadNative(@this, texRef, p1, p2, p3, p4, uv1, uv2, (Vector2)(new Vector2(1,1)), (Vector2)(new Vector2(0,1)), (uint)(4294967295));
+			}
+		}
+
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		public unsafe void AddImageQuad(ImTextureRef texRef, Vector2 p1, Vector2 p2, Vector2 p3, Vector2 p4, Vector2 uv1)
+		{
+			fixed (ImDrawList* @this = &this)
+			{
+				ImGui.AddImageQuadNative(@this, texRef, p1, p2, p3, p4, uv1, (Vector2)(new Vector2(1,0)), (Vector2)(new Vector2(1,1)), (Vector2)(new Vector2(0,1)), (uint)(4294967295));
+			}
+		}
+
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		public unsafe void AddImageQuad(ImTextureRef texRef, Vector2 p1, Vector2 p2, Vector2 p3, Vector2 p4)
+		{
+			fixed (ImDrawList* @this = &this)
+			{
+				ImGui.AddImageQuadNative(@this, texRef, p1, p2, p3, p4, (Vector2)(new Vector2(0,0)), (Vector2)(new Vector2(1,0)), (Vector2)(new Vector2(1,1)), (Vector2)(new Vector2(0,1)), (uint)(4294967295));
+			}
+		}
+
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		public unsafe void AddImageQuad(ImTextureRef texRef, Vector2 p1, Vector2 p2, Vector2 p3, Vector2 p4, Vector2 uv1, Vector2 uv2, Vector2 uv3, uint col)
+		{
+			fixed (ImDrawList* @this = &this)
+			{
+				ImGui.AddImageQuadNative(@this, texRef, p1, p2, p3, p4, uv1, uv2, uv3, (Vector2)(new Vector2(0,1)), col);
+			}
+		}
+
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		public unsafe void AddImageQuad(ImTextureRef texRef, Vector2 p1, Vector2 p2, Vector2 p3, Vector2 p4, Vector2 uv1, Vector2 uv2, uint col)
+		{
+			fixed (ImDrawList* @this = &this)
+			{
+				ImGui.AddImageQuadNative(@this, texRef, p1, p2, p3, p4, uv1, uv2, (Vector2)(new Vector2(1,1)), (Vector2)(new Vector2(0,1)), col);
+			}
+		}
+
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		public unsafe void AddImageQuad(ImTextureRef texRef, Vector2 p1, Vector2 p2, Vector2 p3, Vector2 p4, Vector2 uv1, uint col)
+		{
+			fixed (ImDrawList* @this = &this)
+			{
+				ImGui.AddImageQuadNative(@this, texRef, p1, p2, p3, p4, uv1, (Vector2)(new Vector2(1,0)), (Vector2)(new Vector2(1,1)), (Vector2)(new Vector2(0,1)), col);
+			}
+		}
+
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		public unsafe void AddImageQuad(ImTextureRef texRef, Vector2 p1, Vector2 p2, Vector2 p3, Vector2 p4, uint col)
+		{
+			fixed (ImDrawList* @this = &this)
+			{
+				ImGui.AddImageQuadNative(@this, texRef, p1, p2, p3, p4, (Vector2)(new Vector2(0,0)), (Vector2)(new Vector2(1,0)), (Vector2)(new Vector2(1,1)), (Vector2)(new Vector2(0,1)), col);
+			}
+		}
+
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		public unsafe void AddImageRounded(ImTextureRef texRef, Vector2 pMin, Vector2 pMax, Vector2 uvMin, Vector2 uvMax, uint col, float rounding, ImDrawFlags flags)
+		{
+			fixed (ImDrawList* @this = &this)
+			{
+				ImGui.AddImageRoundedNative(@this, texRef, pMin, pMax, uvMin, uvMax, col, rounding, flags);
+			}
+		}
+
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		public unsafe void AddImageRounded(ImTextureRef texRef, Vector2 pMin, Vector2 pMax, Vector2 uvMin, Vector2 uvMax, uint col, float rounding)
+		{
+			fixed (ImDrawList* @this = &this)
+			{
+				ImGui.AddImageRoundedNative(@this, texRef, pMin, pMax, uvMin, uvMax, col, rounding, (ImDrawFlags)(0));
 			}
 		}
 
@@ -606,6 +915,50 @@ namespace Dalamud.Bindings.ImGui
 			fixed (ImDrawList* @this = &this)
 			{
 				ImGui.AddLineNative(@this, p1, p2, col, (float)(1.0f));
+			}
+		}
+
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		public unsafe void AddLineH(float minX, float maxX, float y, uint col, float thickness)
+		{
+			fixed (ImDrawList* @this = &this)
+			{
+				ImGui.AddLineHNative(@this, minX, maxX, y, col, thickness);
+			}
+		}
+
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		public unsafe void AddLineH(float minX, float maxX, float y, uint col)
+		{
+			fixed (ImDrawList* @this = &this)
+			{
+				ImGui.AddLineHNative(@this, minX, maxX, y, col, (float)(1.0f));
+			}
+		}
+
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		public unsafe void AddLineV(float x, float minY, float maxY, uint col, float thickness)
+		{
+			fixed (ImDrawList* @this = &this)
+			{
+				ImGui.AddLineVNative(@this, x, minY, maxY, col, thickness);
+			}
+		}
+
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		public unsafe void AddLineV(float x, float minY, float maxY, uint col)
+		{
+			fixed (ImDrawList* @this = &this)
+			{
+				ImGui.AddLineVNative(@this, x, minY, maxY, col, (float)(1.0f));
 			}
 		}
 
@@ -645,24 +998,49 @@ namespace Dalamud.Bindings.ImGui
 		/// <summary>
 		/// To be documented.
 		/// </summary>
-		public unsafe void AddPolyline(Vector2* points, int numPoints, uint col, ImDrawFlags flags, float thickness)
+		public unsafe void AddPolyline(Vector2* points, int numPoints, uint col, float thickness, ImDrawFlags flags)
 		{
 			fixed (ImDrawList* @this = &this)
 			{
-				ImGui.AddPolylineNative(@this, points, numPoints, col, flags, thickness);
+				ImGui.AddPolylineNative(@this, points, numPoints, col, thickness, flags);
 			}
 		}
 
 		/// <summary>
 		/// To be documented.
 		/// </summary>
-		public unsafe void AddPolyline(ref Vector2 points, int numPoints, uint col, ImDrawFlags flags, float thickness)
+		public unsafe void AddPolyline(Vector2* points, int numPoints, uint col, float thickness)
+		{
+			fixed (ImDrawList* @this = &this)
+			{
+				ImGui.AddPolylineNative(@this, points, numPoints, col, thickness, (ImDrawFlags)(0));
+			}
+		}
+
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		public unsafe void AddPolyline(in Vector2 points, int numPoints, uint col, float thickness, ImDrawFlags flags)
 		{
 			fixed (ImDrawList* @this = &this)
 			{
 				fixed (Vector2* ppoints = &points)
 				{
-					ImGui.AddPolylineNative(@this, (Vector2*)ppoints, numPoints, col, flags, thickness);
+					ImGui.AddPolylineNative(@this, (Vector2*)ppoints, numPoints, col, thickness, flags);
+				}
+			}
+		}
+
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		public unsafe void AddPolyline(in Vector2 points, int numPoints, uint col, float thickness)
+		{
+			fixed (ImDrawList* @this = &this)
+			{
+				fixed (Vector2* ppoints = &points)
+				{
+					ImGui.AddPolylineNative(@this, (Vector2*)ppoints, numPoints, col, thickness, (ImDrawFlags)(0));
 				}
 			}
 		}
@@ -703,55 +1081,11 @@ namespace Dalamud.Bindings.ImGui
 		/// <summary>
 		/// To be documented.
 		/// </summary>
-		public unsafe void AddRect(Vector2 pMin, Vector2 pMax, uint col, float rounding, ImDrawFlags flags, float thickness)
+		public unsafe void AddRect(Vector2 pMin, Vector2 pMax, uint col, float rounding, float thickness, ImDrawFlags flags)
 		{
 			fixed (ImDrawList* @this = &this)
 			{
-				ImGui.AddRectNative(@this, pMin, pMax, col, rounding, flags, thickness);
-			}
-		}
-
-		/// <summary>
-		/// To be documented.
-		/// </summary>
-		public unsafe void AddRect(Vector2 pMin, Vector2 pMax, uint col, float rounding, ImDrawFlags flags)
-		{
-			fixed (ImDrawList* @this = &this)
-			{
-				ImGui.AddRectNative(@this, pMin, pMax, col, rounding, flags, (float)(1.0f));
-			}
-		}
-
-		/// <summary>
-		/// To be documented.
-		/// </summary>
-		public unsafe void AddRect(Vector2 pMin, Vector2 pMax, uint col, float rounding)
-		{
-			fixed (ImDrawList* @this = &this)
-			{
-				ImGui.AddRectNative(@this, pMin, pMax, col, rounding, (ImDrawFlags)(0), (float)(1.0f));
-			}
-		}
-
-		/// <summary>
-		/// To be documented.
-		/// </summary>
-		public unsafe void AddRect(Vector2 pMin, Vector2 pMax, uint col)
-		{
-			fixed (ImDrawList* @this = &this)
-			{
-				ImGui.AddRectNative(@this, pMin, pMax, col, (float)(0.0f), (ImDrawFlags)(0), (float)(1.0f));
-			}
-		}
-
-		/// <summary>
-		/// To be documented.
-		/// </summary>
-		public unsafe void AddRect(Vector2 pMin, Vector2 pMax, uint col, ImDrawFlags flags)
-		{
-			fixed (ImDrawList* @this = &this)
-			{
-				ImGui.AddRectNative(@this, pMin, pMax, col, (float)(0.0f), flags, (float)(1.0f));
+				ImGui.AddRectNative(@this, pMin, pMax, col, rounding, thickness, flags);
 			}
 		}
 
@@ -762,18 +1096,51 @@ namespace Dalamud.Bindings.ImGui
 		{
 			fixed (ImDrawList* @this = &this)
 			{
-				ImGui.AddRectNative(@this, pMin, pMax, col, rounding, (ImDrawFlags)(0), thickness);
+				ImGui.AddRectNative(@this, pMin, pMax, col, rounding, thickness, (ImDrawFlags)(0));
 			}
 		}
 
 		/// <summary>
 		/// To be documented.
 		/// </summary>
-		public unsafe void AddRect(Vector2 pMin, Vector2 pMax, uint col, ImDrawFlags flags, float thickness)
+		public unsafe void AddRect(Vector2 pMin, Vector2 pMax, uint col, float rounding)
 		{
 			fixed (ImDrawList* @this = &this)
 			{
-				ImGui.AddRectNative(@this, pMin, pMax, col, (float)(0.0f), flags, thickness);
+				ImGui.AddRectNative(@this, pMin, pMax, col, rounding, (float)(1.0f), (ImDrawFlags)(0));
+			}
+		}
+
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		public unsafe void AddRect(Vector2 pMin, Vector2 pMax, uint col)
+		{
+			fixed (ImDrawList* @this = &this)
+			{
+				ImGui.AddRectNative(@this, pMin, pMax, col, (float)(0.0f), (float)(1.0f), (ImDrawFlags)(0));
+			}
+		}
+
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		public unsafe void AddRect(Vector2 pMin, Vector2 pMax, uint col, float rounding, ImDrawFlags flags)
+		{
+			fixed (ImDrawList* @this = &this)
+			{
+				ImGui.AddRectNative(@this, pMin, pMax, col, rounding, (float)(1.0f), flags);
+			}
+		}
+
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		public unsafe void AddRect(Vector2 pMin, Vector2 pMax, uint col, ImDrawFlags flags)
+		{
+			fixed (ImDrawList* @this = &this)
+			{
+				ImGui.AddRectNative(@this, pMin, pMax, col, (float)(0.0f), (float)(1.0f), flags);
 			}
 		}
 
@@ -857,7 +1224,7 @@ namespace Dalamud.Bindings.ImGui
 		/// <summary>
 		/// To be documented.
 		/// </summary>
-		public unsafe void AddText(Vector2 pos, uint col, ref byte textBegin, byte* textEnd)
+		public unsafe void AddText(Vector2 pos, uint col, in byte textBegin, byte* textEnd)
 		{
 			fixed (ImDrawList* @this = &this)
 			{
@@ -871,7 +1238,7 @@ namespace Dalamud.Bindings.ImGui
 		/// <summary>
 		/// To be documented.
 		/// </summary>
-		public unsafe void AddText(Vector2 pos, uint col, ref byte textBegin)
+		public unsafe void AddText(Vector2 pos, uint col, in byte textBegin)
 		{
 			fixed (ImDrawList* @this = &this)
 			{
@@ -977,7 +1344,7 @@ namespace Dalamud.Bindings.ImGui
 		/// <summary>
 		/// To be documented.
 		/// </summary>
-		public unsafe void AddText(Vector2 pos, uint col, byte* textBegin, ref byte textEnd)
+		public unsafe void AddText(Vector2 pos, uint col, byte* textBegin, in byte textEnd)
 		{
 			fixed (ImDrawList* @this = &this)
 			{
@@ -1037,7 +1404,7 @@ namespace Dalamud.Bindings.ImGui
 		/// <summary>
 		/// To be documented.
 		/// </summary>
-		public unsafe void AddText(Vector2 pos, uint col, ref byte textBegin, ref byte textEnd)
+		public unsafe void AddText(Vector2 pos, uint col, in byte textBegin, in byte textEnd)
 		{
 			fixed (ImDrawList* @this = &this)
 			{
@@ -1124,7 +1491,7 @@ namespace Dalamud.Bindings.ImGui
 		/// <summary>
 		/// To be documented.
 		/// </summary>
-		public unsafe void AddText(Vector2 pos, uint col, ref byte textBegin, ReadOnlySpan<byte> textEnd)
+		public unsafe void AddText(Vector2 pos, uint col, in byte textBegin, ReadOnlySpan<byte> textEnd)
 		{
 			fixed (ImDrawList* @this = &this)
 			{
@@ -1141,7 +1508,7 @@ namespace Dalamud.Bindings.ImGui
 		/// <summary>
 		/// To be documented.
 		/// </summary>
-		public unsafe void AddText(Vector2 pos, uint col, ref byte textBegin, string textEnd)
+		public unsafe void AddText(Vector2 pos, uint col, in byte textBegin, string textEnd)
 		{
 			fixed (ImDrawList* @this = &this)
 			{
@@ -1176,7 +1543,7 @@ namespace Dalamud.Bindings.ImGui
 		/// <summary>
 		/// To be documented.
 		/// </summary>
-		public unsafe void AddText(Vector2 pos, uint col, ReadOnlySpan<byte> textBegin, ref byte textEnd)
+		public unsafe void AddText(Vector2 pos, uint col, ReadOnlySpan<byte> textBegin, in byte textEnd)
 		{
 			fixed (ImDrawList* @this = &this)
 			{
@@ -1228,7 +1595,7 @@ namespace Dalamud.Bindings.ImGui
 		/// <summary>
 		/// To be documented.
 		/// </summary>
-		public unsafe void AddText(Vector2 pos, uint col, string textBegin, ref byte textEnd)
+		public unsafe void AddText(Vector2 pos, uint col, string textBegin, in byte textEnd)
 		{
 			fixed (ImDrawList* @this = &this)
 			{
@@ -1498,7 +1865,7 @@ namespace Dalamud.Bindings.ImGui
 		/// <summary>
 		/// To be documented.
 		/// </summary>
-		public unsafe void AddText(ImFont* font, float fontSize, Vector2 pos, uint col, ref byte textBegin, byte* textEnd, float wrapWidth, Vector4* cpuFineClipRect)
+		public unsafe void AddText(ImFont* font, float fontSize, Vector2 pos, uint col, in byte textBegin, byte* textEnd, float wrapWidth, Vector4* cpuFineClipRect)
 		{
 			fixed (ImDrawList* @this = &this)
 			{
@@ -1512,7 +1879,7 @@ namespace Dalamud.Bindings.ImGui
 		/// <summary>
 		/// To be documented.
 		/// </summary>
-		public unsafe void AddText(ImFont* font, float fontSize, Vector2 pos, uint col, ref byte textBegin, byte* textEnd, float wrapWidth)
+		public unsafe void AddText(ImFont* font, float fontSize, Vector2 pos, uint col, in byte textBegin, byte* textEnd, float wrapWidth)
 		{
 			fixed (ImDrawList* @this = &this)
 			{
@@ -1526,7 +1893,7 @@ namespace Dalamud.Bindings.ImGui
 		/// <summary>
 		/// To be documented.
 		/// </summary>
-		public unsafe void AddText(ImFont* font, float fontSize, Vector2 pos, uint col, ref byte textBegin, byte* textEnd)
+		public unsafe void AddText(ImFont* font, float fontSize, Vector2 pos, uint col, in byte textBegin, byte* textEnd)
 		{
 			fixed (ImDrawList* @this = &this)
 			{
@@ -1540,7 +1907,7 @@ namespace Dalamud.Bindings.ImGui
 		/// <summary>
 		/// To be documented.
 		/// </summary>
-		public unsafe void AddText(ImFont* font, float fontSize, Vector2 pos, uint col, ref byte textBegin)
+		public unsafe void AddText(ImFont* font, float fontSize, Vector2 pos, uint col, in byte textBegin)
 		{
 			fixed (ImDrawList* @this = &this)
 			{
@@ -1554,7 +1921,7 @@ namespace Dalamud.Bindings.ImGui
 		/// <summary>
 		/// To be documented.
 		/// </summary>
-		public unsafe void AddText(ImFont* font, float fontSize, Vector2 pos, uint col, ref byte textBegin, float wrapWidth)
+		public unsafe void AddText(ImFont* font, float fontSize, Vector2 pos, uint col, in byte textBegin, float wrapWidth)
 		{
 			fixed (ImDrawList* @this = &this)
 			{
@@ -1568,7 +1935,7 @@ namespace Dalamud.Bindings.ImGui
 		/// <summary>
 		/// To be documented.
 		/// </summary>
-		public unsafe void AddText(ImFont* font, float fontSize, Vector2 pos, uint col, ref byte textBegin, byte* textEnd, Vector4* cpuFineClipRect)
+		public unsafe void AddText(ImFont* font, float fontSize, Vector2 pos, uint col, in byte textBegin, byte* textEnd, Vector4* cpuFineClipRect)
 		{
 			fixed (ImDrawList* @this = &this)
 			{
@@ -1582,7 +1949,7 @@ namespace Dalamud.Bindings.ImGui
 		/// <summary>
 		/// To be documented.
 		/// </summary>
-		public unsafe void AddText(ImFont* font, float fontSize, Vector2 pos, uint col, ref byte textBegin, Vector4* cpuFineClipRect)
+		public unsafe void AddText(ImFont* font, float fontSize, Vector2 pos, uint col, in byte textBegin, Vector4* cpuFineClipRect)
 		{
 			fixed (ImDrawList* @this = &this)
 			{
@@ -1596,7 +1963,7 @@ namespace Dalamud.Bindings.ImGui
 		/// <summary>
 		/// To be documented.
 		/// </summary>
-		public unsafe void AddText(ImFont* font, float fontSize, Vector2 pos, uint col, ref byte textBegin, float wrapWidth, Vector4* cpuFineClipRect)
+		public unsafe void AddText(ImFont* font, float fontSize, Vector2 pos, uint col, in byte textBegin, float wrapWidth, Vector4* cpuFineClipRect)
 		{
 			fixed (ImDrawList* @this = &this)
 			{
@@ -1978,7 +2345,7 @@ namespace Dalamud.Bindings.ImGui
 		/// <summary>
 		/// To be documented.
 		/// </summary>
-		public unsafe void AddText(ref ImFont font, float fontSize, Vector2 pos, uint col, ref byte textBegin, byte* textEnd, float wrapWidth, Vector4* cpuFineClipRect)
+		public unsafe void AddText(ref ImFont font, float fontSize, Vector2 pos, uint col, in byte textBegin, byte* textEnd, float wrapWidth, Vector4* cpuFineClipRect)
 		{
 			fixed (ImDrawList* @this = &this)
 			{
@@ -1995,7 +2362,7 @@ namespace Dalamud.Bindings.ImGui
 		/// <summary>
 		/// To be documented.
 		/// </summary>
-		public unsafe void AddText(ref ImFont font, float fontSize, Vector2 pos, uint col, ref byte textBegin, byte* textEnd, float wrapWidth)
+		public unsafe void AddText(ref ImFont font, float fontSize, Vector2 pos, uint col, in byte textBegin, byte* textEnd, float wrapWidth)
 		{
 			fixed (ImDrawList* @this = &this)
 			{
@@ -2012,7 +2379,7 @@ namespace Dalamud.Bindings.ImGui
 		/// <summary>
 		/// To be documented.
 		/// </summary>
-		public unsafe void AddText(ref ImFont font, float fontSize, Vector2 pos, uint col, ref byte textBegin, byte* textEnd)
+		public unsafe void AddText(ref ImFont font, float fontSize, Vector2 pos, uint col, in byte textBegin, byte* textEnd)
 		{
 			fixed (ImDrawList* @this = &this)
 			{
@@ -2029,7 +2396,7 @@ namespace Dalamud.Bindings.ImGui
 		/// <summary>
 		/// To be documented.
 		/// </summary>
-		public unsafe void AddText(ref ImFont font, float fontSize, Vector2 pos, uint col, ref byte textBegin)
+		public unsafe void AddText(ref ImFont font, float fontSize, Vector2 pos, uint col, in byte textBegin)
 		{
 			fixed (ImDrawList* @this = &this)
 			{
@@ -2046,7 +2413,7 @@ namespace Dalamud.Bindings.ImGui
 		/// <summary>
 		/// To be documented.
 		/// </summary>
-		public unsafe void AddText(ref ImFont font, float fontSize, Vector2 pos, uint col, ref byte textBegin, float wrapWidth)
+		public unsafe void AddText(ref ImFont font, float fontSize, Vector2 pos, uint col, in byte textBegin, float wrapWidth)
 		{
 			fixed (ImDrawList* @this = &this)
 			{
@@ -2063,7 +2430,7 @@ namespace Dalamud.Bindings.ImGui
 		/// <summary>
 		/// To be documented.
 		/// </summary>
-		public unsafe void AddText(ref ImFont font, float fontSize, Vector2 pos, uint col, ref byte textBegin, byte* textEnd, Vector4* cpuFineClipRect)
+		public unsafe void AddText(ref ImFont font, float fontSize, Vector2 pos, uint col, in byte textBegin, byte* textEnd, Vector4* cpuFineClipRect)
 		{
 			fixed (ImDrawList* @this = &this)
 			{
@@ -2080,7 +2447,7 @@ namespace Dalamud.Bindings.ImGui
 		/// <summary>
 		/// To be documented.
 		/// </summary>
-		public unsafe void AddText(ref ImFont font, float fontSize, Vector2 pos, uint col, ref byte textBegin, Vector4* cpuFineClipRect)
+		public unsafe void AddText(ref ImFont font, float fontSize, Vector2 pos, uint col, in byte textBegin, Vector4* cpuFineClipRect)
 		{
 			fixed (ImDrawList* @this = &this)
 			{
@@ -2097,7 +2464,7 @@ namespace Dalamud.Bindings.ImGui
 		/// <summary>
 		/// To be documented.
 		/// </summary>
-		public unsafe void AddText(ref ImFont font, float fontSize, Vector2 pos, uint col, ref byte textBegin, float wrapWidth, Vector4* cpuFineClipRect)
+		public unsafe void AddText(ref ImFont font, float fontSize, Vector2 pos, uint col, in byte textBegin, float wrapWidth, Vector4* cpuFineClipRect)
 		{
 			fixed (ImDrawList* @this = &this)
 			{
@@ -2530,7 +2897,7 @@ namespace Dalamud.Bindings.ImGui
 		/// <summary>
 		/// To be documented.
 		/// </summary>
-		public unsafe void AddText(ImFont* font, float fontSize, Vector2 pos, uint col, byte* textBegin, ref byte textEnd, float wrapWidth, Vector4* cpuFineClipRect)
+		public unsafe void AddText(ImFont* font, float fontSize, Vector2 pos, uint col, byte* textBegin, in byte textEnd, float wrapWidth, Vector4* cpuFineClipRect)
 		{
 			fixed (ImDrawList* @this = &this)
 			{
@@ -2544,7 +2911,7 @@ namespace Dalamud.Bindings.ImGui
 		/// <summary>
 		/// To be documented.
 		/// </summary>
-		public unsafe void AddText(ImFont* font, float fontSize, Vector2 pos, uint col, byte* textBegin, ref byte textEnd, float wrapWidth)
+		public unsafe void AddText(ImFont* font, float fontSize, Vector2 pos, uint col, byte* textBegin, in byte textEnd, float wrapWidth)
 		{
 			fixed (ImDrawList* @this = &this)
 			{
@@ -2558,7 +2925,7 @@ namespace Dalamud.Bindings.ImGui
 		/// <summary>
 		/// To be documented.
 		/// </summary>
-		public unsafe void AddText(ImFont* font, float fontSize, Vector2 pos, uint col, byte* textBegin, ref byte textEnd)
+		public unsafe void AddText(ImFont* font, float fontSize, Vector2 pos, uint col, byte* textBegin, in byte textEnd)
 		{
 			fixed (ImDrawList* @this = &this)
 			{
@@ -2572,7 +2939,7 @@ namespace Dalamud.Bindings.ImGui
 		/// <summary>
 		/// To be documented.
 		/// </summary>
-		public unsafe void AddText(ImFont* font, float fontSize, Vector2 pos, uint col, byte* textBegin, ref byte textEnd, Vector4* cpuFineClipRect)
+		public unsafe void AddText(ImFont* font, float fontSize, Vector2 pos, uint col, byte* textBegin, in byte textEnd, Vector4* cpuFineClipRect)
 		{
 			fixed (ImDrawList* @this = &this)
 			{
@@ -2770,7 +3137,7 @@ namespace Dalamud.Bindings.ImGui
 		/// <summary>
 		/// To be documented.
 		/// </summary>
-		public unsafe void AddText(ref ImFont font, float fontSize, Vector2 pos, uint col, byte* textBegin, ref byte textEnd, float wrapWidth, Vector4* cpuFineClipRect)
+		public unsafe void AddText(ref ImFont font, float fontSize, Vector2 pos, uint col, byte* textBegin, in byte textEnd, float wrapWidth, Vector4* cpuFineClipRect)
 		{
 			fixed (ImDrawList* @this = &this)
 			{
@@ -2787,7 +3154,7 @@ namespace Dalamud.Bindings.ImGui
 		/// <summary>
 		/// To be documented.
 		/// </summary>
-		public unsafe void AddText(ref ImFont font, float fontSize, Vector2 pos, uint col, byte* textBegin, ref byte textEnd, float wrapWidth)
+		public unsafe void AddText(ref ImFont font, float fontSize, Vector2 pos, uint col, byte* textBegin, in byte textEnd, float wrapWidth)
 		{
 			fixed (ImDrawList* @this = &this)
 			{
@@ -2804,7 +3171,7 @@ namespace Dalamud.Bindings.ImGui
 		/// <summary>
 		/// To be documented.
 		/// </summary>
-		public unsafe void AddText(ref ImFont font, float fontSize, Vector2 pos, uint col, byte* textBegin, ref byte textEnd)
+		public unsafe void AddText(ref ImFont font, float fontSize, Vector2 pos, uint col, byte* textBegin, in byte textEnd)
 		{
 			fixed (ImDrawList* @this = &this)
 			{
@@ -2821,7 +3188,7 @@ namespace Dalamud.Bindings.ImGui
 		/// <summary>
 		/// To be documented.
 		/// </summary>
-		public unsafe void AddText(ref ImFont font, float fontSize, Vector2 pos, uint col, byte* textBegin, ref byte textEnd, Vector4* cpuFineClipRect)
+		public unsafe void AddText(ref ImFont font, float fontSize, Vector2 pos, uint col, byte* textBegin, in byte textEnd, Vector4* cpuFineClipRect)
 		{
 			fixed (ImDrawList* @this = &this)
 			{
@@ -3046,7 +3413,7 @@ namespace Dalamud.Bindings.ImGui
 		/// <summary>
 		/// To be documented.
 		/// </summary>
-		public unsafe void AddText(ImFont* font, float fontSize, Vector2 pos, uint col, ref byte textBegin, ref byte textEnd, float wrapWidth, Vector4* cpuFineClipRect)
+		public unsafe void AddText(ImFont* font, float fontSize, Vector2 pos, uint col, in byte textBegin, in byte textEnd, float wrapWidth, Vector4* cpuFineClipRect)
 		{
 			fixed (ImDrawList* @this = &this)
 			{
@@ -3063,7 +3430,7 @@ namespace Dalamud.Bindings.ImGui
 		/// <summary>
 		/// To be documented.
 		/// </summary>
-		public unsafe void AddText(ImFont* font, float fontSize, Vector2 pos, uint col, ref byte textBegin, ref byte textEnd, float wrapWidth)
+		public unsafe void AddText(ImFont* font, float fontSize, Vector2 pos, uint col, in byte textBegin, in byte textEnd, float wrapWidth)
 		{
 			fixed (ImDrawList* @this = &this)
 			{
@@ -3080,7 +3447,7 @@ namespace Dalamud.Bindings.ImGui
 		/// <summary>
 		/// To be documented.
 		/// </summary>
-		public unsafe void AddText(ImFont* font, float fontSize, Vector2 pos, uint col, ref byte textBegin, ref byte textEnd)
+		public unsafe void AddText(ImFont* font, float fontSize, Vector2 pos, uint col, in byte textBegin, in byte textEnd)
 		{
 			fixed (ImDrawList* @this = &this)
 			{
@@ -3097,7 +3464,7 @@ namespace Dalamud.Bindings.ImGui
 		/// <summary>
 		/// To be documented.
 		/// </summary>
-		public unsafe void AddText(ImFont* font, float fontSize, Vector2 pos, uint col, ref byte textBegin, ref byte textEnd, Vector4* cpuFineClipRect)
+		public unsafe void AddText(ImFont* font, float fontSize, Vector2 pos, uint col, in byte textBegin, in byte textEnd, Vector4* cpuFineClipRect)
 		{
 			fixed (ImDrawList* @this = &this)
 			{
@@ -3394,7 +3761,7 @@ namespace Dalamud.Bindings.ImGui
 		/// <summary>
 		/// To be documented.
 		/// </summary>
-		public unsafe void AddText(ImFont* font, float fontSize, Vector2 pos, uint col, ref byte textBegin, ReadOnlySpan<byte> textEnd, float wrapWidth, Vector4* cpuFineClipRect)
+		public unsafe void AddText(ImFont* font, float fontSize, Vector2 pos, uint col, in byte textBegin, ReadOnlySpan<byte> textEnd, float wrapWidth, Vector4* cpuFineClipRect)
 		{
 			fixed (ImDrawList* @this = &this)
 			{
@@ -3411,7 +3778,7 @@ namespace Dalamud.Bindings.ImGui
 		/// <summary>
 		/// To be documented.
 		/// </summary>
-		public unsafe void AddText(ImFont* font, float fontSize, Vector2 pos, uint col, ref byte textBegin, ReadOnlySpan<byte> textEnd, float wrapWidth)
+		public unsafe void AddText(ImFont* font, float fontSize, Vector2 pos, uint col, in byte textBegin, ReadOnlySpan<byte> textEnd, float wrapWidth)
 		{
 			fixed (ImDrawList* @this = &this)
 			{
@@ -3428,7 +3795,7 @@ namespace Dalamud.Bindings.ImGui
 		/// <summary>
 		/// To be documented.
 		/// </summary>
-		public unsafe void AddText(ImFont* font, float fontSize, Vector2 pos, uint col, ref byte textBegin, ReadOnlySpan<byte> textEnd)
+		public unsafe void AddText(ImFont* font, float fontSize, Vector2 pos, uint col, in byte textBegin, ReadOnlySpan<byte> textEnd)
 		{
 			fixed (ImDrawList* @this = &this)
 			{
@@ -3445,7 +3812,7 @@ namespace Dalamud.Bindings.ImGui
 		/// <summary>
 		/// To be documented.
 		/// </summary>
-		public unsafe void AddText(ImFont* font, float fontSize, Vector2 pos, uint col, ref byte textBegin, ReadOnlySpan<byte> textEnd, Vector4* cpuFineClipRect)
+		public unsafe void AddText(ImFont* font, float fontSize, Vector2 pos, uint col, in byte textBegin, ReadOnlySpan<byte> textEnd, Vector4* cpuFineClipRect)
 		{
 			fixed (ImDrawList* @this = &this)
 			{
@@ -3462,7 +3829,7 @@ namespace Dalamud.Bindings.ImGui
 		/// <summary>
 		/// To be documented.
 		/// </summary>
-		public unsafe void AddText(ImFont* font, float fontSize, Vector2 pos, uint col, ref byte textBegin, string textEnd, float wrapWidth, Vector4* cpuFineClipRect)
+		public unsafe void AddText(ImFont* font, float fontSize, Vector2 pos, uint col, in byte textBegin, string textEnd, float wrapWidth, Vector4* cpuFineClipRect)
 		{
 			fixed (ImDrawList* @this = &this)
 			{
@@ -3497,7 +3864,7 @@ namespace Dalamud.Bindings.ImGui
 		/// <summary>
 		/// To be documented.
 		/// </summary>
-		public unsafe void AddText(ImFont* font, float fontSize, Vector2 pos, uint col, ref byte textBegin, string textEnd, float wrapWidth)
+		public unsafe void AddText(ImFont* font, float fontSize, Vector2 pos, uint col, in byte textBegin, string textEnd, float wrapWidth)
 		{
 			fixed (ImDrawList* @this = &this)
 			{
@@ -3532,7 +3899,7 @@ namespace Dalamud.Bindings.ImGui
 		/// <summary>
 		/// To be documented.
 		/// </summary>
-		public unsafe void AddText(ImFont* font, float fontSize, Vector2 pos, uint col, ref byte textBegin, string textEnd)
+		public unsafe void AddText(ImFont* font, float fontSize, Vector2 pos, uint col, in byte textBegin, string textEnd)
 		{
 			fixed (ImDrawList* @this = &this)
 			{
@@ -3567,7 +3934,7 @@ namespace Dalamud.Bindings.ImGui
 		/// <summary>
 		/// To be documented.
 		/// </summary>
-		public unsafe void AddText(ImFont* font, float fontSize, Vector2 pos, uint col, ref byte textBegin, string textEnd, Vector4* cpuFineClipRect)
+		public unsafe void AddText(ImFont* font, float fontSize, Vector2 pos, uint col, in byte textBegin, string textEnd, Vector4* cpuFineClipRect)
 		{
 			fixed (ImDrawList* @this = &this)
 			{
@@ -3602,7 +3969,7 @@ namespace Dalamud.Bindings.ImGui
 		/// <summary>
 		/// To be documented.
 		/// </summary>
-		public unsafe void AddText(ImFont* font, float fontSize, Vector2 pos, uint col, ReadOnlySpan<byte> textBegin, ref byte textEnd, float wrapWidth, Vector4* cpuFineClipRect)
+		public unsafe void AddText(ImFont* font, float fontSize, Vector2 pos, uint col, ReadOnlySpan<byte> textBegin, in byte textEnd, float wrapWidth, Vector4* cpuFineClipRect)
 		{
 			fixed (ImDrawList* @this = &this)
 			{
@@ -3619,7 +3986,7 @@ namespace Dalamud.Bindings.ImGui
 		/// <summary>
 		/// To be documented.
 		/// </summary>
-		public unsafe void AddText(ImFont* font, float fontSize, Vector2 pos, uint col, ReadOnlySpan<byte> textBegin, ref byte textEnd, float wrapWidth)
+		public unsafe void AddText(ImFont* font, float fontSize, Vector2 pos, uint col, ReadOnlySpan<byte> textBegin, in byte textEnd, float wrapWidth)
 		{
 			fixed (ImDrawList* @this = &this)
 			{
@@ -3636,7 +4003,7 @@ namespace Dalamud.Bindings.ImGui
 		/// <summary>
 		/// To be documented.
 		/// </summary>
-		public unsafe void AddText(ImFont* font, float fontSize, Vector2 pos, uint col, ReadOnlySpan<byte> textBegin, ref byte textEnd)
+		public unsafe void AddText(ImFont* font, float fontSize, Vector2 pos, uint col, ReadOnlySpan<byte> textBegin, in byte textEnd)
 		{
 			fixed (ImDrawList* @this = &this)
 			{
@@ -3653,7 +4020,7 @@ namespace Dalamud.Bindings.ImGui
 		/// <summary>
 		/// To be documented.
 		/// </summary>
-		public unsafe void AddText(ImFont* font, float fontSize, Vector2 pos, uint col, ReadOnlySpan<byte> textBegin, ref byte textEnd, Vector4* cpuFineClipRect)
+		public unsafe void AddText(ImFont* font, float fontSize, Vector2 pos, uint col, ReadOnlySpan<byte> textBegin, in byte textEnd, Vector4* cpuFineClipRect)
 		{
 			fixed (ImDrawList* @this = &this)
 			{
@@ -3810,7 +4177,7 @@ namespace Dalamud.Bindings.ImGui
 		/// <summary>
 		/// To be documented.
 		/// </summary>
-		public unsafe void AddText(ImFont* font, float fontSize, Vector2 pos, uint col, string textBegin, ref byte textEnd, float wrapWidth, Vector4* cpuFineClipRect)
+		public unsafe void AddText(ImFont* font, float fontSize, Vector2 pos, uint col, string textBegin, in byte textEnd, float wrapWidth, Vector4* cpuFineClipRect)
 		{
 			fixed (ImDrawList* @this = &this)
 			{
@@ -3845,7 +4212,7 @@ namespace Dalamud.Bindings.ImGui
 		/// <summary>
 		/// To be documented.
 		/// </summary>
-		public unsafe void AddText(ImFont* font, float fontSize, Vector2 pos, uint col, string textBegin, ref byte textEnd, float wrapWidth)
+		public unsafe void AddText(ImFont* font, float fontSize, Vector2 pos, uint col, string textBegin, in byte textEnd, float wrapWidth)
 		{
 			fixed (ImDrawList* @this = &this)
 			{
@@ -3880,7 +4247,7 @@ namespace Dalamud.Bindings.ImGui
 		/// <summary>
 		/// To be documented.
 		/// </summary>
-		public unsafe void AddText(ImFont* font, float fontSize, Vector2 pos, uint col, string textBegin, ref byte textEnd)
+		public unsafe void AddText(ImFont* font, float fontSize, Vector2 pos, uint col, string textBegin, in byte textEnd)
 		{
 			fixed (ImDrawList* @this = &this)
 			{
@@ -3915,7 +4282,7 @@ namespace Dalamud.Bindings.ImGui
 		/// <summary>
 		/// To be documented.
 		/// </summary>
-		public unsafe void AddText(ImFont* font, float fontSize, Vector2 pos, uint col, string textBegin, ref byte textEnd, Vector4* cpuFineClipRect)
+		public unsafe void AddText(ImFont* font, float fontSize, Vector2 pos, uint col, string textBegin, in byte textEnd, Vector4* cpuFineClipRect)
 		{
 			fixed (ImDrawList* @this = &this)
 			{
@@ -4090,7 +4457,7 @@ namespace Dalamud.Bindings.ImGui
 		/// <summary>
 		/// To be documented.
 		/// </summary>
-		public unsafe void AddText(ref ImFont font, float fontSize, Vector2 pos, uint col, ref byte textBegin, ref byte textEnd, float wrapWidth, Vector4* cpuFineClipRect)
+		public unsafe void AddText(ref ImFont font, float fontSize, Vector2 pos, uint col, in byte textBegin, in byte textEnd, float wrapWidth, Vector4* cpuFineClipRect)
 		{
 			fixed (ImDrawList* @this = &this)
 			{
@@ -4110,7 +4477,7 @@ namespace Dalamud.Bindings.ImGui
 		/// <summary>
 		/// To be documented.
 		/// </summary>
-		public unsafe void AddText(ref ImFont font, float fontSize, Vector2 pos, uint col, ref byte textBegin, ref byte textEnd, float wrapWidth)
+		public unsafe void AddText(ref ImFont font, float fontSize, Vector2 pos, uint col, in byte textBegin, in byte textEnd, float wrapWidth)
 		{
 			fixed (ImDrawList* @this = &this)
 			{
@@ -4130,7 +4497,7 @@ namespace Dalamud.Bindings.ImGui
 		/// <summary>
 		/// To be documented.
 		/// </summary>
-		public unsafe void AddText(ref ImFont font, float fontSize, Vector2 pos, uint col, ref byte textBegin, ref byte textEnd)
+		public unsafe void AddText(ref ImFont font, float fontSize, Vector2 pos, uint col, in byte textBegin, in byte textEnd)
 		{
 			fixed (ImDrawList* @this = &this)
 			{
@@ -4150,7 +4517,7 @@ namespace Dalamud.Bindings.ImGui
 		/// <summary>
 		/// To be documented.
 		/// </summary>
-		public unsafe void AddText(ref ImFont font, float fontSize, Vector2 pos, uint col, ref byte textBegin, ref byte textEnd, Vector4* cpuFineClipRect)
+		public unsafe void AddText(ref ImFont font, float fontSize, Vector2 pos, uint col, in byte textBegin, in byte textEnd, Vector4* cpuFineClipRect)
 		{
 			fixed (ImDrawList* @this = &this)
 			{
@@ -4474,7 +4841,7 @@ namespace Dalamud.Bindings.ImGui
 		/// <summary>
 		/// To be documented.
 		/// </summary>
-		public unsafe void AddText(ref ImFont font, float fontSize, Vector2 pos, uint col, ref byte textBegin, ReadOnlySpan<byte> textEnd, float wrapWidth, Vector4* cpuFineClipRect)
+		public unsafe void AddText(ref ImFont font, float fontSize, Vector2 pos, uint col, in byte textBegin, ReadOnlySpan<byte> textEnd, float wrapWidth, Vector4* cpuFineClipRect)
 		{
 			fixed (ImDrawList* @this = &this)
 			{
@@ -4494,7 +4861,7 @@ namespace Dalamud.Bindings.ImGui
 		/// <summary>
 		/// To be documented.
 		/// </summary>
-		public unsafe void AddText(ref ImFont font, float fontSize, Vector2 pos, uint col, ref byte textBegin, ReadOnlySpan<byte> textEnd, float wrapWidth)
+		public unsafe void AddText(ref ImFont font, float fontSize, Vector2 pos, uint col, in byte textBegin, ReadOnlySpan<byte> textEnd, float wrapWidth)
 		{
 			fixed (ImDrawList* @this = &this)
 			{
@@ -4514,7 +4881,7 @@ namespace Dalamud.Bindings.ImGui
 		/// <summary>
 		/// To be documented.
 		/// </summary>
-		public unsafe void AddText(ref ImFont font, float fontSize, Vector2 pos, uint col, ref byte textBegin, ReadOnlySpan<byte> textEnd)
+		public unsafe void AddText(ref ImFont font, float fontSize, Vector2 pos, uint col, in byte textBegin, ReadOnlySpan<byte> textEnd)
 		{
 			fixed (ImDrawList* @this = &this)
 			{
@@ -4534,7 +4901,7 @@ namespace Dalamud.Bindings.ImGui
 		/// <summary>
 		/// To be documented.
 		/// </summary>
-		public unsafe void AddText(ref ImFont font, float fontSize, Vector2 pos, uint col, ref byte textBegin, ReadOnlySpan<byte> textEnd, Vector4* cpuFineClipRect)
+		public unsafe void AddText(ref ImFont font, float fontSize, Vector2 pos, uint col, in byte textBegin, ReadOnlySpan<byte> textEnd, Vector4* cpuFineClipRect)
 		{
 			fixed (ImDrawList* @this = &this)
 			{
@@ -4554,7 +4921,7 @@ namespace Dalamud.Bindings.ImGui
 		/// <summary>
 		/// To be documented.
 		/// </summary>
-		public unsafe void AddText(ref ImFont font, float fontSize, Vector2 pos, uint col, ref byte textBegin, string textEnd, float wrapWidth, Vector4* cpuFineClipRect)
+		public unsafe void AddText(ref ImFont font, float fontSize, Vector2 pos, uint col, in byte textBegin, string textEnd, float wrapWidth, Vector4* cpuFineClipRect)
 		{
 			fixed (ImDrawList* @this = &this)
 			{
@@ -4592,7 +4959,7 @@ namespace Dalamud.Bindings.ImGui
 		/// <summary>
 		/// To be documented.
 		/// </summary>
-		public unsafe void AddText(ref ImFont font, float fontSize, Vector2 pos, uint col, ref byte textBegin, string textEnd, float wrapWidth)
+		public unsafe void AddText(ref ImFont font, float fontSize, Vector2 pos, uint col, in byte textBegin, string textEnd, float wrapWidth)
 		{
 			fixed (ImDrawList* @this = &this)
 			{
@@ -4630,7 +4997,7 @@ namespace Dalamud.Bindings.ImGui
 		/// <summary>
 		/// To be documented.
 		/// </summary>
-		public unsafe void AddText(ref ImFont font, float fontSize, Vector2 pos, uint col, ref byte textBegin, string textEnd)
+		public unsafe void AddText(ref ImFont font, float fontSize, Vector2 pos, uint col, in byte textBegin, string textEnd)
 		{
 			fixed (ImDrawList* @this = &this)
 			{
@@ -4668,7 +5035,7 @@ namespace Dalamud.Bindings.ImGui
 		/// <summary>
 		/// To be documented.
 		/// </summary>
-		public unsafe void AddText(ref ImFont font, float fontSize, Vector2 pos, uint col, ref byte textBegin, string textEnd, Vector4* cpuFineClipRect)
+		public unsafe void AddText(ref ImFont font, float fontSize, Vector2 pos, uint col, in byte textBegin, string textEnd, Vector4* cpuFineClipRect)
 		{
 			fixed (ImDrawList* @this = &this)
 			{
@@ -4706,7 +5073,7 @@ namespace Dalamud.Bindings.ImGui
 		/// <summary>
 		/// To be documented.
 		/// </summary>
-		public unsafe void AddText(ref ImFont font, float fontSize, Vector2 pos, uint col, ReadOnlySpan<byte> textBegin, ref byte textEnd, float wrapWidth, Vector4* cpuFineClipRect)
+		public unsafe void AddText(ref ImFont font, float fontSize, Vector2 pos, uint col, ReadOnlySpan<byte> textBegin, in byte textEnd, float wrapWidth, Vector4* cpuFineClipRect)
 		{
 			fixed (ImDrawList* @this = &this)
 			{
@@ -4726,7 +5093,7 @@ namespace Dalamud.Bindings.ImGui
 		/// <summary>
 		/// To be documented.
 		/// </summary>
-		public unsafe void AddText(ref ImFont font, float fontSize, Vector2 pos, uint col, ReadOnlySpan<byte> textBegin, ref byte textEnd, float wrapWidth)
+		public unsafe void AddText(ref ImFont font, float fontSize, Vector2 pos, uint col, ReadOnlySpan<byte> textBegin, in byte textEnd, float wrapWidth)
 		{
 			fixed (ImDrawList* @this = &this)
 			{
@@ -4746,7 +5113,7 @@ namespace Dalamud.Bindings.ImGui
 		/// <summary>
 		/// To be documented.
 		/// </summary>
-		public unsafe void AddText(ref ImFont font, float fontSize, Vector2 pos, uint col, ReadOnlySpan<byte> textBegin, ref byte textEnd)
+		public unsafe void AddText(ref ImFont font, float fontSize, Vector2 pos, uint col, ReadOnlySpan<byte> textBegin, in byte textEnd)
 		{
 			fixed (ImDrawList* @this = &this)
 			{
@@ -4766,7 +5133,7 @@ namespace Dalamud.Bindings.ImGui
 		/// <summary>
 		/// To be documented.
 		/// </summary>
-		public unsafe void AddText(ref ImFont font, float fontSize, Vector2 pos, uint col, ReadOnlySpan<byte> textBegin, ref byte textEnd, Vector4* cpuFineClipRect)
+		public unsafe void AddText(ref ImFont font, float fontSize, Vector2 pos, uint col, ReadOnlySpan<byte> textBegin, in byte textEnd, Vector4* cpuFineClipRect)
 		{
 			fixed (ImDrawList* @this = &this)
 			{
@@ -4938,7 +5305,7 @@ namespace Dalamud.Bindings.ImGui
 		/// <summary>
 		/// To be documented.
 		/// </summary>
-		public unsafe void AddText(ref ImFont font, float fontSize, Vector2 pos, uint col, string textBegin, ref byte textEnd, float wrapWidth, Vector4* cpuFineClipRect)
+		public unsafe void AddText(ref ImFont font, float fontSize, Vector2 pos, uint col, string textBegin, in byte textEnd, float wrapWidth, Vector4* cpuFineClipRect)
 		{
 			fixed (ImDrawList* @this = &this)
 			{
@@ -4976,7 +5343,7 @@ namespace Dalamud.Bindings.ImGui
 		/// <summary>
 		/// To be documented.
 		/// </summary>
-		public unsafe void AddText(ref ImFont font, float fontSize, Vector2 pos, uint col, string textBegin, ref byte textEnd, float wrapWidth)
+		public unsafe void AddText(ref ImFont font, float fontSize, Vector2 pos, uint col, string textBegin, in byte textEnd, float wrapWidth)
 		{
 			fixed (ImDrawList* @this = &this)
 			{
@@ -5014,7 +5381,7 @@ namespace Dalamud.Bindings.ImGui
 		/// <summary>
 		/// To be documented.
 		/// </summary>
-		public unsafe void AddText(ref ImFont font, float fontSize, Vector2 pos, uint col, string textBegin, ref byte textEnd)
+		public unsafe void AddText(ref ImFont font, float fontSize, Vector2 pos, uint col, string textBegin, in byte textEnd)
 		{
 			fixed (ImDrawList* @this = &this)
 			{
@@ -5052,7 +5419,7 @@ namespace Dalamud.Bindings.ImGui
 		/// <summary>
 		/// To be documented.
 		/// </summary>
-		public unsafe void AddText(ref ImFont font, float fontSize, Vector2 pos, uint col, string textBegin, ref byte textEnd, Vector4* cpuFineClipRect)
+		public unsafe void AddText(ref ImFont font, float fontSize, Vector2 pos, uint col, string textBegin, in byte textEnd, Vector4* cpuFineClipRect)
 		{
 			fixed (ImDrawList* @this = &this)
 			{
@@ -5242,7 +5609,7 @@ namespace Dalamud.Bindings.ImGui
 		/// <summary>
 		/// To be documented.
 		/// </summary>
-		public unsafe void AddText(ImFont* font, float fontSize, Vector2 pos, uint col, byte* textBegin, byte* textEnd, float wrapWidth, ref Vector4 cpuFineClipRect)
+		public unsafe void AddText(ImFont* font, float fontSize, Vector2 pos, uint col, byte* textBegin, byte* textEnd, float wrapWidth, in Vector4 cpuFineClipRect)
 		{
 			fixed (ImDrawList* @this = &this)
 			{
@@ -5256,7 +5623,7 @@ namespace Dalamud.Bindings.ImGui
 		/// <summary>
 		/// To be documented.
 		/// </summary>
-		public unsafe void AddText(ImFont* font, float fontSize, Vector2 pos, uint col, byte* textBegin, byte* textEnd, ref Vector4 cpuFineClipRect)
+		public unsafe void AddText(ImFont* font, float fontSize, Vector2 pos, uint col, byte* textBegin, byte* textEnd, in Vector4 cpuFineClipRect)
 		{
 			fixed (ImDrawList* @this = &this)
 			{
@@ -5270,7 +5637,7 @@ namespace Dalamud.Bindings.ImGui
 		/// <summary>
 		/// To be documented.
 		/// </summary>
-		public unsafe void AddText(ImFont* font, float fontSize, Vector2 pos, uint col, byte* textBegin, ref Vector4 cpuFineClipRect)
+		public unsafe void AddText(ImFont* font, float fontSize, Vector2 pos, uint col, byte* textBegin, in Vector4 cpuFineClipRect)
 		{
 			fixed (ImDrawList* @this = &this)
 			{
@@ -5284,7 +5651,7 @@ namespace Dalamud.Bindings.ImGui
 		/// <summary>
 		/// To be documented.
 		/// </summary>
-		public unsafe void AddText(ImFont* font, float fontSize, Vector2 pos, uint col, byte* textBegin, float wrapWidth, ref Vector4 cpuFineClipRect)
+		public unsafe void AddText(ImFont* font, float fontSize, Vector2 pos, uint col, byte* textBegin, float wrapWidth, in Vector4 cpuFineClipRect)
 		{
 			fixed (ImDrawList* @this = &this)
 			{
@@ -5298,7 +5665,7 @@ namespace Dalamud.Bindings.ImGui
 		/// <summary>
 		/// To be documented.
 		/// </summary>
-		public unsafe void AddText(ref ImFont font, float fontSize, Vector2 pos, uint col, byte* textBegin, byte* textEnd, float wrapWidth, ref Vector4 cpuFineClipRect)
+		public unsafe void AddText(ref ImFont font, float fontSize, Vector2 pos, uint col, byte* textBegin, byte* textEnd, float wrapWidth, in Vector4 cpuFineClipRect)
 		{
 			fixed (ImDrawList* @this = &this)
 			{
@@ -5315,7 +5682,7 @@ namespace Dalamud.Bindings.ImGui
 		/// <summary>
 		/// To be documented.
 		/// </summary>
-		public unsafe void AddText(ref ImFont font, float fontSize, Vector2 pos, uint col, byte* textBegin, byte* textEnd, ref Vector4 cpuFineClipRect)
+		public unsafe void AddText(ref ImFont font, float fontSize, Vector2 pos, uint col, byte* textBegin, byte* textEnd, in Vector4 cpuFineClipRect)
 		{
 			fixed (ImDrawList* @this = &this)
 			{
@@ -5332,7 +5699,7 @@ namespace Dalamud.Bindings.ImGui
 		/// <summary>
 		/// To be documented.
 		/// </summary>
-		public unsafe void AddText(ref ImFont font, float fontSize, Vector2 pos, uint col, byte* textBegin, ref Vector4 cpuFineClipRect)
+		public unsafe void AddText(ref ImFont font, float fontSize, Vector2 pos, uint col, byte* textBegin, in Vector4 cpuFineClipRect)
 		{
 			fixed (ImDrawList* @this = &this)
 			{
@@ -5349,7 +5716,7 @@ namespace Dalamud.Bindings.ImGui
 		/// <summary>
 		/// To be documented.
 		/// </summary>
-		public unsafe void AddText(ref ImFont font, float fontSize, Vector2 pos, uint col, byte* textBegin, float wrapWidth, ref Vector4 cpuFineClipRect)
+		public unsafe void AddText(ref ImFont font, float fontSize, Vector2 pos, uint col, byte* textBegin, float wrapWidth, in Vector4 cpuFineClipRect)
 		{
 			fixed (ImDrawList* @this = &this)
 			{
@@ -5366,7 +5733,7 @@ namespace Dalamud.Bindings.ImGui
 		/// <summary>
 		/// To be documented.
 		/// </summary>
-		public unsafe void AddText(ImFont* font, float fontSize, Vector2 pos, uint col, ref byte textBegin, byte* textEnd, float wrapWidth, ref Vector4 cpuFineClipRect)
+		public unsafe void AddText(ImFont* font, float fontSize, Vector2 pos, uint col, in byte textBegin, byte* textEnd, float wrapWidth, in Vector4 cpuFineClipRect)
 		{
 			fixed (ImDrawList* @this = &this)
 			{
@@ -5383,7 +5750,7 @@ namespace Dalamud.Bindings.ImGui
 		/// <summary>
 		/// To be documented.
 		/// </summary>
-		public unsafe void AddText(ImFont* font, float fontSize, Vector2 pos, uint col, ref byte textBegin, byte* textEnd, ref Vector4 cpuFineClipRect)
+		public unsafe void AddText(ImFont* font, float fontSize, Vector2 pos, uint col, in byte textBegin, byte* textEnd, in Vector4 cpuFineClipRect)
 		{
 			fixed (ImDrawList* @this = &this)
 			{
@@ -5400,7 +5767,7 @@ namespace Dalamud.Bindings.ImGui
 		/// <summary>
 		/// To be documented.
 		/// </summary>
-		public unsafe void AddText(ImFont* font, float fontSize, Vector2 pos, uint col, ref byte textBegin, ref Vector4 cpuFineClipRect)
+		public unsafe void AddText(ImFont* font, float fontSize, Vector2 pos, uint col, in byte textBegin, in Vector4 cpuFineClipRect)
 		{
 			fixed (ImDrawList* @this = &this)
 			{
@@ -5417,7 +5784,7 @@ namespace Dalamud.Bindings.ImGui
 		/// <summary>
 		/// To be documented.
 		/// </summary>
-		public unsafe void AddText(ImFont* font, float fontSize, Vector2 pos, uint col, ref byte textBegin, float wrapWidth, ref Vector4 cpuFineClipRect)
+		public unsafe void AddText(ImFont* font, float fontSize, Vector2 pos, uint col, in byte textBegin, float wrapWidth, in Vector4 cpuFineClipRect)
 		{
 			fixed (ImDrawList* @this = &this)
 			{
@@ -5434,7 +5801,7 @@ namespace Dalamud.Bindings.ImGui
 		/// <summary>
 		/// To be documented.
 		/// </summary>
-		public unsafe void AddText(ImFont* font, float fontSize, Vector2 pos, uint col, ReadOnlySpan<byte> textBegin, byte* textEnd, float wrapWidth, ref Vector4 cpuFineClipRect)
+		public unsafe void AddText(ImFont* font, float fontSize, Vector2 pos, uint col, ReadOnlySpan<byte> textBegin, byte* textEnd, float wrapWidth, in Vector4 cpuFineClipRect)
 		{
 			fixed (ImDrawList* @this = &this)
 			{
@@ -5451,7 +5818,7 @@ namespace Dalamud.Bindings.ImGui
 		/// <summary>
 		/// To be documented.
 		/// </summary>
-		public unsafe void AddText(ImFont* font, float fontSize, Vector2 pos, uint col, ReadOnlySpan<byte> textBegin, byte* textEnd, ref Vector4 cpuFineClipRect)
+		public unsafe void AddText(ImFont* font, float fontSize, Vector2 pos, uint col, ReadOnlySpan<byte> textBegin, byte* textEnd, in Vector4 cpuFineClipRect)
 		{
 			fixed (ImDrawList* @this = &this)
 			{
@@ -5468,7 +5835,7 @@ namespace Dalamud.Bindings.ImGui
 		/// <summary>
 		/// To be documented.
 		/// </summary>
-		public unsafe void AddText(ImFont* font, float fontSize, Vector2 pos, uint col, ReadOnlySpan<byte> textBegin, ref Vector4 cpuFineClipRect)
+		public unsafe void AddText(ImFont* font, float fontSize, Vector2 pos, uint col, ReadOnlySpan<byte> textBegin, in Vector4 cpuFineClipRect)
 		{
 			fixed (ImDrawList* @this = &this)
 			{
@@ -5485,7 +5852,7 @@ namespace Dalamud.Bindings.ImGui
 		/// <summary>
 		/// To be documented.
 		/// </summary>
-		public unsafe void AddText(ImFont* font, float fontSize, Vector2 pos, uint col, ReadOnlySpan<byte> textBegin, float wrapWidth, ref Vector4 cpuFineClipRect)
+		public unsafe void AddText(ImFont* font, float fontSize, Vector2 pos, uint col, ReadOnlySpan<byte> textBegin, float wrapWidth, in Vector4 cpuFineClipRect)
 		{
 			fixed (ImDrawList* @this = &this)
 			{
@@ -5502,7 +5869,7 @@ namespace Dalamud.Bindings.ImGui
 		/// <summary>
 		/// To be documented.
 		/// </summary>
-		public unsafe void AddText(ImFont* font, float fontSize, Vector2 pos, uint col, string textBegin, byte* textEnd, float wrapWidth, ref Vector4 cpuFineClipRect)
+		public unsafe void AddText(ImFont* font, float fontSize, Vector2 pos, uint col, string textBegin, byte* textEnd, float wrapWidth, in Vector4 cpuFineClipRect)
 		{
 			fixed (ImDrawList* @this = &this)
 			{
@@ -5537,7 +5904,7 @@ namespace Dalamud.Bindings.ImGui
 		/// <summary>
 		/// To be documented.
 		/// </summary>
-		public unsafe void AddText(ImFont* font, float fontSize, Vector2 pos, uint col, string textBegin, byte* textEnd, ref Vector4 cpuFineClipRect)
+		public unsafe void AddText(ImFont* font, float fontSize, Vector2 pos, uint col, string textBegin, byte* textEnd, in Vector4 cpuFineClipRect)
 		{
 			fixed (ImDrawList* @this = &this)
 			{
@@ -5572,7 +5939,7 @@ namespace Dalamud.Bindings.ImGui
 		/// <summary>
 		/// To be documented.
 		/// </summary>
-		public unsafe void AddText(ImFont* font, float fontSize, Vector2 pos, uint col, string textBegin, ref Vector4 cpuFineClipRect)
+		public unsafe void AddText(ImFont* font, float fontSize, Vector2 pos, uint col, string textBegin, in Vector4 cpuFineClipRect)
 		{
 			fixed (ImDrawList* @this = &this)
 			{
@@ -5607,7 +5974,7 @@ namespace Dalamud.Bindings.ImGui
 		/// <summary>
 		/// To be documented.
 		/// </summary>
-		public unsafe void AddText(ImFont* font, float fontSize, Vector2 pos, uint col, string textBegin, float wrapWidth, ref Vector4 cpuFineClipRect)
+		public unsafe void AddText(ImFont* font, float fontSize, Vector2 pos, uint col, string textBegin, float wrapWidth, in Vector4 cpuFineClipRect)
 		{
 			fixed (ImDrawList* @this = &this)
 			{
@@ -5642,7 +6009,7 @@ namespace Dalamud.Bindings.ImGui
 		/// <summary>
 		/// To be documented.
 		/// </summary>
-		public unsafe void AddText(ref ImFont font, float fontSize, Vector2 pos, uint col, ref byte textBegin, byte* textEnd, float wrapWidth, ref Vector4 cpuFineClipRect)
+		public unsafe void AddText(ref ImFont font, float fontSize, Vector2 pos, uint col, in byte textBegin, byte* textEnd, float wrapWidth, in Vector4 cpuFineClipRect)
 		{
 			fixed (ImDrawList* @this = &this)
 			{
@@ -5662,7 +6029,7 @@ namespace Dalamud.Bindings.ImGui
 		/// <summary>
 		/// To be documented.
 		/// </summary>
-		public unsafe void AddText(ref ImFont font, float fontSize, Vector2 pos, uint col, ref byte textBegin, byte* textEnd, ref Vector4 cpuFineClipRect)
+		public unsafe void AddText(ref ImFont font, float fontSize, Vector2 pos, uint col, in byte textBegin, byte* textEnd, in Vector4 cpuFineClipRect)
 		{
 			fixed (ImDrawList* @this = &this)
 			{
@@ -5682,7 +6049,7 @@ namespace Dalamud.Bindings.ImGui
 		/// <summary>
 		/// To be documented.
 		/// </summary>
-		public unsafe void AddText(ref ImFont font, float fontSize, Vector2 pos, uint col, ref byte textBegin, ref Vector4 cpuFineClipRect)
+		public unsafe void AddText(ref ImFont font, float fontSize, Vector2 pos, uint col, in byte textBegin, in Vector4 cpuFineClipRect)
 		{
 			fixed (ImDrawList* @this = &this)
 			{
@@ -5702,7 +6069,7 @@ namespace Dalamud.Bindings.ImGui
 		/// <summary>
 		/// To be documented.
 		/// </summary>
-		public unsafe void AddText(ref ImFont font, float fontSize, Vector2 pos, uint col, ref byte textBegin, float wrapWidth, ref Vector4 cpuFineClipRect)
+		public unsafe void AddText(ref ImFont font, float fontSize, Vector2 pos, uint col, in byte textBegin, float wrapWidth, in Vector4 cpuFineClipRect)
 		{
 			fixed (ImDrawList* @this = &this)
 			{
@@ -5722,7 +6089,7 @@ namespace Dalamud.Bindings.ImGui
 		/// <summary>
 		/// To be documented.
 		/// </summary>
-		public unsafe void AddText(ref ImFont font, float fontSize, Vector2 pos, uint col, ReadOnlySpan<byte> textBegin, byte* textEnd, float wrapWidth, ref Vector4 cpuFineClipRect)
+		public unsafe void AddText(ref ImFont font, float fontSize, Vector2 pos, uint col, ReadOnlySpan<byte> textBegin, byte* textEnd, float wrapWidth, in Vector4 cpuFineClipRect)
 		{
 			fixed (ImDrawList* @this = &this)
 			{
@@ -5742,7 +6109,7 @@ namespace Dalamud.Bindings.ImGui
 		/// <summary>
 		/// To be documented.
 		/// </summary>
-		public unsafe void AddText(ref ImFont font, float fontSize, Vector2 pos, uint col, ReadOnlySpan<byte> textBegin, byte* textEnd, ref Vector4 cpuFineClipRect)
+		public unsafe void AddText(ref ImFont font, float fontSize, Vector2 pos, uint col, ReadOnlySpan<byte> textBegin, byte* textEnd, in Vector4 cpuFineClipRect)
 		{
 			fixed (ImDrawList* @this = &this)
 			{
@@ -5762,7 +6129,7 @@ namespace Dalamud.Bindings.ImGui
 		/// <summary>
 		/// To be documented.
 		/// </summary>
-		public unsafe void AddText(ref ImFont font, float fontSize, Vector2 pos, uint col, ReadOnlySpan<byte> textBegin, ref Vector4 cpuFineClipRect)
+		public unsafe void AddText(ref ImFont font, float fontSize, Vector2 pos, uint col, ReadOnlySpan<byte> textBegin, in Vector4 cpuFineClipRect)
 		{
 			fixed (ImDrawList* @this = &this)
 			{
@@ -5782,7 +6149,7 @@ namespace Dalamud.Bindings.ImGui
 		/// <summary>
 		/// To be documented.
 		/// </summary>
-		public unsafe void AddText(ref ImFont font, float fontSize, Vector2 pos, uint col, ReadOnlySpan<byte> textBegin, float wrapWidth, ref Vector4 cpuFineClipRect)
+		public unsafe void AddText(ref ImFont font, float fontSize, Vector2 pos, uint col, ReadOnlySpan<byte> textBegin, float wrapWidth, in Vector4 cpuFineClipRect)
 		{
 			fixed (ImDrawList* @this = &this)
 			{
@@ -5802,7 +6169,7 @@ namespace Dalamud.Bindings.ImGui
 		/// <summary>
 		/// To be documented.
 		/// </summary>
-		public unsafe void AddText(ref ImFont font, float fontSize, Vector2 pos, uint col, string textBegin, byte* textEnd, float wrapWidth, ref Vector4 cpuFineClipRect)
+		public unsafe void AddText(ref ImFont font, float fontSize, Vector2 pos, uint col, string textBegin, byte* textEnd, float wrapWidth, in Vector4 cpuFineClipRect)
 		{
 			fixed (ImDrawList* @this = &this)
 			{
@@ -5840,7 +6207,7 @@ namespace Dalamud.Bindings.ImGui
 		/// <summary>
 		/// To be documented.
 		/// </summary>
-		public unsafe void AddText(ref ImFont font, float fontSize, Vector2 pos, uint col, string textBegin, byte* textEnd, ref Vector4 cpuFineClipRect)
+		public unsafe void AddText(ref ImFont font, float fontSize, Vector2 pos, uint col, string textBegin, byte* textEnd, in Vector4 cpuFineClipRect)
 		{
 			fixed (ImDrawList* @this = &this)
 			{
@@ -5878,7 +6245,7 @@ namespace Dalamud.Bindings.ImGui
 		/// <summary>
 		/// To be documented.
 		/// </summary>
-		public unsafe void AddText(ref ImFont font, float fontSize, Vector2 pos, uint col, string textBegin, ref Vector4 cpuFineClipRect)
+		public unsafe void AddText(ref ImFont font, float fontSize, Vector2 pos, uint col, string textBegin, in Vector4 cpuFineClipRect)
 		{
 			fixed (ImDrawList* @this = &this)
 			{
@@ -5916,7 +6283,7 @@ namespace Dalamud.Bindings.ImGui
 		/// <summary>
 		/// To be documented.
 		/// </summary>
-		public unsafe void AddText(ref ImFont font, float fontSize, Vector2 pos, uint col, string textBegin, float wrapWidth, ref Vector4 cpuFineClipRect)
+		public unsafe void AddText(ref ImFont font, float fontSize, Vector2 pos, uint col, string textBegin, float wrapWidth, in Vector4 cpuFineClipRect)
 		{
 			fixed (ImDrawList* @this = &this)
 			{
@@ -5954,7 +6321,7 @@ namespace Dalamud.Bindings.ImGui
 		/// <summary>
 		/// To be documented.
 		/// </summary>
-		public unsafe void AddText(ImFont* font, float fontSize, Vector2 pos, uint col, byte* textBegin, ref byte textEnd, float wrapWidth, ref Vector4 cpuFineClipRect)
+		public unsafe void AddText(ImFont* font, float fontSize, Vector2 pos, uint col, byte* textBegin, in byte textEnd, float wrapWidth, in Vector4 cpuFineClipRect)
 		{
 			fixed (ImDrawList* @this = &this)
 			{
@@ -5971,7 +6338,7 @@ namespace Dalamud.Bindings.ImGui
 		/// <summary>
 		/// To be documented.
 		/// </summary>
-		public unsafe void AddText(ImFont* font, float fontSize, Vector2 pos, uint col, byte* textBegin, ref byte textEnd, ref Vector4 cpuFineClipRect)
+		public unsafe void AddText(ImFont* font, float fontSize, Vector2 pos, uint col, byte* textBegin, in byte textEnd, in Vector4 cpuFineClipRect)
 		{
 			fixed (ImDrawList* @this = &this)
 			{
@@ -5988,7 +6355,7 @@ namespace Dalamud.Bindings.ImGui
 		/// <summary>
 		/// To be documented.
 		/// </summary>
-		public unsafe void AddText(ImFont* font, float fontSize, Vector2 pos, uint col, byte* textBegin, ReadOnlySpan<byte> textEnd, float wrapWidth, ref Vector4 cpuFineClipRect)
+		public unsafe void AddText(ImFont* font, float fontSize, Vector2 pos, uint col, byte* textBegin, ReadOnlySpan<byte> textEnd, float wrapWidth, in Vector4 cpuFineClipRect)
 		{
 			fixed (ImDrawList* @this = &this)
 			{
@@ -6005,7 +6372,7 @@ namespace Dalamud.Bindings.ImGui
 		/// <summary>
 		/// To be documented.
 		/// </summary>
-		public unsafe void AddText(ImFont* font, float fontSize, Vector2 pos, uint col, byte* textBegin, ReadOnlySpan<byte> textEnd, ref Vector4 cpuFineClipRect)
+		public unsafe void AddText(ImFont* font, float fontSize, Vector2 pos, uint col, byte* textBegin, ReadOnlySpan<byte> textEnd, in Vector4 cpuFineClipRect)
 		{
 			fixed (ImDrawList* @this = &this)
 			{
@@ -6022,7 +6389,7 @@ namespace Dalamud.Bindings.ImGui
 		/// <summary>
 		/// To be documented.
 		/// </summary>
-		public unsafe void AddText(ImFont* font, float fontSize, Vector2 pos, uint col, byte* textBegin, string textEnd, float wrapWidth, ref Vector4 cpuFineClipRect)
+		public unsafe void AddText(ImFont* font, float fontSize, Vector2 pos, uint col, byte* textBegin, string textEnd, float wrapWidth, in Vector4 cpuFineClipRect)
 		{
 			fixed (ImDrawList* @this = &this)
 			{
@@ -6057,7 +6424,7 @@ namespace Dalamud.Bindings.ImGui
 		/// <summary>
 		/// To be documented.
 		/// </summary>
-		public unsafe void AddText(ImFont* font, float fontSize, Vector2 pos, uint col, byte* textBegin, string textEnd, ref Vector4 cpuFineClipRect)
+		public unsafe void AddText(ImFont* font, float fontSize, Vector2 pos, uint col, byte* textBegin, string textEnd, in Vector4 cpuFineClipRect)
 		{
 			fixed (ImDrawList* @this = &this)
 			{
@@ -6092,7 +6459,7 @@ namespace Dalamud.Bindings.ImGui
 		/// <summary>
 		/// To be documented.
 		/// </summary>
-		public unsafe void AddText(ref ImFont font, float fontSize, Vector2 pos, uint col, byte* textBegin, ref byte textEnd, float wrapWidth, ref Vector4 cpuFineClipRect)
+		public unsafe void AddText(ref ImFont font, float fontSize, Vector2 pos, uint col, byte* textBegin, in byte textEnd, float wrapWidth, in Vector4 cpuFineClipRect)
 		{
 			fixed (ImDrawList* @this = &this)
 			{
@@ -6112,7 +6479,7 @@ namespace Dalamud.Bindings.ImGui
 		/// <summary>
 		/// To be documented.
 		/// </summary>
-		public unsafe void AddText(ref ImFont font, float fontSize, Vector2 pos, uint col, byte* textBegin, ref byte textEnd, ref Vector4 cpuFineClipRect)
+		public unsafe void AddText(ref ImFont font, float fontSize, Vector2 pos, uint col, byte* textBegin, in byte textEnd, in Vector4 cpuFineClipRect)
 		{
 			fixed (ImDrawList* @this = &this)
 			{
@@ -6132,7 +6499,7 @@ namespace Dalamud.Bindings.ImGui
 		/// <summary>
 		/// To be documented.
 		/// </summary>
-		public unsafe void AddText(ref ImFont font, float fontSize, Vector2 pos, uint col, byte* textBegin, ReadOnlySpan<byte> textEnd, float wrapWidth, ref Vector4 cpuFineClipRect)
+		public unsafe void AddText(ref ImFont font, float fontSize, Vector2 pos, uint col, byte* textBegin, ReadOnlySpan<byte> textEnd, float wrapWidth, in Vector4 cpuFineClipRect)
 		{
 			fixed (ImDrawList* @this = &this)
 			{
@@ -6152,7 +6519,7 @@ namespace Dalamud.Bindings.ImGui
 		/// <summary>
 		/// To be documented.
 		/// </summary>
-		public unsafe void AddText(ref ImFont font, float fontSize, Vector2 pos, uint col, byte* textBegin, ReadOnlySpan<byte> textEnd, ref Vector4 cpuFineClipRect)
+		public unsafe void AddText(ref ImFont font, float fontSize, Vector2 pos, uint col, byte* textBegin, ReadOnlySpan<byte> textEnd, in Vector4 cpuFineClipRect)
 		{
 			fixed (ImDrawList* @this = &this)
 			{
@@ -6172,7 +6539,7 @@ namespace Dalamud.Bindings.ImGui
 		/// <summary>
 		/// To be documented.
 		/// </summary>
-		public unsafe void AddText(ref ImFont font, float fontSize, Vector2 pos, uint col, byte* textBegin, string textEnd, float wrapWidth, ref Vector4 cpuFineClipRect)
+		public unsafe void AddText(ref ImFont font, float fontSize, Vector2 pos, uint col, byte* textBegin, string textEnd, float wrapWidth, in Vector4 cpuFineClipRect)
 		{
 			fixed (ImDrawList* @this = &this)
 			{
@@ -6210,7 +6577,7 @@ namespace Dalamud.Bindings.ImGui
 		/// <summary>
 		/// To be documented.
 		/// </summary>
-		public unsafe void AddText(ref ImFont font, float fontSize, Vector2 pos, uint col, byte* textBegin, string textEnd, ref Vector4 cpuFineClipRect)
+		public unsafe void AddText(ref ImFont font, float fontSize, Vector2 pos, uint col, byte* textBegin, string textEnd, in Vector4 cpuFineClipRect)
 		{
 			fixed (ImDrawList* @this = &this)
 			{
@@ -6248,7 +6615,7 @@ namespace Dalamud.Bindings.ImGui
 		/// <summary>
 		/// To be documented.
 		/// </summary>
-		public unsafe void AddText(ImFont* font, float fontSize, Vector2 pos, uint col, ref byte textBegin, ref byte textEnd, float wrapWidth, ref Vector4 cpuFineClipRect)
+		public unsafe void AddText(ImFont* font, float fontSize, Vector2 pos, uint col, in byte textBegin, in byte textEnd, float wrapWidth, in Vector4 cpuFineClipRect)
 		{
 			fixed (ImDrawList* @this = &this)
 			{
@@ -6268,7 +6635,7 @@ namespace Dalamud.Bindings.ImGui
 		/// <summary>
 		/// To be documented.
 		/// </summary>
-		public unsafe void AddText(ImFont* font, float fontSize, Vector2 pos, uint col, ref byte textBegin, ref byte textEnd, ref Vector4 cpuFineClipRect)
+		public unsafe void AddText(ImFont* font, float fontSize, Vector2 pos, uint col, in byte textBegin, in byte textEnd, in Vector4 cpuFineClipRect)
 		{
 			fixed (ImDrawList* @this = &this)
 			{
@@ -6288,7 +6655,7 @@ namespace Dalamud.Bindings.ImGui
 		/// <summary>
 		/// To be documented.
 		/// </summary>
-		public unsafe void AddText(ImFont* font, float fontSize, Vector2 pos, uint col, ReadOnlySpan<byte> textBegin, ReadOnlySpan<byte> textEnd, float wrapWidth, ref Vector4 cpuFineClipRect)
+		public unsafe void AddText(ImFont* font, float fontSize, Vector2 pos, uint col, ReadOnlySpan<byte> textBegin, ReadOnlySpan<byte> textEnd, float wrapWidth, in Vector4 cpuFineClipRect)
 		{
 			fixed (ImDrawList* @this = &this)
 			{
@@ -6308,7 +6675,7 @@ namespace Dalamud.Bindings.ImGui
 		/// <summary>
 		/// To be documented.
 		/// </summary>
-		public unsafe void AddText(ImFont* font, float fontSize, Vector2 pos, uint col, ReadOnlySpan<byte> textBegin, ReadOnlySpan<byte> textEnd, ref Vector4 cpuFineClipRect)
+		public unsafe void AddText(ImFont* font, float fontSize, Vector2 pos, uint col, ReadOnlySpan<byte> textBegin, ReadOnlySpan<byte> textEnd, in Vector4 cpuFineClipRect)
 		{
 			fixed (ImDrawList* @this = &this)
 			{
@@ -6328,7 +6695,7 @@ namespace Dalamud.Bindings.ImGui
 		/// <summary>
 		/// To be documented.
 		/// </summary>
-		public unsafe void AddText(ImFont* font, float fontSize, Vector2 pos, uint col, string textBegin, string textEnd, float wrapWidth, ref Vector4 cpuFineClipRect)
+		public unsafe void AddText(ImFont* font, float fontSize, Vector2 pos, uint col, string textBegin, string textEnd, float wrapWidth, in Vector4 cpuFineClipRect)
 		{
 			fixed (ImDrawList* @this = &this)
 			{
@@ -6384,7 +6751,7 @@ namespace Dalamud.Bindings.ImGui
 		/// <summary>
 		/// To be documented.
 		/// </summary>
-		public unsafe void AddText(ImFont* font, float fontSize, Vector2 pos, uint col, string textBegin, string textEnd, ref Vector4 cpuFineClipRect)
+		public unsafe void AddText(ImFont* font, float fontSize, Vector2 pos, uint col, string textBegin, string textEnd, in Vector4 cpuFineClipRect)
 		{
 			fixed (ImDrawList* @this = &this)
 			{
@@ -6440,7 +6807,7 @@ namespace Dalamud.Bindings.ImGui
 		/// <summary>
 		/// To be documented.
 		/// </summary>
-		public unsafe void AddText(ImFont* font, float fontSize, Vector2 pos, uint col, ref byte textBegin, ReadOnlySpan<byte> textEnd, float wrapWidth, ref Vector4 cpuFineClipRect)
+		public unsafe void AddText(ImFont* font, float fontSize, Vector2 pos, uint col, in byte textBegin, ReadOnlySpan<byte> textEnd, float wrapWidth, in Vector4 cpuFineClipRect)
 		{
 			fixed (ImDrawList* @this = &this)
 			{
@@ -6460,7 +6827,7 @@ namespace Dalamud.Bindings.ImGui
 		/// <summary>
 		/// To be documented.
 		/// </summary>
-		public unsafe void AddText(ImFont* font, float fontSize, Vector2 pos, uint col, ref byte textBegin, ReadOnlySpan<byte> textEnd, ref Vector4 cpuFineClipRect)
+		public unsafe void AddText(ImFont* font, float fontSize, Vector2 pos, uint col, in byte textBegin, ReadOnlySpan<byte> textEnd, in Vector4 cpuFineClipRect)
 		{
 			fixed (ImDrawList* @this = &this)
 			{
@@ -6480,7 +6847,7 @@ namespace Dalamud.Bindings.ImGui
 		/// <summary>
 		/// To be documented.
 		/// </summary>
-		public unsafe void AddText(ImFont* font, float fontSize, Vector2 pos, uint col, ref byte textBegin, string textEnd, float wrapWidth, ref Vector4 cpuFineClipRect)
+		public unsafe void AddText(ImFont* font, float fontSize, Vector2 pos, uint col, in byte textBegin, string textEnd, float wrapWidth, in Vector4 cpuFineClipRect)
 		{
 			fixed (ImDrawList* @this = &this)
 			{
@@ -6518,7 +6885,7 @@ namespace Dalamud.Bindings.ImGui
 		/// <summary>
 		/// To be documented.
 		/// </summary>
-		public unsafe void AddText(ImFont* font, float fontSize, Vector2 pos, uint col, ref byte textBegin, string textEnd, ref Vector4 cpuFineClipRect)
+		public unsafe void AddText(ImFont* font, float fontSize, Vector2 pos, uint col, in byte textBegin, string textEnd, in Vector4 cpuFineClipRect)
 		{
 			fixed (ImDrawList* @this = &this)
 			{
@@ -6556,7 +6923,7 @@ namespace Dalamud.Bindings.ImGui
 		/// <summary>
 		/// To be documented.
 		/// </summary>
-		public unsafe void AddText(ImFont* font, float fontSize, Vector2 pos, uint col, ReadOnlySpan<byte> textBegin, ref byte textEnd, float wrapWidth, ref Vector4 cpuFineClipRect)
+		public unsafe void AddText(ImFont* font, float fontSize, Vector2 pos, uint col, ReadOnlySpan<byte> textBegin, in byte textEnd, float wrapWidth, in Vector4 cpuFineClipRect)
 		{
 			fixed (ImDrawList* @this = &this)
 			{
@@ -6576,7 +6943,7 @@ namespace Dalamud.Bindings.ImGui
 		/// <summary>
 		/// To be documented.
 		/// </summary>
-		public unsafe void AddText(ImFont* font, float fontSize, Vector2 pos, uint col, ReadOnlySpan<byte> textBegin, ref byte textEnd, ref Vector4 cpuFineClipRect)
+		public unsafe void AddText(ImFont* font, float fontSize, Vector2 pos, uint col, ReadOnlySpan<byte> textBegin, in byte textEnd, in Vector4 cpuFineClipRect)
 		{
 			fixed (ImDrawList* @this = &this)
 			{
@@ -6596,7 +6963,7 @@ namespace Dalamud.Bindings.ImGui
 		/// <summary>
 		/// To be documented.
 		/// </summary>
-		public unsafe void AddText(ImFont* font, float fontSize, Vector2 pos, uint col, ReadOnlySpan<byte> textBegin, string textEnd, float wrapWidth, ref Vector4 cpuFineClipRect)
+		public unsafe void AddText(ImFont* font, float fontSize, Vector2 pos, uint col, ReadOnlySpan<byte> textBegin, string textEnd, float wrapWidth, in Vector4 cpuFineClipRect)
 		{
 			fixed (ImDrawList* @this = &this)
 			{
@@ -6634,7 +7001,7 @@ namespace Dalamud.Bindings.ImGui
 		/// <summary>
 		/// To be documented.
 		/// </summary>
-		public unsafe void AddText(ImFont* font, float fontSize, Vector2 pos, uint col, ReadOnlySpan<byte> textBegin, string textEnd, ref Vector4 cpuFineClipRect)
+		public unsafe void AddText(ImFont* font, float fontSize, Vector2 pos, uint col, ReadOnlySpan<byte> textBegin, string textEnd, in Vector4 cpuFineClipRect)
 		{
 			fixed (ImDrawList* @this = &this)
 			{
@@ -6672,7 +7039,7 @@ namespace Dalamud.Bindings.ImGui
 		/// <summary>
 		/// To be documented.
 		/// </summary>
-		public unsafe void AddText(ImFont* font, float fontSize, Vector2 pos, uint col, string textBegin, ref byte textEnd, float wrapWidth, ref Vector4 cpuFineClipRect)
+		public unsafe void AddText(ImFont* font, float fontSize, Vector2 pos, uint col, string textBegin, in byte textEnd, float wrapWidth, in Vector4 cpuFineClipRect)
 		{
 			fixed (ImDrawList* @this = &this)
 			{
@@ -6710,7 +7077,7 @@ namespace Dalamud.Bindings.ImGui
 		/// <summary>
 		/// To be documented.
 		/// </summary>
-		public unsafe void AddText(ImFont* font, float fontSize, Vector2 pos, uint col, string textBegin, ref byte textEnd, ref Vector4 cpuFineClipRect)
+		public unsafe void AddText(ImFont* font, float fontSize, Vector2 pos, uint col, string textBegin, in byte textEnd, in Vector4 cpuFineClipRect)
 		{
 			fixed (ImDrawList* @this = &this)
 			{
@@ -6748,7 +7115,7 @@ namespace Dalamud.Bindings.ImGui
 		/// <summary>
 		/// To be documented.
 		/// </summary>
-		public unsafe void AddText(ImFont* font, float fontSize, Vector2 pos, uint col, string textBegin, ReadOnlySpan<byte> textEnd, float wrapWidth, ref Vector4 cpuFineClipRect)
+		public unsafe void AddText(ImFont* font, float fontSize, Vector2 pos, uint col, string textBegin, ReadOnlySpan<byte> textEnd, float wrapWidth, in Vector4 cpuFineClipRect)
 		{
 			fixed (ImDrawList* @this = &this)
 			{
@@ -6786,7 +7153,7 @@ namespace Dalamud.Bindings.ImGui
 		/// <summary>
 		/// To be documented.
 		/// </summary>
-		public unsafe void AddText(ImFont* font, float fontSize, Vector2 pos, uint col, string textBegin, ReadOnlySpan<byte> textEnd, ref Vector4 cpuFineClipRect)
+		public unsafe void AddText(ImFont* font, float fontSize, Vector2 pos, uint col, string textBegin, ReadOnlySpan<byte> textEnd, in Vector4 cpuFineClipRect)
 		{
 			fixed (ImDrawList* @this = &this)
 			{
@@ -6824,7 +7191,7 @@ namespace Dalamud.Bindings.ImGui
 		/// <summary>
 		/// To be documented.
 		/// </summary>
-		public unsafe void AddText(ref ImFont font, float fontSize, Vector2 pos, uint col, ref byte textBegin, ref byte textEnd, float wrapWidth, ref Vector4 cpuFineClipRect)
+		public unsafe void AddText(ref ImFont font, float fontSize, Vector2 pos, uint col, in byte textBegin, in byte textEnd, float wrapWidth, in Vector4 cpuFineClipRect)
 		{
 			fixed (ImDrawList* @this = &this)
 			{
@@ -6847,7 +7214,7 @@ namespace Dalamud.Bindings.ImGui
 		/// <summary>
 		/// To be documented.
 		/// </summary>
-		public unsafe void AddText(ref ImFont font, float fontSize, Vector2 pos, uint col, ref byte textBegin, ref byte textEnd, ref Vector4 cpuFineClipRect)
+		public unsafe void AddText(ref ImFont font, float fontSize, Vector2 pos, uint col, in byte textBegin, in byte textEnd, in Vector4 cpuFineClipRect)
 		{
 			fixed (ImDrawList* @this = &this)
 			{
@@ -6870,7 +7237,7 @@ namespace Dalamud.Bindings.ImGui
 		/// <summary>
 		/// To be documented.
 		/// </summary>
-		public unsafe void AddText(ref ImFont font, float fontSize, Vector2 pos, uint col, ReadOnlySpan<byte> textBegin, ReadOnlySpan<byte> textEnd, float wrapWidth, ref Vector4 cpuFineClipRect)
+		public unsafe void AddText(ref ImFont font, float fontSize, Vector2 pos, uint col, ReadOnlySpan<byte> textBegin, ReadOnlySpan<byte> textEnd, float wrapWidth, in Vector4 cpuFineClipRect)
 		{
 			fixed (ImDrawList* @this = &this)
 			{
@@ -6893,7 +7260,7 @@ namespace Dalamud.Bindings.ImGui
 		/// <summary>
 		/// To be documented.
 		/// </summary>
-		public unsafe void AddText(ref ImFont font, float fontSize, Vector2 pos, uint col, ReadOnlySpan<byte> textBegin, ReadOnlySpan<byte> textEnd, ref Vector4 cpuFineClipRect)
+		public unsafe void AddText(ref ImFont font, float fontSize, Vector2 pos, uint col, ReadOnlySpan<byte> textBegin, ReadOnlySpan<byte> textEnd, in Vector4 cpuFineClipRect)
 		{
 			fixed (ImDrawList* @this = &this)
 			{
@@ -6916,7 +7283,7 @@ namespace Dalamud.Bindings.ImGui
 		/// <summary>
 		/// To be documented.
 		/// </summary>
-		public unsafe void AddText(ref ImFont font, float fontSize, Vector2 pos, uint col, string textBegin, string textEnd, float wrapWidth, ref Vector4 cpuFineClipRect)
+		public unsafe void AddText(ref ImFont font, float fontSize, Vector2 pos, uint col, string textBegin, string textEnd, float wrapWidth, in Vector4 cpuFineClipRect)
 		{
 			fixed (ImDrawList* @this = &this)
 			{
@@ -6975,7 +7342,7 @@ namespace Dalamud.Bindings.ImGui
 		/// <summary>
 		/// To be documented.
 		/// </summary>
-		public unsafe void AddText(ref ImFont font, float fontSize, Vector2 pos, uint col, string textBegin, string textEnd, ref Vector4 cpuFineClipRect)
+		public unsafe void AddText(ref ImFont font, float fontSize, Vector2 pos, uint col, string textBegin, string textEnd, in Vector4 cpuFineClipRect)
 		{
 			fixed (ImDrawList* @this = &this)
 			{
@@ -7034,7 +7401,7 @@ namespace Dalamud.Bindings.ImGui
 		/// <summary>
 		/// To be documented.
 		/// </summary>
-		public unsafe void AddText(ref ImFont font, float fontSize, Vector2 pos, uint col, ref byte textBegin, ReadOnlySpan<byte> textEnd, float wrapWidth, ref Vector4 cpuFineClipRect)
+		public unsafe void AddText(ref ImFont font, float fontSize, Vector2 pos, uint col, in byte textBegin, ReadOnlySpan<byte> textEnd, float wrapWidth, in Vector4 cpuFineClipRect)
 		{
 			fixed (ImDrawList* @this = &this)
 			{
@@ -7057,7 +7424,7 @@ namespace Dalamud.Bindings.ImGui
 		/// <summary>
 		/// To be documented.
 		/// </summary>
-		public unsafe void AddText(ref ImFont font, float fontSize, Vector2 pos, uint col, ref byte textBegin, ReadOnlySpan<byte> textEnd, ref Vector4 cpuFineClipRect)
+		public unsafe void AddText(ref ImFont font, float fontSize, Vector2 pos, uint col, in byte textBegin, ReadOnlySpan<byte> textEnd, in Vector4 cpuFineClipRect)
 		{
 			fixed (ImDrawList* @this = &this)
 			{
@@ -7080,7 +7447,7 @@ namespace Dalamud.Bindings.ImGui
 		/// <summary>
 		/// To be documented.
 		/// </summary>
-		public unsafe void AddText(ref ImFont font, float fontSize, Vector2 pos, uint col, ref byte textBegin, string textEnd, float wrapWidth, ref Vector4 cpuFineClipRect)
+		public unsafe void AddText(ref ImFont font, float fontSize, Vector2 pos, uint col, in byte textBegin, string textEnd, float wrapWidth, in Vector4 cpuFineClipRect)
 		{
 			fixed (ImDrawList* @this = &this)
 			{
@@ -7121,7 +7488,7 @@ namespace Dalamud.Bindings.ImGui
 		/// <summary>
 		/// To be documented.
 		/// </summary>
-		public unsafe void AddText(ref ImFont font, float fontSize, Vector2 pos, uint col, ref byte textBegin, string textEnd, ref Vector4 cpuFineClipRect)
+		public unsafe void AddText(ref ImFont font, float fontSize, Vector2 pos, uint col, in byte textBegin, string textEnd, in Vector4 cpuFineClipRect)
 		{
 			fixed (ImDrawList* @this = &this)
 			{
@@ -7162,7 +7529,7 @@ namespace Dalamud.Bindings.ImGui
 		/// <summary>
 		/// To be documented.
 		/// </summary>
-		public unsafe void AddText(ref ImFont font, float fontSize, Vector2 pos, uint col, ReadOnlySpan<byte> textBegin, ref byte textEnd, float wrapWidth, ref Vector4 cpuFineClipRect)
+		public unsafe void AddText(ref ImFont font, float fontSize, Vector2 pos, uint col, ReadOnlySpan<byte> textBegin, in byte textEnd, float wrapWidth, in Vector4 cpuFineClipRect)
 		{
 			fixed (ImDrawList* @this = &this)
 			{
@@ -7185,7 +7552,7 @@ namespace Dalamud.Bindings.ImGui
 		/// <summary>
 		/// To be documented.
 		/// </summary>
-		public unsafe void AddText(ref ImFont font, float fontSize, Vector2 pos, uint col, ReadOnlySpan<byte> textBegin, ref byte textEnd, ref Vector4 cpuFineClipRect)
+		public unsafe void AddText(ref ImFont font, float fontSize, Vector2 pos, uint col, ReadOnlySpan<byte> textBegin, in byte textEnd, in Vector4 cpuFineClipRect)
 		{
 			fixed (ImDrawList* @this = &this)
 			{
@@ -7208,7 +7575,7 @@ namespace Dalamud.Bindings.ImGui
 		/// <summary>
 		/// To be documented.
 		/// </summary>
-		public unsafe void AddText(ref ImFont font, float fontSize, Vector2 pos, uint col, ReadOnlySpan<byte> textBegin, string textEnd, float wrapWidth, ref Vector4 cpuFineClipRect)
+		public unsafe void AddText(ref ImFont font, float fontSize, Vector2 pos, uint col, ReadOnlySpan<byte> textBegin, string textEnd, float wrapWidth, in Vector4 cpuFineClipRect)
 		{
 			fixed (ImDrawList* @this = &this)
 			{
@@ -7249,7 +7616,7 @@ namespace Dalamud.Bindings.ImGui
 		/// <summary>
 		/// To be documented.
 		/// </summary>
-		public unsafe void AddText(ref ImFont font, float fontSize, Vector2 pos, uint col, ReadOnlySpan<byte> textBegin, string textEnd, ref Vector4 cpuFineClipRect)
+		public unsafe void AddText(ref ImFont font, float fontSize, Vector2 pos, uint col, ReadOnlySpan<byte> textBegin, string textEnd, in Vector4 cpuFineClipRect)
 		{
 			fixed (ImDrawList* @this = &this)
 			{
@@ -7290,7 +7657,7 @@ namespace Dalamud.Bindings.ImGui
 		/// <summary>
 		/// To be documented.
 		/// </summary>
-		public unsafe void AddText(ref ImFont font, float fontSize, Vector2 pos, uint col, string textBegin, ref byte textEnd, float wrapWidth, ref Vector4 cpuFineClipRect)
+		public unsafe void AddText(ref ImFont font, float fontSize, Vector2 pos, uint col, string textBegin, in byte textEnd, float wrapWidth, in Vector4 cpuFineClipRect)
 		{
 			fixed (ImDrawList* @this = &this)
 			{
@@ -7331,7 +7698,7 @@ namespace Dalamud.Bindings.ImGui
 		/// <summary>
 		/// To be documented.
 		/// </summary>
-		public unsafe void AddText(ref ImFont font, float fontSize, Vector2 pos, uint col, string textBegin, ref byte textEnd, ref Vector4 cpuFineClipRect)
+		public unsafe void AddText(ref ImFont font, float fontSize, Vector2 pos, uint col, string textBegin, in byte textEnd, in Vector4 cpuFineClipRect)
 		{
 			fixed (ImDrawList* @this = &this)
 			{
@@ -7372,7 +7739,7 @@ namespace Dalamud.Bindings.ImGui
 		/// <summary>
 		/// To be documented.
 		/// </summary>
-		public unsafe void AddText(ref ImFont font, float fontSize, Vector2 pos, uint col, string textBegin, ReadOnlySpan<byte> textEnd, float wrapWidth, ref Vector4 cpuFineClipRect)
+		public unsafe void AddText(ref ImFont font, float fontSize, Vector2 pos, uint col, string textBegin, ReadOnlySpan<byte> textEnd, float wrapWidth, in Vector4 cpuFineClipRect)
 		{
 			fixed (ImDrawList* @this = &this)
 			{
@@ -7413,7 +7780,7 @@ namespace Dalamud.Bindings.ImGui
 		/// <summary>
 		/// To be documented.
 		/// </summary>
-		public unsafe void AddText(ref ImFont font, float fontSize, Vector2 pos, uint col, string textBegin, ReadOnlySpan<byte> textEnd, ref Vector4 cpuFineClipRect)
+		public unsafe void AddText(ref ImFont font, float fontSize, Vector2 pos, uint col, string textBegin, ReadOnlySpan<byte> textEnd, in Vector4 cpuFineClipRect)
 		{
 			fixed (ImDrawList* @this = &this)
 			{
@@ -7543,6 +7910,30 @@ namespace Dalamud.Bindings.ImGui
 		/// <summary>
 		/// To be documented.
 		/// </summary>
+		public unsafe Vector2 GetClipRectMax()
+		{
+			fixed (ImDrawList* @this = &this)
+			{
+				Vector2 ret = ImGui.GetClipRectMaxNative(@this);
+				return ret;
+			}
+		}
+
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		public unsafe Vector2 GetClipRectMin()
+		{
+			fixed (ImDrawList* @this = &this)
+			{
+				Vector2 ret = ImGui.GetClipRectMinNative(@this);
+				return ret;
+			}
+		}
+
+		/// <summary>
+		/// To be documented.
+		/// </summary>
 		public unsafe void PathArcTo(Vector2 center, float radius, float aMin, float aMax, int numSegments)
 		{
 			fixed (ImDrawList* @this = &this)
@@ -7631,6 +8022,39 @@ namespace Dalamud.Bindings.ImGui
 		/// <summary>
 		/// To be documented.
 		/// </summary>
+		public unsafe void PathEllipticalArcTo(Vector2 center, Vector2 radius, float rot, float aMin, float aMax, int numSegments)
+		{
+			fixed (ImDrawList* @this = &this)
+			{
+				ImGui.PathEllipticalArcToNative(@this, center, radius, rot, aMin, aMax, numSegments);
+			}
+		}
+
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		public unsafe void PathEllipticalArcTo(Vector2 center, Vector2 radius, float rot, float aMin, float aMax)
+		{
+			fixed (ImDrawList* @this = &this)
+			{
+				ImGui.PathEllipticalArcToNative(@this, center, radius, rot, aMin, aMax, (int)(0));
+			}
+		}
+
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		public unsafe void PathFillConcave(uint col)
+		{
+			fixed (ImDrawList* @this = &this)
+			{
+				ImGui.PathFillConcaveNative(@this, col);
+			}
+		}
+
+		/// <summary>
+		/// To be documented.
+		/// </summary>
 		public unsafe void PathFillConvex(uint col)
 		{
 			fixed (ImDrawList* @this = &this)
@@ -7708,33 +8132,11 @@ namespace Dalamud.Bindings.ImGui
 		/// <summary>
 		/// To be documented.
 		/// </summary>
-		public unsafe void PathStroke(uint col, ImDrawFlags flags, float thickness)
+		public unsafe void PathStroke(uint col, float thickness, ImDrawFlags flags)
 		{
 			fixed (ImDrawList* @this = &this)
 			{
-				ImGui.PathStrokeNative(@this, col, flags, thickness);
-			}
-		}
-
-		/// <summary>
-		/// To be documented.
-		/// </summary>
-		public unsafe void PathStroke(uint col, ImDrawFlags flags)
-		{
-			fixed (ImDrawList* @this = &this)
-			{
-				ImGui.PathStrokeNative(@this, col, flags, (float)(1.0f));
-			}
-		}
-
-		/// <summary>
-		/// To be documented.
-		/// </summary>
-		public unsafe void PathStroke(uint col)
-		{
-			fixed (ImDrawList* @this = &this)
-			{
-				ImGui.PathStrokeNative(@this, col, (ImDrawFlags)(0), (float)(1.0f));
+				ImGui.PathStrokeNative(@this, col, thickness, flags);
 			}
 		}
 
@@ -7745,7 +8147,29 @@ namespace Dalamud.Bindings.ImGui
 		{
 			fixed (ImDrawList* @this = &this)
 			{
-				ImGui.PathStrokeNative(@this, col, (ImDrawFlags)(0), thickness);
+				ImGui.PathStrokeNative(@this, col, thickness, (ImDrawFlags)(0));
+			}
+		}
+
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		public unsafe void PathStroke(uint col)
+		{
+			fixed (ImDrawList* @this = &this)
+			{
+				ImGui.PathStrokeNative(@this, col, (float)(1.0f), (ImDrawFlags)(0));
+			}
+		}
+
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		public unsafe void PathStroke(uint col, ImDrawFlags flags)
+		{
+			fixed (ImDrawList* @this = &this)
+			{
+				ImGui.PathStrokeNative(@this, col, (float)(1.0f), flags);
 			}
 		}
 
@@ -7763,11 +8187,11 @@ namespace Dalamud.Bindings.ImGui
 		/// <summary>
 		/// To be documented.
 		/// </summary>
-		public unsafe void PopTextureID()
+		public unsafe void PopTexture()
 		{
 			fixed (ImDrawList* @this = &this)
 			{
-				ImGui.PopTextureIDNative(@this);
+				ImGui.PopTextureNative(@this);
 			}
 		}
 
@@ -7895,11 +8319,11 @@ namespace Dalamud.Bindings.ImGui
 		/// <summary>
 		/// To be documented.
 		/// </summary>
-		public unsafe void PushTextureID(ImTextureID textureId)
+		public unsafe void PushTexture(ImTextureRef texRef)
 		{
 			fixed (ImDrawList* @this = &this)
 			{
-				ImGui.PushTextureIDNative(@this, textureId);
+				ImGui.PushTextureNative(@this, texRef);
 			}
 		}
 
@@ -7973,23 +8397,11 @@ namespace Dalamud.Bindings.ImGui
 		/// <summary>
 		/// To be documented.
 		/// </summary>
-		public byte* OwnerName { get => Handle->OwnerName; set => Handle->OwnerName = value; }
-		/// <summary>
-		/// To be documented.
-		/// </summary>
 		public ref ImDrawVertPtr VtxWritePtr => ref Unsafe.AsRef<ImDrawVertPtr>(&Handle->VtxWritePtr);
 		/// <summary>
 		/// To be documented.
 		/// </summary>
 		public ushort* IdxWritePtr { get => Handle->IdxWritePtr; set => Handle->IdxWritePtr = value; }
-		/// <summary>
-		/// To be documented.
-		/// </summary>
-		public ref ImVector<Vector4> ClipRectStack => ref Unsafe.AsRef<ImVector<Vector4>>(&Handle->ClipRectStack);
-		/// <summary>
-		/// To be documented.
-		/// </summary>
-		public ref ImVector<ImTextureID> TextureIdStack => ref Unsafe.AsRef<ImVector<ImTextureID>>(&Handle->TextureIdStack);
 		/// <summary>
 		/// To be documented.
 		/// </summary>
@@ -8005,7 +8417,23 @@ namespace Dalamud.Bindings.ImGui
 		/// <summary>
 		/// To be documented.
 		/// </summary>
+		public ref ImVector<Vector4> ClipRectStack => ref Unsafe.AsRef<ImVector<Vector4>>(&Handle->ClipRectStack);
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		public ref ImVector<ImTextureRef> TextureStack => ref Unsafe.AsRef<ImVector<ImTextureRef>>(&Handle->TextureStack);
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		public ref ImVector<byte> CallbacksDataBuf => ref Unsafe.AsRef<ImVector<byte>>(&Handle->CallbacksDataBuf);
+		/// <summary>
+		/// To be documented.
+		/// </summary>
 		public ref float FringeScale => ref Unsafe.AsRef<float>(&Handle->FringeScale);
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		public byte* OwnerName { get => Handle->OwnerName; set => Handle->OwnerName = value; }
 		/// <summary>
 		/// To be documented.
 		/// </summary>
@@ -8034,9 +8462,9 @@ namespace Dalamud.Bindings.ImGui
 		/// <summary>
 		/// To be documented.
 		/// </summary>
-		public unsafe void _OnChangedTextureID()
+		public unsafe void _OnChangedTexture()
 		{
-			ImGui._OnChangedTextureIDNative(Handle);
+			ImGui._OnChangedTextureNative(Handle);
 		}
 
 		/// <summary>
@@ -8082,6 +8510,33 @@ namespace Dalamud.Bindings.ImGui
 		/// <summary>
 		/// To be documented.
 		/// </summary>
+		public unsafe void _SetDrawListSharedData(ImDrawListSharedData* data)
+		{
+			ImGui._SetDrawListSharedDataNative(Handle, data);
+		}
+
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		public unsafe void _SetDrawListSharedData(ref ImDrawListSharedData data)
+		{
+			fixed (ImDrawListSharedData* pdata = &data)
+			{
+				ImGui._SetDrawListSharedDataNative(Handle, (ImDrawListSharedData*)pdata);
+			}
+		}
+
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		public unsafe void _SetTexture(ImTextureRef texRef)
+		{
+			ImGui._SetTextureNative(Handle, texRef);
+		}
+
+		/// <summary>
+		/// To be documented.
+		/// </summary>
 		public unsafe void _TryMergeDrawCmds()
 		{
 			ImGui._TryMergeDrawCmdsNative(Handle);
@@ -8122,9 +8577,97 @@ namespace Dalamud.Bindings.ImGui
 		/// <summary>
 		/// To be documented.
 		/// </summary>
-		public unsafe void AddCallback(ImDrawCallback callback, void* callbackData)
+		public unsafe void AddCallback(delegate*<ImDrawList*, ImDrawCmd*, void> callback, void* userdata, nuint userdataSize)
 		{
-			ImGui.AddCallbackNative(Handle, callback, callbackData);
+			ImGui.AddCallbackNative(Handle, callback, userdata, userdataSize);
+		}
+
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		public unsafe void AddCallback(delegate*<ImDrawList*, ImDrawCmd*, void> callback, void* userdata)
+		{
+			ImGui.AddCallbackNative(Handle, callback, userdata, (nuint)(0));
+		}
+
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		public unsafe void AddCallback(delegate*<ImDrawList*, ImDrawCmd*, void> callback)
+		{
+			ImGui.AddCallbackNative(Handle, callback, (void*)(default), (nuint)(0));
+		}
+
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		public unsafe void AddCallback(delegate*<ImDrawList*, ImDrawCmd*, void> callback, nuint userdataSize)
+		{
+			ImGui.AddCallbackNative(Handle, callback, (void*)(default), userdataSize);
+		}
+
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		public unsafe void AddCallback(ImDrawCallback callback, void* userdata, nuint userdataSize)
+		{
+			ImGui.AddCallbackNative(Handle, (delegate*<ImDrawList*, ImDrawCmd*, void>)Utils.GetFunctionPointerForDelegate(callback), userdata, userdataSize);
+		}
+
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		public unsafe void AddCallback(ImDrawCallback callback, void* userdata)
+		{
+			ImGui.AddCallbackNative(Handle, (delegate*<ImDrawList*, ImDrawCmd*, void>)Utils.GetFunctionPointerForDelegate(callback), userdata, (nuint)(0));
+		}
+
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		public unsafe void AddCallback(ImDrawCallback callback)
+		{
+			ImGui.AddCallbackNative(Handle, (delegate*<ImDrawList*, ImDrawCmd*, void>)Utils.GetFunctionPointerForDelegate(callback), (void*)(default), (nuint)(0));
+		}
+
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		public unsafe void AddCallback(ImDrawCallback callback, nuint userdataSize)
+		{
+			ImGui.AddCallbackNative(Handle, (delegate*<ImDrawList*, ImDrawCmd*, void>)Utils.GetFunctionPointerForDelegate(callback), (void*)(default), userdataSize);
+		}
+
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		public unsafe void AddCallback(delegate*<ImDrawList*, ImDrawCmd*, void> callback, nint userdata, nuint userdataSize)
+		{
+			ImGui.AddCallbackNative(Handle, callback, (void*)userdata, userdataSize);
+		}
+
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		public unsafe void AddCallback(delegate*<ImDrawList*, ImDrawCmd*, void> callback, nint userdata)
+		{
+			ImGui.AddCallbackNative(Handle, callback, (void*)userdata, (nuint)(0));
+		}
+
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		public unsafe void AddCallback(ImDrawCallback callback, nint userdata, nuint userdataSize)
+		{
+			ImGui.AddCallbackNative(Handle, (delegate*<ImDrawList*, ImDrawCmd*, void>)Utils.GetFunctionPointerForDelegate(callback), (void*)userdata, userdataSize);
+		}
+
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		public unsafe void AddCallback(ImDrawCallback callback, nint userdata)
+		{
+			ImGui.AddCallbackNative(Handle, (delegate*<ImDrawList*, ImDrawCmd*, void>)Utils.GetFunctionPointerForDelegate(callback), (void*)userdata, (nuint)(0));
 		}
 
 		/// <summary>
@@ -8178,6 +8721,25 @@ namespace Dalamud.Bindings.ImGui
 		/// <summary>
 		/// To be documented.
 		/// </summary>
+		public unsafe void AddConcavePolyFilled(Vector2* points, int numPoints, uint col)
+		{
+			ImGui.AddConcavePolyFilledNative(Handle, points, numPoints, col);
+		}
+
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		public unsafe void AddConcavePolyFilled(in Vector2 points, int numPoints, uint col)
+		{
+			fixed (Vector2* ppoints = &points)
+			{
+				ImGui.AddConcavePolyFilledNative(Handle, (Vector2*)ppoints, numPoints, col);
+			}
+		}
+
+		/// <summary>
+		/// To be documented.
+		/// </summary>
 		public unsafe void AddConvexPolyFilled(Vector2* points, int numPoints, uint col)
 		{
 			ImGui.AddConvexPolyFilledNative(Handle, points, numPoints, col);
@@ -8186,7 +8748,7 @@ namespace Dalamud.Bindings.ImGui
 		/// <summary>
 		/// To be documented.
 		/// </summary>
-		public unsafe void AddConvexPolyFilled(ref Vector2 points, int numPoints, uint col)
+		public unsafe void AddConvexPolyFilled(in Vector2 points, int numPoints, uint col)
 		{
 			fixed (Vector2* ppoints = &points)
 			{
@@ -8205,145 +8767,233 @@ namespace Dalamud.Bindings.ImGui
 		/// <summary>
 		/// To be documented.
 		/// </summary>
-		public unsafe void AddImage(ImTextureID userTextureId, Vector2 pMin, Vector2 pMax, Vector2 uvMin, Vector2 uvMax, uint col)
+		public unsafe void AddEllipse(Vector2 center, Vector2 radius, uint col, float rot, int numSegments, float thickness)
 		{
-			ImGui.AddImageNative(Handle, userTextureId, pMin, pMax, uvMin, uvMax, col);
+			ImGui.AddEllipseNative(Handle, center, radius, col, rot, numSegments, thickness);
 		}
 
 		/// <summary>
 		/// To be documented.
 		/// </summary>
-		public unsafe void AddImage(ImTextureID userTextureId, Vector2 pMin, Vector2 pMax, Vector2 uvMin, Vector2 uvMax)
+		public unsafe void AddEllipse(Vector2 center, Vector2 radius, uint col, float rot, int numSegments)
 		{
-			ImGui.AddImageNative(Handle, userTextureId, pMin, pMax, uvMin, uvMax, (uint)(4294967295));
+			ImGui.AddEllipseNative(Handle, center, radius, col, rot, numSegments, (float)(1.0f));
 		}
 
 		/// <summary>
 		/// To be documented.
 		/// </summary>
-		public unsafe void AddImage(ImTextureID userTextureId, Vector2 pMin, Vector2 pMax, Vector2 uvMin)
+		public unsafe void AddEllipse(Vector2 center, Vector2 radius, uint col, float rot)
 		{
-			ImGui.AddImageNative(Handle, userTextureId, pMin, pMax, uvMin, (Vector2)(new Vector2(1,1)), (uint)(4294967295));
+			ImGui.AddEllipseNative(Handle, center, radius, col, rot, (int)(0), (float)(1.0f));
 		}
 
 		/// <summary>
 		/// To be documented.
 		/// </summary>
-		public unsafe void AddImage(ImTextureID userTextureId, Vector2 pMin, Vector2 pMax)
+		public unsafe void AddEllipse(Vector2 center, Vector2 radius, uint col)
 		{
-			ImGui.AddImageNative(Handle, userTextureId, pMin, pMax, (Vector2)(new Vector2(0,0)), (Vector2)(new Vector2(1,1)), (uint)(4294967295));
+			ImGui.AddEllipseNative(Handle, center, radius, col, (float)(0.0f), (int)(0), (float)(1.0f));
 		}
 
 		/// <summary>
 		/// To be documented.
 		/// </summary>
-		public unsafe void AddImage(ImTextureID userTextureId, Vector2 pMin, Vector2 pMax, Vector2 uvMin, uint col)
+		public unsafe void AddEllipse(Vector2 center, Vector2 radius, uint col, int numSegments)
 		{
-			ImGui.AddImageNative(Handle, userTextureId, pMin, pMax, uvMin, (Vector2)(new Vector2(1,1)), col);
+			ImGui.AddEllipseNative(Handle, center, radius, col, (float)(0.0f), numSegments, (float)(1.0f));
 		}
 
 		/// <summary>
 		/// To be documented.
 		/// </summary>
-		public unsafe void AddImage(ImTextureID userTextureId, Vector2 pMin, Vector2 pMax, uint col)
+		public unsafe void AddEllipse(Vector2 center, Vector2 radius, uint col, float rot, float thickness)
 		{
-			ImGui.AddImageNative(Handle, userTextureId, pMin, pMax, (Vector2)(new Vector2(0,0)), (Vector2)(new Vector2(1,1)), col);
+			ImGui.AddEllipseNative(Handle, center, radius, col, rot, (int)(0), thickness);
 		}
 
 		/// <summary>
 		/// To be documented.
 		/// </summary>
-		public unsafe void AddImageQuad(ImTextureID userTextureId, Vector2 p1, Vector2 p2, Vector2 p3, Vector2 p4, Vector2 uv1, Vector2 uv2, Vector2 uv3, Vector2 uv4, uint col)
+		public unsafe void AddEllipse(Vector2 center, Vector2 radius, uint col, int numSegments, float thickness)
 		{
-			ImGui.AddImageQuadNative(Handle, userTextureId, p1, p2, p3, p4, uv1, uv2, uv3, uv4, col);
+			ImGui.AddEllipseNative(Handle, center, radius, col, (float)(0.0f), numSegments, thickness);
 		}
 
 		/// <summary>
 		/// To be documented.
 		/// </summary>
-		public unsafe void AddImageQuad(ImTextureID userTextureId, Vector2 p1, Vector2 p2, Vector2 p3, Vector2 p4, Vector2 uv1, Vector2 uv2, Vector2 uv3, Vector2 uv4)
+		public unsafe void AddEllipseFilled(Vector2 center, Vector2 radius, uint col, float rot, int numSegments)
 		{
-			ImGui.AddImageQuadNative(Handle, userTextureId, p1, p2, p3, p4, uv1, uv2, uv3, uv4, (uint)(4294967295));
+			ImGui.AddEllipseFilledNative(Handle, center, radius, col, rot, numSegments);
 		}
 
 		/// <summary>
 		/// To be documented.
 		/// </summary>
-		public unsafe void AddImageQuad(ImTextureID userTextureId, Vector2 p1, Vector2 p2, Vector2 p3, Vector2 p4, Vector2 uv1, Vector2 uv2, Vector2 uv3)
+		public unsafe void AddEllipseFilled(Vector2 center, Vector2 radius, uint col, float rot)
 		{
-			ImGui.AddImageQuadNative(Handle, userTextureId, p1, p2, p3, p4, uv1, uv2, uv3, (Vector2)(new Vector2(0,1)), (uint)(4294967295));
+			ImGui.AddEllipseFilledNative(Handle, center, radius, col, rot, (int)(0));
 		}
 
 		/// <summary>
 		/// To be documented.
 		/// </summary>
-		public unsafe void AddImageQuad(ImTextureID userTextureId, Vector2 p1, Vector2 p2, Vector2 p3, Vector2 p4, Vector2 uv1, Vector2 uv2)
+		public unsafe void AddEllipseFilled(Vector2 center, Vector2 radius, uint col)
 		{
-			ImGui.AddImageQuadNative(Handle, userTextureId, p1, p2, p3, p4, uv1, uv2, (Vector2)(new Vector2(1,1)), (Vector2)(new Vector2(0,1)), (uint)(4294967295));
+			ImGui.AddEllipseFilledNative(Handle, center, radius, col, (float)(0.0f), (int)(0));
 		}
 
 		/// <summary>
 		/// To be documented.
 		/// </summary>
-		public unsafe void AddImageQuad(ImTextureID userTextureId, Vector2 p1, Vector2 p2, Vector2 p3, Vector2 p4, Vector2 uv1)
+		public unsafe void AddEllipseFilled(Vector2 center, Vector2 radius, uint col, int numSegments)
 		{
-			ImGui.AddImageQuadNative(Handle, userTextureId, p1, p2, p3, p4, uv1, (Vector2)(new Vector2(1,0)), (Vector2)(new Vector2(1,1)), (Vector2)(new Vector2(0,1)), (uint)(4294967295));
+			ImGui.AddEllipseFilledNative(Handle, center, radius, col, (float)(0.0f), numSegments);
 		}
 
 		/// <summary>
 		/// To be documented.
 		/// </summary>
-		public unsafe void AddImageQuad(ImTextureID userTextureId, Vector2 p1, Vector2 p2, Vector2 p3, Vector2 p4)
+		public unsafe void AddImage(ImTextureRef texRef, Vector2 pMin, Vector2 pMax, Vector2 uvMin, Vector2 uvMax, uint col)
 		{
-			ImGui.AddImageQuadNative(Handle, userTextureId, p1, p2, p3, p4, (Vector2)(new Vector2(0,0)), (Vector2)(new Vector2(1,0)), (Vector2)(new Vector2(1,1)), (Vector2)(new Vector2(0,1)), (uint)(4294967295));
+			ImGui.AddImageNative(Handle, texRef, pMin, pMax, uvMin, uvMax, col);
 		}
 
 		/// <summary>
 		/// To be documented.
 		/// </summary>
-		public unsafe void AddImageQuad(ImTextureID userTextureId, Vector2 p1, Vector2 p2, Vector2 p3, Vector2 p4, Vector2 uv1, Vector2 uv2, Vector2 uv3, uint col)
+		public unsafe void AddImage(ImTextureRef texRef, Vector2 pMin, Vector2 pMax, Vector2 uvMin, Vector2 uvMax)
 		{
-			ImGui.AddImageQuadNative(Handle, userTextureId, p1, p2, p3, p4, uv1, uv2, uv3, (Vector2)(new Vector2(0,1)), col);
+			ImGui.AddImageNative(Handle, texRef, pMin, pMax, uvMin, uvMax, (uint)(4294967295));
 		}
 
 		/// <summary>
 		/// To be documented.
 		/// </summary>
-		public unsafe void AddImageQuad(ImTextureID userTextureId, Vector2 p1, Vector2 p2, Vector2 p3, Vector2 p4, Vector2 uv1, Vector2 uv2, uint col)
+		public unsafe void AddImage(ImTextureRef texRef, Vector2 pMin, Vector2 pMax, Vector2 uvMin)
 		{
-			ImGui.AddImageQuadNative(Handle, userTextureId, p1, p2, p3, p4, uv1, uv2, (Vector2)(new Vector2(1,1)), (Vector2)(new Vector2(0,1)), col);
+			ImGui.AddImageNative(Handle, texRef, pMin, pMax, uvMin, (Vector2)(new Vector2(1,1)), (uint)(4294967295));
 		}
 
 		/// <summary>
 		/// To be documented.
 		/// </summary>
-		public unsafe void AddImageQuad(ImTextureID userTextureId, Vector2 p1, Vector2 p2, Vector2 p3, Vector2 p4, Vector2 uv1, uint col)
+		public unsafe void AddImage(ImTextureRef texRef, Vector2 pMin, Vector2 pMax)
 		{
-			ImGui.AddImageQuadNative(Handle, userTextureId, p1, p2, p3, p4, uv1, (Vector2)(new Vector2(1,0)), (Vector2)(new Vector2(1,1)), (Vector2)(new Vector2(0,1)), col);
+			ImGui.AddImageNative(Handle, texRef, pMin, pMax, (Vector2)(new Vector2(0,0)), (Vector2)(new Vector2(1,1)), (uint)(4294967295));
 		}
 
 		/// <summary>
 		/// To be documented.
 		/// </summary>
-		public unsafe void AddImageQuad(ImTextureID userTextureId, Vector2 p1, Vector2 p2, Vector2 p3, Vector2 p4, uint col)
+		public unsafe void AddImage(ImTextureRef texRef, Vector2 pMin, Vector2 pMax, Vector2 uvMin, uint col)
 		{
-			ImGui.AddImageQuadNative(Handle, userTextureId, p1, p2, p3, p4, (Vector2)(new Vector2(0,0)), (Vector2)(new Vector2(1,0)), (Vector2)(new Vector2(1,1)), (Vector2)(new Vector2(0,1)), col);
+			ImGui.AddImageNative(Handle, texRef, pMin, pMax, uvMin, (Vector2)(new Vector2(1,1)), col);
 		}
 
 		/// <summary>
 		/// To be documented.
 		/// </summary>
-		public unsafe void AddImageRounded(ImTextureID userTextureId, Vector2 pMin, Vector2 pMax, Vector2 uvMin, Vector2 uvMax, uint col, float rounding, ImDrawFlags flags)
+		public unsafe void AddImage(ImTextureRef texRef, Vector2 pMin, Vector2 pMax, uint col)
 		{
-			ImGui.AddImageRoundedNative(Handle, userTextureId, pMin, pMax, uvMin, uvMax, col, rounding, flags);
+			ImGui.AddImageNative(Handle, texRef, pMin, pMax, (Vector2)(new Vector2(0,0)), (Vector2)(new Vector2(1,1)), col);
 		}
 
 		/// <summary>
 		/// To be documented.
 		/// </summary>
-		public unsafe void AddImageRounded(ImTextureID userTextureId, Vector2 pMin, Vector2 pMax, Vector2 uvMin, Vector2 uvMax, uint col, float rounding)
+		public unsafe void AddImageQuad(ImTextureRef texRef, Vector2 p1, Vector2 p2, Vector2 p3, Vector2 p4, Vector2 uv1, Vector2 uv2, Vector2 uv3, Vector2 uv4, uint col)
 		{
-			ImGui.AddImageRoundedNative(Handle, userTextureId, pMin, pMax, uvMin, uvMax, col, rounding, (ImDrawFlags)(0));
+			ImGui.AddImageQuadNative(Handle, texRef, p1, p2, p3, p4, uv1, uv2, uv3, uv4, col);
+		}
+
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		public unsafe void AddImageQuad(ImTextureRef texRef, Vector2 p1, Vector2 p2, Vector2 p3, Vector2 p4, Vector2 uv1, Vector2 uv2, Vector2 uv3, Vector2 uv4)
+		{
+			ImGui.AddImageQuadNative(Handle, texRef, p1, p2, p3, p4, uv1, uv2, uv3, uv4, (uint)(4294967295));
+		}
+
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		public unsafe void AddImageQuad(ImTextureRef texRef, Vector2 p1, Vector2 p2, Vector2 p3, Vector2 p4, Vector2 uv1, Vector2 uv2, Vector2 uv3)
+		{
+			ImGui.AddImageQuadNative(Handle, texRef, p1, p2, p3, p4, uv1, uv2, uv3, (Vector2)(new Vector2(0,1)), (uint)(4294967295));
+		}
+
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		public unsafe void AddImageQuad(ImTextureRef texRef, Vector2 p1, Vector2 p2, Vector2 p3, Vector2 p4, Vector2 uv1, Vector2 uv2)
+		{
+			ImGui.AddImageQuadNative(Handle, texRef, p1, p2, p3, p4, uv1, uv2, (Vector2)(new Vector2(1,1)), (Vector2)(new Vector2(0,1)), (uint)(4294967295));
+		}
+
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		public unsafe void AddImageQuad(ImTextureRef texRef, Vector2 p1, Vector2 p2, Vector2 p3, Vector2 p4, Vector2 uv1)
+		{
+			ImGui.AddImageQuadNative(Handle, texRef, p1, p2, p3, p4, uv1, (Vector2)(new Vector2(1,0)), (Vector2)(new Vector2(1,1)), (Vector2)(new Vector2(0,1)), (uint)(4294967295));
+		}
+
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		public unsafe void AddImageQuad(ImTextureRef texRef, Vector2 p1, Vector2 p2, Vector2 p3, Vector2 p4)
+		{
+			ImGui.AddImageQuadNative(Handle, texRef, p1, p2, p3, p4, (Vector2)(new Vector2(0,0)), (Vector2)(new Vector2(1,0)), (Vector2)(new Vector2(1,1)), (Vector2)(new Vector2(0,1)), (uint)(4294967295));
+		}
+
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		public unsafe void AddImageQuad(ImTextureRef texRef, Vector2 p1, Vector2 p2, Vector2 p3, Vector2 p4, Vector2 uv1, Vector2 uv2, Vector2 uv3, uint col)
+		{
+			ImGui.AddImageQuadNative(Handle, texRef, p1, p2, p3, p4, uv1, uv2, uv3, (Vector2)(new Vector2(0,1)), col);
+		}
+
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		public unsafe void AddImageQuad(ImTextureRef texRef, Vector2 p1, Vector2 p2, Vector2 p3, Vector2 p4, Vector2 uv1, Vector2 uv2, uint col)
+		{
+			ImGui.AddImageQuadNative(Handle, texRef, p1, p2, p3, p4, uv1, uv2, (Vector2)(new Vector2(1,1)), (Vector2)(new Vector2(0,1)), col);
+		}
+
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		public unsafe void AddImageQuad(ImTextureRef texRef, Vector2 p1, Vector2 p2, Vector2 p3, Vector2 p4, Vector2 uv1, uint col)
+		{
+			ImGui.AddImageQuadNative(Handle, texRef, p1, p2, p3, p4, uv1, (Vector2)(new Vector2(1,0)), (Vector2)(new Vector2(1,1)), (Vector2)(new Vector2(0,1)), col);
+		}
+
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		public unsafe void AddImageQuad(ImTextureRef texRef, Vector2 p1, Vector2 p2, Vector2 p3, Vector2 p4, uint col)
+		{
+			ImGui.AddImageQuadNative(Handle, texRef, p1, p2, p3, p4, (Vector2)(new Vector2(0,0)), (Vector2)(new Vector2(1,0)), (Vector2)(new Vector2(1,1)), (Vector2)(new Vector2(0,1)), col);
+		}
+
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		public unsafe void AddImageRounded(ImTextureRef texRef, Vector2 pMin, Vector2 pMax, Vector2 uvMin, Vector2 uvMax, uint col, float rounding, ImDrawFlags flags)
+		{
+			ImGui.AddImageRoundedNative(Handle, texRef, pMin, pMax, uvMin, uvMax, col, rounding, flags);
+		}
+
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		public unsafe void AddImageRounded(ImTextureRef texRef, Vector2 pMin, Vector2 pMax, Vector2 uvMin, Vector2 uvMax, uint col, float rounding)
+		{
+			ImGui.AddImageRoundedNative(Handle, texRef, pMin, pMax, uvMin, uvMax, col, rounding, (ImDrawFlags)(0));
 		}
 
 		/// <summary>
@@ -8360,6 +9010,38 @@ namespace Dalamud.Bindings.ImGui
 		public unsafe void AddLine(Vector2 p1, Vector2 p2, uint col)
 		{
 			ImGui.AddLineNative(Handle, p1, p2, col, (float)(1.0f));
+		}
+
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		public unsafe void AddLineH(float minX, float maxX, float y, uint col, float thickness)
+		{
+			ImGui.AddLineHNative(Handle, minX, maxX, y, col, thickness);
+		}
+
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		public unsafe void AddLineH(float minX, float maxX, float y, uint col)
+		{
+			ImGui.AddLineHNative(Handle, minX, maxX, y, col, (float)(1.0f));
+		}
+
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		public unsafe void AddLineV(float x, float minY, float maxY, uint col, float thickness)
+		{
+			ImGui.AddLineVNative(Handle, x, minY, maxY, col, thickness);
+		}
+
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		public unsafe void AddLineV(float x, float minY, float maxY, uint col)
+		{
+			ImGui.AddLineVNative(Handle, x, minY, maxY, col, (float)(1.0f));
 		}
 
 		/// <summary>
@@ -8389,19 +9071,38 @@ namespace Dalamud.Bindings.ImGui
 		/// <summary>
 		/// To be documented.
 		/// </summary>
-		public unsafe void AddPolyline(Vector2* points, int numPoints, uint col, ImDrawFlags flags, float thickness)
+		public unsafe void AddPolyline(Vector2* points, int numPoints, uint col, float thickness, ImDrawFlags flags)
 		{
-			ImGui.AddPolylineNative(Handle, points, numPoints, col, flags, thickness);
+			ImGui.AddPolylineNative(Handle, points, numPoints, col, thickness, flags);
 		}
 
 		/// <summary>
 		/// To be documented.
 		/// </summary>
-		public unsafe void AddPolyline(ref Vector2 points, int numPoints, uint col, ImDrawFlags flags, float thickness)
+		public unsafe void AddPolyline(Vector2* points, int numPoints, uint col, float thickness)
+		{
+			ImGui.AddPolylineNative(Handle, points, numPoints, col, thickness, (ImDrawFlags)(0));
+		}
+
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		public unsafe void AddPolyline(in Vector2 points, int numPoints, uint col, float thickness, ImDrawFlags flags)
 		{
 			fixed (Vector2* ppoints = &points)
 			{
-				ImGui.AddPolylineNative(Handle, (Vector2*)ppoints, numPoints, col, flags, thickness);
+				ImGui.AddPolylineNative(Handle, (Vector2*)ppoints, numPoints, col, thickness, flags);
+			}
+		}
+
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		public unsafe void AddPolyline(in Vector2 points, int numPoints, uint col, float thickness)
+		{
+			fixed (Vector2* ppoints = &points)
+			{
+				ImGui.AddPolylineNative(Handle, (Vector2*)ppoints, numPoints, col, thickness, (ImDrawFlags)(0));
 			}
 		}
 
@@ -8432,41 +9133,9 @@ namespace Dalamud.Bindings.ImGui
 		/// <summary>
 		/// To be documented.
 		/// </summary>
-		public unsafe void AddRect(Vector2 pMin, Vector2 pMax, uint col, float rounding, ImDrawFlags flags, float thickness)
+		public unsafe void AddRect(Vector2 pMin, Vector2 pMax, uint col, float rounding, float thickness, ImDrawFlags flags)
 		{
-			ImGui.AddRectNative(Handle, pMin, pMax, col, rounding, flags, thickness);
-		}
-
-		/// <summary>
-		/// To be documented.
-		/// </summary>
-		public unsafe void AddRect(Vector2 pMin, Vector2 pMax, uint col, float rounding, ImDrawFlags flags)
-		{
-			ImGui.AddRectNative(Handle, pMin, pMax, col, rounding, flags, (float)(1.0f));
-		}
-
-		/// <summary>
-		/// To be documented.
-		/// </summary>
-		public unsafe void AddRect(Vector2 pMin, Vector2 pMax, uint col, float rounding)
-		{
-			ImGui.AddRectNative(Handle, pMin, pMax, col, rounding, (ImDrawFlags)(0), (float)(1.0f));
-		}
-
-		/// <summary>
-		/// To be documented.
-		/// </summary>
-		public unsafe void AddRect(Vector2 pMin, Vector2 pMax, uint col)
-		{
-			ImGui.AddRectNative(Handle, pMin, pMax, col, (float)(0.0f), (ImDrawFlags)(0), (float)(1.0f));
-		}
-
-		/// <summary>
-		/// To be documented.
-		/// </summary>
-		public unsafe void AddRect(Vector2 pMin, Vector2 pMax, uint col, ImDrawFlags flags)
-		{
-			ImGui.AddRectNative(Handle, pMin, pMax, col, (float)(0.0f), flags, (float)(1.0f));
+			ImGui.AddRectNative(Handle, pMin, pMax, col, rounding, thickness, flags);
 		}
 
 		/// <summary>
@@ -8474,15 +9143,39 @@ namespace Dalamud.Bindings.ImGui
 		/// </summary>
 		public unsafe void AddRect(Vector2 pMin, Vector2 pMax, uint col, float rounding, float thickness)
 		{
-			ImGui.AddRectNative(Handle, pMin, pMax, col, rounding, (ImDrawFlags)(0), thickness);
+			ImGui.AddRectNative(Handle, pMin, pMax, col, rounding, thickness, (ImDrawFlags)(0));
 		}
 
 		/// <summary>
 		/// To be documented.
 		/// </summary>
-		public unsafe void AddRect(Vector2 pMin, Vector2 pMax, uint col, ImDrawFlags flags, float thickness)
+		public unsafe void AddRect(Vector2 pMin, Vector2 pMax, uint col, float rounding)
 		{
-			ImGui.AddRectNative(Handle, pMin, pMax, col, (float)(0.0f), flags, thickness);
+			ImGui.AddRectNative(Handle, pMin, pMax, col, rounding, (float)(1.0f), (ImDrawFlags)(0));
+		}
+
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		public unsafe void AddRect(Vector2 pMin, Vector2 pMax, uint col)
+		{
+			ImGui.AddRectNative(Handle, pMin, pMax, col, (float)(0.0f), (float)(1.0f), (ImDrawFlags)(0));
+		}
+
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		public unsafe void AddRect(Vector2 pMin, Vector2 pMax, uint col, float rounding, ImDrawFlags flags)
+		{
+			ImGui.AddRectNative(Handle, pMin, pMax, col, rounding, (float)(1.0f), flags);
+		}
+
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		public unsafe void AddRect(Vector2 pMin, Vector2 pMax, uint col, ImDrawFlags flags)
+		{
+			ImGui.AddRectNative(Handle, pMin, pMax, col, (float)(0.0f), (float)(1.0f), flags);
 		}
 
 		/// <summary>
@@ -8544,7 +9237,7 @@ namespace Dalamud.Bindings.ImGui
 		/// <summary>
 		/// To be documented.
 		/// </summary>
-		public unsafe void AddText(Vector2 pos, uint col, ref byte textBegin, byte* textEnd)
+		public unsafe void AddText(Vector2 pos, uint col, in byte textBegin, byte* textEnd)
 		{
 			fixed (byte* ptextBegin = &textBegin)
 			{
@@ -8555,7 +9248,7 @@ namespace Dalamud.Bindings.ImGui
 		/// <summary>
 		/// To be documented.
 		/// </summary>
-		public unsafe void AddText(Vector2 pos, uint col, ref byte textBegin)
+		public unsafe void AddText(Vector2 pos, uint col, in byte textBegin)
 		{
 			fixed (byte* ptextBegin = &textBegin)
 			{
@@ -8646,7 +9339,7 @@ namespace Dalamud.Bindings.ImGui
 		/// <summary>
 		/// To be documented.
 		/// </summary>
-		public unsafe void AddText(Vector2 pos, uint col, byte* textBegin, ref byte textEnd)
+		public unsafe void AddText(Vector2 pos, uint col, byte* textBegin, in byte textEnd)
 		{
 			fixed (byte* ptextEnd = &textEnd)
 			{
@@ -8697,7 +9390,7 @@ namespace Dalamud.Bindings.ImGui
 		/// <summary>
 		/// To be documented.
 		/// </summary>
-		public unsafe void AddText(Vector2 pos, uint col, ref byte textBegin, ref byte textEnd)
+		public unsafe void AddText(Vector2 pos, uint col, in byte textBegin, in byte textEnd)
 		{
 			fixed (byte* ptextBegin = &textBegin)
 			{
@@ -8775,7 +9468,7 @@ namespace Dalamud.Bindings.ImGui
 		/// <summary>
 		/// To be documented.
 		/// </summary>
-		public unsafe void AddText(Vector2 pos, uint col, ref byte textBegin, ReadOnlySpan<byte> textEnd)
+		public unsafe void AddText(Vector2 pos, uint col, in byte textBegin, ReadOnlySpan<byte> textEnd)
 		{
 			fixed (byte* ptextBegin = &textBegin)
 			{
@@ -8789,7 +9482,7 @@ namespace Dalamud.Bindings.ImGui
 		/// <summary>
 		/// To be documented.
 		/// </summary>
-		public unsafe void AddText(Vector2 pos, uint col, ref byte textBegin, string textEnd)
+		public unsafe void AddText(Vector2 pos, uint col, in byte textBegin, string textEnd)
 		{
 			fixed (byte* ptextBegin = &textBegin)
 			{
@@ -8821,7 +9514,7 @@ namespace Dalamud.Bindings.ImGui
 		/// <summary>
 		/// To be documented.
 		/// </summary>
-		public unsafe void AddText(Vector2 pos, uint col, ReadOnlySpan<byte> textBegin, ref byte textEnd)
+		public unsafe void AddText(Vector2 pos, uint col, ReadOnlySpan<byte> textBegin, in byte textEnd)
 		{
 			fixed (byte* ptextBegin = textBegin)
 			{
@@ -8867,7 +9560,7 @@ namespace Dalamud.Bindings.ImGui
 		/// <summary>
 		/// To be documented.
 		/// </summary>
-		public unsafe void AddText(Vector2 pos, uint col, string textBegin, ref byte textEnd)
+		public unsafe void AddText(Vector2 pos, uint col, string textBegin, in byte textEnd)
 		{
 			byte* pStr0 = null;
 			int pStrSize0 = 0;
@@ -9083,7 +9776,7 @@ namespace Dalamud.Bindings.ImGui
 		/// <summary>
 		/// To be documented.
 		/// </summary>
-		public unsafe void AddText(ImFont* font, float fontSize, Vector2 pos, uint col, ref byte textBegin, byte* textEnd, float wrapWidth, Vector4* cpuFineClipRect)
+		public unsafe void AddText(ImFont* font, float fontSize, Vector2 pos, uint col, in byte textBegin, byte* textEnd, float wrapWidth, Vector4* cpuFineClipRect)
 		{
 			fixed (byte* ptextBegin = &textBegin)
 			{
@@ -9094,7 +9787,7 @@ namespace Dalamud.Bindings.ImGui
 		/// <summary>
 		/// To be documented.
 		/// </summary>
-		public unsafe void AddText(ImFont* font, float fontSize, Vector2 pos, uint col, ref byte textBegin, byte* textEnd, float wrapWidth)
+		public unsafe void AddText(ImFont* font, float fontSize, Vector2 pos, uint col, in byte textBegin, byte* textEnd, float wrapWidth)
 		{
 			fixed (byte* ptextBegin = &textBegin)
 			{
@@ -9105,7 +9798,7 @@ namespace Dalamud.Bindings.ImGui
 		/// <summary>
 		/// To be documented.
 		/// </summary>
-		public unsafe void AddText(ImFont* font, float fontSize, Vector2 pos, uint col, ref byte textBegin, byte* textEnd)
+		public unsafe void AddText(ImFont* font, float fontSize, Vector2 pos, uint col, in byte textBegin, byte* textEnd)
 		{
 			fixed (byte* ptextBegin = &textBegin)
 			{
@@ -9116,7 +9809,7 @@ namespace Dalamud.Bindings.ImGui
 		/// <summary>
 		/// To be documented.
 		/// </summary>
-		public unsafe void AddText(ImFont* font, float fontSize, Vector2 pos, uint col, ref byte textBegin)
+		public unsafe void AddText(ImFont* font, float fontSize, Vector2 pos, uint col, in byte textBegin)
 		{
 			fixed (byte* ptextBegin = &textBegin)
 			{
@@ -9127,7 +9820,7 @@ namespace Dalamud.Bindings.ImGui
 		/// <summary>
 		/// To be documented.
 		/// </summary>
-		public unsafe void AddText(ImFont* font, float fontSize, Vector2 pos, uint col, ref byte textBegin, float wrapWidth)
+		public unsafe void AddText(ImFont* font, float fontSize, Vector2 pos, uint col, in byte textBegin, float wrapWidth)
 		{
 			fixed (byte* ptextBegin = &textBegin)
 			{
@@ -9138,7 +9831,7 @@ namespace Dalamud.Bindings.ImGui
 		/// <summary>
 		/// To be documented.
 		/// </summary>
-		public unsafe void AddText(ImFont* font, float fontSize, Vector2 pos, uint col, ref byte textBegin, byte* textEnd, Vector4* cpuFineClipRect)
+		public unsafe void AddText(ImFont* font, float fontSize, Vector2 pos, uint col, in byte textBegin, byte* textEnd, Vector4* cpuFineClipRect)
 		{
 			fixed (byte* ptextBegin = &textBegin)
 			{
@@ -9149,7 +9842,7 @@ namespace Dalamud.Bindings.ImGui
 		/// <summary>
 		/// To be documented.
 		/// </summary>
-		public unsafe void AddText(ImFont* font, float fontSize, Vector2 pos, uint col, ref byte textBegin, Vector4* cpuFineClipRect)
+		public unsafe void AddText(ImFont* font, float fontSize, Vector2 pos, uint col, in byte textBegin, Vector4* cpuFineClipRect)
 		{
 			fixed (byte* ptextBegin = &textBegin)
 			{
@@ -9160,7 +9853,7 @@ namespace Dalamud.Bindings.ImGui
 		/// <summary>
 		/// To be documented.
 		/// </summary>
-		public unsafe void AddText(ImFont* font, float fontSize, Vector2 pos, uint col, ref byte textBegin, float wrapWidth, Vector4* cpuFineClipRect)
+		public unsafe void AddText(ImFont* font, float fontSize, Vector2 pos, uint col, in byte textBegin, float wrapWidth, Vector4* cpuFineClipRect)
 		{
 			fixed (byte* ptextBegin = &textBegin)
 			{
@@ -9491,7 +10184,7 @@ namespace Dalamud.Bindings.ImGui
 		/// <summary>
 		/// To be documented.
 		/// </summary>
-		public unsafe void AddText(ref ImFont font, float fontSize, Vector2 pos, uint col, ref byte textBegin, byte* textEnd, float wrapWidth, Vector4* cpuFineClipRect)
+		public unsafe void AddText(ref ImFont font, float fontSize, Vector2 pos, uint col, in byte textBegin, byte* textEnd, float wrapWidth, Vector4* cpuFineClipRect)
 		{
 			fixed (ImFont* pfont = &font)
 			{
@@ -9505,7 +10198,7 @@ namespace Dalamud.Bindings.ImGui
 		/// <summary>
 		/// To be documented.
 		/// </summary>
-		public unsafe void AddText(ref ImFont font, float fontSize, Vector2 pos, uint col, ref byte textBegin, byte* textEnd, float wrapWidth)
+		public unsafe void AddText(ref ImFont font, float fontSize, Vector2 pos, uint col, in byte textBegin, byte* textEnd, float wrapWidth)
 		{
 			fixed (ImFont* pfont = &font)
 			{
@@ -9519,7 +10212,7 @@ namespace Dalamud.Bindings.ImGui
 		/// <summary>
 		/// To be documented.
 		/// </summary>
-		public unsafe void AddText(ref ImFont font, float fontSize, Vector2 pos, uint col, ref byte textBegin, byte* textEnd)
+		public unsafe void AddText(ref ImFont font, float fontSize, Vector2 pos, uint col, in byte textBegin, byte* textEnd)
 		{
 			fixed (ImFont* pfont = &font)
 			{
@@ -9533,7 +10226,7 @@ namespace Dalamud.Bindings.ImGui
 		/// <summary>
 		/// To be documented.
 		/// </summary>
-		public unsafe void AddText(ref ImFont font, float fontSize, Vector2 pos, uint col, ref byte textBegin)
+		public unsafe void AddText(ref ImFont font, float fontSize, Vector2 pos, uint col, in byte textBegin)
 		{
 			fixed (ImFont* pfont = &font)
 			{
@@ -9547,7 +10240,7 @@ namespace Dalamud.Bindings.ImGui
 		/// <summary>
 		/// To be documented.
 		/// </summary>
-		public unsafe void AddText(ref ImFont font, float fontSize, Vector2 pos, uint col, ref byte textBegin, float wrapWidth)
+		public unsafe void AddText(ref ImFont font, float fontSize, Vector2 pos, uint col, in byte textBegin, float wrapWidth)
 		{
 			fixed (ImFont* pfont = &font)
 			{
@@ -9561,7 +10254,7 @@ namespace Dalamud.Bindings.ImGui
 		/// <summary>
 		/// To be documented.
 		/// </summary>
-		public unsafe void AddText(ref ImFont font, float fontSize, Vector2 pos, uint col, ref byte textBegin, byte* textEnd, Vector4* cpuFineClipRect)
+		public unsafe void AddText(ref ImFont font, float fontSize, Vector2 pos, uint col, in byte textBegin, byte* textEnd, Vector4* cpuFineClipRect)
 		{
 			fixed (ImFont* pfont = &font)
 			{
@@ -9575,7 +10268,7 @@ namespace Dalamud.Bindings.ImGui
 		/// <summary>
 		/// To be documented.
 		/// </summary>
-		public unsafe void AddText(ref ImFont font, float fontSize, Vector2 pos, uint col, ref byte textBegin, Vector4* cpuFineClipRect)
+		public unsafe void AddText(ref ImFont font, float fontSize, Vector2 pos, uint col, in byte textBegin, Vector4* cpuFineClipRect)
 		{
 			fixed (ImFont* pfont = &font)
 			{
@@ -9589,7 +10282,7 @@ namespace Dalamud.Bindings.ImGui
 		/// <summary>
 		/// To be documented.
 		/// </summary>
-		public unsafe void AddText(ref ImFont font, float fontSize, Vector2 pos, uint col, ref byte textBegin, float wrapWidth, Vector4* cpuFineClipRect)
+		public unsafe void AddText(ref ImFont font, float fontSize, Vector2 pos, uint col, in byte textBegin, float wrapWidth, Vector4* cpuFineClipRect)
 		{
 			fixed (ImFont* pfont = &font)
 			{
@@ -9971,7 +10664,7 @@ namespace Dalamud.Bindings.ImGui
 		/// <summary>
 		/// To be documented.
 		/// </summary>
-		public unsafe void AddText(ImFont* font, float fontSize, Vector2 pos, uint col, byte* textBegin, ref byte textEnd, float wrapWidth, Vector4* cpuFineClipRect)
+		public unsafe void AddText(ImFont* font, float fontSize, Vector2 pos, uint col, byte* textBegin, in byte textEnd, float wrapWidth, Vector4* cpuFineClipRect)
 		{
 			fixed (byte* ptextEnd = &textEnd)
 			{
@@ -9982,7 +10675,7 @@ namespace Dalamud.Bindings.ImGui
 		/// <summary>
 		/// To be documented.
 		/// </summary>
-		public unsafe void AddText(ImFont* font, float fontSize, Vector2 pos, uint col, byte* textBegin, ref byte textEnd, float wrapWidth)
+		public unsafe void AddText(ImFont* font, float fontSize, Vector2 pos, uint col, byte* textBegin, in byte textEnd, float wrapWidth)
 		{
 			fixed (byte* ptextEnd = &textEnd)
 			{
@@ -9993,7 +10686,7 @@ namespace Dalamud.Bindings.ImGui
 		/// <summary>
 		/// To be documented.
 		/// </summary>
-		public unsafe void AddText(ImFont* font, float fontSize, Vector2 pos, uint col, byte* textBegin, ref byte textEnd)
+		public unsafe void AddText(ImFont* font, float fontSize, Vector2 pos, uint col, byte* textBegin, in byte textEnd)
 		{
 			fixed (byte* ptextEnd = &textEnd)
 			{
@@ -10004,7 +10697,7 @@ namespace Dalamud.Bindings.ImGui
 		/// <summary>
 		/// To be documented.
 		/// </summary>
-		public unsafe void AddText(ImFont* font, float fontSize, Vector2 pos, uint col, byte* textBegin, ref byte textEnd, Vector4* cpuFineClipRect)
+		public unsafe void AddText(ImFont* font, float fontSize, Vector2 pos, uint col, byte* textBegin, in byte textEnd, Vector4* cpuFineClipRect)
 		{
 			fixed (byte* ptextEnd = &textEnd)
 			{
@@ -10175,7 +10868,7 @@ namespace Dalamud.Bindings.ImGui
 		/// <summary>
 		/// To be documented.
 		/// </summary>
-		public unsafe void AddText(ref ImFont font, float fontSize, Vector2 pos, uint col, byte* textBegin, ref byte textEnd, float wrapWidth, Vector4* cpuFineClipRect)
+		public unsafe void AddText(ref ImFont font, float fontSize, Vector2 pos, uint col, byte* textBegin, in byte textEnd, float wrapWidth, Vector4* cpuFineClipRect)
 		{
 			fixed (ImFont* pfont = &font)
 			{
@@ -10189,7 +10882,7 @@ namespace Dalamud.Bindings.ImGui
 		/// <summary>
 		/// To be documented.
 		/// </summary>
-		public unsafe void AddText(ref ImFont font, float fontSize, Vector2 pos, uint col, byte* textBegin, ref byte textEnd, float wrapWidth)
+		public unsafe void AddText(ref ImFont font, float fontSize, Vector2 pos, uint col, byte* textBegin, in byte textEnd, float wrapWidth)
 		{
 			fixed (ImFont* pfont = &font)
 			{
@@ -10203,7 +10896,7 @@ namespace Dalamud.Bindings.ImGui
 		/// <summary>
 		/// To be documented.
 		/// </summary>
-		public unsafe void AddText(ref ImFont font, float fontSize, Vector2 pos, uint col, byte* textBegin, ref byte textEnd)
+		public unsafe void AddText(ref ImFont font, float fontSize, Vector2 pos, uint col, byte* textBegin, in byte textEnd)
 		{
 			fixed (ImFont* pfont = &font)
 			{
@@ -10217,7 +10910,7 @@ namespace Dalamud.Bindings.ImGui
 		/// <summary>
 		/// To be documented.
 		/// </summary>
-		public unsafe void AddText(ref ImFont font, float fontSize, Vector2 pos, uint col, byte* textBegin, ref byte textEnd, Vector4* cpuFineClipRect)
+		public unsafe void AddText(ref ImFont font, float fontSize, Vector2 pos, uint col, byte* textBegin, in byte textEnd, Vector4* cpuFineClipRect)
 		{
 			fixed (ImFont* pfont = &font)
 			{
@@ -10415,7 +11108,7 @@ namespace Dalamud.Bindings.ImGui
 		/// <summary>
 		/// To be documented.
 		/// </summary>
-		public unsafe void AddText(ImFont* font, float fontSize, Vector2 pos, uint col, ref byte textBegin, ref byte textEnd, float wrapWidth, Vector4* cpuFineClipRect)
+		public unsafe void AddText(ImFont* font, float fontSize, Vector2 pos, uint col, in byte textBegin, in byte textEnd, float wrapWidth, Vector4* cpuFineClipRect)
 		{
 			fixed (byte* ptextBegin = &textBegin)
 			{
@@ -10429,7 +11122,7 @@ namespace Dalamud.Bindings.ImGui
 		/// <summary>
 		/// To be documented.
 		/// </summary>
-		public unsafe void AddText(ImFont* font, float fontSize, Vector2 pos, uint col, ref byte textBegin, ref byte textEnd, float wrapWidth)
+		public unsafe void AddText(ImFont* font, float fontSize, Vector2 pos, uint col, in byte textBegin, in byte textEnd, float wrapWidth)
 		{
 			fixed (byte* ptextBegin = &textBegin)
 			{
@@ -10443,7 +11136,7 @@ namespace Dalamud.Bindings.ImGui
 		/// <summary>
 		/// To be documented.
 		/// </summary>
-		public unsafe void AddText(ImFont* font, float fontSize, Vector2 pos, uint col, ref byte textBegin, ref byte textEnd)
+		public unsafe void AddText(ImFont* font, float fontSize, Vector2 pos, uint col, in byte textBegin, in byte textEnd)
 		{
 			fixed (byte* ptextBegin = &textBegin)
 			{
@@ -10457,7 +11150,7 @@ namespace Dalamud.Bindings.ImGui
 		/// <summary>
 		/// To be documented.
 		/// </summary>
-		public unsafe void AddText(ImFont* font, float fontSize, Vector2 pos, uint col, ref byte textBegin, ref byte textEnd, Vector4* cpuFineClipRect)
+		public unsafe void AddText(ImFont* font, float fontSize, Vector2 pos, uint col, in byte textBegin, in byte textEnd, Vector4* cpuFineClipRect)
 		{
 			fixed (byte* ptextBegin = &textBegin)
 			{
@@ -10727,7 +11420,7 @@ namespace Dalamud.Bindings.ImGui
 		/// <summary>
 		/// To be documented.
 		/// </summary>
-		public unsafe void AddText(ImFont* font, float fontSize, Vector2 pos, uint col, ref byte textBegin, ReadOnlySpan<byte> textEnd, float wrapWidth, Vector4* cpuFineClipRect)
+		public unsafe void AddText(ImFont* font, float fontSize, Vector2 pos, uint col, in byte textBegin, ReadOnlySpan<byte> textEnd, float wrapWidth, Vector4* cpuFineClipRect)
 		{
 			fixed (byte* ptextBegin = &textBegin)
 			{
@@ -10741,7 +11434,7 @@ namespace Dalamud.Bindings.ImGui
 		/// <summary>
 		/// To be documented.
 		/// </summary>
-		public unsafe void AddText(ImFont* font, float fontSize, Vector2 pos, uint col, ref byte textBegin, ReadOnlySpan<byte> textEnd, float wrapWidth)
+		public unsafe void AddText(ImFont* font, float fontSize, Vector2 pos, uint col, in byte textBegin, ReadOnlySpan<byte> textEnd, float wrapWidth)
 		{
 			fixed (byte* ptextBegin = &textBegin)
 			{
@@ -10755,7 +11448,7 @@ namespace Dalamud.Bindings.ImGui
 		/// <summary>
 		/// To be documented.
 		/// </summary>
-		public unsafe void AddText(ImFont* font, float fontSize, Vector2 pos, uint col, ref byte textBegin, ReadOnlySpan<byte> textEnd)
+		public unsafe void AddText(ImFont* font, float fontSize, Vector2 pos, uint col, in byte textBegin, ReadOnlySpan<byte> textEnd)
 		{
 			fixed (byte* ptextBegin = &textBegin)
 			{
@@ -10769,7 +11462,7 @@ namespace Dalamud.Bindings.ImGui
 		/// <summary>
 		/// To be documented.
 		/// </summary>
-		public unsafe void AddText(ImFont* font, float fontSize, Vector2 pos, uint col, ref byte textBegin, ReadOnlySpan<byte> textEnd, Vector4* cpuFineClipRect)
+		public unsafe void AddText(ImFont* font, float fontSize, Vector2 pos, uint col, in byte textBegin, ReadOnlySpan<byte> textEnd, Vector4* cpuFineClipRect)
 		{
 			fixed (byte* ptextBegin = &textBegin)
 			{
@@ -10783,7 +11476,7 @@ namespace Dalamud.Bindings.ImGui
 		/// <summary>
 		/// To be documented.
 		/// </summary>
-		public unsafe void AddText(ImFont* font, float fontSize, Vector2 pos, uint col, ref byte textBegin, string textEnd, float wrapWidth, Vector4* cpuFineClipRect)
+		public unsafe void AddText(ImFont* font, float fontSize, Vector2 pos, uint col, in byte textBegin, string textEnd, float wrapWidth, Vector4* cpuFineClipRect)
 		{
 			fixed (byte* ptextBegin = &textBegin)
 			{
@@ -10815,7 +11508,7 @@ namespace Dalamud.Bindings.ImGui
 		/// <summary>
 		/// To be documented.
 		/// </summary>
-		public unsafe void AddText(ImFont* font, float fontSize, Vector2 pos, uint col, ref byte textBegin, string textEnd, float wrapWidth)
+		public unsafe void AddText(ImFont* font, float fontSize, Vector2 pos, uint col, in byte textBegin, string textEnd, float wrapWidth)
 		{
 			fixed (byte* ptextBegin = &textBegin)
 			{
@@ -10847,7 +11540,7 @@ namespace Dalamud.Bindings.ImGui
 		/// <summary>
 		/// To be documented.
 		/// </summary>
-		public unsafe void AddText(ImFont* font, float fontSize, Vector2 pos, uint col, ref byte textBegin, string textEnd)
+		public unsafe void AddText(ImFont* font, float fontSize, Vector2 pos, uint col, in byte textBegin, string textEnd)
 		{
 			fixed (byte* ptextBegin = &textBegin)
 			{
@@ -10879,7 +11572,7 @@ namespace Dalamud.Bindings.ImGui
 		/// <summary>
 		/// To be documented.
 		/// </summary>
-		public unsafe void AddText(ImFont* font, float fontSize, Vector2 pos, uint col, ref byte textBegin, string textEnd, Vector4* cpuFineClipRect)
+		public unsafe void AddText(ImFont* font, float fontSize, Vector2 pos, uint col, in byte textBegin, string textEnd, Vector4* cpuFineClipRect)
 		{
 			fixed (byte* ptextBegin = &textBegin)
 			{
@@ -10911,7 +11604,7 @@ namespace Dalamud.Bindings.ImGui
 		/// <summary>
 		/// To be documented.
 		/// </summary>
-		public unsafe void AddText(ImFont* font, float fontSize, Vector2 pos, uint col, ReadOnlySpan<byte> textBegin, ref byte textEnd, float wrapWidth, Vector4* cpuFineClipRect)
+		public unsafe void AddText(ImFont* font, float fontSize, Vector2 pos, uint col, ReadOnlySpan<byte> textBegin, in byte textEnd, float wrapWidth, Vector4* cpuFineClipRect)
 		{
 			fixed (byte* ptextBegin = textBegin)
 			{
@@ -10925,7 +11618,7 @@ namespace Dalamud.Bindings.ImGui
 		/// <summary>
 		/// To be documented.
 		/// </summary>
-		public unsafe void AddText(ImFont* font, float fontSize, Vector2 pos, uint col, ReadOnlySpan<byte> textBegin, ref byte textEnd, float wrapWidth)
+		public unsafe void AddText(ImFont* font, float fontSize, Vector2 pos, uint col, ReadOnlySpan<byte> textBegin, in byte textEnd, float wrapWidth)
 		{
 			fixed (byte* ptextBegin = textBegin)
 			{
@@ -10939,7 +11632,7 @@ namespace Dalamud.Bindings.ImGui
 		/// <summary>
 		/// To be documented.
 		/// </summary>
-		public unsafe void AddText(ImFont* font, float fontSize, Vector2 pos, uint col, ReadOnlySpan<byte> textBegin, ref byte textEnd)
+		public unsafe void AddText(ImFont* font, float fontSize, Vector2 pos, uint col, ReadOnlySpan<byte> textBegin, in byte textEnd)
 		{
 			fixed (byte* ptextBegin = textBegin)
 			{
@@ -10953,7 +11646,7 @@ namespace Dalamud.Bindings.ImGui
 		/// <summary>
 		/// To be documented.
 		/// </summary>
-		public unsafe void AddText(ImFont* font, float fontSize, Vector2 pos, uint col, ReadOnlySpan<byte> textBegin, ref byte textEnd, Vector4* cpuFineClipRect)
+		public unsafe void AddText(ImFont* font, float fontSize, Vector2 pos, uint col, ReadOnlySpan<byte> textBegin, in byte textEnd, Vector4* cpuFineClipRect)
 		{
 			fixed (byte* ptextBegin = textBegin)
 			{
@@ -11095,7 +11788,7 @@ namespace Dalamud.Bindings.ImGui
 		/// <summary>
 		/// To be documented.
 		/// </summary>
-		public unsafe void AddText(ImFont* font, float fontSize, Vector2 pos, uint col, string textBegin, ref byte textEnd, float wrapWidth, Vector4* cpuFineClipRect)
+		public unsafe void AddText(ImFont* font, float fontSize, Vector2 pos, uint col, string textBegin, in byte textEnd, float wrapWidth, Vector4* cpuFineClipRect)
 		{
 			byte* pStr0 = null;
 			int pStrSize0 = 0;
@@ -11127,7 +11820,7 @@ namespace Dalamud.Bindings.ImGui
 		/// <summary>
 		/// To be documented.
 		/// </summary>
-		public unsafe void AddText(ImFont* font, float fontSize, Vector2 pos, uint col, string textBegin, ref byte textEnd, float wrapWidth)
+		public unsafe void AddText(ImFont* font, float fontSize, Vector2 pos, uint col, string textBegin, in byte textEnd, float wrapWidth)
 		{
 			byte* pStr0 = null;
 			int pStrSize0 = 0;
@@ -11159,7 +11852,7 @@ namespace Dalamud.Bindings.ImGui
 		/// <summary>
 		/// To be documented.
 		/// </summary>
-		public unsafe void AddText(ImFont* font, float fontSize, Vector2 pos, uint col, string textBegin, ref byte textEnd)
+		public unsafe void AddText(ImFont* font, float fontSize, Vector2 pos, uint col, string textBegin, in byte textEnd)
 		{
 			byte* pStr0 = null;
 			int pStrSize0 = 0;
@@ -11191,7 +11884,7 @@ namespace Dalamud.Bindings.ImGui
 		/// <summary>
 		/// To be documented.
 		/// </summary>
-		public unsafe void AddText(ImFont* font, float fontSize, Vector2 pos, uint col, string textBegin, ref byte textEnd, Vector4* cpuFineClipRect)
+		public unsafe void AddText(ImFont* font, float fontSize, Vector2 pos, uint col, string textBegin, in byte textEnd, Vector4* cpuFineClipRect)
 		{
 			byte* pStr0 = null;
 			int pStrSize0 = 0;
@@ -11351,7 +12044,7 @@ namespace Dalamud.Bindings.ImGui
 		/// <summary>
 		/// To be documented.
 		/// </summary>
-		public unsafe void AddText(ref ImFont font, float fontSize, Vector2 pos, uint col, ref byte textBegin, ref byte textEnd, float wrapWidth, Vector4* cpuFineClipRect)
+		public unsafe void AddText(ref ImFont font, float fontSize, Vector2 pos, uint col, in byte textBegin, in byte textEnd, float wrapWidth, Vector4* cpuFineClipRect)
 		{
 			fixed (ImFont* pfont = &font)
 			{
@@ -11368,7 +12061,7 @@ namespace Dalamud.Bindings.ImGui
 		/// <summary>
 		/// To be documented.
 		/// </summary>
-		public unsafe void AddText(ref ImFont font, float fontSize, Vector2 pos, uint col, ref byte textBegin, ref byte textEnd, float wrapWidth)
+		public unsafe void AddText(ref ImFont font, float fontSize, Vector2 pos, uint col, in byte textBegin, in byte textEnd, float wrapWidth)
 		{
 			fixed (ImFont* pfont = &font)
 			{
@@ -11385,7 +12078,7 @@ namespace Dalamud.Bindings.ImGui
 		/// <summary>
 		/// To be documented.
 		/// </summary>
-		public unsafe void AddText(ref ImFont font, float fontSize, Vector2 pos, uint col, ref byte textBegin, ref byte textEnd)
+		public unsafe void AddText(ref ImFont font, float fontSize, Vector2 pos, uint col, in byte textBegin, in byte textEnd)
 		{
 			fixed (ImFont* pfont = &font)
 			{
@@ -11402,7 +12095,7 @@ namespace Dalamud.Bindings.ImGui
 		/// <summary>
 		/// To be documented.
 		/// </summary>
-		public unsafe void AddText(ref ImFont font, float fontSize, Vector2 pos, uint col, ref byte textBegin, ref byte textEnd, Vector4* cpuFineClipRect)
+		public unsafe void AddText(ref ImFont font, float fontSize, Vector2 pos, uint col, in byte textBegin, in byte textEnd, Vector4* cpuFineClipRect)
 		{
 			fixed (ImFont* pfont = &font)
 			{
@@ -11699,7 +12392,7 @@ namespace Dalamud.Bindings.ImGui
 		/// <summary>
 		/// To be documented.
 		/// </summary>
-		public unsafe void AddText(ref ImFont font, float fontSize, Vector2 pos, uint col, ref byte textBegin, ReadOnlySpan<byte> textEnd, float wrapWidth, Vector4* cpuFineClipRect)
+		public unsafe void AddText(ref ImFont font, float fontSize, Vector2 pos, uint col, in byte textBegin, ReadOnlySpan<byte> textEnd, float wrapWidth, Vector4* cpuFineClipRect)
 		{
 			fixed (ImFont* pfont = &font)
 			{
@@ -11716,7 +12409,7 @@ namespace Dalamud.Bindings.ImGui
 		/// <summary>
 		/// To be documented.
 		/// </summary>
-		public unsafe void AddText(ref ImFont font, float fontSize, Vector2 pos, uint col, ref byte textBegin, ReadOnlySpan<byte> textEnd, float wrapWidth)
+		public unsafe void AddText(ref ImFont font, float fontSize, Vector2 pos, uint col, in byte textBegin, ReadOnlySpan<byte> textEnd, float wrapWidth)
 		{
 			fixed (ImFont* pfont = &font)
 			{
@@ -11733,7 +12426,7 @@ namespace Dalamud.Bindings.ImGui
 		/// <summary>
 		/// To be documented.
 		/// </summary>
-		public unsafe void AddText(ref ImFont font, float fontSize, Vector2 pos, uint col, ref byte textBegin, ReadOnlySpan<byte> textEnd)
+		public unsafe void AddText(ref ImFont font, float fontSize, Vector2 pos, uint col, in byte textBegin, ReadOnlySpan<byte> textEnd)
 		{
 			fixed (ImFont* pfont = &font)
 			{
@@ -11750,7 +12443,7 @@ namespace Dalamud.Bindings.ImGui
 		/// <summary>
 		/// To be documented.
 		/// </summary>
-		public unsafe void AddText(ref ImFont font, float fontSize, Vector2 pos, uint col, ref byte textBegin, ReadOnlySpan<byte> textEnd, Vector4* cpuFineClipRect)
+		public unsafe void AddText(ref ImFont font, float fontSize, Vector2 pos, uint col, in byte textBegin, ReadOnlySpan<byte> textEnd, Vector4* cpuFineClipRect)
 		{
 			fixed (ImFont* pfont = &font)
 			{
@@ -11767,7 +12460,7 @@ namespace Dalamud.Bindings.ImGui
 		/// <summary>
 		/// To be documented.
 		/// </summary>
-		public unsafe void AddText(ref ImFont font, float fontSize, Vector2 pos, uint col, ref byte textBegin, string textEnd, float wrapWidth, Vector4* cpuFineClipRect)
+		public unsafe void AddText(ref ImFont font, float fontSize, Vector2 pos, uint col, in byte textBegin, string textEnd, float wrapWidth, Vector4* cpuFineClipRect)
 		{
 			fixed (ImFont* pfont = &font)
 			{
@@ -11802,7 +12495,7 @@ namespace Dalamud.Bindings.ImGui
 		/// <summary>
 		/// To be documented.
 		/// </summary>
-		public unsafe void AddText(ref ImFont font, float fontSize, Vector2 pos, uint col, ref byte textBegin, string textEnd, float wrapWidth)
+		public unsafe void AddText(ref ImFont font, float fontSize, Vector2 pos, uint col, in byte textBegin, string textEnd, float wrapWidth)
 		{
 			fixed (ImFont* pfont = &font)
 			{
@@ -11837,7 +12530,7 @@ namespace Dalamud.Bindings.ImGui
 		/// <summary>
 		/// To be documented.
 		/// </summary>
-		public unsafe void AddText(ref ImFont font, float fontSize, Vector2 pos, uint col, ref byte textBegin, string textEnd)
+		public unsafe void AddText(ref ImFont font, float fontSize, Vector2 pos, uint col, in byte textBegin, string textEnd)
 		{
 			fixed (ImFont* pfont = &font)
 			{
@@ -11872,7 +12565,7 @@ namespace Dalamud.Bindings.ImGui
 		/// <summary>
 		/// To be documented.
 		/// </summary>
-		public unsafe void AddText(ref ImFont font, float fontSize, Vector2 pos, uint col, ref byte textBegin, string textEnd, Vector4* cpuFineClipRect)
+		public unsafe void AddText(ref ImFont font, float fontSize, Vector2 pos, uint col, in byte textBegin, string textEnd, Vector4* cpuFineClipRect)
 		{
 			fixed (ImFont* pfont = &font)
 			{
@@ -11907,7 +12600,7 @@ namespace Dalamud.Bindings.ImGui
 		/// <summary>
 		/// To be documented.
 		/// </summary>
-		public unsafe void AddText(ref ImFont font, float fontSize, Vector2 pos, uint col, ReadOnlySpan<byte> textBegin, ref byte textEnd, float wrapWidth, Vector4* cpuFineClipRect)
+		public unsafe void AddText(ref ImFont font, float fontSize, Vector2 pos, uint col, ReadOnlySpan<byte> textBegin, in byte textEnd, float wrapWidth, Vector4* cpuFineClipRect)
 		{
 			fixed (ImFont* pfont = &font)
 			{
@@ -11924,7 +12617,7 @@ namespace Dalamud.Bindings.ImGui
 		/// <summary>
 		/// To be documented.
 		/// </summary>
-		public unsafe void AddText(ref ImFont font, float fontSize, Vector2 pos, uint col, ReadOnlySpan<byte> textBegin, ref byte textEnd, float wrapWidth)
+		public unsafe void AddText(ref ImFont font, float fontSize, Vector2 pos, uint col, ReadOnlySpan<byte> textBegin, in byte textEnd, float wrapWidth)
 		{
 			fixed (ImFont* pfont = &font)
 			{
@@ -11941,7 +12634,7 @@ namespace Dalamud.Bindings.ImGui
 		/// <summary>
 		/// To be documented.
 		/// </summary>
-		public unsafe void AddText(ref ImFont font, float fontSize, Vector2 pos, uint col, ReadOnlySpan<byte> textBegin, ref byte textEnd)
+		public unsafe void AddText(ref ImFont font, float fontSize, Vector2 pos, uint col, ReadOnlySpan<byte> textBegin, in byte textEnd)
 		{
 			fixed (ImFont* pfont = &font)
 			{
@@ -11958,7 +12651,7 @@ namespace Dalamud.Bindings.ImGui
 		/// <summary>
 		/// To be documented.
 		/// </summary>
-		public unsafe void AddText(ref ImFont font, float fontSize, Vector2 pos, uint col, ReadOnlySpan<byte> textBegin, ref byte textEnd, Vector4* cpuFineClipRect)
+		public unsafe void AddText(ref ImFont font, float fontSize, Vector2 pos, uint col, ReadOnlySpan<byte> textBegin, in byte textEnd, Vector4* cpuFineClipRect)
 		{
 			fixed (ImFont* pfont = &font)
 			{
@@ -12115,7 +12808,7 @@ namespace Dalamud.Bindings.ImGui
 		/// <summary>
 		/// To be documented.
 		/// </summary>
-		public unsafe void AddText(ref ImFont font, float fontSize, Vector2 pos, uint col, string textBegin, ref byte textEnd, float wrapWidth, Vector4* cpuFineClipRect)
+		public unsafe void AddText(ref ImFont font, float fontSize, Vector2 pos, uint col, string textBegin, in byte textEnd, float wrapWidth, Vector4* cpuFineClipRect)
 		{
 			fixed (ImFont* pfont = &font)
 			{
@@ -12150,7 +12843,7 @@ namespace Dalamud.Bindings.ImGui
 		/// <summary>
 		/// To be documented.
 		/// </summary>
-		public unsafe void AddText(ref ImFont font, float fontSize, Vector2 pos, uint col, string textBegin, ref byte textEnd, float wrapWidth)
+		public unsafe void AddText(ref ImFont font, float fontSize, Vector2 pos, uint col, string textBegin, in byte textEnd, float wrapWidth)
 		{
 			fixed (ImFont* pfont = &font)
 			{
@@ -12185,7 +12878,7 @@ namespace Dalamud.Bindings.ImGui
 		/// <summary>
 		/// To be documented.
 		/// </summary>
-		public unsafe void AddText(ref ImFont font, float fontSize, Vector2 pos, uint col, string textBegin, ref byte textEnd)
+		public unsafe void AddText(ref ImFont font, float fontSize, Vector2 pos, uint col, string textBegin, in byte textEnd)
 		{
 			fixed (ImFont* pfont = &font)
 			{
@@ -12220,7 +12913,7 @@ namespace Dalamud.Bindings.ImGui
 		/// <summary>
 		/// To be documented.
 		/// </summary>
-		public unsafe void AddText(ref ImFont font, float fontSize, Vector2 pos, uint col, string textBegin, ref byte textEnd, Vector4* cpuFineClipRect)
+		public unsafe void AddText(ref ImFont font, float fontSize, Vector2 pos, uint col, string textBegin, in byte textEnd, Vector4* cpuFineClipRect)
 		{
 			fixed (ImFont* pfont = &font)
 			{
@@ -12395,7 +13088,7 @@ namespace Dalamud.Bindings.ImGui
 		/// <summary>
 		/// To be documented.
 		/// </summary>
-		public unsafe void AddText(ImFont* font, float fontSize, Vector2 pos, uint col, byte* textBegin, byte* textEnd, float wrapWidth, ref Vector4 cpuFineClipRect)
+		public unsafe void AddText(ImFont* font, float fontSize, Vector2 pos, uint col, byte* textBegin, byte* textEnd, float wrapWidth, in Vector4 cpuFineClipRect)
 		{
 			fixed (Vector4* pcpuFineClipRect = &cpuFineClipRect)
 			{
@@ -12406,7 +13099,7 @@ namespace Dalamud.Bindings.ImGui
 		/// <summary>
 		/// To be documented.
 		/// </summary>
-		public unsafe void AddText(ImFont* font, float fontSize, Vector2 pos, uint col, byte* textBegin, byte* textEnd, ref Vector4 cpuFineClipRect)
+		public unsafe void AddText(ImFont* font, float fontSize, Vector2 pos, uint col, byte* textBegin, byte* textEnd, in Vector4 cpuFineClipRect)
 		{
 			fixed (Vector4* pcpuFineClipRect = &cpuFineClipRect)
 			{
@@ -12417,7 +13110,7 @@ namespace Dalamud.Bindings.ImGui
 		/// <summary>
 		/// To be documented.
 		/// </summary>
-		public unsafe void AddText(ImFont* font, float fontSize, Vector2 pos, uint col, byte* textBegin, ref Vector4 cpuFineClipRect)
+		public unsafe void AddText(ImFont* font, float fontSize, Vector2 pos, uint col, byte* textBegin, in Vector4 cpuFineClipRect)
 		{
 			fixed (Vector4* pcpuFineClipRect = &cpuFineClipRect)
 			{
@@ -12428,7 +13121,7 @@ namespace Dalamud.Bindings.ImGui
 		/// <summary>
 		/// To be documented.
 		/// </summary>
-		public unsafe void AddText(ImFont* font, float fontSize, Vector2 pos, uint col, byte* textBegin, float wrapWidth, ref Vector4 cpuFineClipRect)
+		public unsafe void AddText(ImFont* font, float fontSize, Vector2 pos, uint col, byte* textBegin, float wrapWidth, in Vector4 cpuFineClipRect)
 		{
 			fixed (Vector4* pcpuFineClipRect = &cpuFineClipRect)
 			{
@@ -12439,7 +13132,7 @@ namespace Dalamud.Bindings.ImGui
 		/// <summary>
 		/// To be documented.
 		/// </summary>
-		public unsafe void AddText(ref ImFont font, float fontSize, Vector2 pos, uint col, byte* textBegin, byte* textEnd, float wrapWidth, ref Vector4 cpuFineClipRect)
+		public unsafe void AddText(ref ImFont font, float fontSize, Vector2 pos, uint col, byte* textBegin, byte* textEnd, float wrapWidth, in Vector4 cpuFineClipRect)
 		{
 			fixed (ImFont* pfont = &font)
 			{
@@ -12453,7 +13146,7 @@ namespace Dalamud.Bindings.ImGui
 		/// <summary>
 		/// To be documented.
 		/// </summary>
-		public unsafe void AddText(ref ImFont font, float fontSize, Vector2 pos, uint col, byte* textBegin, byte* textEnd, ref Vector4 cpuFineClipRect)
+		public unsafe void AddText(ref ImFont font, float fontSize, Vector2 pos, uint col, byte* textBegin, byte* textEnd, in Vector4 cpuFineClipRect)
 		{
 			fixed (ImFont* pfont = &font)
 			{
@@ -12467,7 +13160,7 @@ namespace Dalamud.Bindings.ImGui
 		/// <summary>
 		/// To be documented.
 		/// </summary>
-		public unsafe void AddText(ref ImFont font, float fontSize, Vector2 pos, uint col, byte* textBegin, ref Vector4 cpuFineClipRect)
+		public unsafe void AddText(ref ImFont font, float fontSize, Vector2 pos, uint col, byte* textBegin, in Vector4 cpuFineClipRect)
 		{
 			fixed (ImFont* pfont = &font)
 			{
@@ -12481,7 +13174,7 @@ namespace Dalamud.Bindings.ImGui
 		/// <summary>
 		/// To be documented.
 		/// </summary>
-		public unsafe void AddText(ref ImFont font, float fontSize, Vector2 pos, uint col, byte* textBegin, float wrapWidth, ref Vector4 cpuFineClipRect)
+		public unsafe void AddText(ref ImFont font, float fontSize, Vector2 pos, uint col, byte* textBegin, float wrapWidth, in Vector4 cpuFineClipRect)
 		{
 			fixed (ImFont* pfont = &font)
 			{
@@ -12495,7 +13188,7 @@ namespace Dalamud.Bindings.ImGui
 		/// <summary>
 		/// To be documented.
 		/// </summary>
-		public unsafe void AddText(ImFont* font, float fontSize, Vector2 pos, uint col, ref byte textBegin, byte* textEnd, float wrapWidth, ref Vector4 cpuFineClipRect)
+		public unsafe void AddText(ImFont* font, float fontSize, Vector2 pos, uint col, in byte textBegin, byte* textEnd, float wrapWidth, in Vector4 cpuFineClipRect)
 		{
 			fixed (byte* ptextBegin = &textBegin)
 			{
@@ -12509,7 +13202,7 @@ namespace Dalamud.Bindings.ImGui
 		/// <summary>
 		/// To be documented.
 		/// </summary>
-		public unsafe void AddText(ImFont* font, float fontSize, Vector2 pos, uint col, ref byte textBegin, byte* textEnd, ref Vector4 cpuFineClipRect)
+		public unsafe void AddText(ImFont* font, float fontSize, Vector2 pos, uint col, in byte textBegin, byte* textEnd, in Vector4 cpuFineClipRect)
 		{
 			fixed (byte* ptextBegin = &textBegin)
 			{
@@ -12523,7 +13216,7 @@ namespace Dalamud.Bindings.ImGui
 		/// <summary>
 		/// To be documented.
 		/// </summary>
-		public unsafe void AddText(ImFont* font, float fontSize, Vector2 pos, uint col, ref byte textBegin, ref Vector4 cpuFineClipRect)
+		public unsafe void AddText(ImFont* font, float fontSize, Vector2 pos, uint col, in byte textBegin, in Vector4 cpuFineClipRect)
 		{
 			fixed (byte* ptextBegin = &textBegin)
 			{
@@ -12537,7 +13230,7 @@ namespace Dalamud.Bindings.ImGui
 		/// <summary>
 		/// To be documented.
 		/// </summary>
-		public unsafe void AddText(ImFont* font, float fontSize, Vector2 pos, uint col, ref byte textBegin, float wrapWidth, ref Vector4 cpuFineClipRect)
+		public unsafe void AddText(ImFont* font, float fontSize, Vector2 pos, uint col, in byte textBegin, float wrapWidth, in Vector4 cpuFineClipRect)
 		{
 			fixed (byte* ptextBegin = &textBegin)
 			{
@@ -12551,7 +13244,7 @@ namespace Dalamud.Bindings.ImGui
 		/// <summary>
 		/// To be documented.
 		/// </summary>
-		public unsafe void AddText(ImFont* font, float fontSize, Vector2 pos, uint col, ReadOnlySpan<byte> textBegin, byte* textEnd, float wrapWidth, ref Vector4 cpuFineClipRect)
+		public unsafe void AddText(ImFont* font, float fontSize, Vector2 pos, uint col, ReadOnlySpan<byte> textBegin, byte* textEnd, float wrapWidth, in Vector4 cpuFineClipRect)
 		{
 			fixed (byte* ptextBegin = textBegin)
 			{
@@ -12565,7 +13258,7 @@ namespace Dalamud.Bindings.ImGui
 		/// <summary>
 		/// To be documented.
 		/// </summary>
-		public unsafe void AddText(ImFont* font, float fontSize, Vector2 pos, uint col, ReadOnlySpan<byte> textBegin, byte* textEnd, ref Vector4 cpuFineClipRect)
+		public unsafe void AddText(ImFont* font, float fontSize, Vector2 pos, uint col, ReadOnlySpan<byte> textBegin, byte* textEnd, in Vector4 cpuFineClipRect)
 		{
 			fixed (byte* ptextBegin = textBegin)
 			{
@@ -12579,7 +13272,7 @@ namespace Dalamud.Bindings.ImGui
 		/// <summary>
 		/// To be documented.
 		/// </summary>
-		public unsafe void AddText(ImFont* font, float fontSize, Vector2 pos, uint col, ReadOnlySpan<byte> textBegin, ref Vector4 cpuFineClipRect)
+		public unsafe void AddText(ImFont* font, float fontSize, Vector2 pos, uint col, ReadOnlySpan<byte> textBegin, in Vector4 cpuFineClipRect)
 		{
 			fixed (byte* ptextBegin = textBegin)
 			{
@@ -12593,7 +13286,7 @@ namespace Dalamud.Bindings.ImGui
 		/// <summary>
 		/// To be documented.
 		/// </summary>
-		public unsafe void AddText(ImFont* font, float fontSize, Vector2 pos, uint col, ReadOnlySpan<byte> textBegin, float wrapWidth, ref Vector4 cpuFineClipRect)
+		public unsafe void AddText(ImFont* font, float fontSize, Vector2 pos, uint col, ReadOnlySpan<byte> textBegin, float wrapWidth, in Vector4 cpuFineClipRect)
 		{
 			fixed (byte* ptextBegin = textBegin)
 			{
@@ -12607,7 +13300,7 @@ namespace Dalamud.Bindings.ImGui
 		/// <summary>
 		/// To be documented.
 		/// </summary>
-		public unsafe void AddText(ImFont* font, float fontSize, Vector2 pos, uint col, string textBegin, byte* textEnd, float wrapWidth, ref Vector4 cpuFineClipRect)
+		public unsafe void AddText(ImFont* font, float fontSize, Vector2 pos, uint col, string textBegin, byte* textEnd, float wrapWidth, in Vector4 cpuFineClipRect)
 		{
 			byte* pStr0 = null;
 			int pStrSize0 = 0;
@@ -12639,7 +13332,7 @@ namespace Dalamud.Bindings.ImGui
 		/// <summary>
 		/// To be documented.
 		/// </summary>
-		public unsafe void AddText(ImFont* font, float fontSize, Vector2 pos, uint col, string textBegin, byte* textEnd, ref Vector4 cpuFineClipRect)
+		public unsafe void AddText(ImFont* font, float fontSize, Vector2 pos, uint col, string textBegin, byte* textEnd, in Vector4 cpuFineClipRect)
 		{
 			byte* pStr0 = null;
 			int pStrSize0 = 0;
@@ -12671,7 +13364,7 @@ namespace Dalamud.Bindings.ImGui
 		/// <summary>
 		/// To be documented.
 		/// </summary>
-		public unsafe void AddText(ImFont* font, float fontSize, Vector2 pos, uint col, string textBegin, ref Vector4 cpuFineClipRect)
+		public unsafe void AddText(ImFont* font, float fontSize, Vector2 pos, uint col, string textBegin, in Vector4 cpuFineClipRect)
 		{
 			byte* pStr0 = null;
 			int pStrSize0 = 0;
@@ -12703,7 +13396,7 @@ namespace Dalamud.Bindings.ImGui
 		/// <summary>
 		/// To be documented.
 		/// </summary>
-		public unsafe void AddText(ImFont* font, float fontSize, Vector2 pos, uint col, string textBegin, float wrapWidth, ref Vector4 cpuFineClipRect)
+		public unsafe void AddText(ImFont* font, float fontSize, Vector2 pos, uint col, string textBegin, float wrapWidth, in Vector4 cpuFineClipRect)
 		{
 			byte* pStr0 = null;
 			int pStrSize0 = 0;
@@ -12735,7 +13428,7 @@ namespace Dalamud.Bindings.ImGui
 		/// <summary>
 		/// To be documented.
 		/// </summary>
-		public unsafe void AddText(ref ImFont font, float fontSize, Vector2 pos, uint col, ref byte textBegin, byte* textEnd, float wrapWidth, ref Vector4 cpuFineClipRect)
+		public unsafe void AddText(ref ImFont font, float fontSize, Vector2 pos, uint col, in byte textBegin, byte* textEnd, float wrapWidth, in Vector4 cpuFineClipRect)
 		{
 			fixed (ImFont* pfont = &font)
 			{
@@ -12752,7 +13445,7 @@ namespace Dalamud.Bindings.ImGui
 		/// <summary>
 		/// To be documented.
 		/// </summary>
-		public unsafe void AddText(ref ImFont font, float fontSize, Vector2 pos, uint col, ref byte textBegin, byte* textEnd, ref Vector4 cpuFineClipRect)
+		public unsafe void AddText(ref ImFont font, float fontSize, Vector2 pos, uint col, in byte textBegin, byte* textEnd, in Vector4 cpuFineClipRect)
 		{
 			fixed (ImFont* pfont = &font)
 			{
@@ -12769,7 +13462,7 @@ namespace Dalamud.Bindings.ImGui
 		/// <summary>
 		/// To be documented.
 		/// </summary>
-		public unsafe void AddText(ref ImFont font, float fontSize, Vector2 pos, uint col, ref byte textBegin, ref Vector4 cpuFineClipRect)
+		public unsafe void AddText(ref ImFont font, float fontSize, Vector2 pos, uint col, in byte textBegin, in Vector4 cpuFineClipRect)
 		{
 			fixed (ImFont* pfont = &font)
 			{
@@ -12786,7 +13479,7 @@ namespace Dalamud.Bindings.ImGui
 		/// <summary>
 		/// To be documented.
 		/// </summary>
-		public unsafe void AddText(ref ImFont font, float fontSize, Vector2 pos, uint col, ref byte textBegin, float wrapWidth, ref Vector4 cpuFineClipRect)
+		public unsafe void AddText(ref ImFont font, float fontSize, Vector2 pos, uint col, in byte textBegin, float wrapWidth, in Vector4 cpuFineClipRect)
 		{
 			fixed (ImFont* pfont = &font)
 			{
@@ -12803,7 +13496,7 @@ namespace Dalamud.Bindings.ImGui
 		/// <summary>
 		/// To be documented.
 		/// </summary>
-		public unsafe void AddText(ref ImFont font, float fontSize, Vector2 pos, uint col, ReadOnlySpan<byte> textBegin, byte* textEnd, float wrapWidth, ref Vector4 cpuFineClipRect)
+		public unsafe void AddText(ref ImFont font, float fontSize, Vector2 pos, uint col, ReadOnlySpan<byte> textBegin, byte* textEnd, float wrapWidth, in Vector4 cpuFineClipRect)
 		{
 			fixed (ImFont* pfont = &font)
 			{
@@ -12820,7 +13513,7 @@ namespace Dalamud.Bindings.ImGui
 		/// <summary>
 		/// To be documented.
 		/// </summary>
-		public unsafe void AddText(ref ImFont font, float fontSize, Vector2 pos, uint col, ReadOnlySpan<byte> textBegin, byte* textEnd, ref Vector4 cpuFineClipRect)
+		public unsafe void AddText(ref ImFont font, float fontSize, Vector2 pos, uint col, ReadOnlySpan<byte> textBegin, byte* textEnd, in Vector4 cpuFineClipRect)
 		{
 			fixed (ImFont* pfont = &font)
 			{
@@ -12837,7 +13530,7 @@ namespace Dalamud.Bindings.ImGui
 		/// <summary>
 		/// To be documented.
 		/// </summary>
-		public unsafe void AddText(ref ImFont font, float fontSize, Vector2 pos, uint col, ReadOnlySpan<byte> textBegin, ref Vector4 cpuFineClipRect)
+		public unsafe void AddText(ref ImFont font, float fontSize, Vector2 pos, uint col, ReadOnlySpan<byte> textBegin, in Vector4 cpuFineClipRect)
 		{
 			fixed (ImFont* pfont = &font)
 			{
@@ -12854,7 +13547,7 @@ namespace Dalamud.Bindings.ImGui
 		/// <summary>
 		/// To be documented.
 		/// </summary>
-		public unsafe void AddText(ref ImFont font, float fontSize, Vector2 pos, uint col, ReadOnlySpan<byte> textBegin, float wrapWidth, ref Vector4 cpuFineClipRect)
+		public unsafe void AddText(ref ImFont font, float fontSize, Vector2 pos, uint col, ReadOnlySpan<byte> textBegin, float wrapWidth, in Vector4 cpuFineClipRect)
 		{
 			fixed (ImFont* pfont = &font)
 			{
@@ -12871,7 +13564,7 @@ namespace Dalamud.Bindings.ImGui
 		/// <summary>
 		/// To be documented.
 		/// </summary>
-		public unsafe void AddText(ref ImFont font, float fontSize, Vector2 pos, uint col, string textBegin, byte* textEnd, float wrapWidth, ref Vector4 cpuFineClipRect)
+		public unsafe void AddText(ref ImFont font, float fontSize, Vector2 pos, uint col, string textBegin, byte* textEnd, float wrapWidth, in Vector4 cpuFineClipRect)
 		{
 			fixed (ImFont* pfont = &font)
 			{
@@ -12906,7 +13599,7 @@ namespace Dalamud.Bindings.ImGui
 		/// <summary>
 		/// To be documented.
 		/// </summary>
-		public unsafe void AddText(ref ImFont font, float fontSize, Vector2 pos, uint col, string textBegin, byte* textEnd, ref Vector4 cpuFineClipRect)
+		public unsafe void AddText(ref ImFont font, float fontSize, Vector2 pos, uint col, string textBegin, byte* textEnd, in Vector4 cpuFineClipRect)
 		{
 			fixed (ImFont* pfont = &font)
 			{
@@ -12941,7 +13634,7 @@ namespace Dalamud.Bindings.ImGui
 		/// <summary>
 		/// To be documented.
 		/// </summary>
-		public unsafe void AddText(ref ImFont font, float fontSize, Vector2 pos, uint col, string textBegin, ref Vector4 cpuFineClipRect)
+		public unsafe void AddText(ref ImFont font, float fontSize, Vector2 pos, uint col, string textBegin, in Vector4 cpuFineClipRect)
 		{
 			fixed (ImFont* pfont = &font)
 			{
@@ -12976,7 +13669,7 @@ namespace Dalamud.Bindings.ImGui
 		/// <summary>
 		/// To be documented.
 		/// </summary>
-		public unsafe void AddText(ref ImFont font, float fontSize, Vector2 pos, uint col, string textBegin, float wrapWidth, ref Vector4 cpuFineClipRect)
+		public unsafe void AddText(ref ImFont font, float fontSize, Vector2 pos, uint col, string textBegin, float wrapWidth, in Vector4 cpuFineClipRect)
 		{
 			fixed (ImFont* pfont = &font)
 			{
@@ -13011,7 +13704,7 @@ namespace Dalamud.Bindings.ImGui
 		/// <summary>
 		/// To be documented.
 		/// </summary>
-		public unsafe void AddText(ImFont* font, float fontSize, Vector2 pos, uint col, byte* textBegin, ref byte textEnd, float wrapWidth, ref Vector4 cpuFineClipRect)
+		public unsafe void AddText(ImFont* font, float fontSize, Vector2 pos, uint col, byte* textBegin, in byte textEnd, float wrapWidth, in Vector4 cpuFineClipRect)
 		{
 			fixed (byte* ptextEnd = &textEnd)
 			{
@@ -13025,7 +13718,7 @@ namespace Dalamud.Bindings.ImGui
 		/// <summary>
 		/// To be documented.
 		/// </summary>
-		public unsafe void AddText(ImFont* font, float fontSize, Vector2 pos, uint col, byte* textBegin, ref byte textEnd, ref Vector4 cpuFineClipRect)
+		public unsafe void AddText(ImFont* font, float fontSize, Vector2 pos, uint col, byte* textBegin, in byte textEnd, in Vector4 cpuFineClipRect)
 		{
 			fixed (byte* ptextEnd = &textEnd)
 			{
@@ -13039,7 +13732,7 @@ namespace Dalamud.Bindings.ImGui
 		/// <summary>
 		/// To be documented.
 		/// </summary>
-		public unsafe void AddText(ImFont* font, float fontSize, Vector2 pos, uint col, byte* textBegin, ReadOnlySpan<byte> textEnd, float wrapWidth, ref Vector4 cpuFineClipRect)
+		public unsafe void AddText(ImFont* font, float fontSize, Vector2 pos, uint col, byte* textBegin, ReadOnlySpan<byte> textEnd, float wrapWidth, in Vector4 cpuFineClipRect)
 		{
 			fixed (byte* ptextEnd = textEnd)
 			{
@@ -13053,7 +13746,7 @@ namespace Dalamud.Bindings.ImGui
 		/// <summary>
 		/// To be documented.
 		/// </summary>
-		public unsafe void AddText(ImFont* font, float fontSize, Vector2 pos, uint col, byte* textBegin, ReadOnlySpan<byte> textEnd, ref Vector4 cpuFineClipRect)
+		public unsafe void AddText(ImFont* font, float fontSize, Vector2 pos, uint col, byte* textBegin, ReadOnlySpan<byte> textEnd, in Vector4 cpuFineClipRect)
 		{
 			fixed (byte* ptextEnd = textEnd)
 			{
@@ -13067,7 +13760,7 @@ namespace Dalamud.Bindings.ImGui
 		/// <summary>
 		/// To be documented.
 		/// </summary>
-		public unsafe void AddText(ImFont* font, float fontSize, Vector2 pos, uint col, byte* textBegin, string textEnd, float wrapWidth, ref Vector4 cpuFineClipRect)
+		public unsafe void AddText(ImFont* font, float fontSize, Vector2 pos, uint col, byte* textBegin, string textEnd, float wrapWidth, in Vector4 cpuFineClipRect)
 		{
 			byte* pStr0 = null;
 			int pStrSize0 = 0;
@@ -13099,7 +13792,7 @@ namespace Dalamud.Bindings.ImGui
 		/// <summary>
 		/// To be documented.
 		/// </summary>
-		public unsafe void AddText(ImFont* font, float fontSize, Vector2 pos, uint col, byte* textBegin, string textEnd, ref Vector4 cpuFineClipRect)
+		public unsafe void AddText(ImFont* font, float fontSize, Vector2 pos, uint col, byte* textBegin, string textEnd, in Vector4 cpuFineClipRect)
 		{
 			byte* pStr0 = null;
 			int pStrSize0 = 0;
@@ -13131,7 +13824,7 @@ namespace Dalamud.Bindings.ImGui
 		/// <summary>
 		/// To be documented.
 		/// </summary>
-		public unsafe void AddText(ref ImFont font, float fontSize, Vector2 pos, uint col, byte* textBegin, ref byte textEnd, float wrapWidth, ref Vector4 cpuFineClipRect)
+		public unsafe void AddText(ref ImFont font, float fontSize, Vector2 pos, uint col, byte* textBegin, in byte textEnd, float wrapWidth, in Vector4 cpuFineClipRect)
 		{
 			fixed (ImFont* pfont = &font)
 			{
@@ -13148,7 +13841,7 @@ namespace Dalamud.Bindings.ImGui
 		/// <summary>
 		/// To be documented.
 		/// </summary>
-		public unsafe void AddText(ref ImFont font, float fontSize, Vector2 pos, uint col, byte* textBegin, ref byte textEnd, ref Vector4 cpuFineClipRect)
+		public unsafe void AddText(ref ImFont font, float fontSize, Vector2 pos, uint col, byte* textBegin, in byte textEnd, in Vector4 cpuFineClipRect)
 		{
 			fixed (ImFont* pfont = &font)
 			{
@@ -13165,7 +13858,7 @@ namespace Dalamud.Bindings.ImGui
 		/// <summary>
 		/// To be documented.
 		/// </summary>
-		public unsafe void AddText(ref ImFont font, float fontSize, Vector2 pos, uint col, byte* textBegin, ReadOnlySpan<byte> textEnd, float wrapWidth, ref Vector4 cpuFineClipRect)
+		public unsafe void AddText(ref ImFont font, float fontSize, Vector2 pos, uint col, byte* textBegin, ReadOnlySpan<byte> textEnd, float wrapWidth, in Vector4 cpuFineClipRect)
 		{
 			fixed (ImFont* pfont = &font)
 			{
@@ -13182,7 +13875,7 @@ namespace Dalamud.Bindings.ImGui
 		/// <summary>
 		/// To be documented.
 		/// </summary>
-		public unsafe void AddText(ref ImFont font, float fontSize, Vector2 pos, uint col, byte* textBegin, ReadOnlySpan<byte> textEnd, ref Vector4 cpuFineClipRect)
+		public unsafe void AddText(ref ImFont font, float fontSize, Vector2 pos, uint col, byte* textBegin, ReadOnlySpan<byte> textEnd, in Vector4 cpuFineClipRect)
 		{
 			fixed (ImFont* pfont = &font)
 			{
@@ -13199,7 +13892,7 @@ namespace Dalamud.Bindings.ImGui
 		/// <summary>
 		/// To be documented.
 		/// </summary>
-		public unsafe void AddText(ref ImFont font, float fontSize, Vector2 pos, uint col, byte* textBegin, string textEnd, float wrapWidth, ref Vector4 cpuFineClipRect)
+		public unsafe void AddText(ref ImFont font, float fontSize, Vector2 pos, uint col, byte* textBegin, string textEnd, float wrapWidth, in Vector4 cpuFineClipRect)
 		{
 			fixed (ImFont* pfont = &font)
 			{
@@ -13234,7 +13927,7 @@ namespace Dalamud.Bindings.ImGui
 		/// <summary>
 		/// To be documented.
 		/// </summary>
-		public unsafe void AddText(ref ImFont font, float fontSize, Vector2 pos, uint col, byte* textBegin, string textEnd, ref Vector4 cpuFineClipRect)
+		public unsafe void AddText(ref ImFont font, float fontSize, Vector2 pos, uint col, byte* textBegin, string textEnd, in Vector4 cpuFineClipRect)
 		{
 			fixed (ImFont* pfont = &font)
 			{
@@ -13269,7 +13962,7 @@ namespace Dalamud.Bindings.ImGui
 		/// <summary>
 		/// To be documented.
 		/// </summary>
-		public unsafe void AddText(ImFont* font, float fontSize, Vector2 pos, uint col, ref byte textBegin, ref byte textEnd, float wrapWidth, ref Vector4 cpuFineClipRect)
+		public unsafe void AddText(ImFont* font, float fontSize, Vector2 pos, uint col, in byte textBegin, in byte textEnd, float wrapWidth, in Vector4 cpuFineClipRect)
 		{
 			fixed (byte* ptextBegin = &textBegin)
 			{
@@ -13286,7 +13979,7 @@ namespace Dalamud.Bindings.ImGui
 		/// <summary>
 		/// To be documented.
 		/// </summary>
-		public unsafe void AddText(ImFont* font, float fontSize, Vector2 pos, uint col, ref byte textBegin, ref byte textEnd, ref Vector4 cpuFineClipRect)
+		public unsafe void AddText(ImFont* font, float fontSize, Vector2 pos, uint col, in byte textBegin, in byte textEnd, in Vector4 cpuFineClipRect)
 		{
 			fixed (byte* ptextBegin = &textBegin)
 			{
@@ -13303,7 +13996,7 @@ namespace Dalamud.Bindings.ImGui
 		/// <summary>
 		/// To be documented.
 		/// </summary>
-		public unsafe void AddText(ImFont* font, float fontSize, Vector2 pos, uint col, ReadOnlySpan<byte> textBegin, ReadOnlySpan<byte> textEnd, float wrapWidth, ref Vector4 cpuFineClipRect)
+		public unsafe void AddText(ImFont* font, float fontSize, Vector2 pos, uint col, ReadOnlySpan<byte> textBegin, ReadOnlySpan<byte> textEnd, float wrapWidth, in Vector4 cpuFineClipRect)
 		{
 			fixed (byte* ptextBegin = textBegin)
 			{
@@ -13320,7 +14013,7 @@ namespace Dalamud.Bindings.ImGui
 		/// <summary>
 		/// To be documented.
 		/// </summary>
-		public unsafe void AddText(ImFont* font, float fontSize, Vector2 pos, uint col, ReadOnlySpan<byte> textBegin, ReadOnlySpan<byte> textEnd, ref Vector4 cpuFineClipRect)
+		public unsafe void AddText(ImFont* font, float fontSize, Vector2 pos, uint col, ReadOnlySpan<byte> textBegin, ReadOnlySpan<byte> textEnd, in Vector4 cpuFineClipRect)
 		{
 			fixed (byte* ptextBegin = textBegin)
 			{
@@ -13337,7 +14030,7 @@ namespace Dalamud.Bindings.ImGui
 		/// <summary>
 		/// To be documented.
 		/// </summary>
-		public unsafe void AddText(ImFont* font, float fontSize, Vector2 pos, uint col, string textBegin, string textEnd, float wrapWidth, ref Vector4 cpuFineClipRect)
+		public unsafe void AddText(ImFont* font, float fontSize, Vector2 pos, uint col, string textBegin, string textEnd, float wrapWidth, in Vector4 cpuFineClipRect)
 		{
 			byte* pStr0 = null;
 			int pStrSize0 = 0;
@@ -13390,7 +14083,7 @@ namespace Dalamud.Bindings.ImGui
 		/// <summary>
 		/// To be documented.
 		/// </summary>
-		public unsafe void AddText(ImFont* font, float fontSize, Vector2 pos, uint col, string textBegin, string textEnd, ref Vector4 cpuFineClipRect)
+		public unsafe void AddText(ImFont* font, float fontSize, Vector2 pos, uint col, string textBegin, string textEnd, in Vector4 cpuFineClipRect)
 		{
 			byte* pStr0 = null;
 			int pStrSize0 = 0;
@@ -13443,7 +14136,7 @@ namespace Dalamud.Bindings.ImGui
 		/// <summary>
 		/// To be documented.
 		/// </summary>
-		public unsafe void AddText(ImFont* font, float fontSize, Vector2 pos, uint col, ref byte textBegin, ReadOnlySpan<byte> textEnd, float wrapWidth, ref Vector4 cpuFineClipRect)
+		public unsafe void AddText(ImFont* font, float fontSize, Vector2 pos, uint col, in byte textBegin, ReadOnlySpan<byte> textEnd, float wrapWidth, in Vector4 cpuFineClipRect)
 		{
 			fixed (byte* ptextBegin = &textBegin)
 			{
@@ -13460,7 +14153,7 @@ namespace Dalamud.Bindings.ImGui
 		/// <summary>
 		/// To be documented.
 		/// </summary>
-		public unsafe void AddText(ImFont* font, float fontSize, Vector2 pos, uint col, ref byte textBegin, ReadOnlySpan<byte> textEnd, ref Vector4 cpuFineClipRect)
+		public unsafe void AddText(ImFont* font, float fontSize, Vector2 pos, uint col, in byte textBegin, ReadOnlySpan<byte> textEnd, in Vector4 cpuFineClipRect)
 		{
 			fixed (byte* ptextBegin = &textBegin)
 			{
@@ -13477,7 +14170,7 @@ namespace Dalamud.Bindings.ImGui
 		/// <summary>
 		/// To be documented.
 		/// </summary>
-		public unsafe void AddText(ImFont* font, float fontSize, Vector2 pos, uint col, ref byte textBegin, string textEnd, float wrapWidth, ref Vector4 cpuFineClipRect)
+		public unsafe void AddText(ImFont* font, float fontSize, Vector2 pos, uint col, in byte textBegin, string textEnd, float wrapWidth, in Vector4 cpuFineClipRect)
 		{
 			fixed (byte* ptextBegin = &textBegin)
 			{
@@ -13512,7 +14205,7 @@ namespace Dalamud.Bindings.ImGui
 		/// <summary>
 		/// To be documented.
 		/// </summary>
-		public unsafe void AddText(ImFont* font, float fontSize, Vector2 pos, uint col, ref byte textBegin, string textEnd, ref Vector4 cpuFineClipRect)
+		public unsafe void AddText(ImFont* font, float fontSize, Vector2 pos, uint col, in byte textBegin, string textEnd, in Vector4 cpuFineClipRect)
 		{
 			fixed (byte* ptextBegin = &textBegin)
 			{
@@ -13547,7 +14240,7 @@ namespace Dalamud.Bindings.ImGui
 		/// <summary>
 		/// To be documented.
 		/// </summary>
-		public unsafe void AddText(ImFont* font, float fontSize, Vector2 pos, uint col, ReadOnlySpan<byte> textBegin, ref byte textEnd, float wrapWidth, ref Vector4 cpuFineClipRect)
+		public unsafe void AddText(ImFont* font, float fontSize, Vector2 pos, uint col, ReadOnlySpan<byte> textBegin, in byte textEnd, float wrapWidth, in Vector4 cpuFineClipRect)
 		{
 			fixed (byte* ptextBegin = textBegin)
 			{
@@ -13564,7 +14257,7 @@ namespace Dalamud.Bindings.ImGui
 		/// <summary>
 		/// To be documented.
 		/// </summary>
-		public unsafe void AddText(ImFont* font, float fontSize, Vector2 pos, uint col, ReadOnlySpan<byte> textBegin, ref byte textEnd, ref Vector4 cpuFineClipRect)
+		public unsafe void AddText(ImFont* font, float fontSize, Vector2 pos, uint col, ReadOnlySpan<byte> textBegin, in byte textEnd, in Vector4 cpuFineClipRect)
 		{
 			fixed (byte* ptextBegin = textBegin)
 			{
@@ -13581,7 +14274,7 @@ namespace Dalamud.Bindings.ImGui
 		/// <summary>
 		/// To be documented.
 		/// </summary>
-		public unsafe void AddText(ImFont* font, float fontSize, Vector2 pos, uint col, ReadOnlySpan<byte> textBegin, string textEnd, float wrapWidth, ref Vector4 cpuFineClipRect)
+		public unsafe void AddText(ImFont* font, float fontSize, Vector2 pos, uint col, ReadOnlySpan<byte> textBegin, string textEnd, float wrapWidth, in Vector4 cpuFineClipRect)
 		{
 			fixed (byte* ptextBegin = textBegin)
 			{
@@ -13616,7 +14309,7 @@ namespace Dalamud.Bindings.ImGui
 		/// <summary>
 		/// To be documented.
 		/// </summary>
-		public unsafe void AddText(ImFont* font, float fontSize, Vector2 pos, uint col, ReadOnlySpan<byte> textBegin, string textEnd, ref Vector4 cpuFineClipRect)
+		public unsafe void AddText(ImFont* font, float fontSize, Vector2 pos, uint col, ReadOnlySpan<byte> textBegin, string textEnd, in Vector4 cpuFineClipRect)
 		{
 			fixed (byte* ptextBegin = textBegin)
 			{
@@ -13651,7 +14344,7 @@ namespace Dalamud.Bindings.ImGui
 		/// <summary>
 		/// To be documented.
 		/// </summary>
-		public unsafe void AddText(ImFont* font, float fontSize, Vector2 pos, uint col, string textBegin, ref byte textEnd, float wrapWidth, ref Vector4 cpuFineClipRect)
+		public unsafe void AddText(ImFont* font, float fontSize, Vector2 pos, uint col, string textBegin, in byte textEnd, float wrapWidth, in Vector4 cpuFineClipRect)
 		{
 			byte* pStr0 = null;
 			int pStrSize0 = 0;
@@ -13686,7 +14379,7 @@ namespace Dalamud.Bindings.ImGui
 		/// <summary>
 		/// To be documented.
 		/// </summary>
-		public unsafe void AddText(ImFont* font, float fontSize, Vector2 pos, uint col, string textBegin, ref byte textEnd, ref Vector4 cpuFineClipRect)
+		public unsafe void AddText(ImFont* font, float fontSize, Vector2 pos, uint col, string textBegin, in byte textEnd, in Vector4 cpuFineClipRect)
 		{
 			byte* pStr0 = null;
 			int pStrSize0 = 0;
@@ -13721,7 +14414,7 @@ namespace Dalamud.Bindings.ImGui
 		/// <summary>
 		/// To be documented.
 		/// </summary>
-		public unsafe void AddText(ImFont* font, float fontSize, Vector2 pos, uint col, string textBegin, ReadOnlySpan<byte> textEnd, float wrapWidth, ref Vector4 cpuFineClipRect)
+		public unsafe void AddText(ImFont* font, float fontSize, Vector2 pos, uint col, string textBegin, ReadOnlySpan<byte> textEnd, float wrapWidth, in Vector4 cpuFineClipRect)
 		{
 			byte* pStr0 = null;
 			int pStrSize0 = 0;
@@ -13756,7 +14449,7 @@ namespace Dalamud.Bindings.ImGui
 		/// <summary>
 		/// To be documented.
 		/// </summary>
-		public unsafe void AddText(ImFont* font, float fontSize, Vector2 pos, uint col, string textBegin, ReadOnlySpan<byte> textEnd, ref Vector4 cpuFineClipRect)
+		public unsafe void AddText(ImFont* font, float fontSize, Vector2 pos, uint col, string textBegin, ReadOnlySpan<byte> textEnd, in Vector4 cpuFineClipRect)
 		{
 			byte* pStr0 = null;
 			int pStrSize0 = 0;
@@ -13791,7 +14484,7 @@ namespace Dalamud.Bindings.ImGui
 		/// <summary>
 		/// To be documented.
 		/// </summary>
-		public unsafe void AddText(ref ImFont font, float fontSize, Vector2 pos, uint col, ref byte textBegin, ref byte textEnd, float wrapWidth, ref Vector4 cpuFineClipRect)
+		public unsafe void AddText(ref ImFont font, float fontSize, Vector2 pos, uint col, in byte textBegin, in byte textEnd, float wrapWidth, in Vector4 cpuFineClipRect)
 		{
 			fixed (ImFont* pfont = &font)
 			{
@@ -13811,7 +14504,7 @@ namespace Dalamud.Bindings.ImGui
 		/// <summary>
 		/// To be documented.
 		/// </summary>
-		public unsafe void AddText(ref ImFont font, float fontSize, Vector2 pos, uint col, ref byte textBegin, ref byte textEnd, ref Vector4 cpuFineClipRect)
+		public unsafe void AddText(ref ImFont font, float fontSize, Vector2 pos, uint col, in byte textBegin, in byte textEnd, in Vector4 cpuFineClipRect)
 		{
 			fixed (ImFont* pfont = &font)
 			{
@@ -13831,7 +14524,7 @@ namespace Dalamud.Bindings.ImGui
 		/// <summary>
 		/// To be documented.
 		/// </summary>
-		public unsafe void AddText(ref ImFont font, float fontSize, Vector2 pos, uint col, ReadOnlySpan<byte> textBegin, ReadOnlySpan<byte> textEnd, float wrapWidth, ref Vector4 cpuFineClipRect)
+		public unsafe void AddText(ref ImFont font, float fontSize, Vector2 pos, uint col, ReadOnlySpan<byte> textBegin, ReadOnlySpan<byte> textEnd, float wrapWidth, in Vector4 cpuFineClipRect)
 		{
 			fixed (ImFont* pfont = &font)
 			{
@@ -13851,7 +14544,7 @@ namespace Dalamud.Bindings.ImGui
 		/// <summary>
 		/// To be documented.
 		/// </summary>
-		public unsafe void AddText(ref ImFont font, float fontSize, Vector2 pos, uint col, ReadOnlySpan<byte> textBegin, ReadOnlySpan<byte> textEnd, ref Vector4 cpuFineClipRect)
+		public unsafe void AddText(ref ImFont font, float fontSize, Vector2 pos, uint col, ReadOnlySpan<byte> textBegin, ReadOnlySpan<byte> textEnd, in Vector4 cpuFineClipRect)
 		{
 			fixed (ImFont* pfont = &font)
 			{
@@ -13871,7 +14564,7 @@ namespace Dalamud.Bindings.ImGui
 		/// <summary>
 		/// To be documented.
 		/// </summary>
-		public unsafe void AddText(ref ImFont font, float fontSize, Vector2 pos, uint col, string textBegin, string textEnd, float wrapWidth, ref Vector4 cpuFineClipRect)
+		public unsafe void AddText(ref ImFont font, float fontSize, Vector2 pos, uint col, string textBegin, string textEnd, float wrapWidth, in Vector4 cpuFineClipRect)
 		{
 			fixed (ImFont* pfont = &font)
 			{
@@ -13927,7 +14620,7 @@ namespace Dalamud.Bindings.ImGui
 		/// <summary>
 		/// To be documented.
 		/// </summary>
-		public unsafe void AddText(ref ImFont font, float fontSize, Vector2 pos, uint col, string textBegin, string textEnd, ref Vector4 cpuFineClipRect)
+		public unsafe void AddText(ref ImFont font, float fontSize, Vector2 pos, uint col, string textBegin, string textEnd, in Vector4 cpuFineClipRect)
 		{
 			fixed (ImFont* pfont = &font)
 			{
@@ -13983,7 +14676,7 @@ namespace Dalamud.Bindings.ImGui
 		/// <summary>
 		/// To be documented.
 		/// </summary>
-		public unsafe void AddText(ref ImFont font, float fontSize, Vector2 pos, uint col, ref byte textBegin, ReadOnlySpan<byte> textEnd, float wrapWidth, ref Vector4 cpuFineClipRect)
+		public unsafe void AddText(ref ImFont font, float fontSize, Vector2 pos, uint col, in byte textBegin, ReadOnlySpan<byte> textEnd, float wrapWidth, in Vector4 cpuFineClipRect)
 		{
 			fixed (ImFont* pfont = &font)
 			{
@@ -14003,7 +14696,7 @@ namespace Dalamud.Bindings.ImGui
 		/// <summary>
 		/// To be documented.
 		/// </summary>
-		public unsafe void AddText(ref ImFont font, float fontSize, Vector2 pos, uint col, ref byte textBegin, ReadOnlySpan<byte> textEnd, ref Vector4 cpuFineClipRect)
+		public unsafe void AddText(ref ImFont font, float fontSize, Vector2 pos, uint col, in byte textBegin, ReadOnlySpan<byte> textEnd, in Vector4 cpuFineClipRect)
 		{
 			fixed (ImFont* pfont = &font)
 			{
@@ -14023,7 +14716,7 @@ namespace Dalamud.Bindings.ImGui
 		/// <summary>
 		/// To be documented.
 		/// </summary>
-		public unsafe void AddText(ref ImFont font, float fontSize, Vector2 pos, uint col, ref byte textBegin, string textEnd, float wrapWidth, ref Vector4 cpuFineClipRect)
+		public unsafe void AddText(ref ImFont font, float fontSize, Vector2 pos, uint col, in byte textBegin, string textEnd, float wrapWidth, in Vector4 cpuFineClipRect)
 		{
 			fixed (ImFont* pfont = &font)
 			{
@@ -14061,7 +14754,7 @@ namespace Dalamud.Bindings.ImGui
 		/// <summary>
 		/// To be documented.
 		/// </summary>
-		public unsafe void AddText(ref ImFont font, float fontSize, Vector2 pos, uint col, ref byte textBegin, string textEnd, ref Vector4 cpuFineClipRect)
+		public unsafe void AddText(ref ImFont font, float fontSize, Vector2 pos, uint col, in byte textBegin, string textEnd, in Vector4 cpuFineClipRect)
 		{
 			fixed (ImFont* pfont = &font)
 			{
@@ -14099,7 +14792,7 @@ namespace Dalamud.Bindings.ImGui
 		/// <summary>
 		/// To be documented.
 		/// </summary>
-		public unsafe void AddText(ref ImFont font, float fontSize, Vector2 pos, uint col, ReadOnlySpan<byte> textBegin, ref byte textEnd, float wrapWidth, ref Vector4 cpuFineClipRect)
+		public unsafe void AddText(ref ImFont font, float fontSize, Vector2 pos, uint col, ReadOnlySpan<byte> textBegin, in byte textEnd, float wrapWidth, in Vector4 cpuFineClipRect)
 		{
 			fixed (ImFont* pfont = &font)
 			{
@@ -14119,7 +14812,7 @@ namespace Dalamud.Bindings.ImGui
 		/// <summary>
 		/// To be documented.
 		/// </summary>
-		public unsafe void AddText(ref ImFont font, float fontSize, Vector2 pos, uint col, ReadOnlySpan<byte> textBegin, ref byte textEnd, ref Vector4 cpuFineClipRect)
+		public unsafe void AddText(ref ImFont font, float fontSize, Vector2 pos, uint col, ReadOnlySpan<byte> textBegin, in byte textEnd, in Vector4 cpuFineClipRect)
 		{
 			fixed (ImFont* pfont = &font)
 			{
@@ -14139,7 +14832,7 @@ namespace Dalamud.Bindings.ImGui
 		/// <summary>
 		/// To be documented.
 		/// </summary>
-		public unsafe void AddText(ref ImFont font, float fontSize, Vector2 pos, uint col, ReadOnlySpan<byte> textBegin, string textEnd, float wrapWidth, ref Vector4 cpuFineClipRect)
+		public unsafe void AddText(ref ImFont font, float fontSize, Vector2 pos, uint col, ReadOnlySpan<byte> textBegin, string textEnd, float wrapWidth, in Vector4 cpuFineClipRect)
 		{
 			fixed (ImFont* pfont = &font)
 			{
@@ -14177,7 +14870,7 @@ namespace Dalamud.Bindings.ImGui
 		/// <summary>
 		/// To be documented.
 		/// </summary>
-		public unsafe void AddText(ref ImFont font, float fontSize, Vector2 pos, uint col, ReadOnlySpan<byte> textBegin, string textEnd, ref Vector4 cpuFineClipRect)
+		public unsafe void AddText(ref ImFont font, float fontSize, Vector2 pos, uint col, ReadOnlySpan<byte> textBegin, string textEnd, in Vector4 cpuFineClipRect)
 		{
 			fixed (ImFont* pfont = &font)
 			{
@@ -14215,7 +14908,7 @@ namespace Dalamud.Bindings.ImGui
 		/// <summary>
 		/// To be documented.
 		/// </summary>
-		public unsafe void AddText(ref ImFont font, float fontSize, Vector2 pos, uint col, string textBegin, ref byte textEnd, float wrapWidth, ref Vector4 cpuFineClipRect)
+		public unsafe void AddText(ref ImFont font, float fontSize, Vector2 pos, uint col, string textBegin, in byte textEnd, float wrapWidth, in Vector4 cpuFineClipRect)
 		{
 			fixed (ImFont* pfont = &font)
 			{
@@ -14253,7 +14946,7 @@ namespace Dalamud.Bindings.ImGui
 		/// <summary>
 		/// To be documented.
 		/// </summary>
-		public unsafe void AddText(ref ImFont font, float fontSize, Vector2 pos, uint col, string textBegin, ref byte textEnd, ref Vector4 cpuFineClipRect)
+		public unsafe void AddText(ref ImFont font, float fontSize, Vector2 pos, uint col, string textBegin, in byte textEnd, in Vector4 cpuFineClipRect)
 		{
 			fixed (ImFont* pfont = &font)
 			{
@@ -14291,7 +14984,7 @@ namespace Dalamud.Bindings.ImGui
 		/// <summary>
 		/// To be documented.
 		/// </summary>
-		public unsafe void AddText(ref ImFont font, float fontSize, Vector2 pos, uint col, string textBegin, ReadOnlySpan<byte> textEnd, float wrapWidth, ref Vector4 cpuFineClipRect)
+		public unsafe void AddText(ref ImFont font, float fontSize, Vector2 pos, uint col, string textBegin, ReadOnlySpan<byte> textEnd, float wrapWidth, in Vector4 cpuFineClipRect)
 		{
 			fixed (ImFont* pfont = &font)
 			{
@@ -14329,7 +15022,7 @@ namespace Dalamud.Bindings.ImGui
 		/// <summary>
 		/// To be documented.
 		/// </summary>
-		public unsafe void AddText(ref ImFont font, float fontSize, Vector2 pos, uint col, string textBegin, ReadOnlySpan<byte> textEnd, ref Vector4 cpuFineClipRect)
+		public unsafe void AddText(ref ImFont font, float fontSize, Vector2 pos, uint col, string textBegin, ReadOnlySpan<byte> textEnd, in Vector4 cpuFineClipRect)
 		{
 			fixed (ImFont* pfont = &font)
 			{
@@ -14415,9 +15108,9 @@ namespace Dalamud.Bindings.ImGui
 		/// <summary>
 		/// To be documented.
 		/// </summary>
-		public unsafe ImDrawListPtr CloneOutput()
+		public unsafe ImDrawList* CloneOutput()
 		{
-			ImDrawListPtr ret = ImGui.CloneOutputNative(Handle);
+			ImDrawList* ret = ImGui.CloneOutputNative(Handle);
 			return ret;
 		}
 
@@ -14427,6 +15120,24 @@ namespace Dalamud.Bindings.ImGui
 		public unsafe void Destroy()
 		{
 			ImGui.DestroyNative(Handle);
+		}
+
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		public unsafe Vector2 GetClipRectMax()
+		{
+			Vector2 ret = ImGui.GetClipRectMaxNative(Handle);
+			return ret;
+		}
+
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		public unsafe Vector2 GetClipRectMin()
+		{
+			Vector2 ret = ImGui.GetClipRectMinNative(Handle);
+			return ret;
 		}
 
 		/// <summary>
@@ -14496,6 +15207,30 @@ namespace Dalamud.Bindings.ImGui
 		/// <summary>
 		/// To be documented.
 		/// </summary>
+		public unsafe void PathEllipticalArcTo(Vector2 center, Vector2 radius, float rot, float aMin, float aMax, int numSegments)
+		{
+			ImGui.PathEllipticalArcToNative(Handle, center, radius, rot, aMin, aMax, numSegments);
+		}
+
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		public unsafe void PathEllipticalArcTo(Vector2 center, Vector2 radius, float rot, float aMin, float aMax)
+		{
+			ImGui.PathEllipticalArcToNative(Handle, center, radius, rot, aMin, aMax, (int)(0));
+		}
+
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		public unsafe void PathFillConcave(uint col)
+		{
+			ImGui.PathFillConcaveNative(Handle, col);
+		}
+
+		/// <summary>
+		/// To be documented.
+		/// </summary>
 		public unsafe void PathFillConvex(uint col)
 		{
 			ImGui.PathFillConvexNative(Handle, col);
@@ -14552,25 +15287,9 @@ namespace Dalamud.Bindings.ImGui
 		/// <summary>
 		/// To be documented.
 		/// </summary>
-		public unsafe void PathStroke(uint col, ImDrawFlags flags, float thickness)
+		public unsafe void PathStroke(uint col, float thickness, ImDrawFlags flags)
 		{
-			ImGui.PathStrokeNative(Handle, col, flags, thickness);
-		}
-
-		/// <summary>
-		/// To be documented.
-		/// </summary>
-		public unsafe void PathStroke(uint col, ImDrawFlags flags)
-		{
-			ImGui.PathStrokeNative(Handle, col, flags, (float)(1.0f));
-		}
-
-		/// <summary>
-		/// To be documented.
-		/// </summary>
-		public unsafe void PathStroke(uint col)
-		{
-			ImGui.PathStrokeNative(Handle, col, (ImDrawFlags)(0), (float)(1.0f));
+			ImGui.PathStrokeNative(Handle, col, thickness, flags);
 		}
 
 		/// <summary>
@@ -14578,7 +15297,23 @@ namespace Dalamud.Bindings.ImGui
 		/// </summary>
 		public unsafe void PathStroke(uint col, float thickness)
 		{
-			ImGui.PathStrokeNative(Handle, col, (ImDrawFlags)(0), thickness);
+			ImGui.PathStrokeNative(Handle, col, thickness, (ImDrawFlags)(0));
+		}
+
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		public unsafe void PathStroke(uint col)
+		{
+			ImGui.PathStrokeNative(Handle, col, (float)(1.0f), (ImDrawFlags)(0));
+		}
+
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		public unsafe void PathStroke(uint col, ImDrawFlags flags)
+		{
+			ImGui.PathStrokeNative(Handle, col, (float)(1.0f), flags);
 		}
 
 		/// <summary>
@@ -14592,9 +15327,9 @@ namespace Dalamud.Bindings.ImGui
 		/// <summary>
 		/// To be documented.
 		/// </summary>
-		public unsafe void PopTextureID()
+		public unsafe void PopTexture()
 		{
-			ImGui.PopTextureIDNative(Handle);
+			ImGui.PopTextureNative(Handle);
 		}
 
 		/// <summary>
@@ -14688,9 +15423,9 @@ namespace Dalamud.Bindings.ImGui
 		/// <summary>
 		/// To be documented.
 		/// </summary>
-		public unsafe void PushTextureID(ImTextureID textureId)
+		public unsafe void PushTexture(ImTextureRef texRef)
 		{
-			ImGui.PushTextureIDNative(Handle, textureId);
+			ImGui.PushTextureNative(Handle, texRef);
 		}
 
 	}

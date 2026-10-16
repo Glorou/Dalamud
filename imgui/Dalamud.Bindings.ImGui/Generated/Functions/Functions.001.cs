@@ -21,103 +21,7 @@ namespace Dalamud.Bindings.ImGui
 		/// <summary>
 		/// To be documented.
 		/// </summary>
-		public static void PushID(string strIdBegin, string strIdEnd)
-		{
-			byte* pStr0 = null;
-			int pStrSize0 = 0;
-			if (strIdBegin != null)
-			{
-				pStrSize0 = Utils.GetByteCountUTF8(strIdBegin);
-				if (pStrSize0 >= Utils.MaxStackallocSize)
-				{
-					pStr0 = Utils.Alloc<byte>(pStrSize0 + 1);
-				}
-				else
-				{
-					byte* pStrStack0 = stackalloc byte[pStrSize0 + 1];
-					pStr0 = pStrStack0;
-				}
-				int pStrOffset0 = Utils.EncodeStringUTF8(strIdBegin, pStr0, pStrSize0);
-				pStr0[pStrOffset0] = 0;
-			}
-			byte* pStr1 = null;
-			int pStrSize1 = 0;
-			if (strIdEnd != null)
-			{
-				pStrSize1 = Utils.GetByteCountUTF8(strIdEnd);
-				if (pStrSize1 >= Utils.MaxStackallocSize)
-				{
-					pStr1 = Utils.Alloc<byte>(pStrSize1 + 1);
-				}
-				else
-				{
-					byte* pStrStack1 = stackalloc byte[pStrSize1 + 1];
-					pStr1 = pStrStack1;
-				}
-				int pStrOffset1 = Utils.EncodeStringUTF8(strIdEnd, pStr1, pStrSize1);
-				pStr1[pStrOffset1] = 0;
-			}
-			PushIDNative(pStr0, pStr1);
-			if (pStrSize1 >= Utils.MaxStackallocSize)
-			{
-				Utils.Free(pStr1);
-			}
-			if (pStrSize0 >= Utils.MaxStackallocSize)
-			{
-				Utils.Free(pStr0);
-			}
-		}
-
-		/// <summary>
-		/// To be documented.
-		/// </summary>
-		public static void PushID(ref byte strIdBegin, ReadOnlySpan<byte> strIdEnd)
-		{
-			fixed (byte* pstrIdBegin = &strIdBegin)
-			{
-				fixed (byte* pstrIdEnd = strIdEnd)
-				{
-					PushIDNative((byte*)pstrIdBegin, (byte*)pstrIdEnd);
-				}
-			}
-		}
-
-		/// <summary>
-		/// To be documented.
-		/// </summary>
-		public static void PushID(ref byte strIdBegin, string strIdEnd)
-		{
-			fixed (byte* pstrIdBegin = &strIdBegin)
-			{
-				byte* pStr0 = null;
-				int pStrSize0 = 0;
-				if (strIdEnd != null)
-				{
-					pStrSize0 = Utils.GetByteCountUTF8(strIdEnd);
-					if (pStrSize0 >= Utils.MaxStackallocSize)
-					{
-						pStr0 = Utils.Alloc<byte>(pStrSize0 + 1);
-					}
-					else
-					{
-						byte* pStrStack0 = stackalloc byte[pStrSize0 + 1];
-						pStr0 = pStrStack0;
-					}
-					int pStrOffset0 = Utils.EncodeStringUTF8(strIdEnd, pStr0, pStrSize0);
-					pStr0[pStrOffset0] = 0;
-				}
-				PushIDNative((byte*)pstrIdBegin, pStr0);
-				if (pStrSize0 >= Utils.MaxStackallocSize)
-				{
-					Utils.Free(pStr0);
-				}
-			}
-		}
-
-		/// <summary>
-		/// To be documented.
-		/// </summary>
-		public static void PushID(ReadOnlySpan<byte> strIdBegin, ref byte strIdEnd)
+		public static void PushID(ReadOnlySpan<byte> strIdBegin, in byte strIdEnd)
 		{
 			fixed (byte* pstrIdBegin = strIdBegin)
 			{
@@ -163,7 +67,7 @@ namespace Dalamud.Bindings.ImGui
 		/// <summary>
 		/// To be documented.
 		/// </summary>
-		public static void PushID(string strIdBegin, ref byte strIdEnd)
+		public static void PushID(string strIdBegin, in byte strIdEnd)
 		{
 			byte* pStr0 = null;
 			int pStrSize0 = 0;
@@ -231,9 +135,9 @@ namespace Dalamud.Bindings.ImGui
 		internal static void PushIDNative(void* ptrId)
 		{
 			#if NET5_0_OR_GREATER
-			((delegate* unmanaged[Cdecl]<void*, void>)funcTable[127])(ptrId);
+			((delegate* unmanaged[Cdecl]<void*, void>)funcTable[129])(ptrId);
 			#else
-			((delegate* unmanaged[Cdecl]<nint, void>)funcTable[127])((nint)ptrId);
+			((delegate* unmanaged[Cdecl]<nint, void>)funcTable[129])((nint)ptrId);
 			#endif
 		}
 
@@ -248,13 +152,21 @@ namespace Dalamud.Bindings.ImGui
 		/// <summary>
 		/// To be documented.
 		/// </summary>
+		public static void PushID(nint ptrId)
+		{
+			PushIDNative((void*)ptrId);
+		}
+
+		/// <summary>
+		/// To be documented.
+		/// </summary>
 		[MethodImpl(MethodImplOptions.AggressiveInlining)]
 		internal static void PushIDNative(int intId)
 		{
 			#if NET5_0_OR_GREATER
-			((delegate* unmanaged[Cdecl]<int, void>)funcTable[128])(intId);
+			((delegate* unmanaged[Cdecl]<int, void>)funcTable[130])(intId);
 			#else
-			((delegate* unmanaged[Cdecl]<int, void>)funcTable[128])(intId);
+			((delegate* unmanaged[Cdecl]<int, void>)funcTable[130])(intId);
 			#endif
 		}
 
@@ -273,9 +185,9 @@ namespace Dalamud.Bindings.ImGui
 		internal static void PopIDNative()
 		{
 			#if NET5_0_OR_GREATER
-			((delegate* unmanaged[Cdecl]<void>)funcTable[129])();
+			((delegate* unmanaged[Cdecl]<void>)funcTable[131])();
 			#else
-			((delegate* unmanaged[Cdecl]<void>)funcTable[129])();
+			((delegate* unmanaged[Cdecl]<void>)funcTable[131])();
 			#endif
 		}
 
@@ -294,9 +206,9 @@ namespace Dalamud.Bindings.ImGui
 		internal static uint GetIDNative(byte* strId)
 		{
 			#if NET5_0_OR_GREATER
-			return ((delegate* unmanaged[Cdecl]<byte*, uint>)funcTable[130])(strId);
+			return ((delegate* unmanaged[Cdecl]<byte*, uint>)funcTable[132])(strId);
 			#else
-			return (uint)((delegate* unmanaged[Cdecl]<nint, uint>)funcTable[130])((nint)strId);
+			return (uint)((delegate* unmanaged[Cdecl]<nint, uint>)funcTable[132])((nint)strId);
 			#endif
 		}
 
@@ -312,7 +224,7 @@ namespace Dalamud.Bindings.ImGui
 		/// <summary>
 		/// To be documented.
 		/// </summary>
-		public static uint GetID(ref byte strId)
+		public static uint GetID(in byte strId)
 		{
 			fixed (byte* pstrId = &strId)
 			{
@@ -370,9 +282,9 @@ namespace Dalamud.Bindings.ImGui
 		internal static uint GetIDNative(byte* strIdBegin, byte* strIdEnd)
 		{
 			#if NET5_0_OR_GREATER
-			return ((delegate* unmanaged[Cdecl]<byte*, byte*, uint>)funcTable[131])(strIdBegin, strIdEnd);
+			return ((delegate* unmanaged[Cdecl]<byte*, byte*, uint>)funcTable[133])(strIdBegin, strIdEnd);
 			#else
-			return (uint)((delegate* unmanaged[Cdecl]<nint, nint, uint>)funcTable[131])((nint)strIdBegin, (nint)strIdEnd);
+			return (uint)((delegate* unmanaged[Cdecl]<nint, nint, uint>)funcTable[133])((nint)strIdBegin, (nint)strIdEnd);
 			#endif
 		}
 
@@ -388,7 +300,7 @@ namespace Dalamud.Bindings.ImGui
 		/// <summary>
 		/// To be documented.
 		/// </summary>
-		public static uint GetID(ref byte strIdBegin, byte* strIdEnd)
+		public static uint GetID(in byte strIdBegin, byte* strIdEnd)
 		{
 			fixed (byte* pstrIdBegin = &strIdBegin)
 			{
@@ -442,7 +354,7 @@ namespace Dalamud.Bindings.ImGui
 		/// <summary>
 		/// To be documented.
 		/// </summary>
-		public static uint GetID(byte* strIdBegin, ref byte strIdEnd)
+		public static uint GetID(byte* strIdBegin, in byte strIdEnd)
 		{
 			fixed (byte* pstrIdEnd = &strIdEnd)
 			{
@@ -496,7 +408,7 @@ namespace Dalamud.Bindings.ImGui
 		/// <summary>
 		/// To be documented.
 		/// </summary>
-		public static uint GetID(ref byte strIdBegin, ref byte strIdEnd)
+		public static uint GetID(in byte strIdBegin, in byte strIdEnd)
 		{
 			fixed (byte* pstrIdBegin = &strIdBegin)
 			{
@@ -577,7 +489,7 @@ namespace Dalamud.Bindings.ImGui
 		/// <summary>
 		/// To be documented.
 		/// </summary>
-		public static uint GetID(ref byte strIdBegin, ReadOnlySpan<byte> strIdEnd)
+		public static uint GetID(in byte strIdBegin, ReadOnlySpan<byte> strIdEnd)
 		{
 			fixed (byte* pstrIdBegin = &strIdBegin)
 			{
@@ -592,7 +504,7 @@ namespace Dalamud.Bindings.ImGui
 		/// <summary>
 		/// To be documented.
 		/// </summary>
-		public static uint GetID(ref byte strIdBegin, string strIdEnd)
+		public static uint GetID(in byte strIdBegin, string strIdEnd)
 		{
 			fixed (byte* pstrIdBegin = &strIdBegin)
 			{
@@ -625,7 +537,7 @@ namespace Dalamud.Bindings.ImGui
 		/// <summary>
 		/// To be documented.
 		/// </summary>
-		public static uint GetID(ReadOnlySpan<byte> strIdBegin, ref byte strIdEnd)
+		public static uint GetID(ReadOnlySpan<byte> strIdBegin, in byte strIdEnd)
 		{
 			fixed (byte* pstrIdBegin = strIdBegin)
 			{
@@ -673,7 +585,7 @@ namespace Dalamud.Bindings.ImGui
 		/// <summary>
 		/// To be documented.
 		/// </summary>
-		public static uint GetID(string strIdBegin, ref byte strIdEnd)
+		public static uint GetID(string strIdBegin, in byte strIdEnd)
 		{
 			byte* pStr0 = null;
 			int pStrSize0 = 0;
@@ -743,9 +655,9 @@ namespace Dalamud.Bindings.ImGui
 		internal static uint GetIDNative(void* ptrId)
 		{
 			#if NET5_0_OR_GREATER
-			return ((delegate* unmanaged[Cdecl]<void*, uint>)funcTable[132])(ptrId);
+			return ((delegate* unmanaged[Cdecl]<void*, uint>)funcTable[134])(ptrId);
 			#else
-			return (uint)((delegate* unmanaged[Cdecl]<nint, uint>)funcTable[132])((nint)ptrId);
+			return (uint)((delegate* unmanaged[Cdecl]<nint, uint>)funcTable[134])((nint)ptrId);
 			#endif
 		}
 
@@ -761,13 +673,44 @@ namespace Dalamud.Bindings.ImGui
 		/// <summary>
 		/// To be documented.
 		/// </summary>
+		public static uint GetID(nint ptrId)
+		{
+			uint ret = GetIDNative((void*)ptrId);
+			return ret;
+		}
+
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		[MethodImpl(MethodImplOptions.AggressiveInlining)]
+		internal static uint GetIDNative(int intId)
+		{
+			#if NET5_0_OR_GREATER
+			return ((delegate* unmanaged[Cdecl]<int, uint>)funcTable[135])(intId);
+			#else
+			return (uint)((delegate* unmanaged[Cdecl]<int, uint>)funcTable[135])(intId);
+			#endif
+		}
+
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		public static uint GetID(int intId)
+		{
+			uint ret = GetIDNative(intId);
+			return ret;
+		}
+
+		/// <summary>
+		/// To be documented.
+		/// </summary>
 		[MethodImpl(MethodImplOptions.AggressiveInlining)]
 		internal static void TextUnformattedNative(byte* text, byte* textEnd)
 		{
 			#if NET5_0_OR_GREATER
-			((delegate* unmanaged[Cdecl]<byte*, byte*, void>)funcTable[133])(text, textEnd);
+			((delegate* unmanaged[Cdecl]<byte*, byte*, void>)funcTable[136])(text, textEnd);
 			#else
-			((delegate* unmanaged[Cdecl]<nint, nint, void>)funcTable[133])((nint)text, (nint)textEnd);
+			((delegate* unmanaged[Cdecl]<nint, nint, void>)funcTable[136])((nint)text, (nint)textEnd);
 			#endif
 		}
 
@@ -790,7 +733,7 @@ namespace Dalamud.Bindings.ImGui
 		/// <summary>
 		/// To be documented.
 		/// </summary>
-		public static void TextUnformatted(ref byte text, byte* textEnd)
+		public static void TextUnformatted(in byte text, byte* textEnd)
 		{
 			fixed (byte* ptext = &text)
 			{
@@ -801,7 +744,7 @@ namespace Dalamud.Bindings.ImGui
 		/// <summary>
 		/// To be documented.
 		/// </summary>
-		public static void TextUnformatted(ref byte text)
+		public static void TextUnformatted(in byte text)
 		{
 			fixed (byte* ptext = &text)
 			{
@@ -892,7 +835,7 @@ namespace Dalamud.Bindings.ImGui
 		/// <summary>
 		/// To be documented.
 		/// </summary>
-		public static void TextUnformatted(byte* text, ref byte textEnd)
+		public static void TextUnformatted(byte* text, in byte textEnd)
 		{
 			fixed (byte* ptextEnd = &textEnd)
 			{
@@ -943,7 +886,7 @@ namespace Dalamud.Bindings.ImGui
 		/// <summary>
 		/// To be documented.
 		/// </summary>
-		public static void TextUnformatted(ref byte text, ref byte textEnd)
+		public static void TextUnformatted(in byte text, in byte textEnd)
 		{
 			fixed (byte* ptext = &text)
 			{
@@ -1021,7 +964,7 @@ namespace Dalamud.Bindings.ImGui
 		/// <summary>
 		/// To be documented.
 		/// </summary>
-		public static void TextUnformatted(ref byte text, ReadOnlySpan<byte> textEnd)
+		public static void TextUnformatted(in byte text, ReadOnlySpan<byte> textEnd)
 		{
 			fixed (byte* ptext = &text)
 			{
@@ -1035,7 +978,7 @@ namespace Dalamud.Bindings.ImGui
 		/// <summary>
 		/// To be documented.
 		/// </summary>
-		public static void TextUnformatted(ref byte text, string textEnd)
+		public static void TextUnformatted(in byte text, string textEnd)
 		{
 			fixed (byte* ptext = &text)
 			{
@@ -1067,7 +1010,7 @@ namespace Dalamud.Bindings.ImGui
 		/// <summary>
 		/// To be documented.
 		/// </summary>
-		public static void TextUnformatted(ReadOnlySpan<byte> text, ref byte textEnd)
+		public static void TextUnformatted(ReadOnlySpan<byte> text, in byte textEnd)
 		{
 			fixed (byte* ptext = text)
 			{
@@ -1113,7 +1056,7 @@ namespace Dalamud.Bindings.ImGui
 		/// <summary>
 		/// To be documented.
 		/// </summary>
-		public static void TextUnformatted(string text, ref byte textEnd)
+		public static void TextUnformatted(string text, in byte textEnd)
 		{
 			byte* pStr0 = null;
 			int pStrSize0 = 0;
@@ -1181,9 +1124,9 @@ namespace Dalamud.Bindings.ImGui
 		internal static void TextNative(byte* fmt)
 		{
 			#if NET5_0_OR_GREATER
-			((delegate* unmanaged[Cdecl]<byte*, void>)funcTable[134])(fmt);
+			((delegate* unmanaged[Cdecl]<byte*, void>)funcTable[137])(fmt);
 			#else
-			((delegate* unmanaged[Cdecl]<nint, void>)funcTable[134])((nint)fmt);
+			((delegate* unmanaged[Cdecl]<nint, void>)funcTable[137])((nint)fmt);
 			#endif
 		}
 
@@ -1198,7 +1141,7 @@ namespace Dalamud.Bindings.ImGui
 		/// <summary>
 		/// To be documented.
 		/// </summary>
-		public static void Text(ref byte fmt)
+		public static void Text(in byte fmt)
 		{
 			fixed (byte* pfmt = &fmt)
 			{
@@ -1253,9 +1196,9 @@ namespace Dalamud.Bindings.ImGui
 		internal static void TextVNative(byte* fmt, nuint args)
 		{
 			#if NET5_0_OR_GREATER
-			((delegate* unmanaged[Cdecl]<byte*, nuint, void>)funcTable[135])(fmt, args);
+			((delegate* unmanaged[Cdecl]<byte*, nuint, void>)funcTable[138])(fmt, args);
 			#else
-			((delegate* unmanaged[Cdecl]<nint, nuint, void>)funcTable[135])((nint)fmt, args);
+			((delegate* unmanaged[Cdecl]<nint, nuint, void>)funcTable[138])((nint)fmt, args);
 			#endif
 		}
 
@@ -1270,7 +1213,7 @@ namespace Dalamud.Bindings.ImGui
 		/// <summary>
 		/// To be documented.
 		/// </summary>
-		public static void TextV(ref byte fmt, nuint args)
+		public static void TextV(in byte fmt, nuint args)
 		{
 			fixed (byte* pfmt = &fmt)
 			{
@@ -1325,9 +1268,9 @@ namespace Dalamud.Bindings.ImGui
 		internal static void TextColoredNative(Vector4 col, byte* fmt)
 		{
 			#if NET5_0_OR_GREATER
-			((delegate* unmanaged[Cdecl]<Vector4, byte*, void>)funcTable[136])(col, fmt);
+			((delegate* unmanaged[Cdecl]<Vector4, byte*, void>)funcTable[139])(col, fmt);
 			#else
-			((delegate* unmanaged[Cdecl]<Vector4, nint, void>)funcTable[136])(col, (nint)fmt);
+			((delegate* unmanaged[Cdecl]<Vector4, nint, void>)funcTable[139])(col, (nint)fmt);
 			#endif
 		}
 
@@ -1342,7 +1285,7 @@ namespace Dalamud.Bindings.ImGui
 		/// <summary>
 		/// To be documented.
 		/// </summary>
-		public static void TextColored(Vector4 col, ref byte fmt)
+		public static void TextColored(Vector4 col, in byte fmt)
 		{
 			fixed (byte* pfmt = &fmt)
 			{
@@ -1397,9 +1340,9 @@ namespace Dalamud.Bindings.ImGui
 		internal static void TextColoredVNative(Vector4 col, byte* fmt, nuint args)
 		{
 			#if NET5_0_OR_GREATER
-			((delegate* unmanaged[Cdecl]<Vector4, byte*, nuint, void>)funcTable[137])(col, fmt, args);
+			((delegate* unmanaged[Cdecl]<Vector4, byte*, nuint, void>)funcTable[140])(col, fmt, args);
 			#else
-			((delegate* unmanaged[Cdecl]<Vector4, nint, nuint, void>)funcTable[137])(col, (nint)fmt, args);
+			((delegate* unmanaged[Cdecl]<Vector4, nint, nuint, void>)funcTable[140])(col, (nint)fmt, args);
 			#endif
 		}
 
@@ -1414,7 +1357,7 @@ namespace Dalamud.Bindings.ImGui
 		/// <summary>
 		/// To be documented.
 		/// </summary>
-		public static void TextColoredV(Vector4 col, ref byte fmt, nuint args)
+		public static void TextColoredV(Vector4 col, in byte fmt, nuint args)
 		{
 			fixed (byte* pfmt = &fmt)
 			{
@@ -1469,9 +1412,9 @@ namespace Dalamud.Bindings.ImGui
 		internal static void TextDisabledNative(byte* fmt)
 		{
 			#if NET5_0_OR_GREATER
-			((delegate* unmanaged[Cdecl]<byte*, void>)funcTable[138])(fmt);
+			((delegate* unmanaged[Cdecl]<byte*, void>)funcTable[141])(fmt);
 			#else
-			((delegate* unmanaged[Cdecl]<nint, void>)funcTable[138])((nint)fmt);
+			((delegate* unmanaged[Cdecl]<nint, void>)funcTable[141])((nint)fmt);
 			#endif
 		}
 
@@ -1486,7 +1429,7 @@ namespace Dalamud.Bindings.ImGui
 		/// <summary>
 		/// To be documented.
 		/// </summary>
-		public static void TextDisabled(ref byte fmt)
+		public static void TextDisabled(in byte fmt)
 		{
 			fixed (byte* pfmt = &fmt)
 			{
@@ -1541,9 +1484,9 @@ namespace Dalamud.Bindings.ImGui
 		internal static void TextDisabledVNative(byte* fmt, nuint args)
 		{
 			#if NET5_0_OR_GREATER
-			((delegate* unmanaged[Cdecl]<byte*, nuint, void>)funcTable[139])(fmt, args);
+			((delegate* unmanaged[Cdecl]<byte*, nuint, void>)funcTable[142])(fmt, args);
 			#else
-			((delegate* unmanaged[Cdecl]<nint, nuint, void>)funcTable[139])((nint)fmt, args);
+			((delegate* unmanaged[Cdecl]<nint, nuint, void>)funcTable[142])((nint)fmt, args);
 			#endif
 		}
 
@@ -1558,7 +1501,7 @@ namespace Dalamud.Bindings.ImGui
 		/// <summary>
 		/// To be documented.
 		/// </summary>
-		public static void TextDisabledV(ref byte fmt, nuint args)
+		public static void TextDisabledV(in byte fmt, nuint args)
 		{
 			fixed (byte* pfmt = &fmt)
 			{
@@ -1613,9 +1556,9 @@ namespace Dalamud.Bindings.ImGui
 		internal static void TextWrappedNative(byte* fmt)
 		{
 			#if NET5_0_OR_GREATER
-			((delegate* unmanaged[Cdecl]<byte*, void>)funcTable[140])(fmt);
+			((delegate* unmanaged[Cdecl]<byte*, void>)funcTable[143])(fmt);
 			#else
-			((delegate* unmanaged[Cdecl]<nint, void>)funcTable[140])((nint)fmt);
+			((delegate* unmanaged[Cdecl]<nint, void>)funcTable[143])((nint)fmt);
 			#endif
 		}
 
@@ -1630,7 +1573,7 @@ namespace Dalamud.Bindings.ImGui
 		/// <summary>
 		/// To be documented.
 		/// </summary>
-		public static void TextWrapped(ref byte fmt)
+		public static void TextWrapped(in byte fmt)
 		{
 			fixed (byte* pfmt = &fmt)
 			{
@@ -1685,9 +1628,9 @@ namespace Dalamud.Bindings.ImGui
 		internal static void TextWrappedVNative(byte* fmt, nuint args)
 		{
 			#if NET5_0_OR_GREATER
-			((delegate* unmanaged[Cdecl]<byte*, nuint, void>)funcTable[141])(fmt, args);
+			((delegate* unmanaged[Cdecl]<byte*, nuint, void>)funcTable[144])(fmt, args);
 			#else
-			((delegate* unmanaged[Cdecl]<nint, nuint, void>)funcTable[141])((nint)fmt, args);
+			((delegate* unmanaged[Cdecl]<nint, nuint, void>)funcTable[144])((nint)fmt, args);
 			#endif
 		}
 
@@ -1702,7 +1645,7 @@ namespace Dalamud.Bindings.ImGui
 		/// <summary>
 		/// To be documented.
 		/// </summary>
-		public static void TextWrappedV(ref byte fmt, nuint args)
+		public static void TextWrappedV(in byte fmt, nuint args)
 		{
 			fixed (byte* pfmt = &fmt)
 			{
@@ -1757,9 +1700,9 @@ namespace Dalamud.Bindings.ImGui
 		internal static void LabelTextNative(byte* label, byte* fmt)
 		{
 			#if NET5_0_OR_GREATER
-			((delegate* unmanaged[Cdecl]<byte*, byte*, void>)funcTable[142])(label, fmt);
+			((delegate* unmanaged[Cdecl]<byte*, byte*, void>)funcTable[145])(label, fmt);
 			#else
-			((delegate* unmanaged[Cdecl]<nint, nint, void>)funcTable[142])((nint)label, (nint)fmt);
+			((delegate* unmanaged[Cdecl]<nint, nint, void>)funcTable[145])((nint)label, (nint)fmt);
 			#endif
 		}
 
@@ -1774,7 +1717,7 @@ namespace Dalamud.Bindings.ImGui
 		/// <summary>
 		/// To be documented.
 		/// </summary>
-		public static void LabelText(ref byte label, byte* fmt)
+		public static void LabelText(in byte label, byte* fmt)
 		{
 			fixed (byte* plabel = &label)
 			{
@@ -1825,7 +1768,7 @@ namespace Dalamud.Bindings.ImGui
 		/// <summary>
 		/// To be documented.
 		/// </summary>
-		public static void LabelText(byte* label, ref byte fmt)
+		public static void LabelText(byte* label, in byte fmt)
 		{
 			fixed (byte* pfmt = &fmt)
 			{
@@ -1876,7 +1819,7 @@ namespace Dalamud.Bindings.ImGui
 		/// <summary>
 		/// To be documented.
 		/// </summary>
-		public static void LabelText(ref byte label, ref byte fmt)
+		public static void LabelText(in byte label, in byte fmt)
 		{
 			fixed (byte* plabel = &label)
 			{
@@ -1954,7 +1897,7 @@ namespace Dalamud.Bindings.ImGui
 		/// <summary>
 		/// To be documented.
 		/// </summary>
-		public static void LabelText(ref byte label, ReadOnlySpan<byte> fmt)
+		public static void LabelText(in byte label, ReadOnlySpan<byte> fmt)
 		{
 			fixed (byte* plabel = &label)
 			{
@@ -1968,7 +1911,7 @@ namespace Dalamud.Bindings.ImGui
 		/// <summary>
 		/// To be documented.
 		/// </summary>
-		public static void LabelText(ref byte label, string fmt)
+		public static void LabelText(in byte label, string fmt)
 		{
 			fixed (byte* plabel = &label)
 			{
@@ -2000,7 +1943,7 @@ namespace Dalamud.Bindings.ImGui
 		/// <summary>
 		/// To be documented.
 		/// </summary>
-		public static void LabelText(ReadOnlySpan<byte> label, ref byte fmt)
+		public static void LabelText(ReadOnlySpan<byte> label, in byte fmt)
 		{
 			fixed (byte* plabel = label)
 			{
@@ -2046,7 +1989,7 @@ namespace Dalamud.Bindings.ImGui
 		/// <summary>
 		/// To be documented.
 		/// </summary>
-		public static void LabelText(string label, ref byte fmt)
+		public static void LabelText(string label, in byte fmt)
 		{
 			byte* pStr0 = null;
 			int pStrSize0 = 0;
@@ -2114,9 +2057,9 @@ namespace Dalamud.Bindings.ImGui
 		internal static void LabelTextVNative(byte* label, byte* fmt, nuint args)
 		{
 			#if NET5_0_OR_GREATER
-			((delegate* unmanaged[Cdecl]<byte*, byte*, nuint, void>)funcTable[143])(label, fmt, args);
+			((delegate* unmanaged[Cdecl]<byte*, byte*, nuint, void>)funcTable[146])(label, fmt, args);
 			#else
-			((delegate* unmanaged[Cdecl]<nint, nint, nuint, void>)funcTable[143])((nint)label, (nint)fmt, args);
+			((delegate* unmanaged[Cdecl]<nint, nint, nuint, void>)funcTable[146])((nint)label, (nint)fmt, args);
 			#endif
 		}
 
@@ -2131,7 +2074,7 @@ namespace Dalamud.Bindings.ImGui
 		/// <summary>
 		/// To be documented.
 		/// </summary>
-		public static void LabelTextV(ref byte label, byte* fmt, nuint args)
+		public static void LabelTextV(in byte label, byte* fmt, nuint args)
 		{
 			fixed (byte* plabel = &label)
 			{
@@ -2182,7 +2125,7 @@ namespace Dalamud.Bindings.ImGui
 		/// <summary>
 		/// To be documented.
 		/// </summary>
-		public static void LabelTextV(byte* label, ref byte fmt, nuint args)
+		public static void LabelTextV(byte* label, in byte fmt, nuint args)
 		{
 			fixed (byte* pfmt = &fmt)
 			{
@@ -2233,7 +2176,7 @@ namespace Dalamud.Bindings.ImGui
 		/// <summary>
 		/// To be documented.
 		/// </summary>
-		public static void LabelTextV(ref byte label, ref byte fmt, nuint args)
+		public static void LabelTextV(in byte label, in byte fmt, nuint args)
 		{
 			fixed (byte* plabel = &label)
 			{
@@ -2311,7 +2254,7 @@ namespace Dalamud.Bindings.ImGui
 		/// <summary>
 		/// To be documented.
 		/// </summary>
-		public static void LabelTextV(ref byte label, ReadOnlySpan<byte> fmt, nuint args)
+		public static void LabelTextV(in byte label, ReadOnlySpan<byte> fmt, nuint args)
 		{
 			fixed (byte* plabel = &label)
 			{
@@ -2325,7 +2268,7 @@ namespace Dalamud.Bindings.ImGui
 		/// <summary>
 		/// To be documented.
 		/// </summary>
-		public static void LabelTextV(ref byte label, string fmt, nuint args)
+		public static void LabelTextV(in byte label, string fmt, nuint args)
 		{
 			fixed (byte* plabel = &label)
 			{
@@ -2357,7 +2300,7 @@ namespace Dalamud.Bindings.ImGui
 		/// <summary>
 		/// To be documented.
 		/// </summary>
-		public static void LabelTextV(ReadOnlySpan<byte> label, ref byte fmt, nuint args)
+		public static void LabelTextV(ReadOnlySpan<byte> label, in byte fmt, nuint args)
 		{
 			fixed (byte* plabel = label)
 			{
@@ -2403,7 +2346,7 @@ namespace Dalamud.Bindings.ImGui
 		/// <summary>
 		/// To be documented.
 		/// </summary>
-		public static void LabelTextV(string label, ref byte fmt, nuint args)
+		public static void LabelTextV(string label, in byte fmt, nuint args)
 		{
 			byte* pStr0 = null;
 			int pStrSize0 = 0;
@@ -2471,9 +2414,9 @@ namespace Dalamud.Bindings.ImGui
 		internal static void BulletTextNative(byte* fmt)
 		{
 			#if NET5_0_OR_GREATER
-			((delegate* unmanaged[Cdecl]<byte*, void>)funcTable[144])(fmt);
+			((delegate* unmanaged[Cdecl]<byte*, void>)funcTable[147])(fmt);
 			#else
-			((delegate* unmanaged[Cdecl]<nint, void>)funcTable[144])((nint)fmt);
+			((delegate* unmanaged[Cdecl]<nint, void>)funcTable[147])((nint)fmt);
 			#endif
 		}
 
@@ -2488,7 +2431,7 @@ namespace Dalamud.Bindings.ImGui
 		/// <summary>
 		/// To be documented.
 		/// </summary>
-		public static void BulletText(ref byte fmt)
+		public static void BulletText(in byte fmt)
 		{
 			fixed (byte* pfmt = &fmt)
 			{
@@ -2543,9 +2486,9 @@ namespace Dalamud.Bindings.ImGui
 		internal static void BulletTextVNative(byte* fmt, nuint args)
 		{
 			#if NET5_0_OR_GREATER
-			((delegate* unmanaged[Cdecl]<byte*, nuint, void>)funcTable[145])(fmt, args);
+			((delegate* unmanaged[Cdecl]<byte*, nuint, void>)funcTable[148])(fmt, args);
 			#else
-			((delegate* unmanaged[Cdecl]<nint, nuint, void>)funcTable[145])((nint)fmt, args);
+			((delegate* unmanaged[Cdecl]<nint, nuint, void>)funcTable[148])((nint)fmt, args);
 			#endif
 		}
 
@@ -2560,7 +2503,7 @@ namespace Dalamud.Bindings.ImGui
 		/// <summary>
 		/// To be documented.
 		/// </summary>
-		public static void BulletTextV(ref byte fmt, nuint args)
+		public static void BulletTextV(in byte fmt, nuint args)
 		{
 			fixed (byte* pfmt = &fmt)
 			{
@@ -2612,12 +2555,84 @@ namespace Dalamud.Bindings.ImGui
 		/// To be documented.
 		/// </summary>
 		[MethodImpl(MethodImplOptions.AggressiveInlining)]
+		internal static void SeparatorTextNative(byte* label)
+		{
+			#if NET5_0_OR_GREATER
+			((delegate* unmanaged[Cdecl]<byte*, void>)funcTable[149])(label);
+			#else
+			((delegate* unmanaged[Cdecl]<nint, void>)funcTable[149])((nint)label);
+			#endif
+		}
+
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		public static void SeparatorText(byte* label)
+		{
+			SeparatorTextNative(label);
+		}
+
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		public static void SeparatorText(in byte label)
+		{
+			fixed (byte* plabel = &label)
+			{
+				SeparatorTextNative((byte*)plabel);
+			}
+		}
+
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		public static void SeparatorText(ReadOnlySpan<byte> label)
+		{
+			fixed (byte* plabel = label)
+			{
+				SeparatorTextNative((byte*)plabel);
+			}
+		}
+
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		public static void SeparatorText(string label)
+		{
+			byte* pStr0 = null;
+			int pStrSize0 = 0;
+			if (label != null)
+			{
+				pStrSize0 = Utils.GetByteCountUTF8(label);
+				if (pStrSize0 >= Utils.MaxStackallocSize)
+				{
+					pStr0 = Utils.Alloc<byte>(pStrSize0 + 1);
+				}
+				else
+				{
+					byte* pStrStack0 = stackalloc byte[pStrSize0 + 1];
+					pStr0 = pStrStack0;
+				}
+				int pStrOffset0 = Utils.EncodeStringUTF8(label, pStr0, pStrSize0);
+				pStr0[pStrOffset0] = 0;
+			}
+			SeparatorTextNative(pStr0);
+			if (pStrSize0 >= Utils.MaxStackallocSize)
+			{
+				Utils.Free(pStr0);
+			}
+		}
+
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		[MethodImpl(MethodImplOptions.AggressiveInlining)]
 		internal static byte ButtonNative(byte* label, Vector2 size)
 		{
 			#if NET5_0_OR_GREATER
-			return ((delegate* unmanaged[Cdecl]<byte*, Vector2, byte>)funcTable[146])(label, size);
+			return ((delegate* unmanaged[Cdecl]<byte*, Vector2, byte>)funcTable[150])(label, size);
 			#else
-			return (byte)((delegate* unmanaged[Cdecl]<nint, Vector2, byte>)funcTable[146])((nint)label, size);
+			return (byte)((delegate* unmanaged[Cdecl]<nint, Vector2, byte>)funcTable[150])((nint)label, size);
 			#endif
 		}
 
@@ -2642,7 +2657,7 @@ namespace Dalamud.Bindings.ImGui
 		/// <summary>
 		/// To be documented.
 		/// </summary>
-		public static bool Button(ref byte label, Vector2 size)
+		public static bool Button(in byte label, Vector2 size)
 		{
 			fixed (byte* plabel = &label)
 			{
@@ -2654,7 +2669,7 @@ namespace Dalamud.Bindings.ImGui
 		/// <summary>
 		/// To be documented.
 		/// </summary>
-		public static bool Button(ref byte label)
+		public static bool Button(in byte label)
 		{
 			fixed (byte* plabel = &label)
 			{
@@ -2754,9 +2769,9 @@ namespace Dalamud.Bindings.ImGui
 		internal static byte SmallButtonNative(byte* label)
 		{
 			#if NET5_0_OR_GREATER
-			return ((delegate* unmanaged[Cdecl]<byte*, byte>)funcTable[147])(label);
+			return ((delegate* unmanaged[Cdecl]<byte*, byte>)funcTable[151])(label);
 			#else
-			return (byte)((delegate* unmanaged[Cdecl]<nint, byte>)funcTable[147])((nint)label);
+			return (byte)((delegate* unmanaged[Cdecl]<nint, byte>)funcTable[151])((nint)label);
 			#endif
 		}
 
@@ -2772,7 +2787,7 @@ namespace Dalamud.Bindings.ImGui
 		/// <summary>
 		/// To be documented.
 		/// </summary>
-		public static bool SmallButton(ref byte label)
+		public static bool SmallButton(in byte label)
 		{
 			fixed (byte* plabel = &label)
 			{
@@ -2830,9 +2845,9 @@ namespace Dalamud.Bindings.ImGui
 		internal static byte InvisibleButtonNative(byte* strId, Vector2 size, ImGuiButtonFlags flags)
 		{
 			#if NET5_0_OR_GREATER
-			return ((delegate* unmanaged[Cdecl]<byte*, Vector2, ImGuiButtonFlags, byte>)funcTable[148])(strId, size, flags);
+			return ((delegate* unmanaged[Cdecl]<byte*, Vector2, ImGuiButtonFlags, byte>)funcTable[152])(strId, size, flags);
 			#else
-			return (byte)((delegate* unmanaged[Cdecl]<nint, Vector2, ImGuiButtonFlags, byte>)funcTable[148])((nint)strId, size, flags);
+			return (byte)((delegate* unmanaged[Cdecl]<nint, Vector2, ImGuiButtonFlags, byte>)funcTable[152])((nint)strId, size, flags);
 			#endif
 		}
 
@@ -2857,7 +2872,7 @@ namespace Dalamud.Bindings.ImGui
 		/// <summary>
 		/// To be documented.
 		/// </summary>
-		public static bool InvisibleButton(ref byte strId, Vector2 size, ImGuiButtonFlags flags)
+		public static bool InvisibleButton(in byte strId, Vector2 size, ImGuiButtonFlags flags)
 		{
 			fixed (byte* pstrId = &strId)
 			{
@@ -2869,7 +2884,7 @@ namespace Dalamud.Bindings.ImGui
 		/// <summary>
 		/// To be documented.
 		/// </summary>
-		public static bool InvisibleButton(ref byte strId, Vector2 size)
+		public static bool InvisibleButton(in byte strId, Vector2 size)
 		{
 			fixed (byte* pstrId = &strId)
 			{
@@ -2969,9 +2984,9 @@ namespace Dalamud.Bindings.ImGui
 		internal static byte ArrowButtonNative(byte* strId, ImGuiDir dir)
 		{
 			#if NET5_0_OR_GREATER
-			return ((delegate* unmanaged[Cdecl]<byte*, ImGuiDir, byte>)funcTable[149])(strId, dir);
+			return ((delegate* unmanaged[Cdecl]<byte*, ImGuiDir, byte>)funcTable[153])(strId, dir);
 			#else
-			return (byte)((delegate* unmanaged[Cdecl]<nint, ImGuiDir, byte>)funcTable[149])((nint)strId, dir);
+			return (byte)((delegate* unmanaged[Cdecl]<nint, ImGuiDir, byte>)funcTable[153])((nint)strId, dir);
 			#endif
 		}
 
@@ -2987,7 +3002,7 @@ namespace Dalamud.Bindings.ImGui
 		/// <summary>
 		/// To be documented.
 		/// </summary>
-		public static bool ArrowButton(ref byte strId, ImGuiDir dir)
+		public static bool ArrowButton(in byte strId, ImGuiDir dir)
 		{
 			fixed (byte* pstrId = &strId)
 			{
@@ -3042,272 +3057,12 @@ namespace Dalamud.Bindings.ImGui
 		/// To be documented.
 		/// </summary>
 		[MethodImpl(MethodImplOptions.AggressiveInlining)]
-		internal static void ImageNative(ImTextureID userTextureId, Vector2 size, Vector2 uv0, Vector2 uv1, Vector4 tintCol, Vector4 borderCol)
-		{
-			#if NET5_0_OR_GREATER
-			((delegate* unmanaged[Cdecl]<ImTextureID, Vector2, Vector2, Vector2, Vector4, Vector4, void>)funcTable[150])(userTextureId, size, uv0, uv1, tintCol, borderCol);
-			#else
-			((delegate* unmanaged[Cdecl]<ImTextureID, Vector2, Vector2, Vector2, Vector4, Vector4, void>)funcTable[150])(userTextureId, size, uv0, uv1, tintCol, borderCol);
-			#endif
-		}
-
-		/// <summary>
-		/// To be documented.
-		/// </summary>
-		public static void Image(ImTextureID userTextureId, Vector2 size, Vector2 uv0, Vector2 uv1, Vector4 tintCol, Vector4 borderCol)
-		{
-			ImageNative(userTextureId, size, uv0, uv1, tintCol, borderCol);
-		}
-
-		/// <summary>
-		/// To be documented.
-		/// </summary>
-		public static void Image(ImTextureID userTextureId, Vector2 size, Vector2 uv0, Vector2 uv1, Vector4 tintCol)
-		{
-			ImageNative(userTextureId, size, uv0, uv1, tintCol, (Vector4)(new Vector4(0,0,0,0)));
-		}
-
-		/// <summary>
-		/// To be documented.
-		/// </summary>
-		public static void Image(ImTextureID userTextureId, Vector2 size, Vector2 uv0, Vector2 uv1)
-		{
-			ImageNative(userTextureId, size, uv0, uv1, (Vector4)(new Vector4(1,1,1,1)), (Vector4)(new Vector4(0,0,0,0)));
-		}
-
-		/// <summary>
-		/// To be documented.
-		/// </summary>
-		public static void Image(ImTextureID userTextureId, Vector2 size, Vector2 uv0)
-		{
-			ImageNative(userTextureId, size, uv0, (Vector2)(new Vector2(1,1)), (Vector4)(new Vector4(1,1,1,1)), (Vector4)(new Vector4(0,0,0,0)));
-		}
-
-		/// <summary>
-		/// To be documented.
-		/// </summary>
-		public static void Image(ImTextureID userTextureId, Vector2 size)
-		{
-			ImageNative(userTextureId, size, (Vector2)(new Vector2(0,0)), (Vector2)(new Vector2(1,1)), (Vector4)(new Vector4(1,1,1,1)), (Vector4)(new Vector4(0,0,0,0)));
-		}
-
-		/// <summary>
-		/// To be documented.
-		/// </summary>
-		public static void Image(ImTextureID userTextureId, Vector2 size, Vector2 uv0, Vector4 tintCol)
-		{
-			ImageNative(userTextureId, size, uv0, (Vector2)(new Vector2(1,1)), tintCol, (Vector4)(new Vector4(0,0,0,0)));
-		}
-
-		/// <summary>
-		/// To be documented.
-		/// </summary>
-		public static void Image(ImTextureID userTextureId, Vector2 size, Vector4 tintCol)
-		{
-			ImageNative(userTextureId, size, (Vector2)(new Vector2(0,0)), (Vector2)(new Vector2(1,1)), tintCol, (Vector4)(new Vector4(0,0,0,0)));
-		}
-
-		/// <summary>
-		/// To be documented.
-		/// </summary>
-		public static void Image(ImTextureID userTextureId, Vector2 size, Vector2 uv0, Vector4 tintCol, Vector4 borderCol)
-		{
-			ImageNative(userTextureId, size, uv0, (Vector2)(new Vector2(1,1)), tintCol, borderCol);
-		}
-
-		/// <summary>
-		/// To be documented.
-		/// </summary>
-		public static void Image(ImTextureID userTextureId, Vector2 size, Vector4 tintCol, Vector4 borderCol)
-		{
-			ImageNative(userTextureId, size, (Vector2)(new Vector2(0,0)), (Vector2)(new Vector2(1,1)), tintCol, borderCol);
-		}
-
-		/// <summary>
-		/// To be documented.
-		/// </summary>
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
-		internal static byte ImageButtonNative(ImTextureID userTextureId, Vector2 size, Vector2 uv0, Vector2 uv1, int framePadding, Vector4 bgCol, Vector4 tintCol)
-		{
-			#if NET5_0_OR_GREATER
-			return ((delegate* unmanaged[Cdecl]<ImTextureID, Vector2, Vector2, Vector2, int, Vector4, Vector4, byte>)funcTable[151])(userTextureId, size, uv0, uv1, framePadding, bgCol, tintCol);
-			#else
-			return (byte)((delegate* unmanaged[Cdecl]<ImTextureID, Vector2, Vector2, Vector2, int, Vector4, Vector4, byte>)funcTable[151])(userTextureId, size, uv0, uv1, framePadding, bgCol, tintCol);
-			#endif
-		}
-
-		/// <summary>
-		/// To be documented.
-		/// </summary>
-		public static bool ImageButton(ImTextureID userTextureId, Vector2 size, Vector2 uv0, Vector2 uv1, int framePadding, Vector4 bgCol, Vector4 tintCol)
-		{
-			byte ret = ImageButtonNative(userTextureId, size, uv0, uv1, framePadding, bgCol, tintCol);
-			return ret != 0;
-		}
-
-		/// <summary>
-		/// To be documented.
-		/// </summary>
-		public static bool ImageButton(ImTextureID userTextureId, Vector2 size, Vector2 uv0, Vector2 uv1, int framePadding, Vector4 bgCol)
-		{
-			byte ret = ImageButtonNative(userTextureId, size, uv0, uv1, framePadding, bgCol, (Vector4)(new Vector4(1,1,1,1)));
-			return ret != 0;
-		}
-
-		/// <summary>
-		/// To be documented.
-		/// </summary>
-		public static bool ImageButton(ImTextureID userTextureId, Vector2 size, Vector2 uv0, Vector2 uv1, int framePadding)
-		{
-			byte ret = ImageButtonNative(userTextureId, size, uv0, uv1, framePadding, (Vector4)(new Vector4(0,0,0,0)), (Vector4)(new Vector4(1,1,1,1)));
-			return ret != 0;
-		}
-
-		/// <summary>
-		/// To be documented.
-		/// </summary>
-		public static bool ImageButton(ImTextureID userTextureId, Vector2 size, Vector2 uv0, Vector2 uv1)
-		{
-			byte ret = ImageButtonNative(userTextureId, size, uv0, uv1, (int)(-1), (Vector4)(new Vector4(0,0,0,0)), (Vector4)(new Vector4(1,1,1,1)));
-			return ret != 0;
-		}
-
-		/// <summary>
-		/// To be documented.
-		/// </summary>
-		public static bool ImageButton(ImTextureID userTextureId, Vector2 size, Vector2 uv0)
-		{
-			byte ret = ImageButtonNative(userTextureId, size, uv0, (Vector2)(new Vector2(1,1)), (int)(-1), (Vector4)(new Vector4(0,0,0,0)), (Vector4)(new Vector4(1,1,1,1)));
-			return ret != 0;
-		}
-
-		/// <summary>
-		/// To be documented.
-		/// </summary>
-		public static bool ImageButton(ImTextureID userTextureId, Vector2 size)
-		{
-			byte ret = ImageButtonNative(userTextureId, size, (Vector2)(new Vector2(0,0)), (Vector2)(new Vector2(1,1)), (int)(-1), (Vector4)(new Vector4(0,0,0,0)), (Vector4)(new Vector4(1,1,1,1)));
-			return ret != 0;
-		}
-
-		/// <summary>
-		/// To be documented.
-		/// </summary>
-		public static bool ImageButton(ImTextureID userTextureId, Vector2 size, Vector2 uv0, int framePadding)
-		{
-			byte ret = ImageButtonNative(userTextureId, size, uv0, (Vector2)(new Vector2(1,1)), framePadding, (Vector4)(new Vector4(0,0,0,0)), (Vector4)(new Vector4(1,1,1,1)));
-			return ret != 0;
-		}
-
-		/// <summary>
-		/// To be documented.
-		/// </summary>
-		public static bool ImageButton(ImTextureID userTextureId, Vector2 size, int framePadding)
-		{
-			byte ret = ImageButtonNative(userTextureId, size, (Vector2)(new Vector2(0,0)), (Vector2)(new Vector2(1,1)), framePadding, (Vector4)(new Vector4(0,0,0,0)), (Vector4)(new Vector4(1,1,1,1)));
-			return ret != 0;
-		}
-
-		/// <summary>
-		/// To be documented.
-		/// </summary>
-		public static bool ImageButton(ImTextureID userTextureId, Vector2 size, Vector2 uv0, Vector2 uv1, Vector4 bgCol)
-		{
-			byte ret = ImageButtonNative(userTextureId, size, uv0, uv1, (int)(-1), bgCol, (Vector4)(new Vector4(1,1,1,1)));
-			return ret != 0;
-		}
-
-		/// <summary>
-		/// To be documented.
-		/// </summary>
-		public static bool ImageButton(ImTextureID userTextureId, Vector2 size, Vector2 uv0, Vector4 bgCol)
-		{
-			byte ret = ImageButtonNative(userTextureId, size, uv0, (Vector2)(new Vector2(1,1)), (int)(-1), bgCol, (Vector4)(new Vector4(1,1,1,1)));
-			return ret != 0;
-		}
-
-		/// <summary>
-		/// To be documented.
-		/// </summary>
-		public static bool ImageButton(ImTextureID userTextureId, Vector2 size, Vector4 bgCol)
-		{
-			byte ret = ImageButtonNative(userTextureId, size, (Vector2)(new Vector2(0,0)), (Vector2)(new Vector2(1,1)), (int)(-1), bgCol, (Vector4)(new Vector4(1,1,1,1)));
-			return ret != 0;
-		}
-
-		/// <summary>
-		/// To be documented.
-		/// </summary>
-		public static bool ImageButton(ImTextureID userTextureId, Vector2 size, Vector2 uv0, int framePadding, Vector4 bgCol)
-		{
-			byte ret = ImageButtonNative(userTextureId, size, uv0, (Vector2)(new Vector2(1,1)), framePadding, bgCol, (Vector4)(new Vector4(1,1,1,1)));
-			return ret != 0;
-		}
-
-		/// <summary>
-		/// To be documented.
-		/// </summary>
-		public static bool ImageButton(ImTextureID userTextureId, Vector2 size, int framePadding, Vector4 bgCol)
-		{
-			byte ret = ImageButtonNative(userTextureId, size, (Vector2)(new Vector2(0,0)), (Vector2)(new Vector2(1,1)), framePadding, bgCol, (Vector4)(new Vector4(1,1,1,1)));
-			return ret != 0;
-		}
-
-		/// <summary>
-		/// To be documented.
-		/// </summary>
-		public static bool ImageButton(ImTextureID userTextureId, Vector2 size, Vector2 uv0, Vector2 uv1, Vector4 bgCol, Vector4 tintCol)
-		{
-			byte ret = ImageButtonNative(userTextureId, size, uv0, uv1, (int)(-1), bgCol, tintCol);
-			return ret != 0;
-		}
-
-		/// <summary>
-		/// To be documented.
-		/// </summary>
-		public static bool ImageButton(ImTextureID userTextureId, Vector2 size, Vector2 uv0, Vector4 bgCol, Vector4 tintCol)
-		{
-			byte ret = ImageButtonNative(userTextureId, size, uv0, (Vector2)(new Vector2(1,1)), (int)(-1), bgCol, tintCol);
-			return ret != 0;
-		}
-
-		/// <summary>
-		/// To be documented.
-		/// </summary>
-		public static bool ImageButton(ImTextureID userTextureId, Vector2 size, Vector4 bgCol, Vector4 tintCol)
-		{
-			byte ret = ImageButtonNative(userTextureId, size, (Vector2)(new Vector2(0,0)), (Vector2)(new Vector2(1,1)), (int)(-1), bgCol, tintCol);
-			return ret != 0;
-		}
-
-		/// <summary>
-		/// To be documented.
-		/// </summary>
-		public static bool ImageButton(ImTextureID userTextureId, Vector2 size, Vector2 uv0, int framePadding, Vector4 bgCol, Vector4 tintCol)
-		{
-			byte ret = ImageButtonNative(userTextureId, size, uv0, (Vector2)(new Vector2(1,1)), framePadding, bgCol, tintCol);
-			return ret != 0;
-		}
-
-		/// <summary>
-		/// To be documented.
-		/// </summary>
-		public static bool ImageButton(ImTextureID userTextureId, Vector2 size, int framePadding, Vector4 bgCol, Vector4 tintCol)
-		{
-			byte ret = ImageButtonNative(userTextureId, size, (Vector2)(new Vector2(0,0)), (Vector2)(new Vector2(1,1)), framePadding, bgCol, tintCol);
-			return ret != 0;
-		}
-
-		/// <summary>
-		/// To be documented.
-		/// </summary>
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
 		internal static byte CheckboxNative(byte* label, bool* v)
 		{
 			#if NET5_0_OR_GREATER
-			return ((delegate* unmanaged[Cdecl]<byte*, bool*, byte>)funcTable[152])(label, v);
+			return ((delegate* unmanaged[Cdecl]<byte*, bool*, byte>)funcTable[154])(label, v);
 			#else
-			return (byte)((delegate* unmanaged[Cdecl]<nint, nint, byte>)funcTable[152])((nint)label, (nint)v);
+			return (byte)((delegate* unmanaged[Cdecl]<nint, nint, byte>)funcTable[154])((nint)label, (nint)v);
 			#endif
 		}
 
@@ -3323,7 +3078,7 @@ namespace Dalamud.Bindings.ImGui
 		/// <summary>
 		/// To be documented.
 		/// </summary>
-		public static bool Checkbox(ref byte label, bool* v)
+		public static bool Checkbox(in byte label, bool* v)
 		{
 			fixed (byte* plabel = &label)
 			{
@@ -3389,7 +3144,7 @@ namespace Dalamud.Bindings.ImGui
 		/// <summary>
 		/// To be documented.
 		/// </summary>
-		public static bool Checkbox(ref byte label, ref bool v)
+		public static bool Checkbox(in byte label, ref bool v)
 		{
 			fixed (byte* plabel = &label)
 			{
@@ -3456,9 +3211,9 @@ namespace Dalamud.Bindings.ImGui
 		internal static byte CheckboxFlagsNative(byte* label, int* flags, int flagsValue)
 		{
 			#if NET5_0_OR_GREATER
-			return ((delegate* unmanaged[Cdecl]<byte*, int*, int, byte>)funcTable[153])(label, flags, flagsValue);
+			return ((delegate* unmanaged[Cdecl]<byte*, int*, int, byte>)funcTable[155])(label, flags, flagsValue);
 			#else
-			return (byte)((delegate* unmanaged[Cdecl]<nint, nint, int, byte>)funcTable[153])((nint)label, (nint)flags, flagsValue);
+			return (byte)((delegate* unmanaged[Cdecl]<nint, nint, int, byte>)funcTable[155])((nint)label, (nint)flags, flagsValue);
 			#endif
 		}
 
@@ -3474,7 +3229,7 @@ namespace Dalamud.Bindings.ImGui
 		/// <summary>
 		/// To be documented.
 		/// </summary>
-		public static bool CheckboxFlags(ref byte label, int* flags, int flagsValue)
+		public static bool CheckboxFlags(in byte label, int* flags, int flagsValue)
 		{
 			fixed (byte* plabel = &label)
 			{
@@ -3540,7 +3295,7 @@ namespace Dalamud.Bindings.ImGui
 		/// <summary>
 		/// To be documented.
 		/// </summary>
-		public static bool CheckboxFlags(ref byte label, ref int flags, int flagsValue)
+		public static bool CheckboxFlags(in byte label, ref int flags, int flagsValue)
 		{
 			fixed (byte* plabel = &label)
 			{
@@ -3607,9 +3362,9 @@ namespace Dalamud.Bindings.ImGui
 		internal static byte CheckboxFlagsNative(byte* label, uint* flags, uint flagsValue)
 		{
 			#if NET5_0_OR_GREATER
-			return ((delegate* unmanaged[Cdecl]<byte*, uint*, uint, byte>)funcTable[154])(label, flags, flagsValue);
+			return ((delegate* unmanaged[Cdecl]<byte*, uint*, uint, byte>)funcTable[156])(label, flags, flagsValue);
 			#else
-			return (byte)((delegate* unmanaged[Cdecl]<nint, nint, uint, byte>)funcTable[154])((nint)label, (nint)flags, flagsValue);
+			return (byte)((delegate* unmanaged[Cdecl]<nint, nint, uint, byte>)funcTable[156])((nint)label, (nint)flags, flagsValue);
 			#endif
 		}
 
@@ -3625,7 +3380,7 @@ namespace Dalamud.Bindings.ImGui
 		/// <summary>
 		/// To be documented.
 		/// </summary>
-		public static bool CheckboxFlags(ref byte label, uint* flags, uint flagsValue)
+		public static bool CheckboxFlags(in byte label, uint* flags, uint flagsValue)
 		{
 			fixed (byte* plabel = &label)
 			{
@@ -3691,7 +3446,7 @@ namespace Dalamud.Bindings.ImGui
 		/// <summary>
 		/// To be documented.
 		/// </summary>
-		public static bool CheckboxFlags(ref byte label, ref uint flags, uint flagsValue)
+		public static bool CheckboxFlags(in byte label, ref uint flags, uint flagsValue)
 		{
 			fixed (byte* plabel = &label)
 			{
@@ -3758,9 +3513,9 @@ namespace Dalamud.Bindings.ImGui
 		internal static byte RadioButtonNative(byte* label, byte active)
 		{
 			#if NET5_0_OR_GREATER
-			return ((delegate* unmanaged[Cdecl]<byte*, byte, byte>)funcTable[155])(label, active);
+			return ((delegate* unmanaged[Cdecl]<byte*, byte, byte>)funcTable[157])(label, active);
 			#else
-			return (byte)((delegate* unmanaged[Cdecl]<nint, byte, byte>)funcTable[155])((nint)label, active);
+			return (byte)((delegate* unmanaged[Cdecl]<nint, byte, byte>)funcTable[157])((nint)label, active);
 			#endif
 		}
 
@@ -3776,7 +3531,7 @@ namespace Dalamud.Bindings.ImGui
 		/// <summary>
 		/// To be documented.
 		/// </summary>
-		public static bool RadioButton(ref byte label, bool active)
+		public static bool RadioButton(in byte label, bool active)
 		{
 			fixed (byte* plabel = &label)
 			{
@@ -3834,9 +3589,9 @@ namespace Dalamud.Bindings.ImGui
 		internal static byte RadioButtonNative(byte* label, int* v, int vButton)
 		{
 			#if NET5_0_OR_GREATER
-			return ((delegate* unmanaged[Cdecl]<byte*, int*, int, byte>)funcTable[156])(label, v, vButton);
+			return ((delegate* unmanaged[Cdecl]<byte*, int*, int, byte>)funcTable[158])(label, v, vButton);
 			#else
-			return (byte)((delegate* unmanaged[Cdecl]<nint, nint, int, byte>)funcTable[156])((nint)label, (nint)v, vButton);
+			return (byte)((delegate* unmanaged[Cdecl]<nint, nint, int, byte>)funcTable[158])((nint)label, (nint)v, vButton);
 			#endif
 		}
 
@@ -3852,7 +3607,7 @@ namespace Dalamud.Bindings.ImGui
 		/// <summary>
 		/// To be documented.
 		/// </summary>
-		public static bool RadioButton(ref byte label, int* v, int vButton)
+		public static bool RadioButton(in byte label, int* v, int vButton)
 		{
 			fixed (byte* plabel = &label)
 			{
@@ -3918,7 +3673,7 @@ namespace Dalamud.Bindings.ImGui
 		/// <summary>
 		/// To be documented.
 		/// </summary>
-		public static bool RadioButton(ref byte label, ref int v, int vButton)
+		public static bool RadioButton(in byte label, ref int v, int vButton)
 		{
 			fixed (byte* plabel = &label)
 			{
@@ -3985,9 +3740,9 @@ namespace Dalamud.Bindings.ImGui
 		internal static void ProgressBarNative(float fraction, Vector2 sizeArg, byte* overlay)
 		{
 			#if NET5_0_OR_GREATER
-			((delegate* unmanaged[Cdecl]<float, Vector2, byte*, void>)funcTable[157])(fraction, sizeArg, overlay);
+			((delegate* unmanaged[Cdecl]<float, Vector2, byte*, void>)funcTable[159])(fraction, sizeArg, overlay);
 			#else
-			((delegate* unmanaged[Cdecl]<float, Vector2, nint, void>)funcTable[157])(fraction, sizeArg, (nint)overlay);
+			((delegate* unmanaged[Cdecl]<float, Vector2, nint, void>)funcTable[159])(fraction, sizeArg, (nint)overlay);
 			#endif
 		}
 
@@ -4026,7 +3781,7 @@ namespace Dalamud.Bindings.ImGui
 		/// <summary>
 		/// To be documented.
 		/// </summary>
-		public static void ProgressBar(float fraction, Vector2 sizeArg, ref byte overlay)
+		public static void ProgressBar(float fraction, Vector2 sizeArg, in byte overlay)
 		{
 			fixed (byte* poverlay = &overlay)
 			{
@@ -4037,7 +3792,7 @@ namespace Dalamud.Bindings.ImGui
 		/// <summary>
 		/// To be documented.
 		/// </summary>
-		public static void ProgressBar(float fraction, ref byte overlay)
+		public static void ProgressBar(float fraction, in byte overlay)
 		{
 			fixed (byte* poverlay = &overlay)
 			{
@@ -4132,9 +3887,9 @@ namespace Dalamud.Bindings.ImGui
 		internal static void BulletNative()
 		{
 			#if NET5_0_OR_GREATER
-			((delegate* unmanaged[Cdecl]<void>)funcTable[158])();
+			((delegate* unmanaged[Cdecl]<void>)funcTable[160])();
 			#else
-			((delegate* unmanaged[Cdecl]<void>)funcTable[158])();
+			((delegate* unmanaged[Cdecl]<void>)funcTable[160])();
 			#endif
 		}
 
@@ -4150,41 +3905,32 @@ namespace Dalamud.Bindings.ImGui
 		/// To be documented.
 		/// </summary>
 		[MethodImpl(MethodImplOptions.AggressiveInlining)]
-		internal static byte BeginComboNative(byte* label, byte* previewValue, ImGuiComboFlags flags)
+		internal static byte TextLinkNative(byte* label)
 		{
 			#if NET5_0_OR_GREATER
-			return ((delegate* unmanaged[Cdecl]<byte*, byte*, ImGuiComboFlags, byte>)funcTable[159])(label, previewValue, flags);
+			return ((delegate* unmanaged[Cdecl]<byte*, byte>)funcTable[161])(label);
 			#else
-			return (byte)((delegate* unmanaged[Cdecl]<nint, nint, ImGuiComboFlags, byte>)funcTable[159])((nint)label, (nint)previewValue, flags);
+			return (byte)((delegate* unmanaged[Cdecl]<nint, byte>)funcTable[161])((nint)label);
 			#endif
 		}
 
 		/// <summary>
 		/// To be documented.
 		/// </summary>
-		public static bool BeginCombo(byte* label, byte* previewValue, ImGuiComboFlags flags)
+		public static bool TextLink(byte* label)
 		{
-			byte ret = BeginComboNative(label, previewValue, flags);
+			byte ret = TextLinkNative(label);
 			return ret != 0;
 		}
 
 		/// <summary>
 		/// To be documented.
 		/// </summary>
-		public static bool BeginCombo(byte* label, byte* previewValue)
-		{
-			byte ret = BeginComboNative(label, previewValue, (ImGuiComboFlags)(0));
-			return ret != 0;
-		}
-
-		/// <summary>
-		/// To be documented.
-		/// </summary>
-		public static bool BeginCombo(ref byte label, byte* previewValue, ImGuiComboFlags flags)
+		public static bool TextLink(in byte label)
 		{
 			fixed (byte* plabel = &label)
 			{
-				byte ret = BeginComboNative((byte*)plabel, previewValue, flags);
+				byte ret = TextLinkNative((byte*)plabel);
 				return ret != 0;
 			}
 		}
@@ -4192,23 +3938,11 @@ namespace Dalamud.Bindings.ImGui
 		/// <summary>
 		/// To be documented.
 		/// </summary>
-		public static bool BeginCombo(ref byte label, byte* previewValue)
-		{
-			fixed (byte* plabel = &label)
-			{
-				byte ret = BeginComboNative((byte*)plabel, previewValue, (ImGuiComboFlags)(0));
-				return ret != 0;
-			}
-		}
-
-		/// <summary>
-		/// To be documented.
-		/// </summary>
-		public static bool BeginCombo(ReadOnlySpan<byte> label, byte* previewValue, ImGuiComboFlags flags)
+		public static bool TextLink(ReadOnlySpan<byte> label)
 		{
 			fixed (byte* plabel = label)
 			{
-				byte ret = BeginComboNative((byte*)plabel, previewValue, flags);
+				byte ret = TextLinkNative((byte*)plabel);
 				return ret != 0;
 			}
 		}
@@ -4216,19 +3950,7 @@ namespace Dalamud.Bindings.ImGui
 		/// <summary>
 		/// To be documented.
 		/// </summary>
-		public static bool BeginCombo(ReadOnlySpan<byte> label, byte* previewValue)
-		{
-			fixed (byte* plabel = label)
-			{
-				byte ret = BeginComboNative((byte*)plabel, previewValue, (ImGuiComboFlags)(0));
-				return ret != 0;
-			}
-		}
-
-		/// <summary>
-		/// To be documented.
-		/// </summary>
-		public static bool BeginCombo(string label, byte* previewValue, ImGuiComboFlags flags)
+		public static bool TextLink(string label)
 		{
 			byte* pStr0 = null;
 			int pStrSize0 = 0;
@@ -4247,7 +3969,7 @@ namespace Dalamud.Bindings.ImGui
 				int pStrOffset0 = Utils.EncodeStringUTF8(label, pStr0, pStrSize0);
 				pStr0[pStrOffset0] = 0;
 			}
-			byte ret = BeginComboNative(pStr0, previewValue, flags);
+			byte ret = TextLinkNative(pStr0);
 			if (pStrSize0 >= Utils.MaxStackallocSize)
 			{
 				Utils.Free(pStr0);
@@ -4258,7 +3980,86 @@ namespace Dalamud.Bindings.ImGui
 		/// <summary>
 		/// To be documented.
 		/// </summary>
-		public static bool BeginCombo(string label, byte* previewValue)
+		[MethodImpl(MethodImplOptions.AggressiveInlining)]
+		internal static byte TextLinkOpenURLNative(byte* label, byte* url)
+		{
+			#if NET5_0_OR_GREATER
+			return ((delegate* unmanaged[Cdecl]<byte*, byte*, byte>)funcTable[162])(label, url);
+			#else
+			return (byte)((delegate* unmanaged[Cdecl]<nint, nint, byte>)funcTable[162])((nint)label, (nint)url);
+			#endif
+		}
+
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		public static bool TextLinkOpenURL(byte* label, byte* url)
+		{
+			byte ret = TextLinkOpenURLNative(label, url);
+			return ret != 0;
+		}
+
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		public static bool TextLinkOpenURL(byte* label)
+		{
+			byte ret = TextLinkOpenURLNative(label, (byte*)(default));
+			return ret != 0;
+		}
+
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		public static bool TextLinkOpenURL(in byte label, byte* url)
+		{
+			fixed (byte* plabel = &label)
+			{
+				byte ret = TextLinkOpenURLNative((byte*)plabel, url);
+				return ret != 0;
+			}
+		}
+
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		public static bool TextLinkOpenURL(in byte label)
+		{
+			fixed (byte* plabel = &label)
+			{
+				byte ret = TextLinkOpenURLNative((byte*)plabel, (byte*)(default));
+				return ret != 0;
+			}
+		}
+
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		public static bool TextLinkOpenURL(ReadOnlySpan<byte> label, byte* url)
+		{
+			fixed (byte* plabel = label)
+			{
+				byte ret = TextLinkOpenURLNative((byte*)plabel, url);
+				return ret != 0;
+			}
+		}
+
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		public static bool TextLinkOpenURL(ReadOnlySpan<byte> label)
+		{
+			fixed (byte* plabel = label)
+			{
+				byte ret = TextLinkOpenURLNative((byte*)plabel, (byte*)(default));
+				return ret != 0;
+			}
+		}
+
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		public static bool TextLinkOpenURL(string label, byte* url)
 		{
 			byte* pStr0 = null;
 			int pStrSize0 = 0;
@@ -4277,7 +4078,7 @@ namespace Dalamud.Bindings.ImGui
 				int pStrOffset0 = Utils.EncodeStringUTF8(label, pStr0, pStrSize0);
 				pStr0[pStrOffset0] = 0;
 			}
-			byte ret = BeginComboNative(pStr0, previewValue, (ImGuiComboFlags)(0));
+			byte ret = TextLinkOpenURLNative(pStr0, url);
 			if (pStrSize0 >= Utils.MaxStackallocSize)
 			{
 				Utils.Free(pStr0);
@@ -4288,61 +4089,13 @@ namespace Dalamud.Bindings.ImGui
 		/// <summary>
 		/// To be documented.
 		/// </summary>
-		public static bool BeginCombo(byte* label, ref byte previewValue, ImGuiComboFlags flags)
-		{
-			fixed (byte* ppreviewValue = &previewValue)
-			{
-				byte ret = BeginComboNative(label, (byte*)ppreviewValue, flags);
-				return ret != 0;
-			}
-		}
-
-		/// <summary>
-		/// To be documented.
-		/// </summary>
-		public static bool BeginCombo(byte* label, ref byte previewValue)
-		{
-			fixed (byte* ppreviewValue = &previewValue)
-			{
-				byte ret = BeginComboNative(label, (byte*)ppreviewValue, (ImGuiComboFlags)(0));
-				return ret != 0;
-			}
-		}
-
-		/// <summary>
-		/// To be documented.
-		/// </summary>
-		public static bool BeginCombo(byte* label, ReadOnlySpan<byte> previewValue, ImGuiComboFlags flags)
-		{
-			fixed (byte* ppreviewValue = previewValue)
-			{
-				byte ret = BeginComboNative(label, (byte*)ppreviewValue, flags);
-				return ret != 0;
-			}
-		}
-
-		/// <summary>
-		/// To be documented.
-		/// </summary>
-		public static bool BeginCombo(byte* label, ReadOnlySpan<byte> previewValue)
-		{
-			fixed (byte* ppreviewValue = previewValue)
-			{
-				byte ret = BeginComboNative(label, (byte*)ppreviewValue, (ImGuiComboFlags)(0));
-				return ret != 0;
-			}
-		}
-
-		/// <summary>
-		/// To be documented.
-		/// </summary>
-		public static bool BeginCombo(byte* label, string previewValue, ImGuiComboFlags flags)
+		public static bool TextLinkOpenURL(string label)
 		{
 			byte* pStr0 = null;
 			int pStrSize0 = 0;
-			if (previewValue != null)
+			if (label != null)
 			{
-				pStrSize0 = Utils.GetByteCountUTF8(previewValue);
+				pStrSize0 = Utils.GetByteCountUTF8(label);
 				if (pStrSize0 >= Utils.MaxStackallocSize)
 				{
 					pStr0 = Utils.Alloc<byte>(pStrSize0 + 1);
@@ -4352,10 +4105,10 @@ namespace Dalamud.Bindings.ImGui
 					byte* pStrStack0 = stackalloc byte[pStrSize0 + 1];
 					pStr0 = pStrStack0;
 				}
-				int pStrOffset0 = Utils.EncodeStringUTF8(previewValue, pStr0, pStrSize0);
+				int pStrOffset0 = Utils.EncodeStringUTF8(label, pStr0, pStrSize0);
 				pStr0[pStrOffset0] = 0;
 			}
-			byte ret = BeginComboNative(label, pStr0, flags);
+			byte ret = TextLinkOpenURLNative(pStr0, (byte*)(default));
 			if (pStrSize0 >= Utils.MaxStackallocSize)
 			{
 				Utils.Free(pStr0);
@@ -4366,13 +4119,37 @@ namespace Dalamud.Bindings.ImGui
 		/// <summary>
 		/// To be documented.
 		/// </summary>
-		public static bool BeginCombo(byte* label, string previewValue)
+		public static bool TextLinkOpenURL(byte* label, in byte url)
+		{
+			fixed (byte* purl = &url)
+			{
+				byte ret = TextLinkOpenURLNative(label, (byte*)purl);
+				return ret != 0;
+			}
+		}
+
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		public static bool TextLinkOpenURL(byte* label, ReadOnlySpan<byte> url)
+		{
+			fixed (byte* purl = url)
+			{
+				byte ret = TextLinkOpenURLNative(label, (byte*)purl);
+				return ret != 0;
+			}
+		}
+
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		public static bool TextLinkOpenURL(byte* label, string url)
 		{
 			byte* pStr0 = null;
 			int pStrSize0 = 0;
-			if (previewValue != null)
+			if (url != null)
 			{
-				pStrSize0 = Utils.GetByteCountUTF8(previewValue);
+				pStrSize0 = Utils.GetByteCountUTF8(url);
 				if (pStrSize0 >= Utils.MaxStackallocSize)
 				{
 					pStr0 = Utils.Alloc<byte>(pStrSize0 + 1);
@@ -4382,10 +4159,10 @@ namespace Dalamud.Bindings.ImGui
 					byte* pStrStack0 = stackalloc byte[pStrSize0 + 1];
 					pStr0 = pStrStack0;
 				}
-				int pStrOffset0 = Utils.EncodeStringUTF8(previewValue, pStr0, pStrSize0);
+				int pStrOffset0 = Utils.EncodeStringUTF8(url, pStr0, pStrSize0);
 				pStr0[pStrOffset0] = 0;
 			}
-			byte ret = BeginComboNative(label, pStr0, (ImGuiComboFlags)(0));
+			byte ret = TextLinkOpenURLNative(label, pStr0);
 			if (pStrSize0 >= Utils.MaxStackallocSize)
 			{
 				Utils.Free(pStr0);
@@ -4396,13 +4173,13 @@ namespace Dalamud.Bindings.ImGui
 		/// <summary>
 		/// To be documented.
 		/// </summary>
-		public static bool BeginCombo(ref byte label, ref byte previewValue, ImGuiComboFlags flags)
+		public static bool TextLinkOpenURL(in byte label, in byte url)
 		{
 			fixed (byte* plabel = &label)
 			{
-				fixed (byte* ppreviewValue = &previewValue)
+				fixed (byte* purl = &url)
 				{
-					byte ret = BeginComboNative((byte*)plabel, (byte*)ppreviewValue, flags);
+					byte ret = TextLinkOpenURLNative((byte*)plabel, (byte*)purl);
 					return ret != 0;
 				}
 			}
@@ -4411,28 +4188,13 @@ namespace Dalamud.Bindings.ImGui
 		/// <summary>
 		/// To be documented.
 		/// </summary>
-		public static bool BeginCombo(ref byte label, ref byte previewValue)
-		{
-			fixed (byte* plabel = &label)
-			{
-				fixed (byte* ppreviewValue = &previewValue)
-				{
-					byte ret = BeginComboNative((byte*)plabel, (byte*)ppreviewValue, (ImGuiComboFlags)(0));
-					return ret != 0;
-				}
-			}
-		}
-
-		/// <summary>
-		/// To be documented.
-		/// </summary>
-		public static bool BeginCombo(ReadOnlySpan<byte> label, ReadOnlySpan<byte> previewValue, ImGuiComboFlags flags)
+		public static bool TextLinkOpenURL(ReadOnlySpan<byte> label, ReadOnlySpan<byte> url)
 		{
 			fixed (byte* plabel = label)
 			{
-				fixed (byte* ppreviewValue = previewValue)
+				fixed (byte* purl = url)
 				{
-					byte ret = BeginComboNative((byte*)plabel, (byte*)ppreviewValue, flags);
+					byte ret = TextLinkOpenURLNative((byte*)plabel, (byte*)purl);
 					return ret != 0;
 				}
 			}
@@ -4441,22 +4203,7 @@ namespace Dalamud.Bindings.ImGui
 		/// <summary>
 		/// To be documented.
 		/// </summary>
-		public static bool BeginCombo(ReadOnlySpan<byte> label, ReadOnlySpan<byte> previewValue)
-		{
-			fixed (byte* plabel = label)
-			{
-				fixed (byte* ppreviewValue = previewValue)
-				{
-					byte ret = BeginComboNative((byte*)plabel, (byte*)ppreviewValue, (ImGuiComboFlags)(0));
-					return ret != 0;
-				}
-			}
-		}
-
-		/// <summary>
-		/// To be documented.
-		/// </summary>
-		public static bool BeginCombo(string label, string previewValue, ImGuiComboFlags flags)
+		public static bool TextLinkOpenURL(string label, string url)
 		{
 			byte* pStr0 = null;
 			int pStrSize0 = 0;
@@ -4477,9 +4224,9 @@ namespace Dalamud.Bindings.ImGui
 			}
 			byte* pStr1 = null;
 			int pStrSize1 = 0;
-			if (previewValue != null)
+			if (url != null)
 			{
-				pStrSize1 = Utils.GetByteCountUTF8(previewValue);
+				pStrSize1 = Utils.GetByteCountUTF8(url);
 				if (pStrSize1 >= Utils.MaxStackallocSize)
 				{
 					pStr1 = Utils.Alloc<byte>(pStrSize1 + 1);
@@ -4489,10 +4236,10 @@ namespace Dalamud.Bindings.ImGui
 					byte* pStrStack1 = stackalloc byte[pStrSize1 + 1];
 					pStr1 = pStrStack1;
 				}
-				int pStrOffset1 = Utils.EncodeStringUTF8(previewValue, pStr1, pStrSize1);
+				int pStrOffset1 = Utils.EncodeStringUTF8(url, pStr1, pStrSize1);
 				pStr1[pStrOffset1] = 0;
 			}
-			byte ret = BeginComboNative(pStr0, pStr1, flags);
+			byte ret = TextLinkOpenURLNative(pStr0, pStr1);
 			if (pStrSize1 >= Utils.MaxStackallocSize)
 			{
 				Utils.Free(pStr1);
@@ -4507,64 +4254,13 @@ namespace Dalamud.Bindings.ImGui
 		/// <summary>
 		/// To be documented.
 		/// </summary>
-		public static bool BeginCombo(string label, string previewValue)
-		{
-			byte* pStr0 = null;
-			int pStrSize0 = 0;
-			if (label != null)
-			{
-				pStrSize0 = Utils.GetByteCountUTF8(label);
-				if (pStrSize0 >= Utils.MaxStackallocSize)
-				{
-					pStr0 = Utils.Alloc<byte>(pStrSize0 + 1);
-				}
-				else
-				{
-					byte* pStrStack0 = stackalloc byte[pStrSize0 + 1];
-					pStr0 = pStrStack0;
-				}
-				int pStrOffset0 = Utils.EncodeStringUTF8(label, pStr0, pStrSize0);
-				pStr0[pStrOffset0] = 0;
-			}
-			byte* pStr1 = null;
-			int pStrSize1 = 0;
-			if (previewValue != null)
-			{
-				pStrSize1 = Utils.GetByteCountUTF8(previewValue);
-				if (pStrSize1 >= Utils.MaxStackallocSize)
-				{
-					pStr1 = Utils.Alloc<byte>(pStrSize1 + 1);
-				}
-				else
-				{
-					byte* pStrStack1 = stackalloc byte[pStrSize1 + 1];
-					pStr1 = pStrStack1;
-				}
-				int pStrOffset1 = Utils.EncodeStringUTF8(previewValue, pStr1, pStrSize1);
-				pStr1[pStrOffset1] = 0;
-			}
-			byte ret = BeginComboNative(pStr0, pStr1, (ImGuiComboFlags)(0));
-			if (pStrSize1 >= Utils.MaxStackallocSize)
-			{
-				Utils.Free(pStr1);
-			}
-			if (pStrSize0 >= Utils.MaxStackallocSize)
-			{
-				Utils.Free(pStr0);
-			}
-			return ret != 0;
-		}
-
-		/// <summary>
-		/// To be documented.
-		/// </summary>
-		public static bool BeginCombo(ref byte label, ReadOnlySpan<byte> previewValue, ImGuiComboFlags flags)
+		public static bool TextLinkOpenURL(in byte label, ReadOnlySpan<byte> url)
 		{
 			fixed (byte* plabel = &label)
 			{
-				fixed (byte* ppreviewValue = previewValue)
+				fixed (byte* purl = url)
 				{
-					byte ret = BeginComboNative((byte*)plabel, (byte*)ppreviewValue, flags);
+					byte ret = TextLinkOpenURLNative((byte*)plabel, (byte*)purl);
 					return ret != 0;
 				}
 			}
@@ -4573,30 +4269,15 @@ namespace Dalamud.Bindings.ImGui
 		/// <summary>
 		/// To be documented.
 		/// </summary>
-		public static bool BeginCombo(ref byte label, ReadOnlySpan<byte> previewValue)
-		{
-			fixed (byte* plabel = &label)
-			{
-				fixed (byte* ppreviewValue = previewValue)
-				{
-					byte ret = BeginComboNative((byte*)plabel, (byte*)ppreviewValue, (ImGuiComboFlags)(0));
-					return ret != 0;
-				}
-			}
-		}
-
-		/// <summary>
-		/// To be documented.
-		/// </summary>
-		public static bool BeginCombo(ref byte label, string previewValue, ImGuiComboFlags flags)
+		public static bool TextLinkOpenURL(in byte label, string url)
 		{
 			fixed (byte* plabel = &label)
 			{
 				byte* pStr0 = null;
 				int pStrSize0 = 0;
-				if (previewValue != null)
+				if (url != null)
 				{
-					pStrSize0 = Utils.GetByteCountUTF8(previewValue);
+					pStrSize0 = Utils.GetByteCountUTF8(url);
 					if (pStrSize0 >= Utils.MaxStackallocSize)
 					{
 						pStr0 = Utils.Alloc<byte>(pStrSize0 + 1);
@@ -4606,10 +4287,10 @@ namespace Dalamud.Bindings.ImGui
 						byte* pStrStack0 = stackalloc byte[pStrSize0 + 1];
 						pStr0 = pStrStack0;
 					}
-					int pStrOffset0 = Utils.EncodeStringUTF8(previewValue, pStr0, pStrSize0);
+					int pStrOffset0 = Utils.EncodeStringUTF8(url, pStr0, pStrSize0);
 					pStr0[pStrOffset0] = 0;
 				}
-				byte ret = BeginComboNative((byte*)plabel, pStr0, flags);
+				byte ret = TextLinkOpenURLNative((byte*)plabel, pStr0);
 				if (pStrSize0 >= Utils.MaxStackallocSize)
 				{
 					Utils.Free(pStr0);
@@ -4621,46 +4302,13 @@ namespace Dalamud.Bindings.ImGui
 		/// <summary>
 		/// To be documented.
 		/// </summary>
-		public static bool BeginCombo(ref byte label, string previewValue)
-		{
-			fixed (byte* plabel = &label)
-			{
-				byte* pStr0 = null;
-				int pStrSize0 = 0;
-				if (previewValue != null)
-				{
-					pStrSize0 = Utils.GetByteCountUTF8(previewValue);
-					if (pStrSize0 >= Utils.MaxStackallocSize)
-					{
-						pStr0 = Utils.Alloc<byte>(pStrSize0 + 1);
-					}
-					else
-					{
-						byte* pStrStack0 = stackalloc byte[pStrSize0 + 1];
-						pStr0 = pStrStack0;
-					}
-					int pStrOffset0 = Utils.EncodeStringUTF8(previewValue, pStr0, pStrSize0);
-					pStr0[pStrOffset0] = 0;
-				}
-				byte ret = BeginComboNative((byte*)plabel, pStr0, (ImGuiComboFlags)(0));
-				if (pStrSize0 >= Utils.MaxStackallocSize)
-				{
-					Utils.Free(pStr0);
-				}
-				return ret != 0;
-			}
-		}
-
-		/// <summary>
-		/// To be documented.
-		/// </summary>
-		public static bool BeginCombo(ReadOnlySpan<byte> label, ref byte previewValue, ImGuiComboFlags flags)
+		public static bool TextLinkOpenURL(ReadOnlySpan<byte> label, in byte url)
 		{
 			fixed (byte* plabel = label)
 			{
-				fixed (byte* ppreviewValue = &previewValue)
+				fixed (byte* purl = &url)
 				{
-					byte ret = BeginComboNative((byte*)plabel, (byte*)ppreviewValue, flags);
+					byte ret = TextLinkOpenURLNative((byte*)plabel, (byte*)purl);
 					return ret != 0;
 				}
 			}
@@ -4669,30 +4317,15 @@ namespace Dalamud.Bindings.ImGui
 		/// <summary>
 		/// To be documented.
 		/// </summary>
-		public static bool BeginCombo(ReadOnlySpan<byte> label, ref byte previewValue)
-		{
-			fixed (byte* plabel = label)
-			{
-				fixed (byte* ppreviewValue = &previewValue)
-				{
-					byte ret = BeginComboNative((byte*)plabel, (byte*)ppreviewValue, (ImGuiComboFlags)(0));
-					return ret != 0;
-				}
-			}
-		}
-
-		/// <summary>
-		/// To be documented.
-		/// </summary>
-		public static bool BeginCombo(ReadOnlySpan<byte> label, string previewValue, ImGuiComboFlags flags)
+		public static bool TextLinkOpenURL(ReadOnlySpan<byte> label, string url)
 		{
 			fixed (byte* plabel = label)
 			{
 				byte* pStr0 = null;
 				int pStrSize0 = 0;
-				if (previewValue != null)
+				if (url != null)
 				{
-					pStrSize0 = Utils.GetByteCountUTF8(previewValue);
+					pStrSize0 = Utils.GetByteCountUTF8(url);
 					if (pStrSize0 >= Utils.MaxStackallocSize)
 					{
 						pStr0 = Utils.Alloc<byte>(pStrSize0 + 1);
@@ -4702,10 +4335,10 @@ namespace Dalamud.Bindings.ImGui
 						byte* pStrStack0 = stackalloc byte[pStrSize0 + 1];
 						pStr0 = pStrStack0;
 					}
-					int pStrOffset0 = Utils.EncodeStringUTF8(previewValue, pStr0, pStrSize0);
+					int pStrOffset0 = Utils.EncodeStringUTF8(url, pStr0, pStrSize0);
 					pStr0[pStrOffset0] = 0;
 				}
-				byte ret = BeginComboNative((byte*)plabel, pStr0, flags);
+				byte ret = TextLinkOpenURLNative((byte*)plabel, pStr0);
 				if (pStrSize0 >= Utils.MaxStackallocSize)
 				{
 					Utils.Free(pStr0);
@@ -4717,40 +4350,7 @@ namespace Dalamud.Bindings.ImGui
 		/// <summary>
 		/// To be documented.
 		/// </summary>
-		public static bool BeginCombo(ReadOnlySpan<byte> label, string previewValue)
-		{
-			fixed (byte* plabel = label)
-			{
-				byte* pStr0 = null;
-				int pStrSize0 = 0;
-				if (previewValue != null)
-				{
-					pStrSize0 = Utils.GetByteCountUTF8(previewValue);
-					if (pStrSize0 >= Utils.MaxStackallocSize)
-					{
-						pStr0 = Utils.Alloc<byte>(pStrSize0 + 1);
-					}
-					else
-					{
-						byte* pStrStack0 = stackalloc byte[pStrSize0 + 1];
-						pStr0 = pStrStack0;
-					}
-					int pStrOffset0 = Utils.EncodeStringUTF8(previewValue, pStr0, pStrSize0);
-					pStr0[pStrOffset0] = 0;
-				}
-				byte ret = BeginComboNative((byte*)plabel, pStr0, (ImGuiComboFlags)(0));
-				if (pStrSize0 >= Utils.MaxStackallocSize)
-				{
-					Utils.Free(pStr0);
-				}
-				return ret != 0;
-			}
-		}
-
-		/// <summary>
-		/// To be documented.
-		/// </summary>
-		public static bool BeginCombo(string label, ref byte previewValue, ImGuiComboFlags flags)
+		public static bool TextLinkOpenURL(string label, in byte url)
 		{
 			byte* pStr0 = null;
 			int pStrSize0 = 0;
@@ -4769,9 +4369,9 @@ namespace Dalamud.Bindings.ImGui
 				int pStrOffset0 = Utils.EncodeStringUTF8(label, pStr0, pStrSize0);
 				pStr0[pStrOffset0] = 0;
 			}
-			fixed (byte* ppreviewValue = &previewValue)
+			fixed (byte* purl = &url)
 			{
-				byte ret = BeginComboNative(pStr0, (byte*)ppreviewValue, flags);
+				byte ret = TextLinkOpenURLNative(pStr0, (byte*)purl);
 				if (pStrSize0 >= Utils.MaxStackallocSize)
 				{
 					Utils.Free(pStr0);
@@ -4783,7 +4383,7 @@ namespace Dalamud.Bindings.ImGui
 		/// <summary>
 		/// To be documented.
 		/// </summary>
-		public static bool BeginCombo(string label, ref byte previewValue)
+		public static bool TextLinkOpenURL(string label, ReadOnlySpan<byte> url)
 		{
 			byte* pStr0 = null;
 			int pStrSize0 = 0;
@@ -4802,75 +4402,9 @@ namespace Dalamud.Bindings.ImGui
 				int pStrOffset0 = Utils.EncodeStringUTF8(label, pStr0, pStrSize0);
 				pStr0[pStrOffset0] = 0;
 			}
-			fixed (byte* ppreviewValue = &previewValue)
+			fixed (byte* purl = url)
 			{
-				byte ret = BeginComboNative(pStr0, (byte*)ppreviewValue, (ImGuiComboFlags)(0));
-				if (pStrSize0 >= Utils.MaxStackallocSize)
-				{
-					Utils.Free(pStr0);
-				}
-				return ret != 0;
-			}
-		}
-
-		/// <summary>
-		/// To be documented.
-		/// </summary>
-		public static bool BeginCombo(string label, ReadOnlySpan<byte> previewValue, ImGuiComboFlags flags)
-		{
-			byte* pStr0 = null;
-			int pStrSize0 = 0;
-			if (label != null)
-			{
-				pStrSize0 = Utils.GetByteCountUTF8(label);
-				if (pStrSize0 >= Utils.MaxStackallocSize)
-				{
-					pStr0 = Utils.Alloc<byte>(pStrSize0 + 1);
-				}
-				else
-				{
-					byte* pStrStack0 = stackalloc byte[pStrSize0 + 1];
-					pStr0 = pStrStack0;
-				}
-				int pStrOffset0 = Utils.EncodeStringUTF8(label, pStr0, pStrSize0);
-				pStr0[pStrOffset0] = 0;
-			}
-			fixed (byte* ppreviewValue = previewValue)
-			{
-				byte ret = BeginComboNative(pStr0, (byte*)ppreviewValue, flags);
-				if (pStrSize0 >= Utils.MaxStackallocSize)
-				{
-					Utils.Free(pStr0);
-				}
-				return ret != 0;
-			}
-		}
-
-		/// <summary>
-		/// To be documented.
-		/// </summary>
-		public static bool BeginCombo(string label, ReadOnlySpan<byte> previewValue)
-		{
-			byte* pStr0 = null;
-			int pStrSize0 = 0;
-			if (label != null)
-			{
-				pStrSize0 = Utils.GetByteCountUTF8(label);
-				if (pStrSize0 >= Utils.MaxStackallocSize)
-				{
-					pStr0 = Utils.Alloc<byte>(pStrSize0 + 1);
-				}
-				else
-				{
-					byte* pStrStack0 = stackalloc byte[pStrSize0 + 1];
-					pStr0 = pStrStack0;
-				}
-				int pStrOffset0 = Utils.EncodeStringUTF8(label, pStr0, pStrSize0);
-				pStr0[pStrOffset0] = 0;
-			}
-			fixed (byte* ppreviewValue = previewValue)
-			{
-				byte ret = BeginComboNative(pStr0, (byte*)ppreviewValue, (ImGuiComboFlags)(0));
+				byte ret = TextLinkOpenURLNative(pStr0, (byte*)purl);
 				if (pStrSize0 >= Utils.MaxStackallocSize)
 				{
 					Utils.Free(pStr0);
@@ -4883,62 +4417,226 @@ namespace Dalamud.Bindings.ImGui
 		/// To be documented.
 		/// </summary>
 		[MethodImpl(MethodImplOptions.AggressiveInlining)]
-		internal static void EndComboNative()
+		internal static void ImageNative(ImTextureRef texRef, Vector2 imageSize, Vector2 uv0, Vector2 uv1)
 		{
 			#if NET5_0_OR_GREATER
-			((delegate* unmanaged[Cdecl]<void>)funcTable[160])();
+			((delegate* unmanaged[Cdecl]<ImTextureRef, Vector2, Vector2, Vector2, void>)funcTable[163])(texRef, imageSize, uv0, uv1);
 			#else
-			((delegate* unmanaged[Cdecl]<void>)funcTable[160])();
+			((delegate* unmanaged[Cdecl]<ImTextureRef, Vector2, Vector2, Vector2, void>)funcTable[163])(texRef, imageSize, uv0, uv1);
 			#endif
 		}
 
 		/// <summary>
 		/// To be documented.
 		/// </summary>
-		public static void EndCombo()
+		public static void Image(ImTextureRef texRef, Vector2 imageSize, Vector2 uv0, Vector2 uv1)
 		{
-			EndComboNative();
+			ImageNative(texRef, imageSize, uv0, uv1);
+		}
+
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		public static void Image(ImTextureRef texRef, Vector2 imageSize, Vector2 uv0)
+		{
+			ImageNative(texRef, imageSize, uv0, (Vector2)(new Vector2(1,1)));
+		}
+
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		public static void Image(ImTextureRef texRef, Vector2 imageSize)
+		{
+			ImageNative(texRef, imageSize, (Vector2)(new Vector2(0,0)), (Vector2)(new Vector2(1,1)));
 		}
 
 		/// <summary>
 		/// To be documented.
 		/// </summary>
 		[MethodImpl(MethodImplOptions.AggressiveInlining)]
-		internal static byte ComboNative(byte* label, int* currentItem, byte** items, int itemsCount, int popupMaxHeightInItems)
+		internal static void ImageWithBgNative(ImTextureRef texRef, Vector2 imageSize, Vector2 uv0, Vector2 uv1, Vector4 bgCol, Vector4 tintCol)
 		{
 			#if NET5_0_OR_GREATER
-			return ((delegate* unmanaged[Cdecl]<byte*, int*, byte**, int, int, byte>)funcTable[161])(label, currentItem, items, itemsCount, popupMaxHeightInItems);
+			((delegate* unmanaged[Cdecl]<ImTextureRef, Vector2, Vector2, Vector2, Vector4, Vector4, void>)funcTable[164])(texRef, imageSize, uv0, uv1, bgCol, tintCol);
 			#else
-			return (byte)((delegate* unmanaged[Cdecl]<nint, nint, nint, int, int, byte>)funcTable[161])((nint)label, (nint)currentItem, (nint)items, itemsCount, popupMaxHeightInItems);
+			((delegate* unmanaged[Cdecl]<ImTextureRef, Vector2, Vector2, Vector2, Vector4, Vector4, void>)funcTable[164])(texRef, imageSize, uv0, uv1, bgCol, tintCol);
 			#endif
 		}
 
 		/// <summary>
 		/// To be documented.
 		/// </summary>
-		public static bool Combo(byte* label, int* currentItem, byte** items, int itemsCount, int popupMaxHeightInItems)
+		public static void ImageWithBg(ImTextureRef texRef, Vector2 imageSize, Vector2 uv0, Vector2 uv1, Vector4 bgCol, Vector4 tintCol)
 		{
-			byte ret = ComboNative(label, currentItem, items, itemsCount, popupMaxHeightInItems);
+			ImageWithBgNative(texRef, imageSize, uv0, uv1, bgCol, tintCol);
+		}
+
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		public static void ImageWithBg(ImTextureRef texRef, Vector2 imageSize, Vector2 uv0, Vector2 uv1, Vector4 bgCol)
+		{
+			ImageWithBgNative(texRef, imageSize, uv0, uv1, bgCol, (Vector4)(new Vector4(1,1,1,1)));
+		}
+
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		public static void ImageWithBg(ImTextureRef texRef, Vector2 imageSize, Vector2 uv0, Vector2 uv1)
+		{
+			ImageWithBgNative(texRef, imageSize, uv0, uv1, (Vector4)(new Vector4(0,0,0,0)), (Vector4)(new Vector4(1,1,1,1)));
+		}
+
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		public static void ImageWithBg(ImTextureRef texRef, Vector2 imageSize, Vector2 uv0)
+		{
+			ImageWithBgNative(texRef, imageSize, uv0, (Vector2)(new Vector2(1,1)), (Vector4)(new Vector4(0,0,0,0)), (Vector4)(new Vector4(1,1,1,1)));
+		}
+
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		public static void ImageWithBg(ImTextureRef texRef, Vector2 imageSize)
+		{
+			ImageWithBgNative(texRef, imageSize, (Vector2)(new Vector2(0,0)), (Vector2)(new Vector2(1,1)), (Vector4)(new Vector4(0,0,0,0)), (Vector4)(new Vector4(1,1,1,1)));
+		}
+
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		public static void ImageWithBg(ImTextureRef texRef, Vector2 imageSize, Vector2 uv0, Vector4 bgCol)
+		{
+			ImageWithBgNative(texRef, imageSize, uv0, (Vector2)(new Vector2(1,1)), bgCol, (Vector4)(new Vector4(1,1,1,1)));
+		}
+
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		public static void ImageWithBg(ImTextureRef texRef, Vector2 imageSize, Vector4 bgCol)
+		{
+			ImageWithBgNative(texRef, imageSize, (Vector2)(new Vector2(0,0)), (Vector2)(new Vector2(1,1)), bgCol, (Vector4)(new Vector4(1,1,1,1)));
+		}
+
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		public static void ImageWithBg(ImTextureRef texRef, Vector2 imageSize, Vector2 uv0, Vector4 bgCol, Vector4 tintCol)
+		{
+			ImageWithBgNative(texRef, imageSize, uv0, (Vector2)(new Vector2(1,1)), bgCol, tintCol);
+		}
+
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		public static void ImageWithBg(ImTextureRef texRef, Vector2 imageSize, Vector4 bgCol, Vector4 tintCol)
+		{
+			ImageWithBgNative(texRef, imageSize, (Vector2)(new Vector2(0,0)), (Vector2)(new Vector2(1,1)), bgCol, tintCol);
+		}
+
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		[MethodImpl(MethodImplOptions.AggressiveInlining)]
+		internal static byte ImageButtonNative(byte* strId, ImTextureRef texRef, Vector2 imageSize, Vector2 uv0, Vector2 uv1, Vector4 bgCol, Vector4 tintCol)
+		{
+			#if NET5_0_OR_GREATER
+			return ((delegate* unmanaged[Cdecl]<byte*, ImTextureRef, Vector2, Vector2, Vector2, Vector4, Vector4, byte>)funcTable[165])(strId, texRef, imageSize, uv0, uv1, bgCol, tintCol);
+			#else
+			return (byte)((delegate* unmanaged[Cdecl]<nint, ImTextureRef, Vector2, Vector2, Vector2, Vector4, Vector4, byte>)funcTable[165])((nint)strId, texRef, imageSize, uv0, uv1, bgCol, tintCol);
+			#endif
+		}
+
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		public static bool ImageButton(byte* strId, ImTextureRef texRef, Vector2 imageSize, Vector2 uv0, Vector2 uv1, Vector4 bgCol, Vector4 tintCol)
+		{
+			byte ret = ImageButtonNative(strId, texRef, imageSize, uv0, uv1, bgCol, tintCol);
 			return ret != 0;
 		}
 
 		/// <summary>
 		/// To be documented.
 		/// </summary>
-		public static bool Combo(byte* label, int* currentItem, byte** items, int itemsCount)
+		public static bool ImageButton(byte* strId, ImTextureRef texRef, Vector2 imageSize, Vector2 uv0, Vector2 uv1, Vector4 bgCol)
 		{
-			byte ret = ComboNative(label, currentItem, items, itemsCount, (int)(-1));
+			byte ret = ImageButtonNative(strId, texRef, imageSize, uv0, uv1, bgCol, (Vector4)(new Vector4(1,1,1,1)));
 			return ret != 0;
 		}
 
 		/// <summary>
 		/// To be documented.
 		/// </summary>
-		public static bool Combo(ref byte label, int* currentItem, byte** items, int itemsCount, int popupMaxHeightInItems)
+		public static bool ImageButton(byte* strId, ImTextureRef texRef, Vector2 imageSize, Vector2 uv0, Vector2 uv1)
 		{
-			fixed (byte* plabel = &label)
+			byte ret = ImageButtonNative(strId, texRef, imageSize, uv0, uv1, (Vector4)(new Vector4(0,0,0,0)), (Vector4)(new Vector4(1,1,1,1)));
+			return ret != 0;
+		}
+
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		public static bool ImageButton(byte* strId, ImTextureRef texRef, Vector2 imageSize, Vector2 uv0)
+		{
+			byte ret = ImageButtonNative(strId, texRef, imageSize, uv0, (Vector2)(new Vector2(1,1)), (Vector4)(new Vector4(0,0,0,0)), (Vector4)(new Vector4(1,1,1,1)));
+			return ret != 0;
+		}
+
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		public static bool ImageButton(byte* strId, ImTextureRef texRef, Vector2 imageSize)
+		{
+			byte ret = ImageButtonNative(strId, texRef, imageSize, (Vector2)(new Vector2(0,0)), (Vector2)(new Vector2(1,1)), (Vector4)(new Vector4(0,0,0,0)), (Vector4)(new Vector4(1,1,1,1)));
+			return ret != 0;
+		}
+
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		public static bool ImageButton(byte* strId, ImTextureRef texRef, Vector2 imageSize, Vector2 uv0, Vector4 bgCol)
+		{
+			byte ret = ImageButtonNative(strId, texRef, imageSize, uv0, (Vector2)(new Vector2(1,1)), bgCol, (Vector4)(new Vector4(1,1,1,1)));
+			return ret != 0;
+		}
+
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		public static bool ImageButton(byte* strId, ImTextureRef texRef, Vector2 imageSize, Vector4 bgCol)
+		{
+			byte ret = ImageButtonNative(strId, texRef, imageSize, (Vector2)(new Vector2(0,0)), (Vector2)(new Vector2(1,1)), bgCol, (Vector4)(new Vector4(1,1,1,1)));
+			return ret != 0;
+		}
+
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		public static bool ImageButton(byte* strId, ImTextureRef texRef, Vector2 imageSize, Vector2 uv0, Vector4 bgCol, Vector4 tintCol)
+		{
+			byte ret = ImageButtonNative(strId, texRef, imageSize, uv0, (Vector2)(new Vector2(1,1)), bgCol, tintCol);
+			return ret != 0;
+		}
+
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		public static bool ImageButton(byte* strId, ImTextureRef texRef, Vector2 imageSize, Vector4 bgCol, Vector4 tintCol)
+		{
+			byte ret = ImageButtonNative(strId, texRef, imageSize, (Vector2)(new Vector2(0,0)), (Vector2)(new Vector2(1,1)), bgCol, tintCol);
+			return ret != 0;
+		}
+
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		public static bool ImageButton(in byte strId, ImTextureRef texRef, Vector2 imageSize, Vector2 uv0, Vector2 uv1, Vector4 bgCol, Vector4 tintCol)
+		{
+			fixed (byte* pstrId = &strId)
 			{
-				byte ret = ComboNative((byte*)plabel, currentItem, items, itemsCount, popupMaxHeightInItems);
+				byte ret = ImageButtonNative((byte*)pstrId, texRef, imageSize, uv0, uv1, bgCol, tintCol);
 				return ret != 0;
 			}
 		}
@@ -4946,11 +4644,11 @@ namespace Dalamud.Bindings.ImGui
 		/// <summary>
 		/// To be documented.
 		/// </summary>
-		public static bool Combo(ref byte label, int* currentItem, byte** items, int itemsCount)
+		public static bool ImageButton(in byte strId, ImTextureRef texRef, Vector2 imageSize, Vector2 uv0, Vector2 uv1, Vector4 bgCol)
 		{
-			fixed (byte* plabel = &label)
+			fixed (byte* pstrId = &strId)
 			{
-				byte ret = ComboNative((byte*)plabel, currentItem, items, itemsCount, (int)(-1));
+				byte ret = ImageButtonNative((byte*)pstrId, texRef, imageSize, uv0, uv1, bgCol, (Vector4)(new Vector4(1,1,1,1)));
 				return ret != 0;
 			}
 		}
@@ -4958,11 +4656,11 @@ namespace Dalamud.Bindings.ImGui
 		/// <summary>
 		/// To be documented.
 		/// </summary>
-		public static bool Combo(ReadOnlySpan<byte> label, int* currentItem, byte** items, int itemsCount, int popupMaxHeightInItems)
+		public static bool ImageButton(in byte strId, ImTextureRef texRef, Vector2 imageSize, Vector2 uv0, Vector2 uv1)
 		{
-			fixed (byte* plabel = label)
+			fixed (byte* pstrId = &strId)
 			{
-				byte ret = ComboNative((byte*)plabel, currentItem, items, itemsCount, popupMaxHeightInItems);
+				byte ret = ImageButtonNative((byte*)pstrId, texRef, imageSize, uv0, uv1, (Vector4)(new Vector4(0,0,0,0)), (Vector4)(new Vector4(1,1,1,1)));
 				return ret != 0;
 			}
 		}
@@ -4970,11 +4668,11 @@ namespace Dalamud.Bindings.ImGui
 		/// <summary>
 		/// To be documented.
 		/// </summary>
-		public static bool Combo(ReadOnlySpan<byte> label, int* currentItem, byte** items, int itemsCount)
+		public static bool ImageButton(in byte strId, ImTextureRef texRef, Vector2 imageSize, Vector2 uv0)
 		{
-			fixed (byte* plabel = label)
+			fixed (byte* pstrId = &strId)
 			{
-				byte ret = ComboNative((byte*)plabel, currentItem, items, itemsCount, (int)(-1));
+				byte ret = ImageButtonNative((byte*)pstrId, texRef, imageSize, uv0, (Vector2)(new Vector2(1,1)), (Vector4)(new Vector4(0,0,0,0)), (Vector4)(new Vector4(1,1,1,1)));
 				return ret != 0;
 			}
 		}
@@ -4982,13 +4680,181 @@ namespace Dalamud.Bindings.ImGui
 		/// <summary>
 		/// To be documented.
 		/// </summary>
-		public static bool Combo(string label, int* currentItem, byte** items, int itemsCount, int popupMaxHeightInItems)
+		public static bool ImageButton(in byte strId, ImTextureRef texRef, Vector2 imageSize)
+		{
+			fixed (byte* pstrId = &strId)
+			{
+				byte ret = ImageButtonNative((byte*)pstrId, texRef, imageSize, (Vector2)(new Vector2(0,0)), (Vector2)(new Vector2(1,1)), (Vector4)(new Vector4(0,0,0,0)), (Vector4)(new Vector4(1,1,1,1)));
+				return ret != 0;
+			}
+		}
+
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		public static bool ImageButton(in byte strId, ImTextureRef texRef, Vector2 imageSize, Vector2 uv0, Vector4 bgCol)
+		{
+			fixed (byte* pstrId = &strId)
+			{
+				byte ret = ImageButtonNative((byte*)pstrId, texRef, imageSize, uv0, (Vector2)(new Vector2(1,1)), bgCol, (Vector4)(new Vector4(1,1,1,1)));
+				return ret != 0;
+			}
+		}
+
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		public static bool ImageButton(in byte strId, ImTextureRef texRef, Vector2 imageSize, Vector4 bgCol)
+		{
+			fixed (byte* pstrId = &strId)
+			{
+				byte ret = ImageButtonNative((byte*)pstrId, texRef, imageSize, (Vector2)(new Vector2(0,0)), (Vector2)(new Vector2(1,1)), bgCol, (Vector4)(new Vector4(1,1,1,1)));
+				return ret != 0;
+			}
+		}
+
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		public static bool ImageButton(in byte strId, ImTextureRef texRef, Vector2 imageSize, Vector2 uv0, Vector4 bgCol, Vector4 tintCol)
+		{
+			fixed (byte* pstrId = &strId)
+			{
+				byte ret = ImageButtonNative((byte*)pstrId, texRef, imageSize, uv0, (Vector2)(new Vector2(1,1)), bgCol, tintCol);
+				return ret != 0;
+			}
+		}
+
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		public static bool ImageButton(in byte strId, ImTextureRef texRef, Vector2 imageSize, Vector4 bgCol, Vector4 tintCol)
+		{
+			fixed (byte* pstrId = &strId)
+			{
+				byte ret = ImageButtonNative((byte*)pstrId, texRef, imageSize, (Vector2)(new Vector2(0,0)), (Vector2)(new Vector2(1,1)), bgCol, tintCol);
+				return ret != 0;
+			}
+		}
+
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		public static bool ImageButton(ReadOnlySpan<byte> strId, ImTextureRef texRef, Vector2 imageSize, Vector2 uv0, Vector2 uv1, Vector4 bgCol, Vector4 tintCol)
+		{
+			fixed (byte* pstrId = strId)
+			{
+				byte ret = ImageButtonNative((byte*)pstrId, texRef, imageSize, uv0, uv1, bgCol, tintCol);
+				return ret != 0;
+			}
+		}
+
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		public static bool ImageButton(ReadOnlySpan<byte> strId, ImTextureRef texRef, Vector2 imageSize, Vector2 uv0, Vector2 uv1, Vector4 bgCol)
+		{
+			fixed (byte* pstrId = strId)
+			{
+				byte ret = ImageButtonNative((byte*)pstrId, texRef, imageSize, uv0, uv1, bgCol, (Vector4)(new Vector4(1,1,1,1)));
+				return ret != 0;
+			}
+		}
+
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		public static bool ImageButton(ReadOnlySpan<byte> strId, ImTextureRef texRef, Vector2 imageSize, Vector2 uv0, Vector2 uv1)
+		{
+			fixed (byte* pstrId = strId)
+			{
+				byte ret = ImageButtonNative((byte*)pstrId, texRef, imageSize, uv0, uv1, (Vector4)(new Vector4(0,0,0,0)), (Vector4)(new Vector4(1,1,1,1)));
+				return ret != 0;
+			}
+		}
+
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		public static bool ImageButton(ReadOnlySpan<byte> strId, ImTextureRef texRef, Vector2 imageSize, Vector2 uv0)
+		{
+			fixed (byte* pstrId = strId)
+			{
+				byte ret = ImageButtonNative((byte*)pstrId, texRef, imageSize, uv0, (Vector2)(new Vector2(1,1)), (Vector4)(new Vector4(0,0,0,0)), (Vector4)(new Vector4(1,1,1,1)));
+				return ret != 0;
+			}
+		}
+
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		public static bool ImageButton(ReadOnlySpan<byte> strId, ImTextureRef texRef, Vector2 imageSize)
+		{
+			fixed (byte* pstrId = strId)
+			{
+				byte ret = ImageButtonNative((byte*)pstrId, texRef, imageSize, (Vector2)(new Vector2(0,0)), (Vector2)(new Vector2(1,1)), (Vector4)(new Vector4(0,0,0,0)), (Vector4)(new Vector4(1,1,1,1)));
+				return ret != 0;
+			}
+		}
+
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		public static bool ImageButton(ReadOnlySpan<byte> strId, ImTextureRef texRef, Vector2 imageSize, Vector2 uv0, Vector4 bgCol)
+		{
+			fixed (byte* pstrId = strId)
+			{
+				byte ret = ImageButtonNative((byte*)pstrId, texRef, imageSize, uv0, (Vector2)(new Vector2(1,1)), bgCol, (Vector4)(new Vector4(1,1,1,1)));
+				return ret != 0;
+			}
+		}
+
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		public static bool ImageButton(ReadOnlySpan<byte> strId, ImTextureRef texRef, Vector2 imageSize, Vector4 bgCol)
+		{
+			fixed (byte* pstrId = strId)
+			{
+				byte ret = ImageButtonNative((byte*)pstrId, texRef, imageSize, (Vector2)(new Vector2(0,0)), (Vector2)(new Vector2(1,1)), bgCol, (Vector4)(new Vector4(1,1,1,1)));
+				return ret != 0;
+			}
+		}
+
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		public static bool ImageButton(ReadOnlySpan<byte> strId, ImTextureRef texRef, Vector2 imageSize, Vector2 uv0, Vector4 bgCol, Vector4 tintCol)
+		{
+			fixed (byte* pstrId = strId)
+			{
+				byte ret = ImageButtonNative((byte*)pstrId, texRef, imageSize, uv0, (Vector2)(new Vector2(1,1)), bgCol, tintCol);
+				return ret != 0;
+			}
+		}
+
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		public static bool ImageButton(ReadOnlySpan<byte> strId, ImTextureRef texRef, Vector2 imageSize, Vector4 bgCol, Vector4 tintCol)
+		{
+			fixed (byte* pstrId = strId)
+			{
+				byte ret = ImageButtonNative((byte*)pstrId, texRef, imageSize, (Vector2)(new Vector2(0,0)), (Vector2)(new Vector2(1,1)), bgCol, tintCol);
+				return ret != 0;
+			}
+		}
+
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		public static bool ImageButton(string strId, ImTextureRef texRef, Vector2 imageSize, Vector2 uv0, Vector2 uv1, Vector4 bgCol, Vector4 tintCol)
 		{
 			byte* pStr0 = null;
 			int pStrSize0 = 0;
-			if (label != null)
+			if (strId != null)
 			{
-				pStrSize0 = Utils.GetByteCountUTF8(label);
+				pStrSize0 = Utils.GetByteCountUTF8(strId);
 				if (pStrSize0 >= Utils.MaxStackallocSize)
 				{
 					pStr0 = Utils.Alloc<byte>(pStrSize0 + 1);
@@ -4998,10 +4864,10 @@ namespace Dalamud.Bindings.ImGui
 					byte* pStrStack0 = stackalloc byte[pStrSize0 + 1];
 					pStr0 = pStrStack0;
 				}
-				int pStrOffset0 = Utils.EncodeStringUTF8(label, pStr0, pStrSize0);
+				int pStrOffset0 = Utils.EncodeStringUTF8(strId, pStr0, pStrSize0);
 				pStr0[pStrOffset0] = 0;
 			}
-			byte ret = ComboNative(pStr0, currentItem, items, itemsCount, popupMaxHeightInItems);
+			byte ret = ImageButtonNative(pStr0, texRef, imageSize, uv0, uv1, bgCol, tintCol);
 			if (pStrSize0 >= Utils.MaxStackallocSize)
 			{
 				Utils.Free(pStr0);
@@ -5012,13 +4878,13 @@ namespace Dalamud.Bindings.ImGui
 		/// <summary>
 		/// To be documented.
 		/// </summary>
-		public static bool Combo(string label, int* currentItem, byte** items, int itemsCount)
+		public static bool ImageButton(string strId, ImTextureRef texRef, Vector2 imageSize, Vector2 uv0, Vector2 uv1, Vector4 bgCol)
 		{
 			byte* pStr0 = null;
 			int pStrSize0 = 0;
-			if (label != null)
+			if (strId != null)
 			{
-				pStrSize0 = Utils.GetByteCountUTF8(label);
+				pStrSize0 = Utils.GetByteCountUTF8(strId);
 				if (pStrSize0 >= Utils.MaxStackallocSize)
 				{
 					pStr0 = Utils.Alloc<byte>(pStrSize0 + 1);
@@ -5028,10 +4894,130 @@ namespace Dalamud.Bindings.ImGui
 					byte* pStrStack0 = stackalloc byte[pStrSize0 + 1];
 					pStr0 = pStrStack0;
 				}
-				int pStrOffset0 = Utils.EncodeStringUTF8(label, pStr0, pStrSize0);
+				int pStrOffset0 = Utils.EncodeStringUTF8(strId, pStr0, pStrSize0);
 				pStr0[pStrOffset0] = 0;
 			}
-			byte ret = ComboNative(pStr0, currentItem, items, itemsCount, (int)(-1));
+			byte ret = ImageButtonNative(pStr0, texRef, imageSize, uv0, uv1, bgCol, (Vector4)(new Vector4(1,1,1,1)));
+			if (pStrSize0 >= Utils.MaxStackallocSize)
+			{
+				Utils.Free(pStr0);
+			}
+			return ret != 0;
+		}
+
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		public static bool ImageButton(string strId, ImTextureRef texRef, Vector2 imageSize, Vector2 uv0, Vector2 uv1)
+		{
+			byte* pStr0 = null;
+			int pStrSize0 = 0;
+			if (strId != null)
+			{
+				pStrSize0 = Utils.GetByteCountUTF8(strId);
+				if (pStrSize0 >= Utils.MaxStackallocSize)
+				{
+					pStr0 = Utils.Alloc<byte>(pStrSize0 + 1);
+				}
+				else
+				{
+					byte* pStrStack0 = stackalloc byte[pStrSize0 + 1];
+					pStr0 = pStrStack0;
+				}
+				int pStrOffset0 = Utils.EncodeStringUTF8(strId, pStr0, pStrSize0);
+				pStr0[pStrOffset0] = 0;
+			}
+			byte ret = ImageButtonNative(pStr0, texRef, imageSize, uv0, uv1, (Vector4)(new Vector4(0,0,0,0)), (Vector4)(new Vector4(1,1,1,1)));
+			if (pStrSize0 >= Utils.MaxStackallocSize)
+			{
+				Utils.Free(pStr0);
+			}
+			return ret != 0;
+		}
+
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		public static bool ImageButton(string strId, ImTextureRef texRef, Vector2 imageSize, Vector2 uv0)
+		{
+			byte* pStr0 = null;
+			int pStrSize0 = 0;
+			if (strId != null)
+			{
+				pStrSize0 = Utils.GetByteCountUTF8(strId);
+				if (pStrSize0 >= Utils.MaxStackallocSize)
+				{
+					pStr0 = Utils.Alloc<byte>(pStrSize0 + 1);
+				}
+				else
+				{
+					byte* pStrStack0 = stackalloc byte[pStrSize0 + 1];
+					pStr0 = pStrStack0;
+				}
+				int pStrOffset0 = Utils.EncodeStringUTF8(strId, pStr0, pStrSize0);
+				pStr0[pStrOffset0] = 0;
+			}
+			byte ret = ImageButtonNative(pStr0, texRef, imageSize, uv0, (Vector2)(new Vector2(1,1)), (Vector4)(new Vector4(0,0,0,0)), (Vector4)(new Vector4(1,1,1,1)));
+			if (pStrSize0 >= Utils.MaxStackallocSize)
+			{
+				Utils.Free(pStr0);
+			}
+			return ret != 0;
+		}
+
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		public static bool ImageButton(string strId, ImTextureRef texRef, Vector2 imageSize)
+		{
+			byte* pStr0 = null;
+			int pStrSize0 = 0;
+			if (strId != null)
+			{
+				pStrSize0 = Utils.GetByteCountUTF8(strId);
+				if (pStrSize0 >= Utils.MaxStackallocSize)
+				{
+					pStr0 = Utils.Alloc<byte>(pStrSize0 + 1);
+				}
+				else
+				{
+					byte* pStrStack0 = stackalloc byte[pStrSize0 + 1];
+					pStr0 = pStrStack0;
+				}
+				int pStrOffset0 = Utils.EncodeStringUTF8(strId, pStr0, pStrSize0);
+				pStr0[pStrOffset0] = 0;
+			}
+			byte ret = ImageButtonNative(pStr0, texRef, imageSize, (Vector2)(new Vector2(0,0)), (Vector2)(new Vector2(1,1)), (Vector4)(new Vector4(0,0,0,0)), (Vector4)(new Vector4(1,1,1,1)));
+			if (pStrSize0 >= Utils.MaxStackallocSize)
+			{
+				Utils.Free(pStr0);
+			}
+			return ret != 0;
+		}
+
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		public static bool ImageButton(string strId, ImTextureRef texRef, Vector2 imageSize, Vector2 uv0, Vector4 bgCol)
+		{
+			byte* pStr0 = null;
+			int pStrSize0 = 0;
+			if (strId != null)
+			{
+				pStrSize0 = Utils.GetByteCountUTF8(strId);
+				if (pStrSize0 >= Utils.MaxStackallocSize)
+				{
+					pStr0 = Utils.Alloc<byte>(pStrSize0 + 1);
+				}
+				else
+				{
+					byte* pStrStack0 = stackalloc byte[pStrSize0 + 1];
+					pStr0 = pStrStack0;
+				}
+				int pStrOffset0 = Utils.EncodeStringUTF8(strId, pStr0, pStrSize0);
+				pStr0[pStrOffset0] = 0;
+			}
+			byte ret = ImageButtonNative(pStr0, texRef, imageSize, uv0, (Vector2)(new Vector2(1,1)), bgCol, (Vector4)(new Vector4(1,1,1,1)));
 			if (pStrSize0 >= Utils.MaxStackallocSize)
 			{
 				Utils.Free(pStr0);

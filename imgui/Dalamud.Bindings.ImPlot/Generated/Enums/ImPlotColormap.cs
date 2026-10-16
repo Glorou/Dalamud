@@ -17,9 +17,10 @@ namespace Dalamud.Bindings.ImPlot
 	/// <summary>
 	/// To be documented.
 	/// </summary>
-	[Flags]
 	public enum ImPlotColormap : int
 	{
+		Auto = -1,
+
 		/// <summary>
 		/// To be documented.
 		/// </summary>

@@ -42,7 +42,7 @@ public static unsafe partial class ImGui
     {
         fixed (byte* strIdPtr = &strId.GetPinnableNullTerminatedReference())
         {
-            var r = ImGuiNative.BeginChild(strIdPtr, size, border ? (byte)1 : (byte)0, flags) != 0;
+            var r = ImGuiNative.BeginChild(strIdPtr, size, border ? (ImGuiChildFlags)1 : 0, flags) != 0;
             strId.Recycle();
             return r;
         }
@@ -50,7 +50,7 @@ public static unsafe partial class ImGui
 
     public static bool BeginChild(
         uint id, Vector2 size = default, bool border = false, ImGuiWindowFlags flags = ImGuiWindowFlags.None) =>
-        ImGuiNative.BeginChild(id, size, border ? (byte)1 : (byte)0, flags) != 0;
+        ImGuiNative.BeginChild(id, size, border ? (ImGuiChildFlags)1 : 0, flags) != 0;
 
     public static bool BeginCombo(
         ImU8String label, ImU8String previewValue, ImGuiComboFlags flags = ImGuiComboFlags.None)
@@ -96,7 +96,7 @@ public static unsafe partial class ImGui
     }
 
     public static bool BeginPopupContextItem(
-        ImU8String strId, ImGuiPopupFlags popupFlags = ImGuiPopupFlags.MouseButtonDefault)
+        ImU8String strId, ImGuiPopupFlags popupFlags = ImGuiPopupFlags.MouseButtonLeft)
     {
         fixed (byte* strIdPtr = &strId.GetPinnableNullTerminatedReference())
         {
@@ -107,7 +107,7 @@ public static unsafe partial class ImGui
     }
 
     public static bool BeginPopupContextWindow(
-        ImU8String strId, ImGuiPopupFlags popupFlags = ImGuiPopupFlags.MouseButtonDefault)
+        ImU8String strId, ImGuiPopupFlags popupFlags = ImGuiPopupFlags.MouseButtonLeft)
     {
         fixed (byte* strIdPtr = &strId.GetPinnableNullTerminatedReference())
         {
@@ -118,7 +118,7 @@ public static unsafe partial class ImGui
     }
 
     public static bool BeginPopupContextVoid(
-        ImU8String strId, ImGuiPopupFlags popupFlags = ImGuiPopupFlags.MouseButtonDefault)
+        ImU8String strId, ImGuiPopupFlags popupFlags = ImGuiPopupFlags.MouseButtonLeft)
     {
         fixed (byte* strIdPtr = &strId.GetPinnableNullTerminatedReference())
         {
@@ -464,7 +464,7 @@ public static unsafe partial class ImGui
         ImGuiNative.OpenPopup(id, popupFlags);
 
     public static void OpenPopupOnItemClick(
-        ImU8String strId, ImGuiPopupFlags popupFlags = ImGuiPopupFlags.MouseButtonDefault)
+        ImU8String strId, ImGuiPopupFlags popupFlags = ImGuiPopupFlags.MouseButtonLeft)
     {
         fixed (byte* strIdPtr = &strId.GetPinnableNullTerminatedReference())
             ImGuiNative.OpenPopupOnItemClick(strIdPtr, popupFlags);

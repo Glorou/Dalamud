@@ -21,7 +21,7 @@ public unsafe partial class ImGuiP
     {
         fixed (byte* namePtr = &name.GetPinnableNullTerminatedReference())
         {
-            var r = ImGuiPNative.BeginChildEx(namePtr, id, sizeArg, border ? (byte)1 : (byte)0, flags) != 0;
+            var r = ImGuiPNative.BeginChildEx(namePtr, id, sizeArg, border ? (ImGuiChildFlags)1 : 0, flags) != 0;
             name.Recycle();
             return r;
         }
@@ -110,11 +110,6 @@ public unsafe partial class ImGuiP
         }
     }
 
-    public static void Custom_StbTextMakeUndoReplace(
-        ImGuiInputTextStatePtr str, int where, int oldLength, int newLength) =>
-        ImGuiPNative.Custom_StbTextMakeUndoReplace(str, where, oldLength, newLength);
-
-    public static void Custom_StbTextUndo(ImGuiInputTextStatePtr str) => ImGuiPNative.Custom_StbTextUndo(str);
 
     public static bool DataTypeApplyFromText<T>(ImU8String buf, ImGuiDataType dataType, T data, ImU8String format)
         where T : unmanaged, IBinaryNumber<T>
@@ -122,7 +117,7 @@ public unsafe partial class ImGuiP
         fixed (byte* bufPtr = &buf.GetPinnableNullTerminatedReference())
         fixed (byte* formatPtr = &format.GetPinnableNullTerminatedReference())
         {
-            var r = ImGuiPNative.DataTypeApplyFromText(bufPtr, dataType, &data, formatPtr) != 0;
+            var r = ImGuiPNative.DataTypeApplyFromText(bufPtr, dataType, &data, formatPtr, null) != 0;
             format.Recycle();
             buf.Recycle();
             return r;
@@ -205,7 +200,7 @@ public unsafe partial class ImGuiP
     {
         fixed (byte* namePtr = &name.GetPinnableNullTerminatedReference())
         {
-            var r = ImGuiPNative.FindOrCreateWindowSettings(namePtr);
+            var r = ImGuiPNative.FindWindowSettingsByWindow(ImGuiPNative.FindWindowByName(namePtr));
             name.Recycle();
             return r;
         }
@@ -289,12 +284,12 @@ public unsafe partial class ImGuiP
         }
     }
 
-    public static void ImFontAtlasBuildMultiplyRectAlpha8(
+   /* public static void ImFontAtlasBuildMultiplyRectAlpha8(
         ReadOnlySpan<byte> table, ReadOnlySpan<byte> pixels, int x, int y, int w, int h, int stride)
     {
         fixed (byte* tablePtr = table)
         fixed (byte* pixelsPtr = pixels)
-            ImGuiPNative.ImFontAtlasBuildMultiplyRectAlpha8(tablePtr, pixelsPtr, x, y, w, h, stride);
+            ImGuiPNative.ImFontAtlasBuilder(tablePtr, pixelsPtr, x, y, w, h, stride);
     }
 
     public static void ImFontAtlasBuildRender32bppRectFromString(
@@ -333,7 +328,7 @@ public unsafe partial class ImGuiP
                 inMarkerChar,
                 inMarkerPixelValue);
         }
-    }
+    }*/
 
     public static void ImFormatStringToTempBuffer(byte** outBuf, byte** outBufEnd, ImU8String fmt)
     {
@@ -402,7 +397,7 @@ public unsafe partial class ImGuiP
 
     public static bool SliderBehavior<T>(
         ImRect bb, uint id, ImGuiDataType dataType, scoped ref T value, T min, T max, ImU8String format,
-        ImGuiSliderFlags flags, ImRectPtr outGrabBb)
+        ImGuiSliderFlags flags, ImRect* outGrabBb)
         where T : unmanaged, IBinaryNumber<T>
     {
         fixed (byte* formatPtr = &format.GetPinnableNullTerminatedReference())
@@ -428,7 +423,7 @@ public unsafe partial class ImGuiP
         fixed (byte* labelPtr = &label.GetPinnableNullTerminatedReference())
         {
             Vector2 v;
-            ImGuiPNative.TabItemCalcSize(&v, labelPtr, hasCloseButton ? (byte)1 : (byte)0);
+            v = ImGuiPNative.TabItemCalcSize(labelPtr, hasCloseButton ? (byte)1 : (byte)0);
             return v;
         }
     }

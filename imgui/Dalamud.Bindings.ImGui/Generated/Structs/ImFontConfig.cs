@@ -25,96 +25,6 @@ namespace Dalamud.Bindings.ImGui
 		/// <summary>
 		/// To be documented.
 		/// </summary>
-		public unsafe void* FontData;
-
-		/// <summary>
-		/// To be documented.
-		/// </summary>
-		public int FontDataSize;
-
-		/// <summary>
-		/// To be documented.
-		/// </summary>
-		public byte FontDataOwnedByAtlas;
-
-		/// <summary>
-		/// To be documented.
-		/// </summary>
-		public int FontNo;
-
-		/// <summary>
-		/// To be documented.
-		/// </summary>
-		public float SizePixels;
-
-		/// <summary>
-		/// To be documented.
-		/// </summary>
-		public int OversampleH;
-
-		/// <summary>
-		/// To be documented.
-		/// </summary>
-		public int OversampleV;
-
-		/// <summary>
-		/// To be documented.
-		/// </summary>
-		public byte PixelSnapH;
-
-		/// <summary>
-		/// To be documented.
-		/// </summary>
-		public Vector2 GlyphExtraSpacing;
-
-		/// <summary>
-		/// To be documented.
-		/// </summary>
-		public Vector2 GlyphOffset;
-
-		/// <summary>
-		/// To be documented.
-		/// </summary>
-		public unsafe ushort* GlyphRanges;
-
-		/// <summary>
-		/// To be documented.
-		/// </summary>
-		public float GlyphMinAdvanceX;
-
-		/// <summary>
-		/// To be documented.
-		/// </summary>
-		public float GlyphMaxAdvanceX;
-
-		/// <summary>
-		/// To be documented.
-		/// </summary>
-		public byte MergeMode;
-
-		/// <summary>
-		/// To be documented.
-		/// </summary>
-		public uint FontBuilderFlags;
-
-		/// <summary>
-		/// To be documented.
-		/// </summary>
-		public float RasterizerMultiply;
-
-		/// <summary>
-		/// To be documented.
-		/// </summary>
-		public float RasterizerGamma;
-
-		/// <summary>
-		/// To be documented.
-		/// </summary>
-		public ushort EllipsisChar;
-
-		/// <summary>
-		/// To be documented.
-		/// </summary>
 		public byte Name_0;
 		public byte Name_1;
 		public byte Name_2;
@@ -159,32 +69,129 @@ namespace Dalamud.Bindings.ImGui
 		/// <summary>
 		/// To be documented.
 		/// </summary>
+		public unsafe void* FontData;
+
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		public int FontDataSize;
+
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		public byte FontDataOwnedByAtlas;
+
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		public byte MergeMode;
+
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		public byte PixelSnapH;
+
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		public sbyte OversampleH;
+
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		public sbyte OversampleV;
+
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		public ushort EllipsisChar;
+
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		public float SizePixels;
+
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		public unsafe ushort* GlyphRanges;
+
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		public unsafe ushort* GlyphExcludeRanges;
+
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		public Vector2 GlyphOffset;
+
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		public float GlyphMinAdvanceX;
+
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		public float GlyphMaxAdvanceX;
+
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		public float GlyphExtraAdvanceX;
+
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		public uint FontNo;
+
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		public uint FontLoaderFlags;
+
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		public float RasterizerMultiply;
+
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		public float RasterizerDensity;
+
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		public float ExtraSizeScale;
+
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		public ImFontFlags Flags;
+
+		/// <summary>
+		/// To be documented.
+		/// </summary>
 		public unsafe ImFont* DstFont;
+
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		public unsafe ImFontLoader* FontLoader;
+
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		public unsafe void* FontLoaderData;
 
 
 		/// <summary>
 		/// To be documented.
 		/// </summary>
-		public unsafe ImFontConfig(void* fontData = default, int fontDataSize = default, bool fontDataOwnedByAtlas = default, int fontNo = default, float sizePixels = default, int oversampleH = default, int oversampleV = default, bool pixelSnapH = default, Vector2 glyphExtraSpacing = default, Vector2 glyphOffset = default, ushort* glyphRanges = default, float glyphMinAdvanceX = default, float glyphMaxAdvanceX = default, bool mergeMode = default, uint fontBuilderFlags = default, float rasterizerMultiply = default, float rasterizerGamma = default, ushort ellipsisChar = default, byte* name = default, ImFontPtr dstFont = default)
+		public unsafe ImFontConfig(byte* name = default, void* fontData = default, int fontDataSize = default, bool fontDataOwnedByAtlas = default, bool mergeMode = default, bool pixelSnapH = default, sbyte oversampleH = default, sbyte oversampleV = default, ushort ellipsisChar = default, float sizePixels = default, ushort* glyphRanges = default, ushort* glyphExcludeRanges = default, Vector2 glyphOffset = default, float glyphMinAdvanceX = default, float glyphMaxAdvanceX = default, float glyphExtraAdvanceX = default, uint fontNo = default, uint fontLoaderFlags = default, float rasterizerMultiply = default, float rasterizerDensity = default, float extraSizeScale = default, ImFontFlags flags = default, ImFontPtr dstFont = default, ImFontLoader* fontLoader = default, void* fontLoaderData = default)
 		{
-			FontData = fontData;
-			FontDataSize = fontDataSize;
-			FontDataOwnedByAtlas = fontDataOwnedByAtlas ? (byte)1 : (byte)0;
-			FontNo = fontNo;
-			SizePixels = sizePixels;
-			OversampleH = oversampleH;
-			OversampleV = oversampleV;
-			PixelSnapH = pixelSnapH ? (byte)1 : (byte)0;
-			GlyphExtraSpacing = glyphExtraSpacing;
-			GlyphOffset = glyphOffset;
-			GlyphRanges = glyphRanges;
-			GlyphMinAdvanceX = glyphMinAdvanceX;
-			GlyphMaxAdvanceX = glyphMaxAdvanceX;
-			MergeMode = mergeMode ? (byte)1 : (byte)0;
-			FontBuilderFlags = fontBuilderFlags;
-			RasterizerMultiply = rasterizerMultiply;
-			RasterizerGamma = rasterizerGamma;
-			EllipsisChar = ellipsisChar;
 			if (name != default(byte*))
 			{
 				Name_0 = name[0];
@@ -228,32 +235,37 @@ namespace Dalamud.Bindings.ImGui
 				Name_38 = name[38];
 				Name_39 = name[39];
 			}
+			FontData = fontData;
+			FontDataSize = fontDataSize;
+			FontDataOwnedByAtlas = fontDataOwnedByAtlas ? (byte)1 : (byte)0;
+			MergeMode = mergeMode ? (byte)1 : (byte)0;
+			PixelSnapH = pixelSnapH ? (byte)1 : (byte)0;
+			OversampleH = oversampleH;
+			OversampleV = oversampleV;
+			EllipsisChar = ellipsisChar;
+			SizePixels = sizePixels;
+			GlyphRanges = glyphRanges;
+			GlyphExcludeRanges = glyphExcludeRanges;
+			GlyphOffset = glyphOffset;
+			GlyphMinAdvanceX = glyphMinAdvanceX;
+			GlyphMaxAdvanceX = glyphMaxAdvanceX;
+			GlyphExtraAdvanceX = glyphExtraAdvanceX;
+			FontNo = fontNo;
+			FontLoaderFlags = fontLoaderFlags;
+			RasterizerMultiply = rasterizerMultiply;
+			RasterizerDensity = rasterizerDensity;
+			ExtraSizeScale = extraSizeScale;
+			Flags = flags;
 			DstFont = dstFont;
+			FontLoader = fontLoader;
+			FontLoaderData = fontLoaderData;
 		}
 
 		/// <summary>
 		/// To be documented.
 		/// </summary>
-		public unsafe ImFontConfig(void* fontData = default, int fontDataSize = default, bool fontDataOwnedByAtlas = default, int fontNo = default, float sizePixels = default, int oversampleH = default, int oversampleV = default, bool pixelSnapH = default, Vector2 glyphExtraSpacing = default, Vector2 glyphOffset = default, ushort* glyphRanges = default, float glyphMinAdvanceX = default, float glyphMaxAdvanceX = default, bool mergeMode = default, uint fontBuilderFlags = default, float rasterizerMultiply = default, float rasterizerGamma = default, ushort ellipsisChar = default, Span<byte> name = default, ImFontPtr dstFont = default)
+		public unsafe ImFontConfig(Span<byte> name = default, void* fontData = default, int fontDataSize = default, bool fontDataOwnedByAtlas = default, bool mergeMode = default, bool pixelSnapH = default, sbyte oversampleH = default, sbyte oversampleV = default, ushort ellipsisChar = default, float sizePixels = default, ushort* glyphRanges = default, ushort* glyphExcludeRanges = default, Vector2 glyphOffset = default, float glyphMinAdvanceX = default, float glyphMaxAdvanceX = default, float glyphExtraAdvanceX = default, uint fontNo = default, uint fontLoaderFlags = default, float rasterizerMultiply = default, float rasterizerDensity = default, float extraSizeScale = default, ImFontFlags flags = default, ImFontPtr dstFont = default, ImFontLoader* fontLoader = default, void* fontLoaderData = default)
 		{
-			FontData = fontData;
-			FontDataSize = fontDataSize;
-			FontDataOwnedByAtlas = fontDataOwnedByAtlas ? (byte)1 : (byte)0;
-			FontNo = fontNo;
-			SizePixels = sizePixels;
-			OversampleH = oversampleH;
-			OversampleV = oversampleV;
-			PixelSnapH = pixelSnapH ? (byte)1 : (byte)0;
-			GlyphExtraSpacing = glyphExtraSpacing;
-			GlyphOffset = glyphOffset;
-			GlyphRanges = glyphRanges;
-			GlyphMinAdvanceX = glyphMinAdvanceX;
-			GlyphMaxAdvanceX = glyphMaxAdvanceX;
-			MergeMode = mergeMode ? (byte)1 : (byte)0;
-			FontBuilderFlags = fontBuilderFlags;
-			RasterizerMultiply = rasterizerMultiply;
-			RasterizerGamma = rasterizerGamma;
-			EllipsisChar = ellipsisChar;
 			if (name != default(Span<byte>))
 			{
 				Name_0 = name[0];
@@ -297,7 +309,30 @@ namespace Dalamud.Bindings.ImGui
 				Name_38 = name[38];
 				Name_39 = name[39];
 			}
+			FontData = fontData;
+			FontDataSize = fontDataSize;
+			FontDataOwnedByAtlas = fontDataOwnedByAtlas ? (byte)1 : (byte)0;
+			MergeMode = mergeMode ? (byte)1 : (byte)0;
+			PixelSnapH = pixelSnapH ? (byte)1 : (byte)0;
+			OversampleH = oversampleH;
+			OversampleV = oversampleV;
+			EllipsisChar = ellipsisChar;
+			SizePixels = sizePixels;
+			GlyphRanges = glyphRanges;
+			GlyphExcludeRanges = glyphExcludeRanges;
+			GlyphOffset = glyphOffset;
+			GlyphMinAdvanceX = glyphMinAdvanceX;
+			GlyphMaxAdvanceX = glyphMaxAdvanceX;
+			GlyphExtraAdvanceX = glyphExtraAdvanceX;
+			FontNo = fontNo;
+			FontLoaderFlags = fontLoaderFlags;
+			RasterizerMultiply = rasterizerMultiply;
+			RasterizerDensity = rasterizerDensity;
+			ExtraSizeScale = extraSizeScale;
+			Flags = flags;
 			DstFont = dstFont;
+			FontLoader = fontLoader;
+			FontLoaderData = fontLoaderData;
 		}
 
 
@@ -358,6 +393,17 @@ namespace Dalamud.Bindings.ImGui
 		/// <summary>
 		/// To be documented.
 		/// </summary>
+		public unsafe Span<byte> Name
+		
+		{
+			get
+			{
+				return new Span<byte>(&Handle->Name_0, 40);
+			}
+		}
+		/// <summary>
+		/// To be documented.
+		/// </summary>
 		public void* FontData { get => Handle->FontData; set => Handle->FontData = value; }
 		/// <summary>
 		/// To be documented.
@@ -370,19 +416,7 @@ namespace Dalamud.Bindings.ImGui
 		/// <summary>
 		/// To be documented.
 		/// </summary>
-		public ref int FontNo => ref Unsafe.AsRef<int>(&Handle->FontNo);
-		/// <summary>
-		/// To be documented.
-		/// </summary>
-		public ref float SizePixels => ref Unsafe.AsRef<float>(&Handle->SizePixels);
-		/// <summary>
-		/// To be documented.
-		/// </summary>
-		public ref int OversampleH => ref Unsafe.AsRef<int>(&Handle->OversampleH);
-		/// <summary>
-		/// To be documented.
-		/// </summary>
-		public ref int OversampleV => ref Unsafe.AsRef<int>(&Handle->OversampleV);
+		public ref bool MergeMode => ref Unsafe.AsRef<bool>(&Handle->MergeMode);
 		/// <summary>
 		/// To be documented.
 		/// </summary>
@@ -390,15 +424,31 @@ namespace Dalamud.Bindings.ImGui
 		/// <summary>
 		/// To be documented.
 		/// </summary>
-		public ref Vector2 GlyphExtraSpacing => ref Unsafe.AsRef<Vector2>(&Handle->GlyphExtraSpacing);
+		public ref sbyte OversampleH => ref Unsafe.AsRef<sbyte>(&Handle->OversampleH);
 		/// <summary>
 		/// To be documented.
 		/// </summary>
-		public ref Vector2 GlyphOffset => ref Unsafe.AsRef<Vector2>(&Handle->GlyphOffset);
+		public ref sbyte OversampleV => ref Unsafe.AsRef<sbyte>(&Handle->OversampleV);
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		public ref ushort EllipsisChar => ref Unsafe.AsRef<ushort>(&Handle->EllipsisChar);
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		public ref float SizePixels => ref Unsafe.AsRef<float>(&Handle->SizePixels);
 		/// <summary>
 		/// To be documented.
 		/// </summary>
 		public ushort* GlyphRanges { get => Handle->GlyphRanges; set => Handle->GlyphRanges = value; }
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		public ushort* GlyphExcludeRanges { get => Handle->GlyphExcludeRanges; set => Handle->GlyphExcludeRanges = value; }
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		public ref Vector2 GlyphOffset => ref Unsafe.AsRef<Vector2>(&Handle->GlyphOffset);
 		/// <summary>
 		/// To be documented.
 		/// </summary>
@@ -410,11 +460,15 @@ namespace Dalamud.Bindings.ImGui
 		/// <summary>
 		/// To be documented.
 		/// </summary>
-		public ref bool MergeMode => ref Unsafe.AsRef<bool>(&Handle->MergeMode);
+		public ref float GlyphExtraAdvanceX => ref Unsafe.AsRef<float>(&Handle->GlyphExtraAdvanceX);
 		/// <summary>
 		/// To be documented.
 		/// </summary>
-		public ref uint FontBuilderFlags => ref Unsafe.AsRef<uint>(&Handle->FontBuilderFlags);
+		public ref uint FontNo => ref Unsafe.AsRef<uint>(&Handle->FontNo);
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		public ref uint FontLoaderFlags => ref Unsafe.AsRef<uint>(&Handle->FontLoaderFlags);
 		/// <summary>
 		/// To be documented.
 		/// </summary>
@@ -422,26 +476,27 @@ namespace Dalamud.Bindings.ImGui
 		/// <summary>
 		/// To be documented.
 		/// </summary>
-		public ref float RasterizerGamma => ref Unsafe.AsRef<float>(&Handle->RasterizerGamma);
+		public ref float RasterizerDensity => ref Unsafe.AsRef<float>(&Handle->RasterizerDensity);
 		/// <summary>
 		/// To be documented.
 		/// </summary>
-		public ref ushort EllipsisChar => ref Unsafe.AsRef<ushort>(&Handle->EllipsisChar);
+		public ref float ExtraSizeScale => ref Unsafe.AsRef<float>(&Handle->ExtraSizeScale);
 		/// <summary>
 		/// To be documented.
 		/// </summary>
-		public unsafe Span<byte> Name
-		
-		{
-			get
-			{
-				return new Span<byte>(&Handle->Name_0, 40);
-			}
-		}
+		public ref ImFontFlags Flags => ref Unsafe.AsRef<ImFontFlags>(&Handle->Flags);
 		/// <summary>
 		/// To be documented.
 		/// </summary>
 		public ref ImFontPtr DstFont => ref Unsafe.AsRef<ImFontPtr>(&Handle->DstFont);
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		public ref ImFontLoaderPtr FontLoader => ref Unsafe.AsRef<ImFontLoaderPtr>(&Handle->FontLoader);
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		public void* FontLoaderData { get => Handle->FontLoaderData; set => Handle->FontLoaderData = value; }
 		/// <summary>
 		/// To be documented.
 		/// </summary>
@@ -450,6 +505,49 @@ namespace Dalamud.Bindings.ImGui
 			ImGui.DestroyNative(Handle);
 		}
 
+	}
+
+	/// <summary>
+	/// To be documented.
+	/// </summary>
+	#if NET5_0_OR_GREATER
+	[DebuggerDisplay("{DebuggerDisplay,nq}")]
+	#endif
+	public unsafe struct ImFontConfigPtrPtr : IEquatable<ImFontConfigPtrPtr>
+	{
+		public ImFontConfigPtrPtr(ImFontConfig** handle) { Handle = handle; }
+
+		public ImFontConfig** Handle;
+
+		public bool IsNull => Handle == null;
+
+		public static ImFontConfigPtrPtr Null => new ImFontConfigPtrPtr(null);
+
+		public ImFontConfig* this[int index] { get => Handle[index]; set => Handle[index] = value; }
+
+		public static implicit operator ImFontConfigPtrPtr(ImFontConfig** handle) => new ImFontConfigPtrPtr(handle);
+
+		public static implicit operator ImFontConfig**(ImFontConfigPtrPtr handle) => handle.Handle;
+
+		public static bool operator ==(ImFontConfigPtrPtr left, ImFontConfigPtrPtr right) => left.Handle == right.Handle;
+
+		public static bool operator !=(ImFontConfigPtrPtr left, ImFontConfigPtrPtr right) => left.Handle != right.Handle;
+
+		public static bool operator ==(ImFontConfigPtrPtr left, ImFontConfig** right) => left.Handle == right;
+
+		public static bool operator !=(ImFontConfigPtrPtr left, ImFontConfig** right) => left.Handle != right;
+
+		public bool Equals(ImFontConfigPtrPtr other) => Handle == other.Handle;
+
+		/// <inheritdoc/>
+		public override bool Equals(object obj) => obj is ImFontConfigPtrPtr handle && Equals(handle);
+
+		/// <inheritdoc/>
+		public override int GetHashCode() => ((nuint)Handle).GetHashCode();
+
+		#if NET5_0_OR_GREATER
+		private string DebuggerDisplay => string.Format("ImFontConfigPtrPtr [0x{0}]", ((nuint)Handle).ToString("X"));
+		#endif
 	}
 
 }

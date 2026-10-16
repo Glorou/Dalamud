@@ -11,195 +11,130 @@ namespace Dalamud.Bindings.ImGui;
 
 public unsafe partial struct ImFontAtlas
 {
-		public unsafe int AddCustomRectFontGlyph(ImFontPtr font, ushort id, int width, int height, float advanceX, Vector2 offset)
+		public unsafe int AddCustomRect(int width, int height, ImFontAtlasRect* outR)
 		{
 			fixed (ImFontAtlas* @this = &this)
 			{
-				int ret = ImGuiNative.AddCustomRectFontGlyph(@this, font, id, width, height, advanceX, offset);
+				int ret = ImGuiNative.AddCustomRect(@this, width, height, outR);
 				return ret;
 			}
 		}
-		public unsafe int AddCustomRectFontGlyph(ImFontPtr font, ushort id, int width, int height, float advanceX)
+		public unsafe int AddCustomRect(int width, int height)
 		{
 			fixed (ImFontAtlas* @this = &this)
 			{
-				int ret = ImGuiNative.AddCustomRectFontGlyph(@this, font, id, width, height, advanceX, (Vector2)(new Vector2(0,0)));
+				int ret = ImGuiNative.AddCustomRect(@this, width, height, (ImFontAtlasRect*)(default));
 				return ret;
 			}
 		}
-		public unsafe int AddCustomRectFontGlyph(ref ImFont font, ushort id, int width, int height, float advanceX, Vector2 offset)
+		public unsafe int AddCustomRect(int width, int height, ref ImFontAtlasRect outR)
 		{
 			fixed (ImFontAtlas* @this = &this)
 			{
-				fixed (ImFont* pfont = &font)
+				fixed (ImFontAtlasRect* poutR = &outR)
 				{
-					int ret = ImGuiNative.AddCustomRectFontGlyph(@this, (ImFont*)pfont, id, width, height, advanceX, offset);
+					int ret = ImGuiNative.AddCustomRect(@this, width, height, (ImFontAtlasRect*)poutR);
 					return ret;
 				}
 			}
 		}
-		public unsafe int AddCustomRectFontGlyph(ref ImFont font, ushort id, int width, int height, float advanceX)
+		public unsafe ImFont* AddFont(ImFontConfig* fontCfg)
 		{
 			fixed (ImFontAtlas* @this = &this)
 			{
-				fixed (ImFont* pfont = &font)
-				{
-					int ret = ImGuiNative.AddCustomRectFontGlyph(@this, (ImFont*)pfont, id, width, height, advanceX, (Vector2)(new Vector2(0,0)));
-					return ret;
-				}
-			}
-		}
-		public unsafe int AddCustomRectRegular(int width, int height)
-		{
-			fixed (ImFontAtlas* @this = &this)
-			{
-				int ret = ImGuiNative.AddCustomRectRegular(@this, width, height);
+				ImFont* ret = ImGuiNative.AddFont(@this, fontCfg);
 				return ret;
 			}
 		}
-		public unsafe ImFontPtr AddFont(ImFontConfig* fontCfg)
-		{
-			fixed (ImFontAtlas* @this = &this)
-			{
-				ImFontPtr ret = ImGuiNative.AddFont(@this, fontCfg);
-				return ret;
-			}
-		}
-		public unsafe ImFontPtr AddFont(ref ImFontConfig fontCfg)
+		public unsafe ImFont* AddFont(in ImFontConfig fontCfg)
 		{
 			fixed (ImFontAtlas* @this = &this)
 			{
 				fixed (ImFontConfig* pfontCfg = &fontCfg)
 				{
-					ImFontPtr ret = ImGuiNative.AddFont(@this, (ImFontConfig*)pfontCfg);
+					ImFont* ret = ImGuiNative.AddFont(@this, (ImFontConfig*)pfontCfg);
 					return ret;
 				}
 			}
 		}
-		public unsafe ImFontPtr AddFontDefault(ImFontConfig* fontCfg)
+		public unsafe ImFont* AddFontDefault(ImFontConfig* fontCfg)
 		{
 			fixed (ImFontAtlas* @this = &this)
 			{
-				ImFontPtr ret = ImGuiNative.AddFontDefault(@this, fontCfg);
+				ImFont* ret = ImGuiNative.AddFontDefault(@this, fontCfg);
 				return ret;
 			}
 		}
-		public unsafe ImFontPtr AddFontDefault()
+		public unsafe ImFont* AddFontDefault()
 		{
 			fixed (ImFontAtlas* @this = &this)
 			{
-				ImFontPtr ret = ImGuiNative.AddFontDefault(@this, (ImFontConfig*)(default));
+				ImFont* ret = ImGuiNative.AddFontDefault(@this, (ImFontConfig*)(default));
 				return ret;
 			}
 		}
-		public unsafe ImFontPtr AddFontDefault(ref ImFontConfig fontCfg)
+		public unsafe ImFont* AddFontDefault(in ImFontConfig fontCfg)
 		{
 			fixed (ImFontAtlas* @this = &this)
 			{
 				fixed (ImFontConfig* pfontCfg = &fontCfg)
 				{
-					ImFontPtr ret = ImGuiNative.AddFontDefault(@this, (ImFontConfig*)pfontCfg);
+					ImFont* ret = ImGuiNative.AddFontDefault(@this, (ImFontConfig*)pfontCfg);
 					return ret;
 				}
 			}
 		}
-		public unsafe bool Build()
+		public unsafe ImFont* AddFontDefaultBitmap(ImFontConfig* fontCfg)
 		{
 			fixed (ImFontAtlas* @this = &this)
 			{
-				byte ret = ImGuiNative.Build(@this);
-				return ret != 0;
+				ImFont* ret = ImGuiNative.AddFontDefaultBitmap(@this, fontCfg);
+				return ret;
 			}
 		}
-		public unsafe void CalcCustomRectUV(ImFontAtlasCustomRect* rect, Vector2* outUvMin, Vector2* outUvMax)
+		public unsafe ImFont* AddFontDefaultBitmap()
 		{
 			fixed (ImFontAtlas* @this = &this)
 			{
-				ImGuiNative.CalcCustomRectUV(@this, rect, outUvMin, outUvMax);
+				ImFont* ret = ImGuiNative.AddFontDefaultBitmap(@this, (ImFontConfig*)(default));
+				return ret;
 			}
 		}
-		public unsafe void CalcCustomRectUV(ref ImFontAtlasCustomRect rect, Vector2* outUvMin, Vector2* outUvMax)
+		public unsafe ImFont* AddFontDefaultBitmap(in ImFontConfig fontCfg)
 		{
 			fixed (ImFontAtlas* @this = &this)
 			{
-				fixed (ImFontAtlasCustomRect* prect = &rect)
+				fixed (ImFontConfig* pfontCfg = &fontCfg)
 				{
-					ImGuiNative.CalcCustomRectUV(@this, (ImFontAtlasCustomRect*)prect, outUvMin, outUvMax);
+					ImFont* ret = ImGuiNative.AddFontDefaultBitmap(@this, (ImFontConfig*)pfontCfg);
+					return ret;
 				}
 			}
 		}
-		public unsafe void CalcCustomRectUV(ImFontAtlasCustomRect* rect, ref Vector2 outUvMin, Vector2* outUvMax)
+		public unsafe ImFont* AddFontDefaultVector(ImFontConfig* fontCfg)
 		{
 			fixed (ImFontAtlas* @this = &this)
 			{
-				fixed (Vector2* poutUvMin = &outUvMin)
-				{
-					ImGuiNative.CalcCustomRectUV(@this, rect, (Vector2*)poutUvMin, outUvMax);
-				}
+				ImFont* ret = ImGuiNative.AddFontDefaultVector(@this, fontCfg);
+				return ret;
 			}
 		}
-		public unsafe void CalcCustomRectUV(ref ImFontAtlasCustomRect rect, ref Vector2 outUvMin, Vector2* outUvMax)
+		public unsafe ImFont* AddFontDefaultVector()
 		{
 			fixed (ImFontAtlas* @this = &this)
 			{
-				fixed (ImFontAtlasCustomRect* prect = &rect)
-				{
-					fixed (Vector2* poutUvMin = &outUvMin)
-					{
-						ImGuiNative.CalcCustomRectUV(@this, (ImFontAtlasCustomRect*)prect, (Vector2*)poutUvMin, outUvMax);
-					}
-				}
+				ImFont* ret = ImGuiNative.AddFontDefaultVector(@this, (ImFontConfig*)(default));
+				return ret;
 			}
 		}
-		public unsafe void CalcCustomRectUV(ImFontAtlasCustomRect* rect, Vector2* outUvMin, ref Vector2 outUvMax)
+		public unsafe ImFont* AddFontDefaultVector(in ImFontConfig fontCfg)
 		{
 			fixed (ImFontAtlas* @this = &this)
 			{
-				fixed (Vector2* poutUvMax = &outUvMax)
+				fixed (ImFontConfig* pfontCfg = &fontCfg)
 				{
-					ImGuiNative.CalcCustomRectUV(@this, rect, outUvMin, (Vector2*)poutUvMax);
-				}
-			}
-		}
-		public unsafe void CalcCustomRectUV(ref ImFontAtlasCustomRect rect, Vector2* outUvMin, ref Vector2 outUvMax)
-		{
-			fixed (ImFontAtlas* @this = &this)
-			{
-				fixed (ImFontAtlasCustomRect* prect = &rect)
-				{
-					fixed (Vector2* poutUvMax = &outUvMax)
-					{
-						ImGuiNative.CalcCustomRectUV(@this, (ImFontAtlasCustomRect*)prect, outUvMin, (Vector2*)poutUvMax);
-					}
-				}
-			}
-		}
-		public unsafe void CalcCustomRectUV(ImFontAtlasCustomRect* rect, ref Vector2 outUvMin, ref Vector2 outUvMax)
-		{
-			fixed (ImFontAtlas* @this = &this)
-			{
-				fixed (Vector2* poutUvMin = &outUvMin)
-				{
-					fixed (Vector2* poutUvMax = &outUvMax)
-					{
-						ImGuiNative.CalcCustomRectUV(@this, rect, (Vector2*)poutUvMin, (Vector2*)poutUvMax);
-					}
-				}
-			}
-		}
-		public unsafe void CalcCustomRectUV(ref ImFontAtlasCustomRect rect, ref Vector2 outUvMin, ref Vector2 outUvMax)
-		{
-			fixed (ImFontAtlas* @this = &this)
-			{
-				fixed (ImFontAtlasCustomRect* prect = &rect)
-				{
-					fixed (Vector2* poutUvMin = &outUvMin)
-					{
-						fixed (Vector2* poutUvMax = &outUvMax)
-						{
-							ImGuiNative.CalcCustomRectUV(@this, (ImFontAtlasCustomRect*)prect, (Vector2*)poutUvMin, (Vector2*)poutUvMax);
-						}
-					}
+					ImFont* ret = ImGuiNative.AddFontDefaultVector(@this, (ImFontConfig*)pfontCfg);
+					return ret;
 				}
 			}
 		}
@@ -231,11 +166,11 @@ public unsafe partial struct ImFontAtlas
 				ImGuiNative.ClearTexData(@this);
 			}
 		}
-		public unsafe void ClearTexID(ImTextureID nullId)
+		public unsafe void CompactCache()
 		{
 			fixed (ImFontAtlas* @this = &this)
 			{
-				ImGuiNative.ClearTexID(@this, nullId);
+				ImGuiNative.CompactCache(@this);
 			}
 		}
 		public unsafe void Destroy()
@@ -245,36 +180,23 @@ public unsafe partial struct ImFontAtlas
 				ImGuiNative.Destroy(@this);
 			}
 		}
-		public unsafe ImFontAtlasCustomRect* GetCustomRectByIndex(int index)
+		public unsafe bool GetCustomRect(int id, ImFontAtlasRect* outR)
 		{
 			fixed (ImFontAtlas* @this = &this)
 			{
-				ImFontAtlasCustomRect* ret = ImGuiNative.GetCustomRectByIndex(@this, index);
-				return ret;
+				byte ret = ImGuiNative.GetCustomRect(@this, id, outR);
+				return ret != 0;
 			}
 		}
-		public unsafe ushort* GetGlyphRangesChineseFull()
+		public unsafe bool GetCustomRect(int id, ref ImFontAtlasRect outR)
 		{
 			fixed (ImFontAtlas* @this = &this)
 			{
-				ushort* ret = ImGuiNative.GetGlyphRangesChineseFull(@this);
-				return ret;
-			}
-		}
-		public unsafe ushort* GetGlyphRangesChineseSimplifiedCommon()
-		{
-			fixed (ImFontAtlas* @this = &this)
-			{
-				ushort* ret = ImGuiNative.GetGlyphRangesChineseSimplifiedCommon(@this);
-				return ret;
-			}
-		}
-		public unsafe ushort* GetGlyphRangesCyrillic()
-		{
-			fixed (ImFontAtlas* @this = &this)
-			{
-				ushort* ret = ImGuiNative.GetGlyphRangesCyrillic(@this);
-				return ret;
+				fixed (ImFontAtlasRect* poutR = &outR)
+				{
+					byte ret = ImGuiNative.GetCustomRect(@this, id, (ImFontAtlasRect*)poutR);
+					return ret != 0;
+				}
 			}
 		}
 		public unsafe ushort* GetGlyphRangesDefault()
@@ -285,1543 +207,45 @@ public unsafe partial struct ImFontAtlas
 				return ret;
 			}
 		}
-		public unsafe ushort* GetGlyphRangesJapanese()
+		public unsafe void RemoveCustomRect(int id)
 		{
 			fixed (ImFontAtlas* @this = &this)
 			{
-				ushort* ret = ImGuiNative.GetGlyphRangesJapanese(@this);
-				return ret;
+				ImGuiNative.RemoveCustomRect(@this, id);
 			}
 		}
-		public unsafe ushort* GetGlyphRangesKorean()
+		public unsafe void RemoveFont(ImFont* font)
 		{
 			fixed (ImFontAtlas* @this = &this)
 			{
-				ushort* ret = ImGuiNative.GetGlyphRangesKorean(@this);
-				return ret;
+				ImGuiNative.RemoveFont(@this, font);
 			}
 		}
-		public unsafe ushort* GetGlyphRangesThai()
+		public unsafe void RemoveFont(ref ImFont font)
 		{
 			fixed (ImFontAtlas* @this = &this)
 			{
-				ushort* ret = ImGuiNative.GetGlyphRangesThai(@this);
-				return ret;
-			}
-		}
-		public unsafe ushort* GetGlyphRangesVietnamese()
-		{
-			fixed (ImFontAtlas* @this = &this)
-			{
-				ushort* ret = ImGuiNative.GetGlyphRangesVietnamese(@this);
-				return ret;
-			}
-		}
-		public unsafe bool GetMouseCursorTexData(ImGuiMouseCursor cursor, Vector2* outOffset, Vector2* outSize, Vector2* outUvBorder, Vector2* outUvFill, int* textureIndex)
-		{
-			fixed (ImFontAtlas* @this = &this)
-			{
-				byte ret = ImGuiNative.GetMouseCursorTexData(@this, cursor, outOffset, outSize, outUvBorder, outUvFill, textureIndex);
-				return ret != 0;
-			}
-		}
-		public unsafe bool GetMouseCursorTexData(ImGuiMouseCursor cursor, ref Vector2 outOffset, Vector2* outSize, Vector2* outUvBorder, Vector2* outUvFill, int* textureIndex)
-		{
-			fixed (ImFontAtlas* @this = &this)
-			{
-				fixed (Vector2* poutOffset = &outOffset)
-				{
-					byte ret = ImGuiNative.GetMouseCursorTexData(@this, cursor, (Vector2*)poutOffset, outSize, outUvBorder, outUvFill, textureIndex);
-					return ret != 0;
-				}
-			}
-		}
-		public unsafe bool GetMouseCursorTexData(ImGuiMouseCursor cursor, Vector2* outOffset, ref Vector2 outSize, Vector2* outUvBorder, Vector2* outUvFill, int* textureIndex)
-		{
-			fixed (ImFontAtlas* @this = &this)
-			{
-				fixed (Vector2* poutSize = &outSize)
-				{
-					byte ret = ImGuiNative.GetMouseCursorTexData(@this, cursor, outOffset, (Vector2*)poutSize, outUvBorder, outUvFill, textureIndex);
-					return ret != 0;
-				}
-			}
-		}
-		public unsafe bool GetMouseCursorTexData(ImGuiMouseCursor cursor, ref Vector2 outOffset, ref Vector2 outSize, Vector2* outUvBorder, Vector2* outUvFill, int* textureIndex)
-		{
-			fixed (ImFontAtlas* @this = &this)
-			{
-				fixed (Vector2* poutOffset = &outOffset)
-				{
-					fixed (Vector2* poutSize = &outSize)
-					{
-						byte ret = ImGuiNative.GetMouseCursorTexData(@this, cursor, (Vector2*)poutOffset, (Vector2*)poutSize, outUvBorder, outUvFill, textureIndex);
-						return ret != 0;
-					}
-				}
-			}
-		}
-		public unsafe bool GetMouseCursorTexData(ImGuiMouseCursor cursor, Vector2* outOffset, Vector2* outSize, ref Vector2 outUvBorder, Vector2* outUvFill, int* textureIndex)
-		{
-			fixed (ImFontAtlas* @this = &this)
-			{
-				fixed (Vector2* poutUvBorder = &outUvBorder)
-				{
-					byte ret = ImGuiNative.GetMouseCursorTexData(@this, cursor, outOffset, outSize, (Vector2*)poutUvBorder, outUvFill, textureIndex);
-					return ret != 0;
-				}
-			}
-		}
-		public unsafe bool GetMouseCursorTexData(ImGuiMouseCursor cursor, Vector2* outOffset, Vector2* outSize, ReadOnlySpan<Vector2> outUvBorder, Vector2* outUvFill, int* textureIndex)
-		{
-			fixed (ImFontAtlas* @this = &this)
-			{
-				fixed (Vector2* poutUvBorder = outUvBorder)
-				{
-					byte ret = ImGuiNative.GetMouseCursorTexData(@this, cursor, outOffset, outSize, (Vector2*)poutUvBorder, outUvFill, textureIndex);
-					return ret != 0;
-				}
-			}
-		}
-		public unsafe bool GetMouseCursorTexData(ImGuiMouseCursor cursor, ref Vector2 outOffset, Vector2* outSize, ref Vector2 outUvBorder, Vector2* outUvFill, int* textureIndex)
-		{
-			fixed (ImFontAtlas* @this = &this)
-			{
-				fixed (Vector2* poutOffset = &outOffset)
-				{
-					fixed (Vector2* poutUvBorder = &outUvBorder)
-					{
-						byte ret = ImGuiNative.GetMouseCursorTexData(@this, cursor, (Vector2*)poutOffset, outSize, (Vector2*)poutUvBorder, outUvFill, textureIndex);
-						return ret != 0;
-					}
-				}
-			}
-		}
-		public unsafe bool GetMouseCursorTexData(ImGuiMouseCursor cursor, ref Vector2 outOffset, Vector2* outSize, ReadOnlySpan<Vector2> outUvBorder, Vector2* outUvFill, int* textureIndex)
-		{
-			fixed (ImFontAtlas* @this = &this)
-			{
-				fixed (Vector2* poutOffset = &outOffset)
-				{
-					fixed (Vector2* poutUvBorder = outUvBorder)
-					{
-						byte ret = ImGuiNative.GetMouseCursorTexData(@this, cursor, (Vector2*)poutOffset, outSize, (Vector2*)poutUvBorder, outUvFill, textureIndex);
-						return ret != 0;
-					}
-				}
-			}
-		}
-		public unsafe bool GetMouseCursorTexData(ImGuiMouseCursor cursor, Vector2* outOffset, ref Vector2 outSize, ref Vector2 outUvBorder, Vector2* outUvFill, int* textureIndex)
-		{
-			fixed (ImFontAtlas* @this = &this)
-			{
-				fixed (Vector2* poutSize = &outSize)
-				{
-					fixed (Vector2* poutUvBorder = &outUvBorder)
-					{
-						byte ret = ImGuiNative.GetMouseCursorTexData(@this, cursor, outOffset, (Vector2*)poutSize, (Vector2*)poutUvBorder, outUvFill, textureIndex);
-						return ret != 0;
-					}
-				}
-			}
-		}
-		public unsafe bool GetMouseCursorTexData(ImGuiMouseCursor cursor, Vector2* outOffset, ref Vector2 outSize, ReadOnlySpan<Vector2> outUvBorder, Vector2* outUvFill, int* textureIndex)
-		{
-			fixed (ImFontAtlas* @this = &this)
-			{
-				fixed (Vector2* poutSize = &outSize)
-				{
-					fixed (Vector2* poutUvBorder = outUvBorder)
-					{
-						byte ret = ImGuiNative.GetMouseCursorTexData(@this, cursor, outOffset, (Vector2*)poutSize, (Vector2*)poutUvBorder, outUvFill, textureIndex);
-						return ret != 0;
-					}
-				}
-			}
-		}
-		public unsafe bool GetMouseCursorTexData(ImGuiMouseCursor cursor, ref Vector2 outOffset, ref Vector2 outSize, ref Vector2 outUvBorder, Vector2* outUvFill, int* textureIndex)
-		{
-			fixed (ImFontAtlas* @this = &this)
-			{
-				fixed (Vector2* poutOffset = &outOffset)
-				{
-					fixed (Vector2* poutSize = &outSize)
-					{
-						fixed (Vector2* poutUvBorder = &outUvBorder)
-						{
-							byte ret = ImGuiNative.GetMouseCursorTexData(@this, cursor, (Vector2*)poutOffset, (Vector2*)poutSize, (Vector2*)poutUvBorder, outUvFill, textureIndex);
-							return ret != 0;
-						}
-					}
-				}
-			}
-		}
-		public unsafe bool GetMouseCursorTexData(ImGuiMouseCursor cursor, ref Vector2 outOffset, ref Vector2 outSize, ReadOnlySpan<Vector2> outUvBorder, Vector2* outUvFill, int* textureIndex)
-		{
-			fixed (ImFontAtlas* @this = &this)
-			{
-				fixed (Vector2* poutOffset = &outOffset)
-				{
-					fixed (Vector2* poutSize = &outSize)
-					{
-						fixed (Vector2* poutUvBorder = outUvBorder)
-						{
-							byte ret = ImGuiNative.GetMouseCursorTexData(@this, cursor, (Vector2*)poutOffset, (Vector2*)poutSize, (Vector2*)poutUvBorder, outUvFill, textureIndex);
-							return ret != 0;
-						}
-					}
-				}
-			}
-		}
-		public unsafe bool GetMouseCursorTexData(ImGuiMouseCursor cursor, Vector2* outOffset, Vector2* outSize, Vector2* outUvBorder, ref Vector2 outUvFill, int* textureIndex)
-		{
-			fixed (ImFontAtlas* @this = &this)
-			{
-				fixed (Vector2* poutUvFill = &outUvFill)
-				{
-					byte ret = ImGuiNative.GetMouseCursorTexData(@this, cursor, outOffset, outSize, outUvBorder, (Vector2*)poutUvFill, textureIndex);
-					return ret != 0;
-				}
-			}
-		}
-		public unsafe bool GetMouseCursorTexData(ImGuiMouseCursor cursor, Vector2* outOffset, Vector2* outSize, Vector2* outUvBorder, ReadOnlySpan<Vector2> outUvFill, int* textureIndex)
-		{
-			fixed (ImFontAtlas* @this = &this)
-			{
-				fixed (Vector2* poutUvFill = outUvFill)
-				{
-					byte ret = ImGuiNative.GetMouseCursorTexData(@this, cursor, outOffset, outSize, outUvBorder, (Vector2*)poutUvFill, textureIndex);
-					return ret != 0;
-				}
-			}
-		}
-		public unsafe bool GetMouseCursorTexData(ImGuiMouseCursor cursor, ref Vector2 outOffset, Vector2* outSize, Vector2* outUvBorder, ref Vector2 outUvFill, int* textureIndex)
-		{
-			fixed (ImFontAtlas* @this = &this)
-			{
-				fixed (Vector2* poutOffset = &outOffset)
-				{
-					fixed (Vector2* poutUvFill = &outUvFill)
-					{
-						byte ret = ImGuiNative.GetMouseCursorTexData(@this, cursor, (Vector2*)poutOffset, outSize, outUvBorder, (Vector2*)poutUvFill, textureIndex);
-						return ret != 0;
-					}
-				}
-			}
-		}
-		public unsafe bool GetMouseCursorTexData(ImGuiMouseCursor cursor, ref Vector2 outOffset, Vector2* outSize, Vector2* outUvBorder, ReadOnlySpan<Vector2> outUvFill, int* textureIndex)
-		{
-			fixed (ImFontAtlas* @this = &this)
-			{
-				fixed (Vector2* poutOffset = &outOffset)
-				{
-					fixed (Vector2* poutUvFill = outUvFill)
-					{
-						byte ret = ImGuiNative.GetMouseCursorTexData(@this, cursor, (Vector2*)poutOffset, outSize, outUvBorder, (Vector2*)poutUvFill, textureIndex);
-						return ret != 0;
-					}
-				}
-			}
-		}
-		public unsafe bool GetMouseCursorTexData(ImGuiMouseCursor cursor, Vector2* outOffset, ref Vector2 outSize, Vector2* outUvBorder, ref Vector2 outUvFill, int* textureIndex)
-		{
-			fixed (ImFontAtlas* @this = &this)
-			{
-				fixed (Vector2* poutSize = &outSize)
-				{
-					fixed (Vector2* poutUvFill = &outUvFill)
-					{
-						byte ret = ImGuiNative.GetMouseCursorTexData(@this, cursor, outOffset, (Vector2*)poutSize, outUvBorder, (Vector2*)poutUvFill, textureIndex);
-						return ret != 0;
-					}
-				}
-			}
-		}
-		public unsafe bool GetMouseCursorTexData(ImGuiMouseCursor cursor, Vector2* outOffset, ref Vector2 outSize, Vector2* outUvBorder, ReadOnlySpan<Vector2> outUvFill, int* textureIndex)
-		{
-			fixed (ImFontAtlas* @this = &this)
-			{
-				fixed (Vector2* poutSize = &outSize)
-				{
-					fixed (Vector2* poutUvFill = outUvFill)
-					{
-						byte ret = ImGuiNative.GetMouseCursorTexData(@this, cursor, outOffset, (Vector2*)poutSize, outUvBorder, (Vector2*)poutUvFill, textureIndex);
-						return ret != 0;
-					}
-				}
-			}
-		}
-		public unsafe bool GetMouseCursorTexData(ImGuiMouseCursor cursor, ref Vector2 outOffset, ref Vector2 outSize, Vector2* outUvBorder, ref Vector2 outUvFill, int* textureIndex)
-		{
-			fixed (ImFontAtlas* @this = &this)
-			{
-				fixed (Vector2* poutOffset = &outOffset)
-				{
-					fixed (Vector2* poutSize = &outSize)
-					{
-						fixed (Vector2* poutUvFill = &outUvFill)
-						{
-							byte ret = ImGuiNative.GetMouseCursorTexData(@this, cursor, (Vector2*)poutOffset, (Vector2*)poutSize, outUvBorder, (Vector2*)poutUvFill, textureIndex);
-							return ret != 0;
-						}
-					}
-				}
-			}
-		}
-		public unsafe bool GetMouseCursorTexData(ImGuiMouseCursor cursor, ref Vector2 outOffset, ref Vector2 outSize, Vector2* outUvBorder, ReadOnlySpan<Vector2> outUvFill, int* textureIndex)
-		{
-			fixed (ImFontAtlas* @this = &this)
-			{
-				fixed (Vector2* poutOffset = &outOffset)
-				{
-					fixed (Vector2* poutSize = &outSize)
-					{
-						fixed (Vector2* poutUvFill = outUvFill)
-						{
-							byte ret = ImGuiNative.GetMouseCursorTexData(@this, cursor, (Vector2*)poutOffset, (Vector2*)poutSize, outUvBorder, (Vector2*)poutUvFill, textureIndex);
-							return ret != 0;
-						}
-					}
-				}
-			}
-		}
-		public unsafe bool GetMouseCursorTexData(ImGuiMouseCursor cursor, Vector2* outOffset, Vector2* outSize, ref Vector2 outUvBorder, ref Vector2 outUvFill, int* textureIndex)
-		{
-			fixed (ImFontAtlas* @this = &this)
-			{
-				fixed (Vector2* poutUvBorder = &outUvBorder)
-				{
-					fixed (Vector2* poutUvFill = &outUvFill)
-					{
-						byte ret = ImGuiNative.GetMouseCursorTexData(@this, cursor, outOffset, outSize, (Vector2*)poutUvBorder, (Vector2*)poutUvFill, textureIndex);
-						return ret != 0;
-					}
-				}
-			}
-		}
-		public unsafe bool GetMouseCursorTexData(ImGuiMouseCursor cursor, Vector2* outOffset, Vector2* outSize, ReadOnlySpan<Vector2> outUvBorder, ReadOnlySpan<Vector2> outUvFill, int* textureIndex)
-		{
-			fixed (ImFontAtlas* @this = &this)
-			{
-				fixed (Vector2* poutUvBorder = outUvBorder)
-				{
-					fixed (Vector2* poutUvFill = outUvFill)
-					{
-						byte ret = ImGuiNative.GetMouseCursorTexData(@this, cursor, outOffset, outSize, (Vector2*)poutUvBorder, (Vector2*)poutUvFill, textureIndex);
-						return ret != 0;
-					}
-				}
-			}
-		}
-		public unsafe bool GetMouseCursorTexData(ImGuiMouseCursor cursor, ref Vector2 outOffset, Vector2* outSize, ref Vector2 outUvBorder, ref Vector2 outUvFill, int* textureIndex)
-		{
-			fixed (ImFontAtlas* @this = &this)
-			{
-				fixed (Vector2* poutOffset = &outOffset)
-				{
-					fixed (Vector2* poutUvBorder = &outUvBorder)
-					{
-						fixed (Vector2* poutUvFill = &outUvFill)
-						{
-							byte ret = ImGuiNative.GetMouseCursorTexData(@this, cursor, (Vector2*)poutOffset, outSize, (Vector2*)poutUvBorder, (Vector2*)poutUvFill, textureIndex);
-							return ret != 0;
-						}
-					}
-				}
-			}
-		}
-		public unsafe bool GetMouseCursorTexData(ImGuiMouseCursor cursor, ref Vector2 outOffset, Vector2* outSize, ReadOnlySpan<Vector2> outUvBorder, ReadOnlySpan<Vector2> outUvFill, int* textureIndex)
-		{
-			fixed (ImFontAtlas* @this = &this)
-			{
-				fixed (Vector2* poutOffset = &outOffset)
-				{
-					fixed (Vector2* poutUvBorder = outUvBorder)
-					{
-						fixed (Vector2* poutUvFill = outUvFill)
-						{
-							byte ret = ImGuiNative.GetMouseCursorTexData(@this, cursor, (Vector2*)poutOffset, outSize, (Vector2*)poutUvBorder, (Vector2*)poutUvFill, textureIndex);
-							return ret != 0;
-						}
-					}
-				}
-			}
-		}
-		public unsafe bool GetMouseCursorTexData(ImGuiMouseCursor cursor, Vector2* outOffset, ref Vector2 outSize, ref Vector2 outUvBorder, ref Vector2 outUvFill, int* textureIndex)
-		{
-			fixed (ImFontAtlas* @this = &this)
-			{
-				fixed (Vector2* poutSize = &outSize)
-				{
-					fixed (Vector2* poutUvBorder = &outUvBorder)
-					{
-						fixed (Vector2* poutUvFill = &outUvFill)
-						{
-							byte ret = ImGuiNative.GetMouseCursorTexData(@this, cursor, outOffset, (Vector2*)poutSize, (Vector2*)poutUvBorder, (Vector2*)poutUvFill, textureIndex);
-							return ret != 0;
-						}
-					}
-				}
-			}
-		}
-		public unsafe bool GetMouseCursorTexData(ImGuiMouseCursor cursor, Vector2* outOffset, ref Vector2 outSize, ReadOnlySpan<Vector2> outUvBorder, ReadOnlySpan<Vector2> outUvFill, int* textureIndex)
-		{
-			fixed (ImFontAtlas* @this = &this)
-			{
-				fixed (Vector2* poutSize = &outSize)
-				{
-					fixed (Vector2* poutUvBorder = outUvBorder)
-					{
-						fixed (Vector2* poutUvFill = outUvFill)
-						{
-							byte ret = ImGuiNative.GetMouseCursorTexData(@this, cursor, outOffset, (Vector2*)poutSize, (Vector2*)poutUvBorder, (Vector2*)poutUvFill, textureIndex);
-							return ret != 0;
-						}
-					}
-				}
-			}
-		}
-		public unsafe bool GetMouseCursorTexData(ImGuiMouseCursor cursor, ref Vector2 outOffset, ref Vector2 outSize, ref Vector2 outUvBorder, ref Vector2 outUvFill, int* textureIndex)
-		{
-			fixed (ImFontAtlas* @this = &this)
-			{
-				fixed (Vector2* poutOffset = &outOffset)
-				{
-					fixed (Vector2* poutSize = &outSize)
-					{
-						fixed (Vector2* poutUvBorder = &outUvBorder)
-						{
-							fixed (Vector2* poutUvFill = &outUvFill)
-							{
-								byte ret = ImGuiNative.GetMouseCursorTexData(@this, cursor, (Vector2*)poutOffset, (Vector2*)poutSize, (Vector2*)poutUvBorder, (Vector2*)poutUvFill, textureIndex);
-								return ret != 0;
-							}
-						}
-					}
-				}
-			}
-		}
-		public unsafe bool GetMouseCursorTexData(ImGuiMouseCursor cursor, ref Vector2 outOffset, ref Vector2 outSize, ReadOnlySpan<Vector2> outUvBorder, ReadOnlySpan<Vector2> outUvFill, int* textureIndex)
-		{
-			fixed (ImFontAtlas* @this = &this)
-			{
-				fixed (Vector2* poutOffset = &outOffset)
-				{
-					fixed (Vector2* poutSize = &outSize)
-					{
-						fixed (Vector2* poutUvBorder = outUvBorder)
-						{
-							fixed (Vector2* poutUvFill = outUvFill)
-							{
-								byte ret = ImGuiNative.GetMouseCursorTexData(@this, cursor, (Vector2*)poutOffset, (Vector2*)poutSize, (Vector2*)poutUvBorder, (Vector2*)poutUvFill, textureIndex);
-								return ret != 0;
-							}
-						}
-					}
-				}
-			}
-		}
-		public unsafe bool GetMouseCursorTexData(ImGuiMouseCursor cursor, Vector2* outOffset, Vector2* outSize, Vector2* outUvBorder, Vector2* outUvFill, ref int textureIndex)
-		{
-			fixed (ImFontAtlas* @this = &this)
-			{
-				fixed (int* ptextureIndex = &textureIndex)
-				{
-					byte ret = ImGuiNative.GetMouseCursorTexData(@this, cursor, outOffset, outSize, outUvBorder, outUvFill, (int*)ptextureIndex);
-					return ret != 0;
-				}
-			}
-		}
-		public unsafe bool GetMouseCursorTexData(ImGuiMouseCursor cursor, ref Vector2 outOffset, Vector2* outSize, Vector2* outUvBorder, Vector2* outUvFill, ref int textureIndex)
-		{
-			fixed (ImFontAtlas* @this = &this)
-			{
-				fixed (Vector2* poutOffset = &outOffset)
-				{
-					fixed (int* ptextureIndex = &textureIndex)
-					{
-						byte ret = ImGuiNative.GetMouseCursorTexData(@this, cursor, (Vector2*)poutOffset, outSize, outUvBorder, outUvFill, (int*)ptextureIndex);
-						return ret != 0;
-					}
-				}
-			}
-		}
-		public unsafe bool GetMouseCursorTexData(ImGuiMouseCursor cursor, Vector2* outOffset, ref Vector2 outSize, Vector2* outUvBorder, Vector2* outUvFill, ref int textureIndex)
-		{
-			fixed (ImFontAtlas* @this = &this)
-			{
-				fixed (Vector2* poutSize = &outSize)
-				{
-					fixed (int* ptextureIndex = &textureIndex)
-					{
-						byte ret = ImGuiNative.GetMouseCursorTexData(@this, cursor, outOffset, (Vector2*)poutSize, outUvBorder, outUvFill, (int*)ptextureIndex);
-						return ret != 0;
-					}
-				}
-			}
-		}
-		public unsafe bool GetMouseCursorTexData(ImGuiMouseCursor cursor, ref Vector2 outOffset, ref Vector2 outSize, Vector2* outUvBorder, Vector2* outUvFill, ref int textureIndex)
-		{
-			fixed (ImFontAtlas* @this = &this)
-			{
-				fixed (Vector2* poutOffset = &outOffset)
-				{
-					fixed (Vector2* poutSize = &outSize)
-					{
-						fixed (int* ptextureIndex = &textureIndex)
-						{
-							byte ret = ImGuiNative.GetMouseCursorTexData(@this, cursor, (Vector2*)poutOffset, (Vector2*)poutSize, outUvBorder, outUvFill, (int*)ptextureIndex);
-							return ret != 0;
-						}
-					}
-				}
-			}
-		}
-		public unsafe bool GetMouseCursorTexData(ImGuiMouseCursor cursor, Vector2* outOffset, Vector2* outSize, ref Vector2 outUvBorder, Vector2* outUvFill, ref int textureIndex)
-		{
-			fixed (ImFontAtlas* @this = &this)
-			{
-				fixed (Vector2* poutUvBorder = &outUvBorder)
-				{
-					fixed (int* ptextureIndex = &textureIndex)
-					{
-						byte ret = ImGuiNative.GetMouseCursorTexData(@this, cursor, outOffset, outSize, (Vector2*)poutUvBorder, outUvFill, (int*)ptextureIndex);
-						return ret != 0;
-					}
-				}
-			}
-		}
-		public unsafe bool GetMouseCursorTexData(ImGuiMouseCursor cursor, Vector2* outOffset, Vector2* outSize, ReadOnlySpan<Vector2> outUvBorder, Vector2* outUvFill, ref int textureIndex)
-		{
-			fixed (ImFontAtlas* @this = &this)
-			{
-				fixed (Vector2* poutUvBorder = outUvBorder)
-				{
-					fixed (int* ptextureIndex = &textureIndex)
-					{
-						byte ret = ImGuiNative.GetMouseCursorTexData(@this, cursor, outOffset, outSize, (Vector2*)poutUvBorder, outUvFill, (int*)ptextureIndex);
-						return ret != 0;
-					}
-				}
-			}
-		}
-		public unsafe bool GetMouseCursorTexData(ImGuiMouseCursor cursor, ref Vector2 outOffset, Vector2* outSize, ref Vector2 outUvBorder, Vector2* outUvFill, ref int textureIndex)
-		{
-			fixed (ImFontAtlas* @this = &this)
-			{
-				fixed (Vector2* poutOffset = &outOffset)
-				{
-					fixed (Vector2* poutUvBorder = &outUvBorder)
-					{
-						fixed (int* ptextureIndex = &textureIndex)
-						{
-							byte ret = ImGuiNative.GetMouseCursorTexData(@this, cursor, (Vector2*)poutOffset, outSize, (Vector2*)poutUvBorder, outUvFill, (int*)ptextureIndex);
-							return ret != 0;
-						}
-					}
-				}
-			}
-		}
-		public unsafe bool GetMouseCursorTexData(ImGuiMouseCursor cursor, ref Vector2 outOffset, Vector2* outSize, ReadOnlySpan<Vector2> outUvBorder, Vector2* outUvFill, ref int textureIndex)
-		{
-			fixed (ImFontAtlas* @this = &this)
-			{
-				fixed (Vector2* poutOffset = &outOffset)
-				{
-					fixed (Vector2* poutUvBorder = outUvBorder)
-					{
-						fixed (int* ptextureIndex = &textureIndex)
-						{
-							byte ret = ImGuiNative.GetMouseCursorTexData(@this, cursor, (Vector2*)poutOffset, outSize, (Vector2*)poutUvBorder, outUvFill, (int*)ptextureIndex);
-							return ret != 0;
-						}
-					}
-				}
-			}
-		}
-		public unsafe bool GetMouseCursorTexData(ImGuiMouseCursor cursor, Vector2* outOffset, ref Vector2 outSize, ref Vector2 outUvBorder, Vector2* outUvFill, ref int textureIndex)
-		{
-			fixed (ImFontAtlas* @this = &this)
-			{
-				fixed (Vector2* poutSize = &outSize)
-				{
-					fixed (Vector2* poutUvBorder = &outUvBorder)
-					{
-						fixed (int* ptextureIndex = &textureIndex)
-						{
-							byte ret = ImGuiNative.GetMouseCursorTexData(@this, cursor, outOffset, (Vector2*)poutSize, (Vector2*)poutUvBorder, outUvFill, (int*)ptextureIndex);
-							return ret != 0;
-						}
-					}
-				}
-			}
-		}
-		public unsafe bool GetMouseCursorTexData(ImGuiMouseCursor cursor, Vector2* outOffset, ref Vector2 outSize, ReadOnlySpan<Vector2> outUvBorder, Vector2* outUvFill, ref int textureIndex)
-		{
-			fixed (ImFontAtlas* @this = &this)
-			{
-				fixed (Vector2* poutSize = &outSize)
-				{
-					fixed (Vector2* poutUvBorder = outUvBorder)
-					{
-						fixed (int* ptextureIndex = &textureIndex)
-						{
-							byte ret = ImGuiNative.GetMouseCursorTexData(@this, cursor, outOffset, (Vector2*)poutSize, (Vector2*)poutUvBorder, outUvFill, (int*)ptextureIndex);
-							return ret != 0;
-						}
-					}
-				}
-			}
-		}
-		public unsafe bool GetMouseCursorTexData(ImGuiMouseCursor cursor, ref Vector2 outOffset, ref Vector2 outSize, ref Vector2 outUvBorder, Vector2* outUvFill, ref int textureIndex)
-		{
-			fixed (ImFontAtlas* @this = &this)
-			{
-				fixed (Vector2* poutOffset = &outOffset)
-				{
-					fixed (Vector2* poutSize = &outSize)
-					{
-						fixed (Vector2* poutUvBorder = &outUvBorder)
-						{
-							fixed (int* ptextureIndex = &textureIndex)
-							{
-								byte ret = ImGuiNative.GetMouseCursorTexData(@this, cursor, (Vector2*)poutOffset, (Vector2*)poutSize, (Vector2*)poutUvBorder, outUvFill, (int*)ptextureIndex);
-								return ret != 0;
-							}
-						}
-					}
-				}
-			}
-		}
-		public unsafe bool GetMouseCursorTexData(ImGuiMouseCursor cursor, ref Vector2 outOffset, ref Vector2 outSize, ReadOnlySpan<Vector2> outUvBorder, Vector2* outUvFill, ref int textureIndex)
-		{
-			fixed (ImFontAtlas* @this = &this)
-			{
-				fixed (Vector2* poutOffset = &outOffset)
-				{
-					fixed (Vector2* poutSize = &outSize)
-					{
-						fixed (Vector2* poutUvBorder = outUvBorder)
-						{
-							fixed (int* ptextureIndex = &textureIndex)
-							{
-								byte ret = ImGuiNative.GetMouseCursorTexData(@this, cursor, (Vector2*)poutOffset, (Vector2*)poutSize, (Vector2*)poutUvBorder, outUvFill, (int*)ptextureIndex);
-								return ret != 0;
-							}
-						}
-					}
-				}
-			}
-		}
-		public unsafe bool GetMouseCursorTexData(ImGuiMouseCursor cursor, Vector2* outOffset, Vector2* outSize, Vector2* outUvBorder, ref Vector2 outUvFill, ref int textureIndex)
-		{
-			fixed (ImFontAtlas* @this = &this)
-			{
-				fixed (Vector2* poutUvFill = &outUvFill)
-				{
-					fixed (int* ptextureIndex = &textureIndex)
-					{
-						byte ret = ImGuiNative.GetMouseCursorTexData(@this, cursor, outOffset, outSize, outUvBorder, (Vector2*)poutUvFill, (int*)ptextureIndex);
-						return ret != 0;
-					}
-				}
-			}
-		}
-		public unsafe bool GetMouseCursorTexData(ImGuiMouseCursor cursor, Vector2* outOffset, Vector2* outSize, Vector2* outUvBorder, ReadOnlySpan<Vector2> outUvFill, ref int textureIndex)
-		{
-			fixed (ImFontAtlas* @this = &this)
-			{
-				fixed (Vector2* poutUvFill = outUvFill)
-				{
-					fixed (int* ptextureIndex = &textureIndex)
-					{
-						byte ret = ImGuiNative.GetMouseCursorTexData(@this, cursor, outOffset, outSize, outUvBorder, (Vector2*)poutUvFill, (int*)ptextureIndex);
-						return ret != 0;
-					}
-				}
-			}
-		}
-		public unsafe bool GetMouseCursorTexData(ImGuiMouseCursor cursor, ref Vector2 outOffset, Vector2* outSize, Vector2* outUvBorder, ref Vector2 outUvFill, ref int textureIndex)
-		{
-			fixed (ImFontAtlas* @this = &this)
-			{
-				fixed (Vector2* poutOffset = &outOffset)
-				{
-					fixed (Vector2* poutUvFill = &outUvFill)
-					{
-						fixed (int* ptextureIndex = &textureIndex)
-						{
-							byte ret = ImGuiNative.GetMouseCursorTexData(@this, cursor, (Vector2*)poutOffset, outSize, outUvBorder, (Vector2*)poutUvFill, (int*)ptextureIndex);
-							return ret != 0;
-						}
-					}
-				}
-			}
-		}
-		public unsafe bool GetMouseCursorTexData(ImGuiMouseCursor cursor, ref Vector2 outOffset, Vector2* outSize, Vector2* outUvBorder, ReadOnlySpan<Vector2> outUvFill, ref int textureIndex)
-		{
-			fixed (ImFontAtlas* @this = &this)
-			{
-				fixed (Vector2* poutOffset = &outOffset)
-				{
-					fixed (Vector2* poutUvFill = outUvFill)
-					{
-						fixed (int* ptextureIndex = &textureIndex)
-						{
-							byte ret = ImGuiNative.GetMouseCursorTexData(@this, cursor, (Vector2*)poutOffset, outSize, outUvBorder, (Vector2*)poutUvFill, (int*)ptextureIndex);
-							return ret != 0;
-						}
-					}
-				}
-			}
-		}
-		public unsafe bool GetMouseCursorTexData(ImGuiMouseCursor cursor, Vector2* outOffset, ref Vector2 outSize, Vector2* outUvBorder, ref Vector2 outUvFill, ref int textureIndex)
-		{
-			fixed (ImFontAtlas* @this = &this)
-			{
-				fixed (Vector2* poutSize = &outSize)
-				{
-					fixed (Vector2* poutUvFill = &outUvFill)
-					{
-						fixed (int* ptextureIndex = &textureIndex)
-						{
-							byte ret = ImGuiNative.GetMouseCursorTexData(@this, cursor, outOffset, (Vector2*)poutSize, outUvBorder, (Vector2*)poutUvFill, (int*)ptextureIndex);
-							return ret != 0;
-						}
-					}
-				}
-			}
-		}
-		public unsafe bool GetMouseCursorTexData(ImGuiMouseCursor cursor, Vector2* outOffset, ref Vector2 outSize, Vector2* outUvBorder, ReadOnlySpan<Vector2> outUvFill, ref int textureIndex)
-		{
-			fixed (ImFontAtlas* @this = &this)
-			{
-				fixed (Vector2* poutSize = &outSize)
-				{
-					fixed (Vector2* poutUvFill = outUvFill)
-					{
-						fixed (int* ptextureIndex = &textureIndex)
-						{
-							byte ret = ImGuiNative.GetMouseCursorTexData(@this, cursor, outOffset, (Vector2*)poutSize, outUvBorder, (Vector2*)poutUvFill, (int*)ptextureIndex);
-							return ret != 0;
-						}
-					}
-				}
-			}
-		}
-		public unsafe bool GetMouseCursorTexData(ImGuiMouseCursor cursor, ref Vector2 outOffset, ref Vector2 outSize, Vector2* outUvBorder, ref Vector2 outUvFill, ref int textureIndex)
-		{
-			fixed (ImFontAtlas* @this = &this)
-			{
-				fixed (Vector2* poutOffset = &outOffset)
-				{
-					fixed (Vector2* poutSize = &outSize)
-					{
-						fixed (Vector2* poutUvFill = &outUvFill)
-						{
-							fixed (int* ptextureIndex = &textureIndex)
-							{
-								byte ret = ImGuiNative.GetMouseCursorTexData(@this, cursor, (Vector2*)poutOffset, (Vector2*)poutSize, outUvBorder, (Vector2*)poutUvFill, (int*)ptextureIndex);
-								return ret != 0;
-							}
-						}
-					}
-				}
-			}
-		}
-		public unsafe bool GetMouseCursorTexData(ImGuiMouseCursor cursor, ref Vector2 outOffset, ref Vector2 outSize, Vector2* outUvBorder, ReadOnlySpan<Vector2> outUvFill, ref int textureIndex)
-		{
-			fixed (ImFontAtlas* @this = &this)
-			{
-				fixed (Vector2* poutOffset = &outOffset)
-				{
-					fixed (Vector2* poutSize = &outSize)
-					{
-						fixed (Vector2* poutUvFill = outUvFill)
-						{
-							fixed (int* ptextureIndex = &textureIndex)
-							{
-								byte ret = ImGuiNative.GetMouseCursorTexData(@this, cursor, (Vector2*)poutOffset, (Vector2*)poutSize, outUvBorder, (Vector2*)poutUvFill, (int*)ptextureIndex);
-								return ret != 0;
-							}
-						}
-					}
-				}
-			}
-		}
-		public unsafe bool GetMouseCursorTexData(ImGuiMouseCursor cursor, Vector2* outOffset, Vector2* outSize, ref Vector2 outUvBorder, ref Vector2 outUvFill, ref int textureIndex)
-		{
-			fixed (ImFontAtlas* @this = &this)
-			{
-				fixed (Vector2* poutUvBorder = &outUvBorder)
-				{
-					fixed (Vector2* poutUvFill = &outUvFill)
-					{
-						fixed (int* ptextureIndex = &textureIndex)
-						{
-							byte ret = ImGuiNative.GetMouseCursorTexData(@this, cursor, outOffset, outSize, (Vector2*)poutUvBorder, (Vector2*)poutUvFill, (int*)ptextureIndex);
-							return ret != 0;
-						}
-					}
-				}
-			}
-		}
-		public unsafe bool GetMouseCursorTexData(ImGuiMouseCursor cursor, Vector2* outOffset, Vector2* outSize, ReadOnlySpan<Vector2> outUvBorder, ReadOnlySpan<Vector2> outUvFill, ref int textureIndex)
-		{
-			fixed (ImFontAtlas* @this = &this)
-			{
-				fixed (Vector2* poutUvBorder = outUvBorder)
-				{
-					fixed (Vector2* poutUvFill = outUvFill)
-					{
-						fixed (int* ptextureIndex = &textureIndex)
-						{
-							byte ret = ImGuiNative.GetMouseCursorTexData(@this, cursor, outOffset, outSize, (Vector2*)poutUvBorder, (Vector2*)poutUvFill, (int*)ptextureIndex);
-							return ret != 0;
-						}
-					}
-				}
-			}
-		}
-		public unsafe bool GetMouseCursorTexData(ImGuiMouseCursor cursor, ref Vector2 outOffset, Vector2* outSize, ref Vector2 outUvBorder, ref Vector2 outUvFill, ref int textureIndex)
-		{
-			fixed (ImFontAtlas* @this = &this)
-			{
-				fixed (Vector2* poutOffset = &outOffset)
-				{
-					fixed (Vector2* poutUvBorder = &outUvBorder)
-					{
-						fixed (Vector2* poutUvFill = &outUvFill)
-						{
-							fixed (int* ptextureIndex = &textureIndex)
-							{
-								byte ret = ImGuiNative.GetMouseCursorTexData(@this, cursor, (Vector2*)poutOffset, outSize, (Vector2*)poutUvBorder, (Vector2*)poutUvFill, (int*)ptextureIndex);
-								return ret != 0;
-							}
-						}
-					}
-				}
-			}
-		}
-		public unsafe bool GetMouseCursorTexData(ImGuiMouseCursor cursor, ref Vector2 outOffset, Vector2* outSize, ReadOnlySpan<Vector2> outUvBorder, ReadOnlySpan<Vector2> outUvFill, ref int textureIndex)
-		{
-			fixed (ImFontAtlas* @this = &this)
-			{
-				fixed (Vector2* poutOffset = &outOffset)
-				{
-					fixed (Vector2* poutUvBorder = outUvBorder)
-					{
-						fixed (Vector2* poutUvFill = outUvFill)
-						{
-							fixed (int* ptextureIndex = &textureIndex)
-							{
-								byte ret = ImGuiNative.GetMouseCursorTexData(@this, cursor, (Vector2*)poutOffset, outSize, (Vector2*)poutUvBorder, (Vector2*)poutUvFill, (int*)ptextureIndex);
-								return ret != 0;
-							}
-						}
-					}
-				}
-			}
-		}
-		public unsafe bool GetMouseCursorTexData(ImGuiMouseCursor cursor, Vector2* outOffset, ref Vector2 outSize, ref Vector2 outUvBorder, ref Vector2 outUvFill, ref int textureIndex)
-		{
-			fixed (ImFontAtlas* @this = &this)
-			{
-				fixed (Vector2* poutSize = &outSize)
-				{
-					fixed (Vector2* poutUvBorder = &outUvBorder)
-					{
-						fixed (Vector2* poutUvFill = &outUvFill)
-						{
-							fixed (int* ptextureIndex = &textureIndex)
-							{
-								byte ret = ImGuiNative.GetMouseCursorTexData(@this, cursor, outOffset, (Vector2*)poutSize, (Vector2*)poutUvBorder, (Vector2*)poutUvFill, (int*)ptextureIndex);
-								return ret != 0;
-							}
-						}
-					}
-				}
-			}
-		}
-		public unsafe bool GetMouseCursorTexData(ImGuiMouseCursor cursor, Vector2* outOffset, ref Vector2 outSize, ReadOnlySpan<Vector2> outUvBorder, ReadOnlySpan<Vector2> outUvFill, ref int textureIndex)
-		{
-			fixed (ImFontAtlas* @this = &this)
-			{
-				fixed (Vector2* poutSize = &outSize)
-				{
-					fixed (Vector2* poutUvBorder = outUvBorder)
-					{
-						fixed (Vector2* poutUvFill = outUvFill)
-						{
-							fixed (int* ptextureIndex = &textureIndex)
-							{
-								byte ret = ImGuiNative.GetMouseCursorTexData(@this, cursor, outOffset, (Vector2*)poutSize, (Vector2*)poutUvBorder, (Vector2*)poutUvFill, (int*)ptextureIndex);
-								return ret != 0;
-							}
-						}
-					}
-				}
-			}
-		}
-		public unsafe bool GetMouseCursorTexData(ImGuiMouseCursor cursor, ref Vector2 outOffset, ref Vector2 outSize, ref Vector2 outUvBorder, ref Vector2 outUvFill, ref int textureIndex)
-		{
-			fixed (ImFontAtlas* @this = &this)
-			{
-				fixed (Vector2* poutOffset = &outOffset)
-				{
-					fixed (Vector2* poutSize = &outSize)
-					{
-						fixed (Vector2* poutUvBorder = &outUvBorder)
-						{
-							fixed (Vector2* poutUvFill = &outUvFill)
-							{
-								fixed (int* ptextureIndex = &textureIndex)
-								{
-									byte ret = ImGuiNative.GetMouseCursorTexData(@this, cursor, (Vector2*)poutOffset, (Vector2*)poutSize, (Vector2*)poutUvBorder, (Vector2*)poutUvFill, (int*)ptextureIndex);
-									return ret != 0;
-								}
-							}
-						}
-					}
-				}
-			}
-		}
-		public unsafe bool GetMouseCursorTexData(ImGuiMouseCursor cursor, ref Vector2 outOffset, ref Vector2 outSize, ReadOnlySpan<Vector2> outUvBorder, ReadOnlySpan<Vector2> outUvFill, ref int textureIndex)
-		{
-			fixed (ImFontAtlas* @this = &this)
-			{
-				fixed (Vector2* poutOffset = &outOffset)
-				{
-					fixed (Vector2* poutSize = &outSize)
-					{
-						fixed (Vector2* poutUvBorder = outUvBorder)
-						{
-							fixed (Vector2* poutUvFill = outUvFill)
-							{
-								fixed (int* ptextureIndex = &textureIndex)
-								{
-									byte ret = ImGuiNative.GetMouseCursorTexData(@this, cursor, (Vector2*)poutOffset, (Vector2*)poutSize, (Vector2*)poutUvBorder, (Vector2*)poutUvFill, (int*)ptextureIndex);
-									return ret != 0;
-								}
-							}
-						}
-					}
-				}
-			}
-		}
-		public unsafe void GetTexDataAsAlpha8(int textureIndex, byte** outPixels, int* outWidth, int* outHeight, int* outBytesPerPixel)
-		{
-			fixed (ImFontAtlas* @this = &this)
-			{
-				ImGuiNative.GetTexDataAsAlpha8(@this, textureIndex, outPixels, outWidth, outHeight, outBytesPerPixel);
-			}
-		}
-		public unsafe void GetTexDataAsAlpha8(int textureIndex, byte** outPixels, int* outWidth, int* outHeight)
-		{
-			fixed (ImFontAtlas* @this = &this)
-			{
-				ImGuiNative.GetTexDataAsAlpha8(@this, textureIndex, outPixels, outWidth, outHeight, (int*)(default));
-			}
-		}
-		public unsafe void GetTexDataAsAlpha8(int textureIndex, ref byte* outPixels, int* outWidth, int* outHeight, int* outBytesPerPixel)
-		{
-			fixed (ImFontAtlas* @this = &this)
-			{
-				fixed (byte** poutPixels = &outPixels)
-				{
-					ImGuiNative.GetTexDataAsAlpha8(@this, textureIndex, (byte**)poutPixels, outWidth, outHeight, outBytesPerPixel);
-				}
-			}
-		}
-		public unsafe void GetTexDataAsAlpha8(int textureIndex, ref byte* outPixels, int* outWidth, int* outHeight)
-		{
-			fixed (ImFontAtlas* @this = &this)
-			{
-				fixed (byte** poutPixels = &outPixels)
-				{
-					ImGuiNative.GetTexDataAsAlpha8(@this, textureIndex, (byte**)poutPixels, outWidth, outHeight, (int*)(default));
-				}
-			}
-		}
-		public unsafe void GetTexDataAsAlpha8(int textureIndex, byte** outPixels, ref int outWidth, int* outHeight, int* outBytesPerPixel)
-		{
-			fixed (ImFontAtlas* @this = &this)
-			{
-				fixed (int* poutWidth = &outWidth)
-				{
-					ImGuiNative.GetTexDataAsAlpha8(@this, textureIndex, outPixels, (int*)poutWidth, outHeight, outBytesPerPixel);
-				}
-			}
-		}
-		public unsafe void GetTexDataAsAlpha8(int textureIndex, byte** outPixels, ref int outWidth, int* outHeight)
-		{
-			fixed (ImFontAtlas* @this = &this)
-			{
-				fixed (int* poutWidth = &outWidth)
-				{
-					ImGuiNative.GetTexDataAsAlpha8(@this, textureIndex, outPixels, (int*)poutWidth, outHeight, (int*)(default));
-				}
-			}
-		}
-		public unsafe void GetTexDataAsAlpha8(int textureIndex, ref byte* outPixels, ref int outWidth, int* outHeight, int* outBytesPerPixel)
-		{
-			fixed (ImFontAtlas* @this = &this)
-			{
-				fixed (byte** poutPixels = &outPixels)
-				{
-					fixed (int* poutWidth = &outWidth)
-					{
-						ImGuiNative.GetTexDataAsAlpha8(@this, textureIndex, (byte**)poutPixels, (int*)poutWidth, outHeight, outBytesPerPixel);
-					}
-				}
-			}
-		}
-		public unsafe void GetTexDataAsAlpha8(int textureIndex, ref byte* outPixels, ref int outWidth, int* outHeight)
-		{
-			fixed (ImFontAtlas* @this = &this)
-			{
-				fixed (byte** poutPixels = &outPixels)
-				{
-					fixed (int* poutWidth = &outWidth)
-					{
-						ImGuiNative.GetTexDataAsAlpha8(@this, textureIndex, (byte**)poutPixels, (int*)poutWidth, outHeight, (int*)(default));
-					}
-				}
-			}
-		}
-		public unsafe void GetTexDataAsAlpha8(int textureIndex, byte** outPixels, int* outWidth, ref int outHeight, int* outBytesPerPixel)
-		{
-			fixed (ImFontAtlas* @this = &this)
-			{
-				fixed (int* poutHeight = &outHeight)
-				{
-					ImGuiNative.GetTexDataAsAlpha8(@this, textureIndex, outPixels, outWidth, (int*)poutHeight, outBytesPerPixel);
-				}
-			}
-		}
-		public unsafe void GetTexDataAsAlpha8(int textureIndex, byte** outPixels, int* outWidth, ref int outHeight)
-		{
-			fixed (ImFontAtlas* @this = &this)
-			{
-				fixed (int* poutHeight = &outHeight)
-				{
-					ImGuiNative.GetTexDataAsAlpha8(@this, textureIndex, outPixels, outWidth, (int*)poutHeight, (int*)(default));
-				}
-			}
-		}
-		public unsafe void GetTexDataAsAlpha8(int textureIndex, ref byte* outPixels, int* outWidth, ref int outHeight, int* outBytesPerPixel)
-		{
-			fixed (ImFontAtlas* @this = &this)
-			{
-				fixed (byte** poutPixels = &outPixels)
-				{
-					fixed (int* poutHeight = &outHeight)
-					{
-						ImGuiNative.GetTexDataAsAlpha8(@this, textureIndex, (byte**)poutPixels, outWidth, (int*)poutHeight, outBytesPerPixel);
-					}
-				}
-			}
-		}
-		public unsafe void GetTexDataAsAlpha8(int textureIndex, ref byte* outPixels, int* outWidth, ref int outHeight)
-		{
-			fixed (ImFontAtlas* @this = &this)
-			{
-				fixed (byte** poutPixels = &outPixels)
-				{
-					fixed (int* poutHeight = &outHeight)
-					{
-						ImGuiNative.GetTexDataAsAlpha8(@this, textureIndex, (byte**)poutPixels, outWidth, (int*)poutHeight, (int*)(default));
-					}
-				}
-			}
-		}
-		public unsafe void GetTexDataAsAlpha8(int textureIndex, byte** outPixels, ref int outWidth, ref int outHeight, int* outBytesPerPixel)
-		{
-			fixed (ImFontAtlas* @this = &this)
-			{
-				fixed (int* poutWidth = &outWidth)
-				{
-					fixed (int* poutHeight = &outHeight)
-					{
-						ImGuiNative.GetTexDataAsAlpha8(@this, textureIndex, outPixels, (int*)poutWidth, (int*)poutHeight, outBytesPerPixel);
-					}
-				}
-			}
-		}
-		public unsafe void GetTexDataAsAlpha8(int textureIndex, byte** outPixels, ref int outWidth, ref int outHeight)
-		{
-			fixed (ImFontAtlas* @this = &this)
-			{
-				fixed (int* poutWidth = &outWidth)
-				{
-					fixed (int* poutHeight = &outHeight)
-					{
-						ImGuiNative.GetTexDataAsAlpha8(@this, textureIndex, outPixels, (int*)poutWidth, (int*)poutHeight, (int*)(default));
-					}
-				}
-			}
-		}
-		public unsafe void GetTexDataAsAlpha8(int textureIndex, ref byte* outPixels, ref int outWidth, ref int outHeight, int* outBytesPerPixel)
-		{
-			fixed (ImFontAtlas* @this = &this)
-			{
-				fixed (byte** poutPixels = &outPixels)
-				{
-					fixed (int* poutWidth = &outWidth)
-					{
-						fixed (int* poutHeight = &outHeight)
-						{
-							ImGuiNative.GetTexDataAsAlpha8(@this, textureIndex, (byte**)poutPixels, (int*)poutWidth, (int*)poutHeight, outBytesPerPixel);
-						}
-					}
-				}
-			}
-		}
-		public unsafe void GetTexDataAsAlpha8(int textureIndex, ref byte* outPixels, ref int outWidth, ref int outHeight)
-		{
-			fixed (ImFontAtlas* @this = &this)
-			{
-				fixed (byte** poutPixels = &outPixels)
-				{
-					fixed (int* poutWidth = &outWidth)
-					{
-						fixed (int* poutHeight = &outHeight)
-						{
-							ImGuiNative.GetTexDataAsAlpha8(@this, textureIndex, (byte**)poutPixels, (int*)poutWidth, (int*)poutHeight, (int*)(default));
-						}
-					}
-				}
-			}
-		}
-		public unsafe void GetTexDataAsAlpha8(int textureIndex, byte** outPixels, int* outWidth, int* outHeight, ref int outBytesPerPixel)
-		{
-			fixed (ImFontAtlas* @this = &this)
-			{
-				fixed (int* poutBytesPerPixel = &outBytesPerPixel)
-				{
-					ImGuiNative.GetTexDataAsAlpha8(@this, textureIndex, outPixels, outWidth, outHeight, (int*)poutBytesPerPixel);
-				}
-			}
-		}
-		public unsafe void GetTexDataAsAlpha8(int textureIndex, ref byte* outPixels, int* outWidth, int* outHeight, ref int outBytesPerPixel)
-		{
-			fixed (ImFontAtlas* @this = &this)
-			{
-				fixed (byte** poutPixels = &outPixels)
-				{
-					fixed (int* poutBytesPerPixel = &outBytesPerPixel)
-					{
-						ImGuiNative.GetTexDataAsAlpha8(@this, textureIndex, (byte**)poutPixels, outWidth, outHeight, (int*)poutBytesPerPixel);
-					}
-				}
-			}
-		}
-		public unsafe void GetTexDataAsAlpha8(int textureIndex, byte** outPixels, ref int outWidth, int* outHeight, ref int outBytesPerPixel)
-		{
-			fixed (ImFontAtlas* @this = &this)
-			{
-				fixed (int* poutWidth = &outWidth)
-				{
-					fixed (int* poutBytesPerPixel = &outBytesPerPixel)
-					{
-						ImGuiNative.GetTexDataAsAlpha8(@this, textureIndex, outPixels, (int*)poutWidth, outHeight, (int*)poutBytesPerPixel);
-					}
-				}
-			}
-		}
-		public unsafe void GetTexDataAsAlpha8(int textureIndex, ref byte* outPixels, ref int outWidth, int* outHeight, ref int outBytesPerPixel)
-		{
-			fixed (ImFontAtlas* @this = &this)
-			{
-				fixed (byte** poutPixels = &outPixels)
-				{
-					fixed (int* poutWidth = &outWidth)
-					{
-						fixed (int* poutBytesPerPixel = &outBytesPerPixel)
-						{
-							ImGuiNative.GetTexDataAsAlpha8(@this, textureIndex, (byte**)poutPixels, (int*)poutWidth, outHeight, (int*)poutBytesPerPixel);
-						}
-					}
-				}
-			}
-		}
-		public unsafe void GetTexDataAsAlpha8(int textureIndex, byte** outPixels, int* outWidth, ref int outHeight, ref int outBytesPerPixel)
-		{
-			fixed (ImFontAtlas* @this = &this)
-			{
-				fixed (int* poutHeight = &outHeight)
-				{
-					fixed (int* poutBytesPerPixel = &outBytesPerPixel)
-					{
-						ImGuiNative.GetTexDataAsAlpha8(@this, textureIndex, outPixels, outWidth, (int*)poutHeight, (int*)poutBytesPerPixel);
-					}
-				}
-			}
-		}
-		public unsafe void GetTexDataAsAlpha8(int textureIndex, ref byte* outPixels, int* outWidth, ref int outHeight, ref int outBytesPerPixel)
-		{
-			fixed (ImFontAtlas* @this = &this)
-			{
-				fixed (byte** poutPixels = &outPixels)
-				{
-					fixed (int* poutHeight = &outHeight)
-					{
-						fixed (int* poutBytesPerPixel = &outBytesPerPixel)
-						{
-							ImGuiNative.GetTexDataAsAlpha8(@this, textureIndex, (byte**)poutPixels, outWidth, (int*)poutHeight, (int*)poutBytesPerPixel);
-						}
-					}
-				}
-			}
-		}
-		public unsafe void GetTexDataAsAlpha8(int textureIndex, byte** outPixels, ref int outWidth, ref int outHeight, ref int outBytesPerPixel)
-		{
-			fixed (ImFontAtlas* @this = &this)
-			{
-				fixed (int* poutWidth = &outWidth)
-				{
-					fixed (int* poutHeight = &outHeight)
-					{
-						fixed (int* poutBytesPerPixel = &outBytesPerPixel)
-						{
-							ImGuiNative.GetTexDataAsAlpha8(@this, textureIndex, outPixels, (int*)poutWidth, (int*)poutHeight, (int*)poutBytesPerPixel);
-						}
-					}
-				}
-			}
-		}
-		public unsafe void GetTexDataAsAlpha8(int textureIndex, ref byte* outPixels, ref int outWidth, ref int outHeight, ref int outBytesPerPixel)
-		{
-			fixed (ImFontAtlas* @this = &this)
-			{
-				fixed (byte** poutPixels = &outPixels)
-				{
-					fixed (int* poutWidth = &outWidth)
-					{
-						fixed (int* poutHeight = &outHeight)
-						{
-							fixed (int* poutBytesPerPixel = &outBytesPerPixel)
-							{
-								ImGuiNative.GetTexDataAsAlpha8(@this, textureIndex, (byte**)poutPixels, (int*)poutWidth, (int*)poutHeight, (int*)poutBytesPerPixel);
-							}
-						}
-					}
-				}
-			}
-		}
-		public unsafe void GetTexDataAsRGBA32(int textureIndex, byte** outPixels, int* outWidth, int* outHeight, int* outBytesPerPixel)
-		{
-			fixed (ImFontAtlas* @this = &this)
-			{
-				ImGuiNative.GetTexDataAsRGBA32(@this, textureIndex, outPixels, outWidth, outHeight, outBytesPerPixel);
-			}
-		}
-		public unsafe void GetTexDataAsRGBA32(int textureIndex, byte** outPixels, int* outWidth, int* outHeight)
-		{
-			fixed (ImFontAtlas* @this = &this)
-			{
-				ImGuiNative.GetTexDataAsRGBA32(@this, textureIndex, outPixels, outWidth, outHeight, (int*)(default));
-			}
-		}
-		public unsafe void GetTexDataAsRGBA32(int textureIndex, ref byte* outPixels, int* outWidth, int* outHeight, int* outBytesPerPixel)
-		{
-			fixed (ImFontAtlas* @this = &this)
-			{
-				fixed (byte** poutPixels = &outPixels)
-				{
-					ImGuiNative.GetTexDataAsRGBA32(@this, textureIndex, (byte**)poutPixels, outWidth, outHeight, outBytesPerPixel);
-				}
-			}
-		}
-		public unsafe void GetTexDataAsRGBA32(int textureIndex, ref byte* outPixels, int* outWidth, int* outHeight)
-		{
-			fixed (ImFontAtlas* @this = &this)
-			{
-				fixed (byte** poutPixels = &outPixels)
-				{
-					ImGuiNative.GetTexDataAsRGBA32(@this, textureIndex, (byte**)poutPixels, outWidth, outHeight, (int*)(default));
-				}
-			}
-		}
-		public unsafe void GetTexDataAsRGBA32(int textureIndex, byte** outPixels, ref int outWidth, int* outHeight, int* outBytesPerPixel)
-		{
-			fixed (ImFontAtlas* @this = &this)
-			{
-				fixed (int* poutWidth = &outWidth)
-				{
-					ImGuiNative.GetTexDataAsRGBA32(@this, textureIndex, outPixels, (int*)poutWidth, outHeight, outBytesPerPixel);
-				}
-			}
-		}
-		public unsafe void GetTexDataAsRGBA32(int textureIndex, byte** outPixels, ref int outWidth, int* outHeight)
-		{
-			fixed (ImFontAtlas* @this = &this)
-			{
-				fixed (int* poutWidth = &outWidth)
-				{
-					ImGuiNative.GetTexDataAsRGBA32(@this, textureIndex, outPixels, (int*)poutWidth, outHeight, (int*)(default));
-				}
-			}
-		}
-		public unsafe void GetTexDataAsRGBA32(int textureIndex, ref byte* outPixels, ref int outWidth, int* outHeight, int* outBytesPerPixel)
-		{
-			fixed (ImFontAtlas* @this = &this)
-			{
-				fixed (byte** poutPixels = &outPixels)
-				{
-					fixed (int* poutWidth = &outWidth)
-					{
-						ImGuiNative.GetTexDataAsRGBA32(@this, textureIndex, (byte**)poutPixels, (int*)poutWidth, outHeight, outBytesPerPixel);
-					}
-				}
-			}
-		}
-		public unsafe void GetTexDataAsRGBA32(int textureIndex, ref byte* outPixels, ref int outWidth, int* outHeight)
-		{
-			fixed (ImFontAtlas* @this = &this)
-			{
-				fixed (byte** poutPixels = &outPixels)
-				{
-					fixed (int* poutWidth = &outWidth)
-					{
-						ImGuiNative.GetTexDataAsRGBA32(@this, textureIndex, (byte**)poutPixels, (int*)poutWidth, outHeight, (int*)(default));
-					}
-				}
-			}
-		}
-		public unsafe void GetTexDataAsRGBA32(int textureIndex, byte** outPixels, int* outWidth, ref int outHeight, int* outBytesPerPixel)
-		{
-			fixed (ImFontAtlas* @this = &this)
-			{
-				fixed (int* poutHeight = &outHeight)
-				{
-					ImGuiNative.GetTexDataAsRGBA32(@this, textureIndex, outPixels, outWidth, (int*)poutHeight, outBytesPerPixel);
-				}
-			}
-		}
-		public unsafe void GetTexDataAsRGBA32(int textureIndex, byte** outPixels, int* outWidth, ref int outHeight)
-		{
-			fixed (ImFontAtlas* @this = &this)
-			{
-				fixed (int* poutHeight = &outHeight)
-				{
-					ImGuiNative.GetTexDataAsRGBA32(@this, textureIndex, outPixels, outWidth, (int*)poutHeight, (int*)(default));
-				}
-			}
-		}
-		public unsafe void GetTexDataAsRGBA32(int textureIndex, ref byte* outPixels, int* outWidth, ref int outHeight, int* outBytesPerPixel)
-		{
-			fixed (ImFontAtlas* @this = &this)
-			{
-				fixed (byte** poutPixels = &outPixels)
-				{
-					fixed (int* poutHeight = &outHeight)
-					{
-						ImGuiNative.GetTexDataAsRGBA32(@this, textureIndex, (byte**)poutPixels, outWidth, (int*)poutHeight, outBytesPerPixel);
-					}
-				}
-			}
-		}
-		public unsafe void GetTexDataAsRGBA32(int textureIndex, ref byte* outPixels, int* outWidth, ref int outHeight)
-		{
-			fixed (ImFontAtlas* @this = &this)
-			{
-				fixed (byte** poutPixels = &outPixels)
-				{
-					fixed (int* poutHeight = &outHeight)
-					{
-						ImGuiNative.GetTexDataAsRGBA32(@this, textureIndex, (byte**)poutPixels, outWidth, (int*)poutHeight, (int*)(default));
-					}
-				}
-			}
-		}
-		public unsafe void GetTexDataAsRGBA32(int textureIndex, byte** outPixels, ref int outWidth, ref int outHeight, int* outBytesPerPixel)
-		{
-			fixed (ImFontAtlas* @this = &this)
-			{
-				fixed (int* poutWidth = &outWidth)
-				{
-					fixed (int* poutHeight = &outHeight)
-					{
-						ImGuiNative.GetTexDataAsRGBA32(@this, textureIndex, outPixels, (int*)poutWidth, (int*)poutHeight, outBytesPerPixel);
-					}
-				}
-			}
-		}
-		public unsafe void GetTexDataAsRGBA32(int textureIndex, byte** outPixels, ref int outWidth, ref int outHeight)
-		{
-			fixed (ImFontAtlas* @this = &this)
-			{
-				fixed (int* poutWidth = &outWidth)
-				{
-					fixed (int* poutHeight = &outHeight)
-					{
-						ImGuiNative.GetTexDataAsRGBA32(@this, textureIndex, outPixels, (int*)poutWidth, (int*)poutHeight, (int*)(default));
-					}
-				}
-			}
-		}
-		public unsafe void GetTexDataAsRGBA32(int textureIndex, ref byte* outPixels, ref int outWidth, ref int outHeight, int* outBytesPerPixel)
-		{
-			fixed (ImFontAtlas* @this = &this)
-			{
-				fixed (byte** poutPixels = &outPixels)
-				{
-					fixed (int* poutWidth = &outWidth)
-					{
-						fixed (int* poutHeight = &outHeight)
-						{
-							ImGuiNative.GetTexDataAsRGBA32(@this, textureIndex, (byte**)poutPixels, (int*)poutWidth, (int*)poutHeight, outBytesPerPixel);
-						}
-					}
-				}
-			}
-		}
-		public unsafe void GetTexDataAsRGBA32(int textureIndex, ref byte* outPixels, ref int outWidth, ref int outHeight)
-		{
-			fixed (ImFontAtlas* @this = &this)
-			{
-				fixed (byte** poutPixels = &outPixels)
-				{
-					fixed (int* poutWidth = &outWidth)
-					{
-						fixed (int* poutHeight = &outHeight)
-						{
-							ImGuiNative.GetTexDataAsRGBA32(@this, textureIndex, (byte**)poutPixels, (int*)poutWidth, (int*)poutHeight, (int*)(default));
-						}
-					}
-				}
-			}
-		}
-		public unsafe void GetTexDataAsRGBA32(int textureIndex, byte** outPixels, int* outWidth, int* outHeight, ref int outBytesPerPixel)
-		{
-			fixed (ImFontAtlas* @this = &this)
-			{
-				fixed (int* poutBytesPerPixel = &outBytesPerPixel)
-				{
-					ImGuiNative.GetTexDataAsRGBA32(@this, textureIndex, outPixels, outWidth, outHeight, (int*)poutBytesPerPixel);
-				}
-			}
-		}
-		public unsafe void GetTexDataAsRGBA32(int textureIndex, ref byte* outPixels, int* outWidth, int* outHeight, ref int outBytesPerPixel)
-		{
-			fixed (ImFontAtlas* @this = &this)
-			{
-				fixed (byte** poutPixels = &outPixels)
-				{
-					fixed (int* poutBytesPerPixel = &outBytesPerPixel)
-					{
-						ImGuiNative.GetTexDataAsRGBA32(@this, textureIndex, (byte**)poutPixels, outWidth, outHeight, (int*)poutBytesPerPixel);
-					}
-				}
-			}
-		}
-		public unsafe void GetTexDataAsRGBA32(int textureIndex, byte** outPixels, ref int outWidth, int* outHeight, ref int outBytesPerPixel)
-		{
-			fixed (ImFontAtlas* @this = &this)
-			{
-				fixed (int* poutWidth = &outWidth)
+				fixed (ImFont* pfont = &font)
 				{
-					fixed (int* poutBytesPerPixel = &outBytesPerPixel)
-					{
-						ImGuiNative.GetTexDataAsRGBA32(@this, textureIndex, outPixels, (int*)poutWidth, outHeight, (int*)poutBytesPerPixel);
-					}
+					ImGuiNative.RemoveFont(@this, (ImFont*)pfont);
 				}
 			}
 		}
-		public unsafe void GetTexDataAsRGBA32(int textureIndex, ref byte* outPixels, ref int outWidth, int* outHeight, ref int outBytesPerPixel)
+		public unsafe void SetFontLoader(ImFontLoader* fontLoader)
 		{
 			fixed (ImFontAtlas* @this = &this)
 			{
-				fixed (byte** poutPixels = &outPixels)
-				{
-					fixed (int* poutWidth = &outWidth)
-					{
-						fixed (int* poutBytesPerPixel = &outBytesPerPixel)
-						{
-							ImGuiNative.GetTexDataAsRGBA32(@this, textureIndex, (byte**)poutPixels, (int*)poutWidth, outHeight, (int*)poutBytesPerPixel);
-						}
-					}
-				}
-			}
-		}
-		public unsafe void GetTexDataAsRGBA32(int textureIndex, byte** outPixels, int* outWidth, ref int outHeight, ref int outBytesPerPixel)
-		{
-			fixed (ImFontAtlas* @this = &this)
-			{
-				fixed (int* poutHeight = &outHeight)
-				{
-					fixed (int* poutBytesPerPixel = &outBytesPerPixel)
-					{
-						ImGuiNative.GetTexDataAsRGBA32(@this, textureIndex, outPixels, outWidth, (int*)poutHeight, (int*)poutBytesPerPixel);
-					}
-				}
-			}
-		}
-		public unsafe void GetTexDataAsRGBA32(int textureIndex, ref byte* outPixels, int* outWidth, ref int outHeight, ref int outBytesPerPixel)
-		{
-			fixed (ImFontAtlas* @this = &this)
-			{
-				fixed (byte** poutPixels = &outPixels)
-				{
-					fixed (int* poutHeight = &outHeight)
-					{
-						fixed (int* poutBytesPerPixel = &outBytesPerPixel)
-						{
-							ImGuiNative.GetTexDataAsRGBA32(@this, textureIndex, (byte**)poutPixels, outWidth, (int*)poutHeight, (int*)poutBytesPerPixel);
-						}
-					}
-				}
+				ImGuiNative.SetFontLoader(@this, fontLoader);
 			}
 		}
-		public unsafe void GetTexDataAsRGBA32(int textureIndex, byte** outPixels, ref int outWidth, ref int outHeight, ref int outBytesPerPixel)
+		public unsafe void SetFontLoader(in ImFontLoader fontLoader)
 		{
 			fixed (ImFontAtlas* @this = &this)
 			{
-				fixed (int* poutWidth = &outWidth)
+				fixed (ImFontLoader* pfontLoader = &fontLoader)
 				{
-					fixed (int* poutHeight = &outHeight)
-					{
-						fixed (int* poutBytesPerPixel = &outBytesPerPixel)
-						{
-							ImGuiNative.GetTexDataAsRGBA32(@this, textureIndex, outPixels, (int*)poutWidth, (int*)poutHeight, (int*)poutBytesPerPixel);
-						}
-					}
+					ImGuiNative.SetFontLoader(@this, (ImFontLoader*)pfontLoader);
 				}
-			}
-		}
-		public unsafe void GetTexDataAsRGBA32(int textureIndex, ref byte* outPixels, ref int outWidth, ref int outHeight, ref int outBytesPerPixel)
-		{
-			fixed (ImFontAtlas* @this = &this)
-			{
-				fixed (byte** poutPixels = &outPixels)
-				{
-					fixed (int* poutWidth = &outWidth)
-					{
-						fixed (int* poutHeight = &outHeight)
-						{
-							fixed (int* poutBytesPerPixel = &outBytesPerPixel)
-							{
-								ImGuiNative.GetTexDataAsRGBA32(@this, textureIndex, (byte**)poutPixels, (int*)poutWidth, (int*)poutHeight, (int*)poutBytesPerPixel);
-							}
-						}
-					}
-				}
-			}
-		}
-		public unsafe bool IsBuilt()
-		{
-			fixed (ImFontAtlas* @this = &this)
-			{
-				byte ret = ImGuiNative.IsBuilt(@this);
-				return ret != 0;
-			}
-		}
-		public unsafe void SetTexID(int textureIndex, ImTextureID id)
-		{
-			fixed (ImFontAtlas* @this = &this)
-			{
-				ImGuiNative.SetTexID(@this, textureIndex, id);
 			}
 		}
 }

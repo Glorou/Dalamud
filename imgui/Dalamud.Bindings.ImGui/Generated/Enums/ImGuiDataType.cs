@@ -16,7 +16,6 @@ namespace Dalamud.Bindings.ImGui
 	/// <summary>
 	/// To be documented.
 	/// </summary>
-	[Flags]
 	public enum ImGuiDataType : int
 	{
 		/// <summary>
@@ -72,6 +71,16 @@ namespace Dalamud.Bindings.ImGui
 		/// <summary>
 		/// To be documented.
 		/// </summary>
-		Count = unchecked(10),
+		Bool = unchecked(10),
+
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		String = unchecked(11),
+
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		Count = unchecked(12),
 	}
 }

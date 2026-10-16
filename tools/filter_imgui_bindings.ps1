@@ -20,10 +20,6 @@ $sourcePaths = (
     $null
 )
 
-# replace "ImGuiKey.GamepadStart"
-$tmp = Get-Content -Path "$repoRoot\imgui\Dalamud.Bindings.ImGui\Generated\Enums\ImGuiKeyPrivate.cs" -Raw
-$tmp = $tmp.Replace("unchecked((int)GamepadStart)", "unchecked((int)ImGuiKey.GamepadStart)").Trim()
-$tmp.Trim() | Set-Content -Path "$repoRoot\imgui\Dalamud.Bindings.ImGui\Generated\Enums\ImGuiKeyPrivate.cs" -Encoding ascii
 
 try
 {

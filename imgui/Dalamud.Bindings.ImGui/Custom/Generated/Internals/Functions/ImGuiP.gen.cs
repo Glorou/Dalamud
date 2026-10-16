@@ -11,9 +11,13 @@ namespace Dalamud.Bindings.ImGui;
 
 public unsafe partial class ImGuiP
 {
-		public static void ImQsort(void* baseValue, nuint count, nuint sizeOfElement, delegate*<void*, nuint, nuint, delegate*<void*, void*, int>, int> compareFunc)
+		public static void ImQsort(void* baseValue, nuint count, nuint sizeOfElement, delegate*<void*, void*, int> compareFunc)
 		{
 			ImGuiPNative.ImQsort(baseValue, count, sizeOfElement, compareFunc);
+		}
+		public static void ImQsort(nint baseValue, nuint count, nuint sizeOfElement, delegate*<void*, void*, int> compareFunc)
+		{
+			ImGuiPNative.ImQsort((void*)baseValue, count, sizeOfElement, compareFunc);
 		}
 		public static uint ImAlphaBlendColors(uint colA, uint colB)
 		{
@@ -35,9 +39,24 @@ public unsafe partial class ImGuiP
 			int ret = ImGuiPNative.ImUpperPowerOfTwo(v);
 			return ret;
 		}
-		public static ushort* ImStrbolW(ushort* bufMidLine, ushort* bufBegin)
+		public static uint ImCountSetBits(uint v)
 		{
-			ushort* ret = ImGuiPNative.ImStrbolW(bufMidLine, bufBegin);
+			uint ret = ImGuiPNative.ImCountSetBits(v);
+			return ret;
+		}
+		public static void* ImMemdup(void* src, nuint size)
+		{
+			void* ret = ImGuiPNative.ImMemdup(src, size);
+			return ret;
+		}
+		public static void* ImMemdup(nint src, nuint size)
+		{
+			void* ret = ImGuiPNative.ImMemdup((void*)src, size);
+			return ret;
+		}
+		public static byte ImToUpper(byte c)
+		{
+			byte ret = ImGuiPNative.ImToUpper(c);
 			return ret;
 		}
 		public static bool ImCharIsBlankA(byte c)
@@ -50,10 +69,89 @@ public unsafe partial class ImGuiP
 			byte ret = ImGuiPNative.ImCharIsBlankW(c);
 			return ret != 0;
 		}
+		public static bool ImCharIsXdigitA(byte c)
+		{
+			byte ret = ImGuiPNative.ImCharIsXdigitA(c);
+			return ret != 0;
+		}
+		public static int ImTextCharToUtf8(byte* outBuf, uint c)
+		{
+			int ret = ImGuiPNative.ImTextCharToUtf8(outBuf, c);
+			return ret;
+		}
+		public static int ImTextCharToUtf8(ref byte outBuf, uint c)
+		{
+			fixed (byte* poutBuf = &outBuf)
+			{
+				int ret = ImGuiPNative.ImTextCharToUtf8((byte*)poutBuf, c);
+				return ret;
+			}
+		}
+		public static int ImTextCharToUtf8(ReadOnlySpan<byte> outBuf, uint c)
+		{
+			fixed (byte* poutBuf = outBuf)
+			{
+				int ret = ImGuiPNative.ImTextCharToUtf8((byte*)poutBuf, c);
+				return ret;
+			}
+		}
 		public static int ImTextCountUtf8BytesFromStr(ushort* inText, ushort* inTextEnd)
 		{
 			int ret = ImGuiPNative.ImTextCountUtf8BytesFromStr(inText, inTextEnd);
 			return ret;
+		}
+		public static int ImTextCountUtf8BytesFromStr(in ushort inText, ushort* inTextEnd)
+		{
+			fixed (ushort* pinText = &inText)
+			{
+				int ret = ImGuiPNative.ImTextCountUtf8BytesFromStr((ushort*)pinText, inTextEnd);
+				return ret;
+			}
+		}
+		public static int ImTextCountUtf8BytesFromStr(ushort* inText, in ushort inTextEnd)
+		{
+			fixed (ushort* pinTextEnd = &inTextEnd)
+			{
+				int ret = ImGuiPNative.ImTextCountUtf8BytesFromStr(inText, (ushort*)pinTextEnd);
+				return ret;
+			}
+		}
+		public static int ImTextCountUtf8BytesFromStr(in ushort inText, in ushort inTextEnd)
+		{
+			fixed (ushort* pinText = &inText)
+			{
+				fixed (ushort* pinTextEnd = &inTextEnd)
+				{
+					int ret = ImGuiPNative.ImTextCountUtf8BytesFromStr((ushort*)pinText, (ushort*)pinTextEnd);
+					return ret;
+				}
+			}
+		}
+		public static void ImTextInitClassifiers()
+		{
+			ImGuiPNative.ImTextInitClassifiers();
+		}
+		public static void ImTextClassifierClear(uint* bits, uint codepointMin, uint codepointEnd, ImWcharClass charClass)
+		{
+			ImGuiPNative.ImTextClassifierClear(bits, codepointMin, codepointEnd, charClass);
+		}
+		public static void ImTextClassifierClear(ref uint bits, uint codepointMin, uint codepointEnd, ImWcharClass charClass)
+		{
+			fixed (uint* pbits = &bits)
+			{
+				ImGuiPNative.ImTextClassifierClear((uint*)pbits, codepointMin, codepointEnd, charClass);
+			}
+		}
+		public static void ImTextClassifierSetCharClass(uint* bits, uint codepointMin, uint codepointEnd, ImWcharClass charClass, uint c)
+		{
+			ImGuiPNative.ImTextClassifierSetCharClass(bits, codepointMin, codepointEnd, charClass, c);
+		}
+		public static void ImTextClassifierSetCharClass(ref uint bits, uint codepointMin, uint codepointEnd, ImWcharClass charClass, uint c)
+		{
+			fixed (uint* pbits = &bits)
+			{
+				ImGuiPNative.ImTextClassifierSetCharClass((uint*)pbits, codepointMin, codepointEnd, charClass, c);
+			}
 		}
 		public static bool ImFileClose(ImFileHandle file)
 		{
@@ -70,9 +168,19 @@ public unsafe partial class ImGuiP
 			ulong ret = ImGuiPNative.ImFileRead(data, size, count, file);
 			return ret;
 		}
+		public static ulong ImFileRead(nint data, ulong size, ulong count, ImFileHandle file)
+		{
+			ulong ret = ImGuiPNative.ImFileRead((void*)data, size, count, file);
+			return ret;
+		}
 		public static ulong ImFileWrite(void* data, ulong size, ulong count, ImFileHandle file)
 		{
 			ulong ret = ImGuiPNative.ImFileWrite(data, size, count, file);
+			return ret;
+		}
+		public static ulong ImFileWrite(nint data, ulong size, ulong count, ImFileHandle file)
+		{
+			ulong ret = ImGuiPNative.ImFileWrite((void*)data, size, count, file);
 			return ret;
 		}
 		public static float ImPow(float x, float y)
@@ -132,105 +240,33 @@ public unsafe partial class ImGuiP
 		}
 		public static Vector2 ImMin(Vector2 lhs, Vector2 rhs)
 		{
-			Vector2 ret;
-			ImGuiPNative.ImMin(&ret, lhs, rhs);
+			Vector2 ret = ImGuiPNative.ImMin(lhs, rhs);
 			return ret;
-		}
-		public static void ImMin(Vector2* pOut, Vector2 lhs, Vector2 rhs)
-		{
-			ImGuiPNative.ImMin(pOut, lhs, rhs);
-		}
-		public static void ImMin(ref Vector2 pOut, Vector2 lhs, Vector2 rhs)
-		{
-			fixed (Vector2* ppOut = &pOut)
-			{
-				ImGuiPNative.ImMin((Vector2*)ppOut, lhs, rhs);
-			}
 		}
 		public static Vector2 ImMax(Vector2 lhs, Vector2 rhs)
 		{
-			Vector2 ret;
-			ImGuiPNative.ImMax(&ret, lhs, rhs);
+			Vector2 ret = ImGuiPNative.ImMax(lhs, rhs);
 			return ret;
-		}
-		public static void ImMax(Vector2* pOut, Vector2 lhs, Vector2 rhs)
-		{
-			ImGuiPNative.ImMax(pOut, lhs, rhs);
-		}
-		public static void ImMax(ref Vector2 pOut, Vector2 lhs, Vector2 rhs)
-		{
-			fixed (Vector2* ppOut = &pOut)
-			{
-				ImGuiPNative.ImMax((Vector2*)ppOut, lhs, rhs);
-			}
 		}
 		public static Vector2 ImClamp(Vector2 v, Vector2 mn, Vector2 mx)
 		{
-			Vector2 ret;
-			ImGuiPNative.ImClamp(&ret, v, mn, mx);
+			Vector2 ret = ImGuiPNative.ImClamp(v, mn, mx);
 			return ret;
-		}
-		public static void ImClamp(Vector2* pOut, Vector2 v, Vector2 mn, Vector2 mx)
-		{
-			ImGuiPNative.ImClamp(pOut, v, mn, mx);
-		}
-		public static void ImClamp(ref Vector2 pOut, Vector2 v, Vector2 mn, Vector2 mx)
-		{
-			fixed (Vector2* ppOut = &pOut)
-			{
-				ImGuiPNative.ImClamp((Vector2*)ppOut, v, mn, mx);
-			}
 		}
 		public static Vector2 ImLerp(Vector2 a, Vector2 b, float t)
 		{
-			Vector2 ret;
-			ImGuiPNative.ImLerp(&ret, a, b, t);
+			Vector2 ret = ImGuiPNative.ImLerp(a, b, t);
 			return ret;
-		}
-		public static void ImLerp(Vector2* pOut, Vector2 a, Vector2 b, float t)
-		{
-			ImGuiPNative.ImLerp(pOut, a, b, t);
-		}
-		public static void ImLerp(ref Vector2 pOut, Vector2 a, Vector2 b, float t)
-		{
-			fixed (Vector2* ppOut = &pOut)
-			{
-				ImGuiPNative.ImLerp((Vector2*)ppOut, a, b, t);
-			}
 		}
 		public static Vector2 ImLerp(Vector2 a, Vector2 b, Vector2 t)
 		{
-			Vector2 ret;
-			ImGuiPNative.ImLerp(&ret, a, b, t);
+			Vector2 ret = ImGuiPNative.ImLerp(a, b, t);
 			return ret;
-		}
-		public static void ImLerp(Vector2* pOut, Vector2 a, Vector2 b, Vector2 t)
-		{
-			ImGuiPNative.ImLerp(pOut, a, b, t);
-		}
-		public static void ImLerp(ref Vector2 pOut, Vector2 a, Vector2 b, Vector2 t)
-		{
-			fixed (Vector2* ppOut = &pOut)
-			{
-				ImGuiPNative.ImLerp((Vector2*)ppOut, a, b, t);
-			}
 		}
 		public static Vector4 ImLerp(Vector4 a, Vector4 b, float t)
 		{
-			Vector4 ret;
-			ImGuiPNative.ImLerp(&ret, a, b, t);
+			Vector4 ret = ImGuiPNative.ImLerp(a, b, t);
 			return ret;
-		}
-		public static void ImLerp(Vector4* pOut, Vector4 a, Vector4 b, float t)
-		{
-			ImGuiPNative.ImLerp(pOut, a, b, t);
-		}
-		public static void ImLerp(ref Vector4 pOut, Vector4 a, Vector4 b, float t)
-		{
-			fixed (Vector4* ppOut = &pOut)
-			{
-				ImGuiPNative.ImLerp((Vector4*)ppOut, a, b, t);
-			}
 		}
 		public static float ImSaturate(float f)
 		{
@@ -252,6 +288,16 @@ public unsafe partial class ImGuiP
 			float ret = ImGuiPNative.ImInvLength(lhs, failValue);
 			return ret;
 		}
+		public static float ImTrunc(float f)
+		{
+			float ret = ImGuiPNative.ImTrunc(f);
+			return ret;
+		}
+		public static Vector2 ImTrunc(Vector2 v)
+		{
+			Vector2 ret = ImGuiPNative.ImTrunc(v);
+			return ret;
+		}
 		public static float ImFloor(float f)
 		{
 			float ret = ImGuiPNative.ImFloor(f);
@@ -259,42 +305,23 @@ public unsafe partial class ImGuiP
 		}
 		public static Vector2 ImFloor(Vector2 v)
 		{
-			Vector2 ret;
-			ImGuiPNative.ImFloor(&ret, v);
+			Vector2 ret = ImGuiPNative.ImFloor(v);
 			return ret;
 		}
-		public static void ImFloor(Vector2* pOut, Vector2 v)
+		public static float ImTrunc64(float f)
 		{
-			ImGuiPNative.ImFloor(pOut, v);
-		}
-		public static void ImFloor(ref Vector2 pOut, Vector2 v)
-		{
-			fixed (Vector2* ppOut = &pOut)
-			{
-				ImGuiPNative.ImFloor((Vector2*)ppOut, v);
-			}
-		}
-		public static float ImFloorSigned(float f)
-		{
-			float ret = ImGuiPNative.ImFloorSigned(f);
+			float ret = ImGuiPNative.ImTrunc64(f);
 			return ret;
 		}
-		public static Vector2 ImFloorSigned(Vector2 v)
+		public static float ImRound64(float f)
 		{
-			Vector2 ret;
-			ImGuiPNative.ImFloorSigned(&ret, v);
+			float ret = ImGuiPNative.ImRound64(f);
 			return ret;
 		}
-		public static void ImFloorSigned(Vector2* pOut, Vector2 v)
+		public static float ImCeilFast(float f)
 		{
-			ImGuiPNative.ImFloorSigned(pOut, v);
-		}
-		public static void ImFloorSigned(ref Vector2 pOut, Vector2 v)
-		{
-			fixed (Vector2* ppOut = &pOut)
-			{
-				ImGuiPNative.ImFloorSigned((Vector2*)ppOut, v);
-			}
+			float ret = ImGuiPNative.ImCeilFast(f);
+			return ret;
 		}
 		public static int ImModPositive(int a, int b)
 		{
@@ -308,132 +335,58 @@ public unsafe partial class ImGuiP
 		}
 		public static Vector2 ImRotate(Vector2 v, float cosA, float sinA)
 		{
-			Vector2 ret;
-			ImGuiPNative.ImRotate(&ret, v, cosA, sinA);
+			Vector2 ret = ImGuiPNative.ImRotate(v, cosA, sinA);
 			return ret;
-		}
-		public static void ImRotate(Vector2* pOut, Vector2 v, float cosA, float sinA)
-		{
-			ImGuiPNative.ImRotate(pOut, v, cosA, sinA);
-		}
-		public static void ImRotate(ref Vector2 pOut, Vector2 v, float cosA, float sinA)
-		{
-			fixed (Vector2* ppOut = &pOut)
-			{
-				ImGuiPNative.ImRotate((Vector2*)ppOut, v, cosA, sinA);
-			}
 		}
 		public static float ImLinearSweep(float current, float target, float speed)
 		{
 			float ret = ImGuiPNative.ImLinearSweep(current, target, speed);
 			return ret;
 		}
-		public static Vector2 ImMul(Vector2 lhs, Vector2 rhs)
+		public static float ImLinearRemapClamp(float s0, float s1, float d0, float d1, float x)
 		{
-			Vector2 ret;
-			ImGuiPNative.ImMul(&ret, lhs, rhs);
+			float ret = ImGuiPNative.ImLinearRemapClamp(s0, s1, d0, d1, x);
 			return ret;
 		}
-		public static void ImMul(Vector2* pOut, Vector2 lhs, Vector2 rhs)
+		public static Vector2 ImMul(Vector2 lhs, Vector2 rhs)
 		{
-			ImGuiPNative.ImMul(pOut, lhs, rhs);
-		}
-		public static void ImMul(ref Vector2 pOut, Vector2 lhs, Vector2 rhs)
-		{
-			fixed (Vector2* ppOut = &pOut)
-			{
-				ImGuiPNative.ImMul((Vector2*)ppOut, lhs, rhs);
-			}
+			Vector2 ret = ImGuiPNative.ImMul(lhs, rhs);
+			return ret;
 		}
 		public static bool ImIsFloatAboveGuaranteedIntegerPrecision(float f)
 		{
 			byte ret = ImGuiPNative.ImIsFloatAboveGuaranteedIntegerPrecision(f);
 			return ret != 0;
 		}
-		public static Vector2 ImBezierCubicCalc(Vector2 p1, Vector2 p2, Vector2 p3, Vector2 p4, float t)
+		public static float ImExponentialMovingAverage(float avg, float sample, int n)
 		{
-			Vector2 ret;
-			ImGuiPNative.ImBezierCubicCalc(&ret, p1, p2, p3, p4, t);
+			float ret = ImGuiPNative.ImExponentialMovingAverage(avg, sample, n);
 			return ret;
 		}
-		public static void ImBezierCubicCalc(Vector2* pOut, Vector2 p1, Vector2 p2, Vector2 p3, Vector2 p4, float t)
+		public static Vector2 ImBezierCubicCalc(Vector2 p1, Vector2 p2, Vector2 p3, Vector2 p4, float t)
 		{
-			ImGuiPNative.ImBezierCubicCalc(pOut, p1, p2, p3, p4, t);
-		}
-		public static void ImBezierCubicCalc(ref Vector2 pOut, Vector2 p1, Vector2 p2, Vector2 p3, Vector2 p4, float t)
-		{
-			fixed (Vector2* ppOut = &pOut)
-			{
-				ImGuiPNative.ImBezierCubicCalc((Vector2*)ppOut, p1, p2, p3, p4, t);
-			}
+			Vector2 ret = ImGuiPNative.ImBezierCubicCalc(p1, p2, p3, p4, t);
+			return ret;
 		}
 		public static Vector2 ImBezierCubicClosestPoint(Vector2 p1, Vector2 p2, Vector2 p3, Vector2 p4, Vector2 p, int numSegments)
 		{
-			Vector2 ret;
-			ImGuiPNative.ImBezierCubicClosestPoint(&ret, p1, p2, p3, p4, p, numSegments);
+			Vector2 ret = ImGuiPNative.ImBezierCubicClosestPoint(p1, p2, p3, p4, p, numSegments);
 			return ret;
-		}
-		public static void ImBezierCubicClosestPoint(Vector2* pOut, Vector2 p1, Vector2 p2, Vector2 p3, Vector2 p4, Vector2 p, int numSegments)
-		{
-			ImGuiPNative.ImBezierCubicClosestPoint(pOut, p1, p2, p3, p4, p, numSegments);
-		}
-		public static void ImBezierCubicClosestPoint(ref Vector2 pOut, Vector2 p1, Vector2 p2, Vector2 p3, Vector2 p4, Vector2 p, int numSegments)
-		{
-			fixed (Vector2* ppOut = &pOut)
-			{
-				ImGuiPNative.ImBezierCubicClosestPoint((Vector2*)ppOut, p1, p2, p3, p4, p, numSegments);
-			}
 		}
 		public static Vector2 ImBezierCubicClosestPointCasteljau(Vector2 p1, Vector2 p2, Vector2 p3, Vector2 p4, Vector2 p, float tessTol)
 		{
-			Vector2 ret;
-			ImGuiPNative.ImBezierCubicClosestPointCasteljau(&ret, p1, p2, p3, p4, p, tessTol);
+			Vector2 ret = ImGuiPNative.ImBezierCubicClosestPointCasteljau(p1, p2, p3, p4, p, tessTol);
 			return ret;
-		}
-		public static void ImBezierCubicClosestPointCasteljau(Vector2* pOut, Vector2 p1, Vector2 p2, Vector2 p3, Vector2 p4, Vector2 p, float tessTol)
-		{
-			ImGuiPNative.ImBezierCubicClosestPointCasteljau(pOut, p1, p2, p3, p4, p, tessTol);
-		}
-		public static void ImBezierCubicClosestPointCasteljau(ref Vector2 pOut, Vector2 p1, Vector2 p2, Vector2 p3, Vector2 p4, Vector2 p, float tessTol)
-		{
-			fixed (Vector2* ppOut = &pOut)
-			{
-				ImGuiPNative.ImBezierCubicClosestPointCasteljau((Vector2*)ppOut, p1, p2, p3, p4, p, tessTol);
-			}
 		}
 		public static Vector2 ImBezierQuadraticCalc(Vector2 p1, Vector2 p2, Vector2 p3, float t)
 		{
-			Vector2 ret;
-			ImGuiPNative.ImBezierQuadraticCalc(&ret, p1, p2, p3, t);
+			Vector2 ret = ImGuiPNative.ImBezierQuadraticCalc(p1, p2, p3, t);
 			return ret;
-		}
-		public static void ImBezierQuadraticCalc(Vector2* pOut, Vector2 p1, Vector2 p2, Vector2 p3, float t)
-		{
-			ImGuiPNative.ImBezierQuadraticCalc(pOut, p1, p2, p3, t);
-		}
-		public static void ImBezierQuadraticCalc(ref Vector2 pOut, Vector2 p1, Vector2 p2, Vector2 p3, float t)
-		{
-			fixed (Vector2* ppOut = &pOut)
-			{
-				ImGuiPNative.ImBezierQuadraticCalc((Vector2*)ppOut, p1, p2, p3, t);
-			}
 		}
 		public static Vector2 ImLineClosestPoint(Vector2 a, Vector2 b, Vector2 p)
 		{
-			Vector2 ret;
-			ImGuiPNative.ImLineClosestPoint(&ret, a, b, p);
+			Vector2 ret = ImGuiPNative.ImLineClosestPoint(a, b, p);
 			return ret;
-		}
-		public static void ImLineClosestPoint(Vector2* pOut, Vector2 a, Vector2 b, Vector2 p)
-		{
-			ImGuiPNative.ImLineClosestPoint(pOut, a, b, p);
-		}
-		public static void ImLineClosestPoint(ref Vector2 pOut, Vector2 a, Vector2 b, Vector2 p)
-		{
-			fixed (Vector2* ppOut = &pOut)
-			{
-				ImGuiPNative.ImLineClosestPoint((Vector2*)ppOut, a, b, p);
-			}
 		}
 		public static bool ImTriangleContainsPoint(Vector2 a, Vector2 b, Vector2 c, Vector2 p)
 		{
@@ -442,20 +395,8 @@ public unsafe partial class ImGuiP
 		}
 		public static Vector2 ImTriangleClosestPoint(Vector2 a, Vector2 b, Vector2 c, Vector2 p)
 		{
-			Vector2 ret;
-			ImGuiPNative.ImTriangleClosestPoint(&ret, a, b, c, p);
+			Vector2 ret = ImGuiPNative.ImTriangleClosestPoint(a, b, c, p);
 			return ret;
-		}
-		public static void ImTriangleClosestPoint(Vector2* pOut, Vector2 a, Vector2 b, Vector2 c, Vector2 p)
-		{
-			ImGuiPNative.ImTriangleClosestPoint(pOut, a, b, c, p);
-		}
-		public static void ImTriangleClosestPoint(ref Vector2 pOut, Vector2 a, Vector2 b, Vector2 c, Vector2 p)
-		{
-			fixed (Vector2* ppOut = &pOut)
-			{
-				ImGuiPNative.ImTriangleClosestPoint((Vector2*)ppOut, a, b, c, p);
-			}
 		}
 		public static void ImTriangleBarycentricCoords(Vector2 a, Vector2 b, Vector2 c, Vector2 p, float* outU, float* outV, float* outW)
 		{
@@ -530,10 +471,10 @@ public unsafe partial class ImGuiP
 			float ret = ImGuiPNative.ImTriangleArea(a, b, c);
 			return ret;
 		}
-		public static ImGuiDir ImGetDirQuadrantFromDelta(float dx, float dy)
+		public static bool ImTriangleIsClockwise(Vector2 a, Vector2 b, Vector2 c)
 		{
-			ImGuiDir ret = ImGuiPNative.ImGetDirQuadrantFromDelta(dx, dy);
-			return ret;
+			byte ret = ImGuiPNative.ImTriangleIsClockwise(a, b, c);
+			return ret != 0;
 		}
 		public static ImVec1Ptr ImVec1()
 		{
@@ -543,6 +484,588 @@ public unsafe partial class ImGuiP
 		public static ImVec1Ptr ImVec1(float x)
 		{
 			ImVec1Ptr ret = ImGuiPNative.ImVec1(x);
+			return ret;
+		}
+		public static void Destroy(ImVec1Ptr self)
+		{
+			ImGuiPNative.Destroy((ImVec1*)self);
+		}
+		public static void Destroy(ref ImVec1 self)
+		{
+			fixed (ImVec1* pself = &self)
+			{
+				ImGuiPNative.Destroy((ImVec1*)pself);
+			}
+		}
+		public static void Destroy(ImVec2I* self)
+		{
+			ImGuiPNative.Destroy(self);
+		}
+		public static void Destroy(ref ImVec2I self)
+		{
+			fixed (ImVec2I* pself = &self)
+			{
+				ImGuiPNative.Destroy((ImVec2I*)pself);
+			}
+		}
+		public static void Destroy(ImVec2IhPtr self)
+		{
+			ImGuiPNative.Destroy((ImVec2Ih*)self);
+		}
+		public static void Destroy(ref ImVec2Ih self)
+		{
+			fixed (ImVec2Ih* pself = &self)
+			{
+				ImGuiPNative.Destroy((ImVec2Ih*)pself);
+			}
+		}
+		public static void Destroy(this ImRect* self)
+		{
+			ImGuiPNative.Destroy(self);
+		}
+		public static void Destroy(this ref ImRect self)
+		{
+			fixed (ImRect* pself = &self)
+			{
+				ImGuiPNative.Destroy((ImRect*)pself);
+			}
+		}
+		public static void Destroy(this ImGuiPackedDatePtr self)
+		{
+			ImGuiPNative.Destroy((ImGuiPackedDate*)self);
+		}
+		public static void Destroy(this ref ImGuiPackedDate self)
+		{
+			fixed (ImGuiPackedDate* pself = &self)
+			{
+				ImGuiPNative.Destroy((ImGuiPackedDate*)pself);
+			}
+		}
+		public static void Destroy(this ImDrawListSharedDataPtr self)
+		{
+			ImGuiPNative.Destroy((ImDrawListSharedData*)self);
+		}
+		public static void Destroy(this ref ImDrawListSharedData self)
+		{
+			fixed (ImDrawListSharedData* pself = &self)
+			{
+				ImGuiPNative.Destroy((ImDrawListSharedData*)pself);
+			}
+		}
+		public static void Destroy(this ImDrawDataBuilderPtr self)
+		{
+			ImGuiPNative.Destroy((ImDrawDataBuilder*)self);
+		}
+		public static void Destroy(this ref ImDrawDataBuilder self)
+		{
+			fixed (ImDrawDataBuilder* pself = &self)
+			{
+				ImGuiPNative.Destroy((ImDrawDataBuilder*)pself);
+			}
+		}
+		public static void Destroy(this ImGuiStyleModPtr self)
+		{
+			ImGuiPNative.Destroy((ImGuiStyleMod*)self);
+		}
+		public static void Destroy(this ref ImGuiStyleMod self)
+		{
+			fixed (ImGuiStyleMod* pself = &self)
+			{
+				ImGuiPNative.Destroy((ImGuiStyleMod*)pself);
+			}
+		}
+		public static void Destroy(this ImGuiComboPreviewDataPtr self)
+		{
+			ImGuiPNative.Destroy((ImGuiComboPreviewData*)self);
+		}
+		public static void Destroy(this ref ImGuiComboPreviewData self)
+		{
+			fixed (ImGuiComboPreviewData* pself = &self)
+			{
+				ImGuiPNative.Destroy((ImGuiComboPreviewData*)pself);
+			}
+		}
+		public static void Destroy(this ImGuiMenuColumnsPtr self)
+		{
+			ImGuiPNative.Destroy((ImGuiMenuColumns*)self);
+		}
+		public static void Destroy(this ref ImGuiMenuColumns self)
+		{
+			fixed (ImGuiMenuColumns* pself = &self)
+			{
+				ImGuiPNative.Destroy((ImGuiMenuColumns*)pself);
+			}
+		}
+		public static void Destroy(this ImGuiInputTextDeactivatedStatePtr self)
+		{
+			ImGuiPNative.Destroy((ImGuiInputTextDeactivatedState*)self);
+		}
+		public static void Destroy(this ref ImGuiInputTextDeactivatedState self)
+		{
+			fixed (ImGuiInputTextDeactivatedState* pself = &self)
+			{
+				ImGuiPNative.Destroy((ImGuiInputTextDeactivatedState*)pself);
+			}
+		}
+		public static void Destroy(this ImGuiInputTextStatePtr self)
+		{
+			ImGuiPNative.Destroy((ImGuiInputTextState*)self);
+		}
+		public static void Destroy(this ref ImGuiInputTextState self)
+		{
+			fixed (ImGuiInputTextState* pself = &self)
+			{
+				ImGuiPNative.Destroy((ImGuiInputTextState*)pself);
+			}
+		}
+		public static void Destroy(this ImGuiNextWindowDataPtr self)
+		{
+			ImGuiPNative.Destroy((ImGuiNextWindowData*)self);
+		}
+		public static void Destroy(this ref ImGuiNextWindowData self)
+		{
+			fixed (ImGuiNextWindowData* pself = &self)
+			{
+				ImGuiPNative.Destroy((ImGuiNextWindowData*)pself);
+			}
+		}
+		public static void Destroy(this ImGuiNextItemDataPtr self)
+		{
+			ImGuiPNative.Destroy((ImGuiNextItemData*)self);
+		}
+		public static void Destroy(this ref ImGuiNextItemData self)
+		{
+			fixed (ImGuiNextItemData* pself = &self)
+			{
+				ImGuiPNative.Destroy((ImGuiNextItemData*)pself);
+			}
+		}
+		public static void Destroy(this ImGuiLastItemDataPtr self)
+		{
+			ImGuiPNative.Destroy((ImGuiLastItemData*)self);
+		}
+		public static void Destroy(this ref ImGuiLastItemData self)
+		{
+			fixed (ImGuiLastItemData* pself = &self)
+			{
+				ImGuiPNative.Destroy((ImGuiLastItemData*)pself);
+			}
+		}
+		public static void Destroy(this ImGuiErrorRecoveryStatePtr self)
+		{
+			ImGuiPNative.Destroy((ImGuiErrorRecoveryState*)self);
+		}
+		public static void Destroy(this ref ImGuiErrorRecoveryState self)
+		{
+			fixed (ImGuiErrorRecoveryState* pself = &self)
+			{
+				ImGuiPNative.Destroy((ImGuiErrorRecoveryState*)pself);
+			}
+		}
+		public static void Destroy(this ImGuiPtrOrIndexPtr self)
+		{
+			ImGuiPNative.Destroy((ImGuiPtrOrIndex*)self);
+		}
+		public static void Destroy(this ref ImGuiPtrOrIndex self)
+		{
+			fixed (ImGuiPtrOrIndex* pself = &self)
+			{
+				ImGuiPNative.Destroy((ImGuiPtrOrIndex*)pself);
+			}
+		}
+		public static void Destroy(this ImGuiPopupDataPtr self)
+		{
+			ImGuiPNative.Destroy((ImGuiPopupData*)self);
+		}
+		public static void Destroy(this ref ImGuiPopupData self)
+		{
+			fixed (ImGuiPopupData* pself = &self)
+			{
+				ImGuiPNative.Destroy((ImGuiPopupData*)pself);
+			}
+		}
+		public static void Destroy(this ImGuiInputEventPtr self)
+		{
+			ImGuiPNative.Destroy((ImGuiInputEvent*)self);
+		}
+		public static void Destroy(this ref ImGuiInputEvent self)
+		{
+			fixed (ImGuiInputEvent* pself = &self)
+			{
+				ImGuiPNative.Destroy((ImGuiInputEvent*)pself);
+			}
+		}
+		public static void Destroy(this ImGuiKeyRoutingDataPtr self)
+		{
+			ImGuiPNative.Destroy((ImGuiKeyRoutingData*)self);
+		}
+		public static void Destroy(this ref ImGuiKeyRoutingData self)
+		{
+			fixed (ImGuiKeyRoutingData* pself = &self)
+			{
+				ImGuiPNative.Destroy((ImGuiKeyRoutingData*)pself);
+			}
+		}
+		public static void Destroy(this ImGuiKeyRoutingTablePtr self)
+		{
+			ImGuiPNative.Destroy((ImGuiKeyRoutingTable*)self);
+		}
+		public static void Destroy(this ref ImGuiKeyRoutingTable self)
+		{
+			fixed (ImGuiKeyRoutingTable* pself = &self)
+			{
+				ImGuiPNative.Destroy((ImGuiKeyRoutingTable*)pself);
+			}
+		}
+		public static void Destroy(this ImGuiKeyOwnerDataPtr self)
+		{
+			ImGuiPNative.Destroy((ImGuiKeyOwnerData*)self);
+		}
+		public static void Destroy(this ref ImGuiKeyOwnerData self)
+		{
+			fixed (ImGuiKeyOwnerData* pself = &self)
+			{
+				ImGuiPNative.Destroy((ImGuiKeyOwnerData*)pself);
+			}
+		}
+		public static void Destroy(this ImGuiListClipperDataPtr self)
+		{
+			ImGuiPNative.Destroy((ImGuiListClipperData*)self);
+		}
+		public static void Destroy(this ref ImGuiListClipperData self)
+		{
+			fixed (ImGuiListClipperData* pself = &self)
+			{
+				ImGuiPNative.Destroy((ImGuiListClipperData*)pself);
+			}
+		}
+		public static void Destroy(this ImGuiNavItemDataPtr self)
+		{
+			ImGuiPNative.Destroy((ImGuiNavItemData*)self);
+		}
+		public static void Destroy(this ref ImGuiNavItemData self)
+		{
+			fixed (ImGuiNavItemData* pself = &self)
+			{
+				ImGuiPNative.Destroy((ImGuiNavItemData*)pself);
+			}
+		}
+		public static void Destroy(this ImGuiTypingSelectStatePtr self)
+		{
+			ImGuiPNative.Destroy((ImGuiTypingSelectState*)self);
+		}
+		public static void Destroy(this ref ImGuiTypingSelectState self)
+		{
+			fixed (ImGuiTypingSelectState* pself = &self)
+			{
+				ImGuiPNative.Destroy((ImGuiTypingSelectState*)pself);
+			}
+		}
+		public static void Destroy(this ImGuiOldColumnDataPtr self)
+		{
+			ImGuiPNative.Destroy((ImGuiOldColumnData*)self);
+		}
+		public static void Destroy(this ref ImGuiOldColumnData self)
+		{
+			fixed (ImGuiOldColumnData* pself = &self)
+			{
+				ImGuiPNative.Destroy((ImGuiOldColumnData*)pself);
+			}
+		}
+		public static void Destroy(this ImGuiOldColumnsPtr self)
+		{
+			ImGuiPNative.Destroy((ImGuiOldColumns*)self);
+		}
+		public static void Destroy(this ref ImGuiOldColumns self)
+		{
+			fixed (ImGuiOldColumns* pself = &self)
+			{
+				ImGuiPNative.Destroy((ImGuiOldColumns*)pself);
+			}
+		}
+		public static void Destroy(this ImGuiBoxSelectStatePtr self)
+		{
+			ImGuiPNative.Destroy((ImGuiBoxSelectState*)self);
+		}
+		public static void Destroy(this ref ImGuiBoxSelectState self)
+		{
+			fixed (ImGuiBoxSelectState* pself = &self)
+			{
+				ImGuiPNative.Destroy((ImGuiBoxSelectState*)pself);
+			}
+		}
+		public static void Destroy(this ImGuiMultiSelectTempDataPtr self)
+		{
+			ImGuiPNative.Destroy((ImGuiMultiSelectTempData*)self);
+		}
+		public static void Destroy(this ref ImGuiMultiSelectTempData self)
+		{
+			fixed (ImGuiMultiSelectTempData* pself = &self)
+			{
+				ImGuiPNative.Destroy((ImGuiMultiSelectTempData*)pself);
+			}
+		}
+		public static void Destroy(this ImGuiMultiSelectStatePtr self)
+		{
+			ImGuiPNative.Destroy((ImGuiMultiSelectState*)self);
+		}
+		public static void Destroy(this ref ImGuiMultiSelectState self)
+		{
+			fixed (ImGuiMultiSelectState* pself = &self)
+			{
+				ImGuiPNative.Destroy((ImGuiMultiSelectState*)pself);
+			}
+		}
+		public static void Destroy(this ImGuiDockNodePtr self)
+		{
+			ImGuiPNative.Destroy((ImGuiDockNode*)self);
+		}
+		public static void Destroy(this ref ImGuiDockNode self)
+		{
+			fixed (ImGuiDockNode* pself = &self)
+			{
+				ImGuiPNative.Destroy((ImGuiDockNode*)pself);
+			}
+		}
+		public static void Destroy(this ImGuiDockContextPtr self)
+		{
+			ImGuiPNative.Destroy((ImGuiDockContext*)self);
+		}
+		public static void Destroy(this ref ImGuiDockContext self)
+		{
+			fixed (ImGuiDockContext* pself = &self)
+			{
+				ImGuiPNative.Destroy((ImGuiDockContext*)pself);
+			}
+		}
+		public static void Destroy(this ImGuiViewportPPtr self)
+		{
+			ImGuiPNative.Destroy((ImGuiViewportP*)self);
+		}
+		public static void Destroy(this ref ImGuiViewportP self)
+		{
+			fixed (ImGuiViewportP* pself = &self)
+			{
+				ImGuiPNative.Destroy((ImGuiViewportP*)pself);
+			}
+		}
+		public static void Destroy(this ImGuiWindowSettingsPtr self)
+		{
+			ImGuiPNative.Destroy((ImGuiWindowSettings*)self);
+		}
+		public static void Destroy(this ref ImGuiWindowSettings self)
+		{
+			fixed (ImGuiWindowSettings* pself = &self)
+			{
+				ImGuiPNative.Destroy((ImGuiWindowSettings*)pself);
+			}
+		}
+		public static void Destroy(this ImGuiSettingsHandlerPtr self)
+		{
+			ImGuiPNative.Destroy((ImGuiSettingsHandler*)self);
+		}
+		public static void Destroy(this ref ImGuiSettingsHandler self)
+		{
+			fixed (ImGuiSettingsHandler* pself = &self)
+			{
+				ImGuiPNative.Destroy((ImGuiSettingsHandler*)pself);
+			}
+		}
+		public static void Destroy(this ImGuiDebugAllocInfoPtr self)
+		{
+			ImGuiPNative.Destroy((ImGuiDebugAllocInfo*)self);
+		}
+		public static void Destroy(this ref ImGuiDebugAllocInfo self)
+		{
+			fixed (ImGuiDebugAllocInfo* pself = &self)
+			{
+				ImGuiPNative.Destroy((ImGuiDebugAllocInfo*)pself);
+			}
+		}
+		public static void Destroy(this ImGuiStackLevelInfoPtr self)
+		{
+			ImGuiPNative.Destroy((ImGuiStackLevelInfo*)self);
+		}
+		public static void Destroy(this ref ImGuiStackLevelInfo self)
+		{
+			fixed (ImGuiStackLevelInfo* pself = &self)
+			{
+				ImGuiPNative.Destroy((ImGuiStackLevelInfo*)pself);
+			}
+		}
+		public static void Destroy(this ImGuiDebugItemPathQueryPtr self)
+		{
+			ImGuiPNative.Destroy((ImGuiDebugItemPathQuery*)self);
+		}
+		public static void Destroy(this ref ImGuiDebugItemPathQuery self)
+		{
+			fixed (ImGuiDebugItemPathQuery* pself = &self)
+			{
+				ImGuiPNative.Destroy((ImGuiDebugItemPathQuery*)pself);
+			}
+		}
+		public static void Destroy(this ImGuiIDStackToolPtr self)
+		{
+			ImGuiPNative.Destroy((ImGuiIDStackTool*)self);
+		}
+		public static void Destroy(this ref ImGuiIDStackTool self)
+		{
+			fixed (ImGuiIDStackTool* pself = &self)
+			{
+				ImGuiPNative.Destroy((ImGuiIDStackTool*)pself);
+			}
+		}
+		public static void Destroy(this ImGuiContextHookPtr self)
+		{
+			ImGuiPNative.Destroy((ImGuiContextHook*)self);
+		}
+		public static void Destroy(this ref ImGuiContextHook self)
+		{
+			fixed (ImGuiContextHook* pself = &self)
+			{
+				ImGuiPNative.Destroy((ImGuiContextHook*)pself);
+			}
+		}
+		public static void Destroy(this ImGuiContextPtr self)
+		{
+			ImGuiPNative.Destroy((ImGuiContext*)self);
+		}
+		public static void Destroy(this ref ImGuiContext self)
+		{
+			fixed (ImGuiContext* pself = &self)
+			{
+				ImGuiPNative.Destroy((ImGuiContext*)pself);
+			}
+		}
+		public static void Destroy(this ImGuiWindowPtr self)
+		{
+			ImGuiPNative.Destroy((ImGuiWindow*)self);
+		}
+		public static void Destroy(this ref ImGuiWindow self)
+		{
+			fixed (ImGuiWindow* pself = &self)
+			{
+				ImGuiPNative.Destroy((ImGuiWindow*)pself);
+			}
+		}
+		public static void Destroy(this ImGuiTabItemPtr self)
+		{
+			ImGuiPNative.Destroy((ImGuiTabItem*)self);
+		}
+		public static void Destroy(this ref ImGuiTabItem self)
+		{
+			fixed (ImGuiTabItem* pself = &self)
+			{
+				ImGuiPNative.Destroy((ImGuiTabItem*)pself);
+			}
+		}
+		public static void Destroy(this ImGuiTabBarPtr self)
+		{
+			ImGuiPNative.Destroy((ImGuiTabBar*)self);
+		}
+		public static void Destroy(this ref ImGuiTabBar self)
+		{
+			fixed (ImGuiTabBar* pself = &self)
+			{
+				ImGuiPNative.Destroy((ImGuiTabBar*)pself);
+			}
+		}
+		public static void Destroy(this ImGuiTableColumnPtr self)
+		{
+			ImGuiPNative.Destroy((ImGuiTableColumn*)self);
+		}
+		public static void Destroy(this ref ImGuiTableColumn self)
+		{
+			fixed (ImGuiTableColumn* pself = &self)
+			{
+				ImGuiPNative.Destroy((ImGuiTableColumn*)pself);
+			}
+		}
+		public static void Destroy(this ImGuiTableInstanceDataPtr self)
+		{
+			ImGuiPNative.Destroy((ImGuiTableInstanceData*)self);
+		}
+		public static void Destroy(this ref ImGuiTableInstanceData self)
+		{
+			fixed (ImGuiTableInstanceData* pself = &self)
+			{
+				ImGuiPNative.Destroy((ImGuiTableInstanceData*)pself);
+			}
+		}
+		public static void Destroy(this ImGuiTablePtr self)
+		{
+			ImGuiPNative.Destroy((ImGuiTable*)self);
+		}
+		public static void Destroy(this ref ImGuiTable self)
+		{
+			fixed (ImGuiTable* pself = &self)
+			{
+				ImGuiPNative.Destroy((ImGuiTable*)pself);
+			}
+		}
+		public static void Destroy(this ImGuiTableTempDataPtr self)
+		{
+			ImGuiPNative.Destroy((ImGuiTableTempData*)self);
+		}
+		public static void Destroy(this ref ImGuiTableTempData self)
+		{
+			fixed (ImGuiTableTempData* pself = &self)
+			{
+				ImGuiPNative.Destroy((ImGuiTableTempData*)pself);
+			}
+		}
+		public static void Destroy(this ImGuiTableColumnSettingsPtr self)
+		{
+			ImGuiPNative.Destroy((ImGuiTableColumnSettings*)self);
+		}
+		public static void Destroy(this ref ImGuiTableColumnSettings self)
+		{
+			fixed (ImGuiTableColumnSettings* pself = &self)
+			{
+				ImGuiPNative.Destroy((ImGuiTableColumnSettings*)pself);
+			}
+		}
+		public static void Destroy(this ImGuiTableSettingsPtr self)
+		{
+			ImGuiPNative.Destroy((ImGuiTableSettings*)self);
+		}
+		public static void Destroy(this ref ImGuiTableSettings self)
+		{
+			fixed (ImGuiTableSettings* pself = &self)
+			{
+				ImGuiPNative.Destroy((ImGuiTableSettings*)pself);
+			}
+		}
+		public static void Destroy(this ImFontLoaderPtr self)
+		{
+			ImGuiPNative.Destroy((ImFontLoader*)self);
+		}
+		public static void Destroy(this ref ImFontLoader self)
+		{
+			fixed (ImFontLoader* pself = &self)
+			{
+				ImGuiPNative.Destroy((ImFontLoader*)pself);
+			}
+		}
+		public static void Destroy(this ImFontAtlasBuilderPtr self)
+		{
+			ImGuiPNative.Destroy((ImFontAtlasBuilder*)self);
+		}
+		public static void Destroy(this ref ImFontAtlasBuilder self)
+		{
+			fixed (ImFontAtlasBuilder* pself = &self)
+			{
+				ImGuiPNative.Destroy((ImFontAtlasBuilder*)pself);
+			}
+		}
+		public static ImVec2I* ImVec2i()
+		{
+			ImVec2I* ret = ImGuiPNative.ImVec2i();
+			return ret;
+		}
+		public static ImVec2I* ImVec2i(int x, int y)
+		{
+			ImVec2I* ret = ImGuiPNative.ImVec2i(x, y);
 			return ret;
 		}
 		public static ImVec2IhPtr ImVec2ih()
@@ -560,113 +1083,53 @@ public unsafe partial class ImGuiP
 			ImVec2IhPtr ret = ImGuiPNative.ImVec2ih(rhs);
 			return ret;
 		}
-		public static ImRectPtr ImRect()
+		public static ImRect* ImRect()
 		{
-			ImRectPtr ret = ImGuiPNative.ImRect();
+			ImRect* ret = ImGuiPNative.ImRect();
 			return ret;
 		}
-		public static ImRectPtr ImRect(Vector2 min, Vector2 max)
+		public static ImRect* ImRect(Vector2 min, Vector2 max)
 		{
-			ImRectPtr ret = ImGuiPNative.ImRect(min, max);
+			ImRect* ret = ImGuiPNative.ImRect(min, max);
 			return ret;
 		}
-		public static ImRectPtr ImRect(Vector4 v)
+		public static ImRect* ImRect(Vector4 v)
 		{
-			ImRectPtr ret = ImGuiPNative.ImRect(v);
+			ImRect* ret = ImGuiPNative.ImRect(v);
 			return ret;
 		}
-		public static ImRectPtr ImRect(float x1, float y1, float x2, float y2)
+		public static ImRect* ImRect(float x1, float y1, float x2, float y2)
 		{
-			ImRectPtr ret = ImGuiPNative.ImRect(x1, y1, x2, y2);
+			ImRect* ret = ImGuiPNative.ImRect(x1, y1, x2, y2);
 			return ret;
 		}
-		public static Vector2 GetCenter(this ImRectPtr self)
+		public static Vector2 GetCenter(this ImRect* self)
 		{
-			Vector2 ret;
-			ImGuiPNative.GetCenter(&ret, self);
+			Vector2 ret = ImGuiPNative.GetCenter(self);
 			return ret;
-		}
-		public static void GetCenter(Vector2* pOut, ImRectPtr self)
-		{
-			ImGuiPNative.GetCenter(pOut, self);
-		}
-		public static void GetCenter(ref Vector2 pOut, ImRectPtr self)
-		{
-			fixed (Vector2* ppOut = &pOut)
-			{
-				ImGuiPNative.GetCenter((Vector2*)ppOut, self);
-			}
 		}
 		public static Vector2 GetCenter(this scoped in ImRect self)
 		{
 			fixed (ImRect* pself = &self)
 			{
-				Vector2 ret;
-				ImGuiPNative.GetCenter(&ret, (ImRect*)pself);
+				Vector2 ret = ImGuiPNative.GetCenter((ImRect*)pself);
 				return ret;
 			}
 		}
-		public static void GetCenter(Vector2* pOut, ref ImRect self)
+		public static Vector2 GetSize(this ImRect* self)
 		{
-			fixed (ImRect* pself = &self)
-			{
-				ImGuiPNative.GetCenter(pOut, (ImRect*)pself);
-			}
-		}
-		public static void GetCenter(ref Vector2 pOut, ref ImRect self)
-		{
-			fixed (Vector2* ppOut = &pOut)
-			{
-				fixed (ImRect* pself = &self)
-				{
-					ImGuiPNative.GetCenter((Vector2*)ppOut, (ImRect*)pself);
-				}
-			}
-		}
-		public static Vector2 GetSize(this ImRectPtr self)
-		{
-			Vector2 ret;
-			ImGuiPNative.GetSize(&ret, self);
+			Vector2 ret = ImGuiPNative.GetSize(self);
 			return ret;
-		}
-		public static void GetSize(Vector2* pOut, ImRectPtr self)
-		{
-			ImGuiPNative.GetSize(pOut, self);
-		}
-		public static void GetSize(ref Vector2 pOut, ImRectPtr self)
-		{
-			fixed (Vector2* ppOut = &pOut)
-			{
-				ImGuiPNative.GetSize((Vector2*)ppOut, self);
-			}
 		}
 		public static Vector2 GetSize(this scoped in ImRect self)
 		{
 			fixed (ImRect* pself = &self)
 			{
-				Vector2 ret;
-				ImGuiPNative.GetSize(&ret, (ImRect*)pself);
+				Vector2 ret = ImGuiPNative.GetSize((ImRect*)pself);
 				return ret;
 			}
 		}
-		public static void GetSize(Vector2* pOut, ref ImRect self)
-		{
-			fixed (ImRect* pself = &self)
-			{
-				ImGuiPNative.GetSize(pOut, (ImRect*)pself);
-			}
-		}
-		public static void GetSize(ref Vector2 pOut, ref ImRect self)
-		{
-			fixed (Vector2* ppOut = &pOut)
-			{
-				fixed (ImRect* pself = &self)
-				{
-					ImGuiPNative.GetSize((Vector2*)ppOut, (ImRect*)pself);
-				}
-			}
-		}
-		public static float GetWidth(this ImRectPtr self)
+		public static float GetWidth(this ImRect* self)
 		{
 			float ret = ImGuiPNative.GetWidth(self);
 			return ret;
@@ -679,7 +1142,7 @@ public unsafe partial class ImGuiP
 				return ret;
 			}
 		}
-		public static float GetHeight(this ImRectPtr self)
+		public static float GetHeight(this ImRect* self)
 		{
 			float ret = ImGuiPNative.GetHeight(self);
 			return ret;
@@ -692,7 +1155,7 @@ public unsafe partial class ImGuiP
 				return ret;
 			}
 		}
-		public static float GetArea(this ImRectPtr self)
+		public static float GetArea(this ImRect* self)
 		{
 			float ret = ImGuiPNative.GetArea(self);
 			return ret;
@@ -705,179 +1168,59 @@ public unsafe partial class ImGuiP
 				return ret;
 			}
 		}
-		public static Vector2 GetTL(this ImRectPtr self)
+		public static Vector2 GetTL(this ImRect* self)
 		{
-			Vector2 ret;
-			ImGuiPNative.GetTL(&ret, self);
+			Vector2 ret = ImGuiPNative.GetTL(self);
 			return ret;
-		}
-		public static void GetTL(Vector2* pOut, ImRectPtr self)
-		{
-			ImGuiPNative.GetTL(pOut, self);
-		}
-		public static void GetTL(ref Vector2 pOut, ImRectPtr self)
-		{
-			fixed (Vector2* ppOut = &pOut)
-			{
-				ImGuiPNative.GetTL((Vector2*)ppOut, self);
-			}
 		}
 		public static Vector2 GetTL(this scoped in ImRect self)
 		{
 			fixed (ImRect* pself = &self)
 			{
-				Vector2 ret;
-				ImGuiPNative.GetTL(&ret, (ImRect*)pself);
+				Vector2 ret = ImGuiPNative.GetTL((ImRect*)pself);
 				return ret;
 			}
 		}
-		public static void GetTL(Vector2* pOut, ref ImRect self)
+		public static Vector2 GetTR(this ImRect* self)
 		{
-			fixed (ImRect* pself = &self)
-			{
-				ImGuiPNative.GetTL(pOut, (ImRect*)pself);
-			}
-		}
-		public static void GetTL(ref Vector2 pOut, ref ImRect self)
-		{
-			fixed (Vector2* ppOut = &pOut)
-			{
-				fixed (ImRect* pself = &self)
-				{
-					ImGuiPNative.GetTL((Vector2*)ppOut, (ImRect*)pself);
-				}
-			}
-		}
-		public static Vector2 GetTR(this ImRectPtr self)
-		{
-			Vector2 ret;
-			ImGuiPNative.GetTR(&ret, self);
+			Vector2 ret = ImGuiPNative.GetTR(self);
 			return ret;
-		}
-		public static void GetTR(Vector2* pOut, ImRectPtr self)
-		{
-			ImGuiPNative.GetTR(pOut, self);
-		}
-		public static void GetTR(ref Vector2 pOut, ImRectPtr self)
-		{
-			fixed (Vector2* ppOut = &pOut)
-			{
-				ImGuiPNative.GetTR((Vector2*)ppOut, self);
-			}
 		}
 		public static Vector2 GetTR(this scoped in ImRect self)
 		{
 			fixed (ImRect* pself = &self)
 			{
-				Vector2 ret;
-				ImGuiPNative.GetTR(&ret, (ImRect*)pself);
+				Vector2 ret = ImGuiPNative.GetTR((ImRect*)pself);
 				return ret;
 			}
 		}
-		public static void GetTR(Vector2* pOut, ref ImRect self)
+		public static Vector2 GetBL(this ImRect* self)
 		{
-			fixed (ImRect* pself = &self)
-			{
-				ImGuiPNative.GetTR(pOut, (ImRect*)pself);
-			}
-		}
-		public static void GetTR(ref Vector2 pOut, ref ImRect self)
-		{
-			fixed (Vector2* ppOut = &pOut)
-			{
-				fixed (ImRect* pself = &self)
-				{
-					ImGuiPNative.GetTR((Vector2*)ppOut, (ImRect*)pself);
-				}
-			}
-		}
-		public static Vector2 GetBL(this ImRectPtr self)
-		{
-			Vector2 ret;
-			ImGuiPNative.GetBL(&ret, self);
+			Vector2 ret = ImGuiPNative.GetBL(self);
 			return ret;
-		}
-		public static void GetBL(Vector2* pOut, ImRectPtr self)
-		{
-			ImGuiPNative.GetBL(pOut, self);
-		}
-		public static void GetBL(ref Vector2 pOut, ImRectPtr self)
-		{
-			fixed (Vector2* ppOut = &pOut)
-			{
-				ImGuiPNative.GetBL((Vector2*)ppOut, self);
-			}
 		}
 		public static Vector2 GetBL(this scoped in ImRect self)
 		{
 			fixed (ImRect* pself = &self)
 			{
-				Vector2 ret;
-				ImGuiPNative.GetBL(&ret, (ImRect*)pself);
+				Vector2 ret = ImGuiPNative.GetBL((ImRect*)pself);
 				return ret;
 			}
 		}
-		public static void GetBL(Vector2* pOut, ref ImRect self)
+		public static Vector2 GetBR(this ImRect* self)
 		{
-			fixed (ImRect* pself = &self)
-			{
-				ImGuiPNative.GetBL(pOut, (ImRect*)pself);
-			}
-		}
-		public static void GetBL(ref Vector2 pOut, ref ImRect self)
-		{
-			fixed (Vector2* ppOut = &pOut)
-			{
-				fixed (ImRect* pself = &self)
-				{
-					ImGuiPNative.GetBL((Vector2*)ppOut, (ImRect*)pself);
-				}
-			}
-		}
-		public static Vector2 GetBR(this ImRectPtr self)
-		{
-			Vector2 ret;
-			ImGuiPNative.GetBR(&ret, self);
+			Vector2 ret = ImGuiPNative.GetBR(self);
 			return ret;
-		}
-		public static void GetBR(Vector2* pOut, ImRectPtr self)
-		{
-			ImGuiPNative.GetBR(pOut, self);
-		}
-		public static void GetBR(ref Vector2 pOut, ImRectPtr self)
-		{
-			fixed (Vector2* ppOut = &pOut)
-			{
-				ImGuiPNative.GetBR((Vector2*)ppOut, self);
-			}
 		}
 		public static Vector2 GetBR(this scoped in ImRect self)
 		{
 			fixed (ImRect* pself = &self)
 			{
-				Vector2 ret;
-				ImGuiPNative.GetBR(&ret, (ImRect*)pself);
+				Vector2 ret = ImGuiPNative.GetBR((ImRect*)pself);
 				return ret;
 			}
 		}
-		public static void GetBR(Vector2* pOut, ref ImRect self)
-		{
-			fixed (ImRect* pself = &self)
-			{
-				ImGuiPNative.GetBR(pOut, (ImRect*)pself);
-			}
-		}
-		public static void GetBR(ref Vector2 pOut, ref ImRect self)
-		{
-			fixed (Vector2* ppOut = &pOut)
-			{
-				fixed (ImRect* pself = &self)
-				{
-					ImGuiPNative.GetBR((Vector2*)ppOut, (ImRect*)pself);
-				}
-			}
-		}
-		public static bool Contains(this ImRectPtr self, Vector2 p)
+		public static bool Contains(this ImRect* self, Vector2 p)
 		{
 			byte ret = ImGuiPNative.Contains(self, p);
 			return ret != 0;
@@ -890,7 +1233,7 @@ public unsafe partial class ImGuiP
 				return ret != 0;
 			}
 		}
-		public static bool Contains(this ImRectPtr self, ImRect r)
+		public static bool Contains(this ImRect* self, ImRect r)
 		{
 			byte ret = ImGuiPNative.Contains(self, r);
 			return ret != 0;
@@ -903,7 +1246,20 @@ public unsafe partial class ImGuiP
 				return ret != 0;
 			}
 		}
-		public static bool Overlaps(this ImRectPtr self, ImRect r)
+		public static bool ContainsWithPad(this ImRect* self, Vector2 p, Vector2 pad)
+		{
+			byte ret = ImGuiPNative.ContainsWithPad(self, p, pad);
+			return ret != 0;
+		}
+		public static bool ContainsWithPad(this ref ImRect self, Vector2 p, Vector2 pad)
+		{
+			fixed (ImRect* pself = &self)
+			{
+				byte ret = ImGuiPNative.ContainsWithPad((ImRect*)pself, p, pad);
+				return ret != 0;
+			}
+		}
+		public static bool Overlaps(this ImRect* self, ImRect r)
 		{
 			byte ret = ImGuiPNative.Overlaps(self, r);
 			return ret != 0;
@@ -916,7 +1272,7 @@ public unsafe partial class ImGuiP
 				return ret != 0;
 			}
 		}
-		public static void Add(this ImRectPtr self, Vector2 p)
+		public static void Add(this ImRect* self, Vector2 p)
 		{
 			ImGuiPNative.Add(self, p);
 		}
@@ -927,7 +1283,7 @@ public unsafe partial class ImGuiP
 				ImGuiPNative.Add((ImRect*)pself, p);
 			}
 		}
-		public static void Add(this ImRectPtr self, ImRect r)
+		public static void Add(this ImRect* self, ImRect r)
 		{
 			ImGuiPNative.Add(self, r);
 		}
@@ -938,7 +1294,29 @@ public unsafe partial class ImGuiP
 				ImGuiPNative.Add((ImRect*)pself, r);
 			}
 		}
-		public static void Expand(this ImRectPtr self, float amount)
+		public static void AddX(this ImRect* self, float x)
+		{
+			ImGuiPNative.AddX(self, x);
+		}
+		public static void AddX(this ref ImRect self, float x)
+		{
+			fixed (ImRect* pself = &self)
+			{
+				ImGuiPNative.AddX((ImRect*)pself, x);
+			}
+		}
+		public static void AddY(this ImRect* self, float y)
+		{
+			ImGuiPNative.AddY(self, y);
+		}
+		public static void AddY(this ref ImRect self, float y)
+		{
+			fixed (ImRect* pself = &self)
+			{
+				ImGuiPNative.AddY((ImRect*)pself, y);
+			}
+		}
+		public static void Expand(this ImRect* self, float amount)
 		{
 			ImGuiPNative.Expand(self, amount);
 		}
@@ -949,7 +1327,7 @@ public unsafe partial class ImGuiP
 				ImGuiPNative.Expand((ImRect*)pself, amount);
 			}
 		}
-		public static void Expand(this ImRectPtr self, Vector2 amount)
+		public static void Expand(this ImRect* self, Vector2 amount)
 		{
 			ImGuiPNative.Expand(self, amount);
 		}
@@ -960,7 +1338,7 @@ public unsafe partial class ImGuiP
 				ImGuiPNative.Expand((ImRect*)pself, amount);
 			}
 		}
-		public static void Translate(this ImRectPtr self, Vector2 d)
+		public static void Translate(this ImRect* self, Vector2 d)
 		{
 			ImGuiPNative.Translate(self, d);
 		}
@@ -971,7 +1349,7 @@ public unsafe partial class ImGuiP
 				ImGuiPNative.Translate((ImRect*)pself, d);
 			}
 		}
-		public static void TranslateX(this ImRectPtr self, float dx)
+		public static void TranslateX(this ImRect* self, float dx)
 		{
 			ImGuiPNative.TranslateX(self, dx);
 		}
@@ -982,7 +1360,7 @@ public unsafe partial class ImGuiP
 				ImGuiPNative.TranslateX((ImRect*)pself, dx);
 			}
 		}
-		public static void TranslateY(this ImRectPtr self, float dy)
+		public static void TranslateY(this ImRect* self, float dy)
 		{
 			ImGuiPNative.TranslateY(self, dy);
 		}
@@ -993,7 +1371,7 @@ public unsafe partial class ImGuiP
 				ImGuiPNative.TranslateY((ImRect*)pself, dy);
 			}
 		}
-		public static void ClipWith(this ImRectPtr self, ImRect r)
+		public static void ClipWith(this ImRect* self, ImRect r)
 		{
 			ImGuiPNative.ClipWith(self, r);
 		}
@@ -1004,7 +1382,7 @@ public unsafe partial class ImGuiP
 				ImGuiPNative.ClipWith((ImRect*)pself, r);
 			}
 		}
-		public static void ClipWithFull(this ImRectPtr self, ImRect r)
+		public static void ClipWithFull(this ImRect* self, ImRect r)
 		{
 			ImGuiPNative.ClipWithFull(self, r);
 		}
@@ -1015,18 +1393,7 @@ public unsafe partial class ImGuiP
 				ImGuiPNative.ClipWithFull((ImRect*)pself, r);
 			}
 		}
-		public static void Floor(this ImRectPtr self)
-		{
-			ImGuiPNative.Floor(self);
-		}
-		public static void Floor(this ref ImRect self)
-		{
-			fixed (ImRect* pself = &self)
-			{
-				ImGuiPNative.Floor((ImRect*)pself);
-			}
-		}
-		public static bool IsInverted(this ImRectPtr self)
+		public static bool IsInverted(this ImRect* self)
 		{
 			byte ret = ImGuiPNative.IsInverted(self);
 			return ret != 0;
@@ -1039,47 +1406,46 @@ public unsafe partial class ImGuiP
 				return ret != 0;
 			}
 		}
-		public static Vector4 ToVec4(this ImRectPtr self)
+		public static Vector4 ToVec4(this ImRect* self)
 		{
-			Vector4 ret;
-			ImGuiPNative.ToVec4(&ret, self);
+			Vector4 ret = ImGuiPNative.ToVec4(self);
 			return ret;
-		}
-		public static void ToVec4(Vector4* pOut, ImRectPtr self)
-		{
-			ImGuiPNative.ToVec4(pOut, self);
-		}
-		public static void ToVec4(ref Vector4 pOut, ImRectPtr self)
-		{
-			fixed (Vector4* ppOut = &pOut)
-			{
-				ImGuiPNative.ToVec4((Vector4*)ppOut, self);
-			}
 		}
 		public static Vector4 ToVec4(this ref ImRect self)
 		{
 			fixed (ImRect* pself = &self)
 			{
-				Vector4 ret;
-				ImGuiPNative.ToVec4(&ret, (ImRect*)pself);
+				Vector4 ret = ImGuiPNative.ToVec4((ImRect*)pself);
 				return ret;
 			}
 		}
-		public static void ToVec4(Vector4* pOut, ref ImRect self)
+		public static Vector4* AsVec4(this ImRect* self)
+		{
+			Vector4* ret = ImGuiPNative.AsVec4(self);
+			return ret;
+		}
+		public static Vector4* AsVec4(this ref ImRect self)
 		{
 			fixed (ImRect* pself = &self)
 			{
-				ImGuiPNative.ToVec4(pOut, (ImRect*)pself);
+				Vector4* ret = ImGuiPNative.AsVec4((ImRect*)pself);
+				return ret;
 			}
 		}
-		public static void ToVec4(ref Vector4 pOut, ref ImRect self)
+		public static nuint ImBitArrayGetStorageSizeInBytes(int bitcount)
 		{
-			fixed (Vector4* ppOut = &pOut)
+			nuint ret = ImGuiPNative.ImBitArrayGetStorageSizeInBytes(bitcount);
+			return ret;
+		}
+		public static void ImBitArrayClearAllBits(uint* arr, int bitcount)
+		{
+			ImGuiPNative.ImBitArrayClearAllBits(arr, bitcount);
+		}
+		public static void ImBitArrayClearAllBits(ref uint arr, int bitcount)
+		{
+			fixed (uint* parr = &arr)
 			{
-				fixed (ImRect* pself = &self)
-				{
-					ImGuiPNative.ToVec4((Vector4*)ppOut, (ImRect*)pself);
-				}
+				ImGuiPNative.ImBitArrayClearAllBits((uint*)parr, bitcount);
 			}
 		}
 		public static bool ImBitArrayTestBit(uint* arr, int n)
@@ -1087,21 +1453,50 @@ public unsafe partial class ImGuiP
 			byte ret = ImGuiPNative.ImBitArrayTestBit(arr, n);
 			return ret != 0;
 		}
+		public static bool ImBitArrayTestBit(in uint arr, int n)
+		{
+			fixed (uint* parr = &arr)
+			{
+				byte ret = ImGuiPNative.ImBitArrayTestBit((uint*)parr, n);
+				return ret != 0;
+			}
+		}
 		public static void ImBitArrayClearBit(uint* arr, int n)
 		{
 			ImGuiPNative.ImBitArrayClearBit(arr, n);
+		}
+		public static void ImBitArrayClearBit(ref uint arr, int n)
+		{
+			fixed (uint* parr = &arr)
+			{
+				ImGuiPNative.ImBitArrayClearBit((uint*)parr, n);
+			}
 		}
 		public static void ImBitArraySetBit(uint* arr, int n)
 		{
 			ImGuiPNative.ImBitArraySetBit(arr, n);
 		}
+		public static void ImBitArraySetBit(ref uint arr, int n)
+		{
+			fixed (uint* parr = &arr)
+			{
+				ImGuiPNative.ImBitArraySetBit((uint*)parr, n);
+			}
+		}
 		public static void ImBitArraySetBitRange(uint* arr, int n, int n2)
 		{
 			ImGuiPNative.ImBitArraySetBitRange(arr, n, n2);
 		}
+		public static void ImBitArraySetBitRange(ref uint arr, int n, int n2)
+		{
+			fixed (uint* parr = &arr)
+			{
+				ImGuiPNative.ImBitArraySetBitRange((uint*)parr, n, n2);
+			}
+		}
 		public static void Create(this ImBitVectorPtr self, int sz)
 		{
-			ImGuiPNative.Create(self, sz);
+			ImGuiPNative.Create((ImBitVector*)self, sz);
 		}
 		public static void Create(this ref ImBitVector self, int sz)
 		{
@@ -1112,7 +1507,7 @@ public unsafe partial class ImGuiP
 		}
 		public static void Clear(this ImBitVectorPtr self)
 		{
-			ImGuiPNative.Clear(self);
+			ImGuiPNative.Clear((ImBitVector*)self);
 		}
 		public static void Clear(this ref ImBitVector self)
 		{
@@ -1121,20 +1516,20 @@ public unsafe partial class ImGuiP
 				ImGuiPNative.Clear((ImBitVector*)pself);
 			}
 		}
-		public static void Clear(this ImDrawDataBuilderPtr self)
+		public static void Clear(this ImGuiKeyRoutingTablePtr self)
 		{
-			ImGuiPNative.Clear(self);
+			ImGuiPNative.Clear((ImGuiKeyRoutingTable*)self);
 		}
-		public static void Clear(this ref ImDrawDataBuilder self)
+		public static void Clear(this ref ImGuiKeyRoutingTable self)
 		{
-			fixed (ImDrawDataBuilder* pself = &self)
+			fixed (ImGuiKeyRoutingTable* pself = &self)
 			{
-				ImGuiPNative.Clear((ImDrawDataBuilder*)pself);
+				ImGuiPNative.Clear((ImGuiKeyRoutingTable*)pself);
 			}
 		}
 		public static void Clear(this ImGuiNavItemDataPtr self)
 		{
-			ImGuiPNative.Clear(self);
+			ImGuiPNative.Clear((ImGuiNavItemData*)self);
 		}
 		public static void Clear(this ref ImGuiNavItemData self)
 		{
@@ -1143,9 +1538,31 @@ public unsafe partial class ImGuiP
 				ImGuiPNative.Clear((ImGuiNavItemData*)pself);
 			}
 		}
+		public static void Clear(this ImGuiTypingSelectStatePtr self)
+		{
+			ImGuiPNative.Clear((ImGuiTypingSelectState*)self);
+		}
+		public static void Clear(this ref ImGuiTypingSelectState self)
+		{
+			fixed (ImGuiTypingSelectState* pself = &self)
+			{
+				ImGuiPNative.Clear((ImGuiTypingSelectState*)pself);
+			}
+		}
+		public static void Clear(this ImGuiMultiSelectTempDataPtr self)
+		{
+			ImGuiPNative.Clear((ImGuiMultiSelectTempData*)self);
+		}
+		public static void Clear(this ref ImGuiMultiSelectTempData self)
+		{
+			fixed (ImGuiMultiSelectTempData* pself = &self)
+			{
+				ImGuiPNative.Clear((ImGuiMultiSelectTempData*)pself);
+			}
+		}
 		public static bool TestBit(this ImBitVectorPtr self, int n)
 		{
-			byte ret = ImGuiPNative.TestBit(self, n);
+			byte ret = ImGuiPNative.TestBit((ImBitVector*)self, n);
 			return ret != 0;
 		}
 		public static bool TestBit(this ref ImBitVector self, int n)
@@ -1158,7 +1575,7 @@ public unsafe partial class ImGuiP
 		}
 		public static void SetBit(this ImBitVectorPtr self, int n)
 		{
-			ImGuiPNative.SetBit(self, n);
+			ImGuiPNative.SetBit((ImBitVector*)self, n);
 		}
 		public static void SetBit(this ref ImBitVector self, int n)
 		{
@@ -1169,13 +1586,116 @@ public unsafe partial class ImGuiP
 		}
 		public static void ClearBit(this ImBitVectorPtr self, int n)
 		{
-			ImGuiPNative.ClearBit(self, n);
+			ImGuiPNative.ClearBit((ImBitVector*)self, n);
 		}
 		public static void ClearBit(this ref ImBitVector self, int n)
 		{
 			fixed (ImBitVector* pself = &self)
 			{
 				ImGuiPNative.ClearBit((ImBitVector*)pself, n);
+			}
+		}
+		public static void clear(this ImGuiTextIndexPtr self)
+		{
+			ImGuiPNative.clear((ImGuiTextIndex*)self);
+		}
+		public static void clear(this ref ImGuiTextIndex self)
+		{
+			fixed (ImGuiTextIndex* pself = &self)
+			{
+				ImGuiPNative.clear((ImGuiTextIndex*)pself);
+			}
+		}
+		public static int size(this ImGuiTextIndexPtr self)
+		{
+			int ret = ImGuiPNative.size((ImGuiTextIndex*)self);
+			return ret;
+		}
+		public static int size(this ref ImGuiTextIndex self)
+		{
+			fixed (ImGuiTextIndex* pself = &self)
+			{
+				int ret = ImGuiPNative.size((ImGuiTextIndex*)pself);
+				return ret;
+			}
+		}
+		public static ImGuiPackedDatePtr ImGuiPackedDate()
+		{
+			ImGuiPackedDatePtr ret = ImGuiPNative.ImGuiPackedDate();
+			return ret;
+		}
+		public static ImGuiPackedDatePtr ImGuiPackedDate(int yyyymmdd)
+		{
+			ImGuiPackedDatePtr ret = ImGuiPNative.ImGuiPackedDate(yyyymmdd);
+			return ret;
+		}
+		public static bool IsValid(this ImGuiPackedDatePtr self)
+		{
+			byte ret = ImGuiPNative.IsValid((ImGuiPackedDate*)self);
+			return ret != 0;
+		}
+		public static bool IsValid(this ref ImGuiPackedDate self)
+		{
+			fixed (ImGuiPackedDate* pself = &self)
+			{
+				byte ret = ImGuiPNative.IsValid((ImGuiPackedDate*)pself);
+				return ret != 0;
+			}
+		}
+		public static int Unpack(this ImGuiPackedDatePtr self)
+		{
+			int ret = ImGuiPNative.Unpack((ImGuiPackedDate*)self);
+			return ret;
+		}
+		public static int Unpack(this ref ImGuiPackedDate self)
+		{
+			fixed (ImGuiPackedDate* pself = &self)
+			{
+				int ret = ImGuiPNative.Unpack((ImGuiPackedDate*)pself);
+				return ret;
+			}
+		}
+		public static void SubtractMonths(this ImGuiPackedDatePtr self, int m)
+		{
+			ImGuiPNative.SubtractMonths((ImGuiPackedDate*)self, m);
+		}
+		public static void SubtractMonths(this ref ImGuiPackedDate self, int m)
+		{
+			fixed (ImGuiPackedDate* pself = &self)
+			{
+				ImGuiPNative.SubtractMonths((ImGuiPackedDate*)pself, m);
+			}
+		}
+		public static ImGuiStoragePairPtr ImLowerBound(ImGuiStoragePairPtr inBegin, ImGuiStoragePairPtr inEnd, uint key)
+		{
+			ImGuiStoragePairPtr ret = ImGuiPNative.ImLowerBound((ImGuiStoragePair*)inBegin, (ImGuiStoragePair*)inEnd, key);
+			return ret;
+		}
+		public static ImGuiStoragePairPtr ImLowerBound(ref ImGuiStoragePair inBegin, ImGuiStoragePairPtr inEnd, uint key)
+		{
+			fixed (ImGuiStoragePair* pinBegin = &inBegin)
+			{
+				ImGuiStoragePairPtr ret = ImGuiPNative.ImLowerBound((ImGuiStoragePair*)pinBegin, (ImGuiStoragePair*)inEnd, key);
+				return ret;
+			}
+		}
+		public static ImGuiStoragePairPtr ImLowerBound(ImGuiStoragePairPtr inBegin, ref ImGuiStoragePair inEnd, uint key)
+		{
+			fixed (ImGuiStoragePair* pinEnd = &inEnd)
+			{
+				ImGuiStoragePairPtr ret = ImGuiPNative.ImLowerBound((ImGuiStoragePair*)inBegin, (ImGuiStoragePair*)pinEnd, key);
+				return ret;
+			}
+		}
+		public static ImGuiStoragePairPtr ImLowerBound(ref ImGuiStoragePair inBegin, ref ImGuiStoragePair inEnd, uint key)
+		{
+			fixed (ImGuiStoragePair* pinBegin = &inBegin)
+			{
+				fixed (ImGuiStoragePair* pinEnd = &inEnd)
+				{
+					ImGuiStoragePairPtr ret = ImGuiPNative.ImLowerBound((ImGuiStoragePair*)pinBegin, (ImGuiStoragePair*)pinEnd, key);
+					return ret;
+				}
 			}
 		}
 		public static ImDrawListSharedDataPtr ImDrawListSharedData()
@@ -1185,7 +1705,7 @@ public unsafe partial class ImGuiP
 		}
 		public static void SetCircleTessellationMaxError(this ImDrawListSharedDataPtr self, float maxError)
 		{
-			ImGuiPNative.SetCircleTessellationMaxError(self, maxError);
+			ImGuiPNative.SetCircleTessellationMaxError((ImDrawListSharedData*)self, maxError);
 		}
 		public static void SetCircleTessellationMaxError(this ref ImDrawListSharedData self, float maxError)
 		{
@@ -1194,50 +1714,35 @@ public unsafe partial class ImGuiP
 				ImGuiPNative.SetCircleTessellationMaxError((ImDrawListSharedData*)pself, maxError);
 			}
 		}
-		public static void ClearFreeMemory(this ImDrawDataBuilderPtr self)
+		public static ImDrawDataBuilderPtr ImDrawDataBuilder()
 		{
-			ImGuiPNative.ClearFreeMemory(self);
-		}
-		public static void ClearFreeMemory(this ref ImDrawDataBuilder self)
-		{
-			fixed (ImDrawDataBuilder* pself = &self)
-			{
-				ImGuiPNative.ClearFreeMemory((ImDrawDataBuilder*)pself);
-			}
-		}
-		public static void ClearFreeMemory(this ImGuiInputTextStatePtr self)
-		{
-			ImGuiPNative.ClearFreeMemory(self);
-		}
-		public static void ClearFreeMemory(this ref ImGuiInputTextState self)
-		{
-			fixed (ImGuiInputTextState* pself = &self)
-			{
-				ImGuiPNative.ClearFreeMemory((ImGuiInputTextState*)pself);
-			}
-		}
-		public static int GetDrawListCount(this ImDrawDataBuilderPtr self)
-		{
-			int ret = ImGuiPNative.GetDrawListCount(self);
+			ImDrawDataBuilderPtr ret = ImGuiPNative.ImDrawDataBuilder();
 			return ret;
 		}
-		public static int GetDrawListCount(this scoped in ImDrawDataBuilder self)
+		public static void* GetVarPtr(this ImGuiStyleVarInfoPtr self, void* parent)
 		{
-			fixed (ImDrawDataBuilder* pself = &self)
+			void* ret = ImGuiPNative.GetVarPtr((ImGuiStyleVarInfo*)self, parent);
+			return ret;
+		}
+		public static void* GetVarPtr(this scoped in ImGuiStyleVarInfo self, void* parent)
+		{
+			fixed (ImGuiStyleVarInfo* pself = &self)
 			{
-				int ret = ImGuiPNative.GetDrawListCount((ImDrawDataBuilder*)pself);
+				void* ret = ImGuiPNative.GetVarPtr((ImGuiStyleVarInfo*)pself, parent);
 				return ret;
 			}
 		}
-		public static void FlattenIntoSingleLayer(this ImDrawDataBuilderPtr self)
+		public static void* GetVarPtr(this ImGuiStyleVarInfoPtr self, nint parent)
 		{
-			ImGuiPNative.FlattenIntoSingleLayer(self);
+			void* ret = ImGuiPNative.GetVarPtr((ImGuiStyleVarInfo*)self, (void*)parent);
+			return ret;
 		}
-		public static void FlattenIntoSingleLayer(this ref ImDrawDataBuilder self)
+		public static void* GetVarPtr(this scoped in ImGuiStyleVarInfo self, nint parent)
 		{
-			fixed (ImDrawDataBuilder* pself = &self)
+			fixed (ImGuiStyleVarInfo* pself = &self)
 			{
-				ImGuiPNative.FlattenIntoSingleLayer((ImDrawDataBuilder*)pself);
+				void* ret = ImGuiPNative.GetVarPtr((ImGuiStyleVarInfo*)pself, (void*)parent);
+				return ret;
 			}
 		}
 		public static ImGuiStyleModPtr ImGuiStyleMod(ImGuiStyleVar idx, int v)
@@ -1267,7 +1772,7 @@ public unsafe partial class ImGuiP
 		}
 		public static void Update(this ImGuiMenuColumnsPtr self, float spacing, bool windowReappearing)
 		{
-			ImGuiPNative.Update(self, spacing, windowReappearing ? (byte)1 : (byte)0);
+			ImGuiPNative.Update((ImGuiMenuColumns*)self, spacing, windowReappearing ? (byte)1 : (byte)0);
 		}
 		public static void Update(this ref ImGuiMenuColumns self, float spacing, bool windowReappearing)
 		{
@@ -1278,7 +1783,7 @@ public unsafe partial class ImGuiP
 		}
 		public static float DeclColumns(this ImGuiMenuColumnsPtr self, float wIcon, float wLabel, float wShortcut, float wMark)
 		{
-			float ret = ImGuiPNative.DeclColumns(self, wIcon, wLabel, wShortcut, wMark);
+			float ret = ImGuiPNative.DeclColumns((ImGuiMenuColumns*)self, wIcon, wLabel, wShortcut, wMark);
 			return ret;
 		}
 		public static float DeclColumns(this ref ImGuiMenuColumns self, float wIcon, float wLabel, float wShortcut, float wMark)
@@ -1291,13 +1796,40 @@ public unsafe partial class ImGuiP
 		}
 		public static void CalcNextTotalWidth(this ImGuiMenuColumnsPtr self, bool updateOffsets)
 		{
-			ImGuiPNative.CalcNextTotalWidth(self, updateOffsets ? (byte)1 : (byte)0);
+			ImGuiPNative.CalcNextTotalWidth((ImGuiMenuColumns*)self, updateOffsets ? (byte)1 : (byte)0);
 		}
 		public static void CalcNextTotalWidth(this ref ImGuiMenuColumns self, bool updateOffsets)
 		{
 			fixed (ImGuiMenuColumns* pself = &self)
 			{
 				ImGuiPNative.CalcNextTotalWidth((ImGuiMenuColumns*)pself, updateOffsets ? (byte)1 : (byte)0);
+			}
+		}
+		public static ImGuiInputTextDeactivatedStatePtr ImGuiInputTextDeactivatedState()
+		{
+			ImGuiInputTextDeactivatedStatePtr ret = ImGuiPNative.ImGuiInputTextDeactivatedState();
+			return ret;
+		}
+		public static void ClearFreeMemory(this ImGuiInputTextDeactivatedStatePtr self)
+		{
+			ImGuiPNative.ClearFreeMemory((ImGuiInputTextDeactivatedState*)self);
+		}
+		public static void ClearFreeMemory(this ref ImGuiInputTextDeactivatedState self)
+		{
+			fixed (ImGuiInputTextDeactivatedState* pself = &self)
+			{
+				ImGuiPNative.ClearFreeMemory((ImGuiInputTextDeactivatedState*)pself);
+			}
+		}
+		public static void ClearFreeMemory(this ImGuiInputTextStatePtr self)
+		{
+			ImGuiPNative.ClearFreeMemory((ImGuiInputTextState*)self);
+		}
+		public static void ClearFreeMemory(this ref ImGuiInputTextState self)
+		{
+			fixed (ImGuiInputTextState* pself = &self)
+			{
+				ImGuiPNative.ClearFreeMemory((ImGuiInputTextState*)pself);
 			}
 		}
 		public static ImGuiInputTextStatePtr ImGuiInputTextState()
@@ -1307,7 +1839,7 @@ public unsafe partial class ImGuiP
 		}
 		public static void ClearText(this ImGuiInputTextStatePtr self)
 		{
-			ImGuiPNative.ClearText(self);
+			ImGuiPNative.ClearText((ImGuiInputTextState*)self);
 		}
 		public static void ClearText(this ref ImGuiInputTextState self)
 		{
@@ -1316,35 +1848,9 @@ public unsafe partial class ImGuiP
 				ImGuiPNative.ClearText((ImGuiInputTextState*)pself);
 			}
 		}
-		public static int GetUndoAvailCount(this ImGuiInputTextStatePtr self)
-		{
-			int ret = ImGuiPNative.GetUndoAvailCount(self);
-			return ret;
-		}
-		public static int GetUndoAvailCount(this scoped in ImGuiInputTextState self)
-		{
-			fixed (ImGuiInputTextState* pself = &self)
-			{
-				int ret = ImGuiPNative.GetUndoAvailCount((ImGuiInputTextState*)pself);
-				return ret;
-			}
-		}
-		public static int GetRedoAvailCount(this ImGuiInputTextStatePtr self)
-		{
-			int ret = ImGuiPNative.GetRedoAvailCount(self);
-			return ret;
-		}
-		public static int GetRedoAvailCount(this scoped in ImGuiInputTextState self)
-		{
-			fixed (ImGuiInputTextState* pself = &self)
-			{
-				int ret = ImGuiPNative.GetRedoAvailCount((ImGuiInputTextState*)pself);
-				return ret;
-			}
-		}
 		public static void OnKeyPressed(this ImGuiInputTextStatePtr self, int key)
 		{
-			ImGuiPNative.OnKeyPressed(self, key);
+			ImGuiPNative.OnKeyPressed((ImGuiInputTextState*)self, key);
 		}
 		public static void OnKeyPressed(this ref ImGuiInputTextState self, int key)
 		{
@@ -1353,9 +1859,33 @@ public unsafe partial class ImGuiP
 				ImGuiPNative.OnKeyPressed((ImGuiInputTextState*)pself, key);
 			}
 		}
+		public static void OnCharPressed(this ImGuiInputTextStatePtr self, uint c)
+		{
+			ImGuiPNative.OnCharPressed((ImGuiInputTextState*)self, c);
+		}
+		public static void OnCharPressed(this ref ImGuiInputTextState self, uint c)
+		{
+			fixed (ImGuiInputTextState* pself = &self)
+			{
+				ImGuiPNative.OnCharPressed((ImGuiInputTextState*)pself, c);
+			}
+		}
+		public static float GetPreferredOffsetX(this ImGuiInputTextStatePtr self)
+		{
+			float ret = ImGuiPNative.GetPreferredOffsetX((ImGuiInputTextState*)self);
+			return ret;
+		}
+		public static float GetPreferredOffsetX(this scoped in ImGuiInputTextState self)
+		{
+			fixed (ImGuiInputTextState* pself = &self)
+			{
+				float ret = ImGuiPNative.GetPreferredOffsetX((ImGuiInputTextState*)pself);
+				return ret;
+			}
+		}
 		public static void CursorAnimReset(this ImGuiInputTextStatePtr self)
 		{
-			ImGuiPNative.CursorAnimReset(self);
+			ImGuiPNative.CursorAnimReset((ImGuiInputTextState*)self);
 		}
 		public static void CursorAnimReset(this ref ImGuiInputTextState self)
 		{
@@ -1366,7 +1896,7 @@ public unsafe partial class ImGuiP
 		}
 		public static void CursorClamp(this ImGuiInputTextStatePtr self)
 		{
-			ImGuiPNative.CursorClamp(self);
+			ImGuiPNative.CursorClamp((ImGuiInputTextState*)self);
 		}
 		public static void CursorClamp(this ref ImGuiInputTextState self)
 		{
@@ -1377,7 +1907,7 @@ public unsafe partial class ImGuiP
 		}
 		public static bool HasSelection(this ImGuiInputTextStatePtr self)
 		{
-			byte ret = ImGuiPNative.HasSelection(self);
+			byte ret = ImGuiPNative.HasSelection((ImGuiInputTextState*)self);
 			return ret != 0;
 		}
 		public static bool HasSelection(this ref ImGuiInputTextState self)
@@ -1390,7 +1920,7 @@ public unsafe partial class ImGuiP
 		}
 		public static void ClearSelection(this ImGuiInputTextStatePtr self)
 		{
-			ImGuiPNative.ClearSelection(self);
+			ImGuiPNative.ClearSelection((ImGuiInputTextState*)self);
 		}
 		public static void ClearSelection(this ref ImGuiInputTextState self)
 		{
@@ -1401,7 +1931,7 @@ public unsafe partial class ImGuiP
 		}
 		public static int GetCursorPos(this ImGuiInputTextStatePtr self)
 		{
-			int ret = ImGuiPNative.GetCursorPos(self);
+			int ret = ImGuiPNative.GetCursorPos((ImGuiInputTextState*)self);
 			return ret;
 		}
 		public static int GetCursorPos(this scoped in ImGuiInputTextState self)
@@ -1414,7 +1944,7 @@ public unsafe partial class ImGuiP
 		}
 		public static int GetSelectionStart(this ImGuiInputTextStatePtr self)
 		{
-			int ret = ImGuiPNative.GetSelectionStart(self);
+			int ret = ImGuiPNative.GetSelectionStart((ImGuiInputTextState*)self);
 			return ret;
 		}
 		public static int GetSelectionStart(this scoped in ImGuiInputTextState self)
@@ -1427,7 +1957,7 @@ public unsafe partial class ImGuiP
 		}
 		public static int GetSelectionEnd(this ImGuiInputTextStatePtr self)
 		{
-			int ret = ImGuiPNative.GetSelectionEnd(self);
+			int ret = ImGuiPNative.GetSelectionEnd((ImGuiInputTextState*)self);
 			return ret;
 		}
 		public static int GetSelectionEnd(this scoped in ImGuiInputTextState self)
@@ -1438,9 +1968,20 @@ public unsafe partial class ImGuiP
 				return ret;
 			}
 		}
+		public static void SetSelection(this ImGuiInputTextStatePtr self, int start, int end)
+		{
+			ImGuiPNative.SetSelection((ImGuiInputTextState*)self, start, end);
+		}
+		public static void SetSelection(this ref ImGuiInputTextState self, int start, int end)
+		{
+			fixed (ImGuiInputTextState* pself = &self)
+			{
+				ImGuiPNative.SetSelection((ImGuiInputTextState*)pself, start, end);
+			}
+		}
 		public static void SelectAll(this ImGuiInputTextStatePtr self)
 		{
-			ImGuiPNative.SelectAll(self);
+			ImGuiPNative.SelectAll((ImGuiInputTextState*)self);
 		}
 		public static void SelectAll(this ref ImGuiInputTextState self)
 		{
@@ -1449,10 +1990,38 @@ public unsafe partial class ImGuiP
 				ImGuiPNative.SelectAll((ImGuiInputTextState*)pself);
 			}
 		}
-		public static ImGuiPopupDataPtr ImGuiPopupData()
+		public static void ReloadUserBufAndSelectAll(this ImGuiInputTextStatePtr self)
 		{
-			ImGuiPopupDataPtr ret = ImGuiPNative.ImGuiPopupData();
-			return ret;
+			ImGuiPNative.ReloadUserBufAndSelectAll((ImGuiInputTextState*)self);
+		}
+		public static void ReloadUserBufAndSelectAll(this ref ImGuiInputTextState self)
+		{
+			fixed (ImGuiInputTextState* pself = &self)
+			{
+				ImGuiPNative.ReloadUserBufAndSelectAll((ImGuiInputTextState*)pself);
+			}
+		}
+		public static void ReloadUserBufAndKeepSelection(this ImGuiInputTextStatePtr self)
+		{
+			ImGuiPNative.ReloadUserBufAndKeepSelection((ImGuiInputTextState*)self);
+		}
+		public static void ReloadUserBufAndKeepSelection(this ref ImGuiInputTextState self)
+		{
+			fixed (ImGuiInputTextState* pself = &self)
+			{
+				ImGuiPNative.ReloadUserBufAndKeepSelection((ImGuiInputTextState*)pself);
+			}
+		}
+		public static void ReloadUserBufAndMoveToEnd(this ImGuiInputTextStatePtr self)
+		{
+			ImGuiPNative.ReloadUserBufAndMoveToEnd((ImGuiInputTextState*)self);
+		}
+		public static void ReloadUserBufAndMoveToEnd(this ref ImGuiInputTextState self)
+		{
+			fixed (ImGuiInputTextState* pself = &self)
+			{
+				ImGuiPNative.ReloadUserBufAndMoveToEnd((ImGuiInputTextState*)pself);
+			}
 		}
 		public static ImGuiNextWindowDataPtr ImGuiNextWindowData()
 		{
@@ -1461,7 +2030,7 @@ public unsafe partial class ImGuiP
 		}
 		public static void ClearFlags(this ImGuiNextWindowDataPtr self)
 		{
-			ImGuiPNative.ClearFlags(self);
+			ImGuiPNative.ClearFlags((ImGuiNextWindowData*)self);
 		}
 		public static void ClearFlags(this ref ImGuiNextWindowData self)
 		{
@@ -1472,7 +2041,7 @@ public unsafe partial class ImGuiP
 		}
 		public static void ClearFlags(this ImGuiNextItemDataPtr self)
 		{
-			ImGuiPNative.ClearFlags(self);
+			ImGuiPNative.ClearFlags((ImGuiNextItemData*)self);
 		}
 		public static void ClearFlags(this ref ImGuiNextItemData self)
 		{
@@ -1491,36 +2060,19 @@ public unsafe partial class ImGuiP
 			ImGuiLastItemDataPtr ret = ImGuiPNative.ImGuiLastItemData();
 			return ret;
 		}
-		public static ImGuiStackSizesPtr ImGuiStackSizes()
+		public static ImGuiErrorRecoveryStatePtr ImGuiErrorRecoveryState()
 		{
-			ImGuiStackSizesPtr ret = ImGuiPNative.ImGuiStackSizes();
+			ImGuiErrorRecoveryStatePtr ret = ImGuiPNative.ImGuiErrorRecoveryState();
 			return ret;
-		}
-		public static void SetToCurrentState(this ImGuiStackSizesPtr self)
-		{
-			ImGuiPNative.SetToCurrentState(self);
-		}
-		public static void SetToCurrentState(this ref ImGuiStackSizes self)
-		{
-			fixed (ImGuiStackSizes* pself = &self)
-			{
-				ImGuiPNative.SetToCurrentState((ImGuiStackSizes*)pself);
-			}
-		}
-		public static void CompareWithCurrentState(this ImGuiStackSizesPtr self)
-		{
-			ImGuiPNative.CompareWithCurrentState(self);
-		}
-		public static void CompareWithCurrentState(this ref ImGuiStackSizes self)
-		{
-			fixed (ImGuiStackSizes* pself = &self)
-			{
-				ImGuiPNative.CompareWithCurrentState((ImGuiStackSizes*)pself);
-			}
 		}
 		public static ImGuiPtrOrIndexPtr ImGuiPtrOrIndex(void* ptr)
 		{
 			ImGuiPtrOrIndexPtr ret = ImGuiPNative.ImGuiPtrOrIndex(ptr);
+			return ret;
+		}
+		public static ImGuiPtrOrIndexPtr ImGuiPtrOrIndex(nint ptr)
+		{
+			ImGuiPtrOrIndexPtr ret = ImGuiPNative.ImGuiPtrOrIndex((void*)ptr);
 			return ret;
 		}
 		public static ImGuiPtrOrIndexPtr ImGuiPtrOrIndex(int index)
@@ -1528,9 +2080,29 @@ public unsafe partial class ImGuiP
 			ImGuiPtrOrIndexPtr ret = ImGuiPNative.ImGuiPtrOrIndex(index);
 			return ret;
 		}
+		public static ImGuiPopupDataPtr ImGuiPopupData()
+		{
+			ImGuiPopupDataPtr ret = ImGuiPNative.ImGuiPopupData();
+			return ret;
+		}
 		public static ImGuiInputEventPtr ImGuiInputEvent()
 		{
 			ImGuiInputEventPtr ret = ImGuiPNative.ImGuiInputEvent();
+			return ret;
+		}
+		public static ImGuiKeyRoutingDataPtr ImGuiKeyRoutingData()
+		{
+			ImGuiKeyRoutingDataPtr ret = ImGuiPNative.ImGuiKeyRoutingData();
+			return ret;
+		}
+		public static ImGuiKeyRoutingTablePtr ImGuiKeyRoutingTable()
+		{
+			ImGuiKeyRoutingTablePtr ret = ImGuiPNative.ImGuiKeyRoutingTable();
+			return ret;
+		}
+		public static ImGuiKeyOwnerDataPtr ImGuiKeyOwnerData()
+		{
+			ImGuiKeyOwnerDataPtr ret = ImGuiPNative.ImGuiKeyOwnerData();
 			return ret;
 		}
 		public static ImGuiListClipperRange FromIndices(int min, int max)
@@ -1550,20 +2122,20 @@ public unsafe partial class ImGuiP
 		}
 		public static void Reset(this ImGuiListClipperDataPtr self, ImGuiListClipperPtr clipper)
 		{
-			ImGuiPNative.Reset(self, clipper);
+			ImGuiPNative.Reset((ImGuiListClipperData*)self, (ImGuiListClipper*)clipper);
 		}
 		public static void Reset(this ref ImGuiListClipperData self, ImGuiListClipperPtr clipper)
 		{
 			fixed (ImGuiListClipperData* pself = &self)
 			{
-				ImGuiPNative.Reset((ImGuiListClipperData*)pself, clipper);
+				ImGuiPNative.Reset((ImGuiListClipperData*)pself, (ImGuiListClipper*)clipper);
 			}
 		}
 		public static void Reset(this ImGuiListClipperDataPtr self, ref ImGuiListClipper clipper)
 		{
 			fixed (ImGuiListClipper* pclipper = &clipper)
 			{
-				ImGuiPNative.Reset(self, (ImGuiListClipper*)pclipper);
+				ImGuiPNative.Reset((ImGuiListClipperData*)self, (ImGuiListClipper*)pclipper);
 			}
 		}
 		public static void Reset(this ref ImGuiListClipperData self, ref ImGuiListClipper clipper)
@@ -1581,6 +2153,11 @@ public unsafe partial class ImGuiP
 			ImGuiNavItemDataPtr ret = ImGuiPNative.ImGuiNavItemData();
 			return ret;
 		}
+		public static ImGuiTypingSelectStatePtr ImGuiTypingSelectState()
+		{
+			ImGuiTypingSelectStatePtr ret = ImGuiPNative.ImGuiTypingSelectState();
+			return ret;
+		}
 		public static ImGuiOldColumnDataPtr ImGuiOldColumnData()
 		{
 			ImGuiOldColumnDataPtr ret = ImGuiPNative.ImGuiOldColumnData();
@@ -1591,58 +2168,40 @@ public unsafe partial class ImGuiP
 			ImGuiOldColumnsPtr ret = ImGuiPNative.ImGuiOldColumns();
 			return ret;
 		}
+		public static ImGuiBoxSelectStatePtr ImGuiBoxSelectState()
+		{
+			ImGuiBoxSelectStatePtr ret = ImGuiPNative.ImGuiBoxSelectState();
+			return ret;
+		}
+		public static ImGuiMultiSelectTempDataPtr ImGuiMultiSelectTempData()
+		{
+			ImGuiMultiSelectTempDataPtr ret = ImGuiPNative.ImGuiMultiSelectTempData();
+			return ret;
+		}
+		public static void ClearIO(this ImGuiMultiSelectTempDataPtr self)
+		{
+			ImGuiPNative.ClearIO((ImGuiMultiSelectTempData*)self);
+		}
+		public static void ClearIO(this ref ImGuiMultiSelectTempData self)
+		{
+			fixed (ImGuiMultiSelectTempData* pself = &self)
+			{
+				ImGuiPNative.ClearIO((ImGuiMultiSelectTempData*)pself);
+			}
+		}
+		public static ImGuiMultiSelectStatePtr ImGuiMultiSelectState()
+		{
+			ImGuiMultiSelectStatePtr ret = ImGuiPNative.ImGuiMultiSelectState();
+			return ret;
+		}
 		public static ImGuiDockNodePtr ImGuiDockNode(uint id)
 		{
 			ImGuiDockNodePtr ret = ImGuiPNative.ImGuiDockNode(id);
 			return ret;
 		}
-		public static void Destroy(this ImGuiDockNodePtr self)
-		{
-			ImGuiPNative.Destroy(self);
-		}
-		public static void Destroy(this ref ImGuiDockNode self)
-		{
-			fixed (ImGuiDockNode* pself = &self)
-			{
-				ImGuiPNative.Destroy((ImGuiDockNode*)pself);
-			}
-		}
-		public static void Destroy(this ImGuiViewportPPtr self)
-		{
-			ImGuiPNative.Destroy(self);
-		}
-		public static void Destroy(this ref ImGuiViewportP self)
-		{
-			fixed (ImGuiViewportP* pself = &self)
-			{
-				ImGuiPNative.Destroy((ImGuiViewportP*)pself);
-			}
-		}
-		public static void Destroy(this ImGuiWindowPtr self)
-		{
-			ImGuiPNative.Destroy(self);
-		}
-		public static void Destroy(this ref ImGuiWindow self)
-		{
-			fixed (ImGuiWindow* pself = &self)
-			{
-				ImGuiPNative.Destroy((ImGuiWindow*)pself);
-			}
-		}
-		public static void Destroy(this ImGuiTablePtr self)
-		{
-			ImGuiPNative.Destroy(self);
-		}
-		public static void Destroy(this ref ImGuiTable self)
-		{
-			fixed (ImGuiTable* pself = &self)
-			{
-				ImGuiPNative.Destroy((ImGuiTable*)pself);
-			}
-		}
 		public static bool IsRootNode(this ImGuiDockNodePtr self)
 		{
-			byte ret = ImGuiPNative.IsRootNode(self);
+			byte ret = ImGuiPNative.IsRootNode((ImGuiDockNode*)self);
 			return ret != 0;
 		}
 		public static bool IsRootNode(this ref ImGuiDockNode self)
@@ -1655,7 +2214,7 @@ public unsafe partial class ImGuiP
 		}
 		public static bool IsDockSpace(this ImGuiDockNodePtr self)
 		{
-			byte ret = ImGuiPNative.IsDockSpace(self);
+			byte ret = ImGuiPNative.IsDockSpace((ImGuiDockNode*)self);
 			return ret != 0;
 		}
 		public static bool IsDockSpace(this ref ImGuiDockNode self)
@@ -1668,7 +2227,7 @@ public unsafe partial class ImGuiP
 		}
 		public static bool IsFloatingNode(this ImGuiDockNodePtr self)
 		{
-			byte ret = ImGuiPNative.IsFloatingNode(self);
+			byte ret = ImGuiPNative.IsFloatingNode((ImGuiDockNode*)self);
 			return ret != 0;
 		}
 		public static bool IsFloatingNode(this ref ImGuiDockNode self)
@@ -1681,7 +2240,7 @@ public unsafe partial class ImGuiP
 		}
 		public static bool IsCentralNode(this ImGuiDockNodePtr self)
 		{
-			byte ret = ImGuiPNative.IsCentralNode(self);
+			byte ret = ImGuiPNative.IsCentralNode((ImGuiDockNode*)self);
 			return ret != 0;
 		}
 		public static bool IsCentralNode(this ref ImGuiDockNode self)
@@ -1694,7 +2253,7 @@ public unsafe partial class ImGuiP
 		}
 		public static bool IsHiddenTabBar(this ImGuiDockNodePtr self)
 		{
-			byte ret = ImGuiPNative.IsHiddenTabBar(self);
+			byte ret = ImGuiPNative.IsHiddenTabBar((ImGuiDockNode*)self);
 			return ret != 0;
 		}
 		public static bool IsHiddenTabBar(this ref ImGuiDockNode self)
@@ -1707,7 +2266,7 @@ public unsafe partial class ImGuiP
 		}
 		public static bool IsNoTabBar(this ImGuiDockNodePtr self)
 		{
-			byte ret = ImGuiPNative.IsNoTabBar(self);
+			byte ret = ImGuiPNative.IsNoTabBar((ImGuiDockNode*)self);
 			return ret != 0;
 		}
 		public static bool IsNoTabBar(this ref ImGuiDockNode self)
@@ -1720,7 +2279,7 @@ public unsafe partial class ImGuiP
 		}
 		public static bool IsSplitNode(this ImGuiDockNodePtr self)
 		{
-			byte ret = ImGuiPNative.IsSplitNode(self);
+			byte ret = ImGuiPNative.IsSplitNode((ImGuiDockNode*)self);
 			return ret != 0;
 		}
 		public static bool IsSplitNode(this ref ImGuiDockNode self)
@@ -1733,7 +2292,7 @@ public unsafe partial class ImGuiP
 		}
 		public static bool IsLeafNode(this ImGuiDockNodePtr self)
 		{
-			byte ret = ImGuiPNative.IsLeafNode(self);
+			byte ret = ImGuiPNative.IsLeafNode((ImGuiDockNode*)self);
 			return ret != 0;
 		}
 		public static bool IsLeafNode(this ref ImGuiDockNode self)
@@ -1746,7 +2305,7 @@ public unsafe partial class ImGuiP
 		}
 		public static bool IsEmpty(this ImGuiDockNodePtr self)
 		{
-			byte ret = ImGuiPNative.IsEmpty(self);
+			byte ret = ImGuiPNative.IsEmpty((ImGuiDockNode*)self);
 			return ret != 0;
 		}
 		public static bool IsEmpty(this ref ImGuiDockNode self)
@@ -1759,93 +2318,33 @@ public unsafe partial class ImGuiP
 		}
 		public static ImRect Rect(this ImGuiDockNodePtr self)
 		{
-			ImRect ret;
-			ImGuiPNative.Rect(&ret, self);
+			ImRect ret = ImGuiPNative.Rect((ImGuiDockNode*)self);
 			return ret;
-		}
-		public static void Rect(ImRectPtr pOut, ImGuiDockNodePtr self)
-		{
-			ImGuiPNative.Rect(pOut, self);
-		}
-		public static void Rect(ref ImRect pOut, ImGuiDockNodePtr self)
-		{
-			fixed (ImRect* ppOut = &pOut)
-			{
-				ImGuiPNative.Rect((ImRect*)ppOut, self);
-			}
 		}
 		public static ImRect Rect(this ref ImGuiDockNode self)
 		{
 			fixed (ImGuiDockNode* pself = &self)
 			{
-				ImRect ret;
-				ImGuiPNative.Rect(&ret, (ImGuiDockNode*)pself);
+				ImRect ret = ImGuiPNative.Rect((ImGuiDockNode*)pself);
 				return ret;
-			}
-		}
-		public static void Rect(ImRectPtr pOut, ref ImGuiDockNode self)
-		{
-			fixed (ImGuiDockNode* pself = &self)
-			{
-				ImGuiPNative.Rect(pOut, (ImGuiDockNode*)pself);
-			}
-		}
-		public static void Rect(ref ImRect pOut, ref ImGuiDockNode self)
-		{
-			fixed (ImRect* ppOut = &pOut)
-			{
-				fixed (ImGuiDockNode* pself = &self)
-				{
-					ImGuiPNative.Rect((ImRect*)ppOut, (ImGuiDockNode*)pself);
-				}
 			}
 		}
 		public static ImRect Rect(this ImGuiWindowPtr self)
 		{
-			ImRect ret;
-			ImGuiPNative.Rect(&ret, self);
+			ImRect ret = ImGuiPNative.Rect((ImGuiWindow*)self);
 			return ret;
-		}
-		public static void Rect(ImRectPtr pOut, ImGuiWindowPtr self)
-		{
-			ImGuiPNative.Rect(pOut, self);
-		}
-		public static void Rect(ref ImRect pOut, ImGuiWindowPtr self)
-		{
-			fixed (ImRect* ppOut = &pOut)
-			{
-				ImGuiPNative.Rect((ImRect*)ppOut, self);
-			}
 		}
 		public static ImRect Rect(this ref ImGuiWindow self)
 		{
 			fixed (ImGuiWindow* pself = &self)
 			{
-				ImRect ret;
-				ImGuiPNative.Rect(&ret, (ImGuiWindow*)pself);
+				ImRect ret = ImGuiPNative.Rect((ImGuiWindow*)pself);
 				return ret;
-			}
-		}
-		public static void Rect(ImRectPtr pOut, ref ImGuiWindow self)
-		{
-			fixed (ImGuiWindow* pself = &self)
-			{
-				ImGuiPNative.Rect(pOut, (ImGuiWindow*)pself);
-			}
-		}
-		public static void Rect(ref ImRect pOut, ref ImGuiWindow self)
-		{
-			fixed (ImRect* ppOut = &pOut)
-			{
-				fixed (ImGuiWindow* pself = &self)
-				{
-					ImGuiPNative.Rect((ImRect*)ppOut, (ImGuiWindow*)pself);
-				}
 			}
 		}
 		public static void SetLocalFlags(this ImGuiDockNodePtr self, ImGuiDockNodeFlags flags)
 		{
-			ImGuiPNative.SetLocalFlags(self, flags);
+			ImGuiPNative.SetLocalFlags((ImGuiDockNode*)self, flags);
 		}
 		public static void SetLocalFlags(this ref ImGuiDockNode self, ImGuiDockNodeFlags flags)
 		{
@@ -1856,7 +2355,7 @@ public unsafe partial class ImGuiP
 		}
 		public static void UpdateMergedFlags(this ImGuiDockNodePtr self)
 		{
-			ImGuiPNative.UpdateMergedFlags(self);
+			ImGuiPNative.UpdateMergedFlags((ImGuiDockNode*)self);
 		}
 		public static void UpdateMergedFlags(this ref ImGuiDockNode self)
 		{
@@ -1877,7 +2376,7 @@ public unsafe partial class ImGuiP
 		}
 		public static void ClearRequestFlags(this ImGuiViewportPPtr self)
 		{
-			ImGuiPNative.ClearRequestFlags(self);
+			ImGuiPNative.ClearRequestFlags((ImGuiViewportP*)self);
 		}
 		public static void ClearRequestFlags(this ref ImGuiViewportP self)
 		{
@@ -1886,95 +2385,35 @@ public unsafe partial class ImGuiP
 				ImGuiPNative.ClearRequestFlags((ImGuiViewportP*)pself);
 			}
 		}
-		public static Vector2 CalcWorkRectPos(this ImGuiViewportPPtr self, Vector2 offMin)
+		public static Vector2 CalcWorkRectPos(this ImGuiViewportPPtr self, Vector2 insetMin)
 		{
-			Vector2 ret;
-			ImGuiPNative.CalcWorkRectPos(&ret, self, offMin);
+			Vector2 ret = ImGuiPNative.CalcWorkRectPos((ImGuiViewportP*)self, insetMin);
 			return ret;
 		}
-		public static void CalcWorkRectPos(Vector2* pOut, ImGuiViewportPPtr self, Vector2 offMin)
-		{
-			ImGuiPNative.CalcWorkRectPos(pOut, self, offMin);
-		}
-		public static void CalcWorkRectPos(ref Vector2 pOut, ImGuiViewportPPtr self, Vector2 offMin)
-		{
-			fixed (Vector2* ppOut = &pOut)
-			{
-				ImGuiPNative.CalcWorkRectPos((Vector2*)ppOut, self, offMin);
-			}
-		}
-		public static Vector2 CalcWorkRectPos(this ref ImGuiViewportP self, Vector2 offMin)
+		public static Vector2 CalcWorkRectPos(this ref ImGuiViewportP self, Vector2 insetMin)
 		{
 			fixed (ImGuiViewportP* pself = &self)
 			{
-				Vector2 ret;
-				ImGuiPNative.CalcWorkRectPos(&ret, (ImGuiViewportP*)pself, offMin);
+				Vector2 ret = ImGuiPNative.CalcWorkRectPos((ImGuiViewportP*)pself, insetMin);
 				return ret;
 			}
 		}
-		public static void CalcWorkRectPos(Vector2* pOut, ref ImGuiViewportP self, Vector2 offMin)
+		public static Vector2 CalcWorkRectSize(this ImGuiViewportPPtr self, Vector2 insetMin, Vector2 insetMax)
 		{
-			fixed (ImGuiViewportP* pself = &self)
-			{
-				ImGuiPNative.CalcWorkRectPos(pOut, (ImGuiViewportP*)pself, offMin);
-			}
-		}
-		public static void CalcWorkRectPos(ref Vector2 pOut, ref ImGuiViewportP self, Vector2 offMin)
-		{
-			fixed (Vector2* ppOut = &pOut)
-			{
-				fixed (ImGuiViewportP* pself = &self)
-				{
-					ImGuiPNative.CalcWorkRectPos((Vector2*)ppOut, (ImGuiViewportP*)pself, offMin);
-				}
-			}
-		}
-		public static Vector2 CalcWorkRectSize(this ImGuiViewportPPtr self, Vector2 offMin, Vector2 offMax)
-		{
-			Vector2 ret;
-			ImGuiPNative.CalcWorkRectSize(&ret, self, offMin, offMax);
+			Vector2 ret = ImGuiPNative.CalcWorkRectSize((ImGuiViewportP*)self, insetMin, insetMax);
 			return ret;
 		}
-		public static void CalcWorkRectSize(Vector2* pOut, ImGuiViewportPPtr self, Vector2 offMin, Vector2 offMax)
-		{
-			ImGuiPNative.CalcWorkRectSize(pOut, self, offMin, offMax);
-		}
-		public static void CalcWorkRectSize(ref Vector2 pOut, ImGuiViewportPPtr self, Vector2 offMin, Vector2 offMax)
-		{
-			fixed (Vector2* ppOut = &pOut)
-			{
-				ImGuiPNative.CalcWorkRectSize((Vector2*)ppOut, self, offMin, offMax);
-			}
-		}
-		public static Vector2 CalcWorkRectSize(this ref ImGuiViewportP self, Vector2 offMin, Vector2 offMax)
+		public static Vector2 CalcWorkRectSize(this ref ImGuiViewportP self, Vector2 insetMin, Vector2 insetMax)
 		{
 			fixed (ImGuiViewportP* pself = &self)
 			{
-				Vector2 ret;
-				ImGuiPNative.CalcWorkRectSize(&ret, (ImGuiViewportP*)pself, offMin, offMax);
+				Vector2 ret = ImGuiPNative.CalcWorkRectSize((ImGuiViewportP*)pself, insetMin, insetMax);
 				return ret;
-			}
-		}
-		public static void CalcWorkRectSize(Vector2* pOut, ref ImGuiViewportP self, Vector2 offMin, Vector2 offMax)
-		{
-			fixed (ImGuiViewportP* pself = &self)
-			{
-				ImGuiPNative.CalcWorkRectSize(pOut, (ImGuiViewportP*)pself, offMin, offMax);
-			}
-		}
-		public static void CalcWorkRectSize(ref Vector2 pOut, ref ImGuiViewportP self, Vector2 offMin, Vector2 offMax)
-		{
-			fixed (Vector2* ppOut = &pOut)
-			{
-				fixed (ImGuiViewportP* pself = &self)
-				{
-					ImGuiPNative.CalcWorkRectSize((Vector2*)ppOut, (ImGuiViewportP*)pself, offMin, offMax);
-				}
 			}
 		}
 		public static void UpdateWorkRect(this ImGuiViewportPPtr self)
 		{
-			ImGuiPNative.UpdateWorkRect(self);
+			ImGuiPNative.UpdateWorkRect((ImGuiViewportP*)self);
 		}
 		public static void UpdateWorkRect(this ref ImGuiViewportP self)
 		{
@@ -1985,131 +2424,41 @@ public unsafe partial class ImGuiP
 		}
 		public static ImRect GetMainRect(this ImGuiViewportPPtr self)
 		{
-			ImRect ret;
-			ImGuiPNative.GetMainRect(&ret, self);
+			ImRect ret = ImGuiPNative.GetMainRect((ImGuiViewportP*)self);
 			return ret;
-		}
-		public static void GetMainRect(ImRectPtr pOut, ImGuiViewportPPtr self)
-		{
-			ImGuiPNative.GetMainRect(pOut, self);
-		}
-		public static void GetMainRect(ref ImRect pOut, ImGuiViewportPPtr self)
-		{
-			fixed (ImRect* ppOut = &pOut)
-			{
-				ImGuiPNative.GetMainRect((ImRect*)ppOut, self);
-			}
 		}
 		public static ImRect GetMainRect(this scoped in ImGuiViewportP self)
 		{
 			fixed (ImGuiViewportP* pself = &self)
 			{
-				ImRect ret;
-				ImGuiPNative.GetMainRect(&ret, (ImGuiViewportP*)pself);
+				ImRect ret = ImGuiPNative.GetMainRect((ImGuiViewportP*)pself);
 				return ret;
-			}
-		}
-		public static void GetMainRect(ImRectPtr pOut, ref ImGuiViewportP self)
-		{
-			fixed (ImGuiViewportP* pself = &self)
-			{
-				ImGuiPNative.GetMainRect(pOut, (ImGuiViewportP*)pself);
-			}
-		}
-		public static void GetMainRect(ref ImRect pOut, ref ImGuiViewportP self)
-		{
-			fixed (ImRect* ppOut = &pOut)
-			{
-				fixed (ImGuiViewportP* pself = &self)
-				{
-					ImGuiPNative.GetMainRect((ImRect*)ppOut, (ImGuiViewportP*)pself);
-				}
 			}
 		}
 		public static ImRect GetWorkRect(this ImGuiViewportPPtr self)
 		{
-			ImRect ret;
-			ImGuiPNative.GetWorkRect(&ret, self);
+			ImRect ret = ImGuiPNative.GetWorkRect((ImGuiViewportP*)self);
 			return ret;
-		}
-		public static void GetWorkRect(ImRectPtr pOut, ImGuiViewportPPtr self)
-		{
-			ImGuiPNative.GetWorkRect(pOut, self);
-		}
-		public static void GetWorkRect(ref ImRect pOut, ImGuiViewportPPtr self)
-		{
-			fixed (ImRect* ppOut = &pOut)
-			{
-				ImGuiPNative.GetWorkRect((ImRect*)ppOut, self);
-			}
 		}
 		public static ImRect GetWorkRect(this scoped in ImGuiViewportP self)
 		{
 			fixed (ImGuiViewportP* pself = &self)
 			{
-				ImRect ret;
-				ImGuiPNative.GetWorkRect(&ret, (ImGuiViewportP*)pself);
+				ImRect ret = ImGuiPNative.GetWorkRect((ImGuiViewportP*)pself);
 				return ret;
-			}
-		}
-		public static void GetWorkRect(ImRectPtr pOut, ref ImGuiViewportP self)
-		{
-			fixed (ImGuiViewportP* pself = &self)
-			{
-				ImGuiPNative.GetWorkRect(pOut, (ImGuiViewportP*)pself);
-			}
-		}
-		public static void GetWorkRect(ref ImRect pOut, ref ImGuiViewportP self)
-		{
-			fixed (ImRect* ppOut = &pOut)
-			{
-				fixed (ImGuiViewportP* pself = &self)
-				{
-					ImGuiPNative.GetWorkRect((ImRect*)ppOut, (ImGuiViewportP*)pself);
-				}
 			}
 		}
 		public static ImRect GetBuildWorkRect(this ImGuiViewportPPtr self)
 		{
-			ImRect ret;
-			ImGuiPNative.GetBuildWorkRect(&ret, self);
+			ImRect ret = ImGuiPNative.GetBuildWorkRect((ImGuiViewportP*)self);
 			return ret;
-		}
-		public static void GetBuildWorkRect(ImRectPtr pOut, ImGuiViewportPPtr self)
-		{
-			ImGuiPNative.GetBuildWorkRect(pOut, self);
-		}
-		public static void GetBuildWorkRect(ref ImRect pOut, ImGuiViewportPPtr self)
-		{
-			fixed (ImRect* ppOut = &pOut)
-			{
-				ImGuiPNative.GetBuildWorkRect((ImRect*)ppOut, self);
-			}
 		}
 		public static ImRect GetBuildWorkRect(this scoped in ImGuiViewportP self)
 		{
 			fixed (ImGuiViewportP* pself = &self)
 			{
-				ImRect ret;
-				ImGuiPNative.GetBuildWorkRect(&ret, (ImGuiViewportP*)pself);
+				ImRect ret = ImGuiPNative.GetBuildWorkRect((ImGuiViewportP*)pself);
 				return ret;
-			}
-		}
-		public static void GetBuildWorkRect(ImRectPtr pOut, ref ImGuiViewportP self)
-		{
-			fixed (ImGuiViewportP* pself = &self)
-			{
-				ImGuiPNative.GetBuildWorkRect(pOut, (ImGuiViewportP*)pself);
-			}
-		}
-		public static void GetBuildWorkRect(ref ImRect pOut, ref ImGuiViewportP self)
-		{
-			fixed (ImRect* ppOut = &pOut)
-			{
-				fixed (ImGuiViewportP* pself = &self)
-				{
-					ImGuiPNative.GetBuildWorkRect((ImRect*)ppOut, (ImGuiViewportP*)pself);
-				}
 			}
 		}
 		public static ImGuiWindowSettingsPtr ImGuiWindowSettings()
@@ -2122,9 +2471,9 @@ public unsafe partial class ImGuiP
 			ImGuiSettingsHandlerPtr ret = ImGuiPNative.ImGuiSettingsHandler();
 			return ret;
 		}
-		public static ImGuiMetricsConfigPtr ImGuiMetricsConfig()
+		public static ImGuiDebugAllocInfoPtr ImGuiDebugAllocInfo()
 		{
-			ImGuiMetricsConfigPtr ret = ImGuiPNative.ImGuiMetricsConfig();
+			ImGuiDebugAllocInfoPtr ret = ImGuiPNative.ImGuiDebugAllocInfo();
 			return ret;
 		}
 		public static ImGuiStackLevelInfoPtr ImGuiStackLevelInfo()
@@ -2132,9 +2481,14 @@ public unsafe partial class ImGuiP
 			ImGuiStackLevelInfoPtr ret = ImGuiPNative.ImGuiStackLevelInfo();
 			return ret;
 		}
-		public static ImGuiStackToolPtr ImGuiStackTool()
+		public static ImGuiDebugItemPathQueryPtr ImGuiDebugItemPathQuery()
 		{
-			ImGuiStackToolPtr ret = ImGuiPNative.ImGuiStackTool();
+			ImGuiDebugItemPathQueryPtr ret = ImGuiPNative.ImGuiDebugItemPathQuery();
+			return ret;
+		}
+		public static ImGuiIDStackToolPtr ImGuiIDStackTool()
+		{
+			ImGuiIDStackToolPtr ret = ImGuiPNative.ImGuiIDStackTool();
 			return ret;
 		}
 		public static ImGuiContextHookPtr ImGuiContextHook()
@@ -2144,7 +2498,7 @@ public unsafe partial class ImGuiP
 		}
 		public static ImGuiContextPtr ImGuiContext(ImFontAtlasPtr sharedFontAtlas)
 		{
-			ImGuiContextPtr ret = ImGuiPNative.ImGuiContext(sharedFontAtlas);
+			ImGuiContextPtr ret = ImGuiPNative.ImGuiContext((ImFontAtlas*)sharedFontAtlas);
 			return ret;
 		}
 		public static ImGuiContextPtr ImGuiContext(ref ImFontAtlas sharedFontAtlas)
@@ -2155,9 +2509,22 @@ public unsafe partial class ImGuiP
 				return ret;
 			}
 		}
+		public static uint GetIDFromPos(this ImGuiWindowPtr self, Vector2 pAbs)
+		{
+			uint ret = ImGuiPNative.GetIDFromPos((ImGuiWindow*)self, pAbs);
+			return ret;
+		}
+		public static uint GetIDFromPos(this scoped in ImGuiWindow self, Vector2 pAbs)
+		{
+			fixed (ImGuiWindow* pself = &self)
+			{
+				uint ret = ImGuiPNative.GetIDFromPos((ImGuiWindow*)pself, pAbs);
+				return ret;
+			}
+		}
 		public static uint GetIDFromRectangle(this ImGuiWindowPtr self, ImRect rAbs)
 		{
-			uint ret = ImGuiPNative.GetIDFromRectangle(self, rAbs);
+			uint ret = ImGuiPNative.GetIDFromRectangle((ImGuiWindow*)self, rAbs);
 			return ret;
 		}
 		public static uint GetIDFromRectangle(this scoped in ImGuiWindow self, ImRect rAbs)
@@ -2168,129 +2535,30 @@ public unsafe partial class ImGuiP
 				return ret;
 			}
 		}
-		public static float CalcFontSize(this ImGuiWindowPtr self)
-		{
-			float ret = ImGuiPNative.CalcFontSize(self);
-			return ret;
-		}
-		public static float CalcFontSize(this ref ImGuiWindow self)
-		{
-			fixed (ImGuiWindow* pself = &self)
-			{
-				float ret = ImGuiPNative.CalcFontSize((ImGuiWindow*)pself);
-				return ret;
-			}
-		}
-		public static float TitleBarHeight(this ImGuiWindowPtr self)
-		{
-			float ret = ImGuiPNative.TitleBarHeight(self);
-			return ret;
-		}
-		public static float TitleBarHeight(this ref ImGuiWindow self)
-		{
-			fixed (ImGuiWindow* pself = &self)
-			{
-				float ret = ImGuiPNative.TitleBarHeight((ImGuiWindow*)pself);
-				return ret;
-			}
-		}
 		public static ImRect TitleBarRect(this ImGuiWindowPtr self)
 		{
-			ImRect ret;
-			ImGuiPNative.TitleBarRect(&ret, self);
+			ImRect ret = ImGuiPNative.TitleBarRect((ImGuiWindow*)self);
 			return ret;
-		}
-		public static void TitleBarRect(ImRectPtr pOut, ImGuiWindowPtr self)
-		{
-			ImGuiPNative.TitleBarRect(pOut, self);
-		}
-		public static void TitleBarRect(ref ImRect pOut, ImGuiWindowPtr self)
-		{
-			fixed (ImRect* ppOut = &pOut)
-			{
-				ImGuiPNative.TitleBarRect((ImRect*)ppOut, self);
-			}
 		}
 		public static ImRect TitleBarRect(this ref ImGuiWindow self)
 		{
 			fixed (ImGuiWindow* pself = &self)
 			{
-				ImRect ret;
-				ImGuiPNative.TitleBarRect(&ret, (ImGuiWindow*)pself);
-				return ret;
-			}
-		}
-		public static void TitleBarRect(ImRectPtr pOut, ref ImGuiWindow self)
-		{
-			fixed (ImGuiWindow* pself = &self)
-			{
-				ImGuiPNative.TitleBarRect(pOut, (ImGuiWindow*)pself);
-			}
-		}
-		public static void TitleBarRect(ref ImRect pOut, ref ImGuiWindow self)
-		{
-			fixed (ImRect* ppOut = &pOut)
-			{
-				fixed (ImGuiWindow* pself = &self)
-				{
-					ImGuiPNative.TitleBarRect((ImRect*)ppOut, (ImGuiWindow*)pself);
-				}
-			}
-		}
-		public static float MenuBarHeight(this ImGuiWindowPtr self)
-		{
-			float ret = ImGuiPNative.MenuBarHeight(self);
-			return ret;
-		}
-		public static float MenuBarHeight(this ref ImGuiWindow self)
-		{
-			fixed (ImGuiWindow* pself = &self)
-			{
-				float ret = ImGuiPNative.MenuBarHeight((ImGuiWindow*)pself);
+				ImRect ret = ImGuiPNative.TitleBarRect((ImGuiWindow*)pself);
 				return ret;
 			}
 		}
 		public static ImRect MenuBarRect(this ImGuiWindowPtr self)
 		{
-			ImRect ret;
-			ImGuiPNative.MenuBarRect(&ret, self);
+			ImRect ret = ImGuiPNative.MenuBarRect((ImGuiWindow*)self);
 			return ret;
-		}
-		public static void MenuBarRect(ImRectPtr pOut, ImGuiWindowPtr self)
-		{
-			ImGuiPNative.MenuBarRect(pOut, self);
-		}
-		public static void MenuBarRect(ref ImRect pOut, ImGuiWindowPtr self)
-		{
-			fixed (ImRect* ppOut = &pOut)
-			{
-				ImGuiPNative.MenuBarRect((ImRect*)ppOut, self);
-			}
 		}
 		public static ImRect MenuBarRect(this ref ImGuiWindow self)
 		{
 			fixed (ImGuiWindow* pself = &self)
 			{
-				ImRect ret;
-				ImGuiPNative.MenuBarRect(&ret, (ImGuiWindow*)pself);
+				ImRect ret = ImGuiPNative.MenuBarRect((ImGuiWindow*)pself);
 				return ret;
-			}
-		}
-		public static void MenuBarRect(ImRectPtr pOut, ref ImGuiWindow self)
-		{
-			fixed (ImGuiWindow* pself = &self)
-			{
-				ImGuiPNative.MenuBarRect(pOut, (ImGuiWindow*)pself);
-			}
-		}
-		public static void MenuBarRect(ref ImRect pOut, ref ImGuiWindow self)
-		{
-			fixed (ImRect* ppOut = &pOut)
-			{
-				fixed (ImGuiWindow* pself = &self)
-				{
-					ImGuiPNative.MenuBarRect((ImRect*)ppOut, (ImGuiWindow*)pself);
-				}
 			}
 		}
 		public static ImGuiTabItemPtr ImGuiTabItem()
@@ -2302,38 +2570,6 @@ public unsafe partial class ImGuiP
 		{
 			ImGuiTabBarPtr ret = ImGuiPNative.ImGuiTabBar();
 			return ret;
-		}
-		public static int GetTabOrder(this ImGuiTabBarPtr self, ImGuiTabItemPtr tab)
-		{
-			int ret = ImGuiPNative.GetTabOrder(self, tab);
-			return ret;
-		}
-		public static int GetTabOrder(this scoped in ImGuiTabBar self, ImGuiTabItemPtr tab)
-		{
-			fixed (ImGuiTabBar* pself = &self)
-			{
-				int ret = ImGuiPNative.GetTabOrder((ImGuiTabBar*)pself, tab);
-				return ret;
-			}
-		}
-		public static int GetTabOrder(this ImGuiTabBarPtr self, ref ImGuiTabItem tab)
-		{
-			fixed (ImGuiTabItem* ptab = &tab)
-			{
-				int ret = ImGuiPNative.GetTabOrder(self, (ImGuiTabItem*)ptab);
-				return ret;
-			}
-		}
-		public static int GetTabOrder(this scoped in ImGuiTabBar self, ref ImGuiTabItem tab)
-		{
-			fixed (ImGuiTabBar* pself = &self)
-			{
-				fixed (ImGuiTabItem* ptab = &tab)
-				{
-					int ret = ImGuiPNative.GetTabOrder((ImGuiTabBar*)pself, (ImGuiTabItem*)ptab);
-					return ret;
-				}
-			}
 		}
 		public static ImGuiTableColumnPtr ImGuiTableColumn()
 		{
@@ -2367,7 +2603,7 @@ public unsafe partial class ImGuiP
 		}
 		public static ImGuiTableColumnSettingsPtr GetColumnSettings(this ImGuiTableSettingsPtr self)
 		{
-			ImGuiTableColumnSettingsPtr ret = ImGuiPNative.GetColumnSettings(self);
+			ImGuiTableColumnSettingsPtr ret = ImGuiPNative.GetColumnSettings((ImGuiTableSettings*)self);
 			return ret;
 		}
 		public static ImGuiTableColumnSettingsPtr GetColumnSettings(this scoped in ImGuiTableSettings self)
@@ -2377,6 +2613,758 @@ public unsafe partial class ImGuiP
 				ImGuiTableColumnSettingsPtr ret = ImGuiPNative.GetColumnSettings((ImGuiTableSettings*)pself);
 				return ret;
 			}
+		}
+		public static void TableOpenContextMenu(int columnN)
+		{
+			ImGuiPNative.TableOpenContextMenu(columnN);
+		}
+		public static void TableOpenContextMenu()
+		{
+			ImGuiPNative.TableOpenContextMenu((int)(-1));
+		}
+		public static void TableSetColumnWidth(int columnN, float width)
+		{
+			ImGuiPNative.TableSetColumnWidth(columnN, width);
+		}
+		public static void TableSetColumnSortDirection(int columnN, ImGuiSortDirection sortDirection, bool appendToSortSpecs)
+		{
+			ImGuiPNative.TableSetColumnSortDirection(columnN, sortDirection, appendToSortSpecs ? (byte)1 : (byte)0);
+		}
+		public static int TableGetHoveredRow()
+		{
+			int ret = ImGuiPNative.TableGetHoveredRow();
+			return ret;
+		}
+		public static float TableGetHeaderRowHeight()
+		{
+			float ret = ImGuiPNative.TableGetHeaderRowHeight();
+			return ret;
+		}
+		public static float TableGetHeaderAngledMaxLabelWidth()
+		{
+			float ret = ImGuiPNative.TableGetHeaderAngledMaxLabelWidth();
+			return ret;
+		}
+		public static void TablePushBackgroundChannel()
+		{
+			ImGuiPNative.TablePushBackgroundChannel();
+		}
+		public static void TablePopBackgroundChannel()
+		{
+			ImGuiPNative.TablePopBackgroundChannel();
+		}
+		public static void TablePushColumnChannel(int columnN)
+		{
+			ImGuiPNative.TablePushColumnChannel(columnN);
+		}
+		public static void TablePopColumnChannel()
+		{
+			ImGuiPNative.TablePopColumnChannel();
+		}
+		public static void TableAngledHeadersRowEx(uint rowId, float angle, float maxLabelWidth, ImGuiTableHeaderDataPtr data, int dataCount)
+		{
+			ImGuiPNative.TableAngledHeadersRowEx(rowId, angle, maxLabelWidth, (ImGuiTableHeaderData*)data, dataCount);
+		}
+		public static void TableAngledHeadersRowEx(uint rowId, float angle, float maxLabelWidth, in ImGuiTableHeaderData data, int dataCount)
+		{
+			fixed (ImGuiTableHeaderData* pdata = &data)
+			{
+				ImGuiPNative.TableAngledHeadersRowEx(rowId, angle, maxLabelWidth, (ImGuiTableHeaderData*)pdata, dataCount);
+			}
+		}
+		public static ImGuiTablePtr GetCurrentTable()
+		{
+			ImGuiTablePtr ret = ImGuiPNative.GetCurrentTable();
+			return ret;
+		}
+		public static ImGuiTablePtr TableFindByID(uint id)
+		{
+			ImGuiTablePtr ret = ImGuiPNative.TableFindByID(id);
+			return ret;
+		}
+		public static void TableBeginInitMemory(ImGuiTablePtr table, int columnsCount)
+		{
+			ImGuiPNative.TableBeginInitMemory((ImGuiTable*)table, columnsCount);
+		}
+		public static void TableBeginInitMemory(ref ImGuiTable table, int columnsCount)
+		{
+			fixed (ImGuiTable* ptable = &table)
+			{
+				ImGuiPNative.TableBeginInitMemory((ImGuiTable*)ptable, columnsCount);
+			}
+		}
+		public static void TableApplyQueuedRequests(ImGuiTablePtr table)
+		{
+			ImGuiPNative.TableApplyQueuedRequests((ImGuiTable*)table);
+		}
+		public static void TableApplyQueuedRequests(ref ImGuiTable table)
+		{
+			fixed (ImGuiTable* ptable = &table)
+			{
+				ImGuiPNative.TableApplyQueuedRequests((ImGuiTable*)ptable);
+			}
+		}
+		public static void TableSetupDrawChannels(ImGuiTablePtr table)
+		{
+			ImGuiPNative.TableSetupDrawChannels((ImGuiTable*)table);
+		}
+		public static void TableSetupDrawChannels(ref ImGuiTable table)
+		{
+			fixed (ImGuiTable* ptable = &table)
+			{
+				ImGuiPNative.TableSetupDrawChannels((ImGuiTable*)ptable);
+			}
+		}
+		public static void TableReconcileColumns(ImGuiTablePtr table)
+		{
+			ImGuiPNative.TableReconcileColumns((ImGuiTable*)table);
+		}
+		public static void TableReconcileColumns(ref ImGuiTable table)
+		{
+			fixed (ImGuiTable* ptable = &table)
+			{
+				ImGuiPNative.TableReconcileColumns((ImGuiTable*)ptable);
+			}
+		}
+		public static void TableUpdateLayout(ImGuiTablePtr table)
+		{
+			ImGuiPNative.TableUpdateLayout((ImGuiTable*)table);
+		}
+		public static void TableUpdateLayout(ref ImGuiTable table)
+		{
+			fixed (ImGuiTable* ptable = &table)
+			{
+				ImGuiPNative.TableUpdateLayout((ImGuiTable*)ptable);
+			}
+		}
+		public static void TableUpdateBorders(ImGuiTablePtr table)
+		{
+			ImGuiPNative.TableUpdateBorders((ImGuiTable*)table);
+		}
+		public static void TableUpdateBorders(ref ImGuiTable table)
+		{
+			fixed (ImGuiTable* ptable = &table)
+			{
+				ImGuiPNative.TableUpdateBorders((ImGuiTable*)ptable);
+			}
+		}
+		public static void TableUpdateColumnsWeightFromWidth(ImGuiTablePtr table)
+		{
+			ImGuiPNative.TableUpdateColumnsWeightFromWidth((ImGuiTable*)table);
+		}
+		public static void TableUpdateColumnsWeightFromWidth(ref ImGuiTable table)
+		{
+			fixed (ImGuiTable* ptable = &table)
+			{
+				ImGuiPNative.TableUpdateColumnsWeightFromWidth((ImGuiTable*)ptable);
+			}
+		}
+		public static void TableApplyExternalUnclipRect(ImGuiTablePtr table, ImRect* rect)
+		{
+			ImGuiPNative.TableApplyExternalUnclipRect((ImGuiTable*)table, rect);
+		}
+		public static void TableApplyExternalUnclipRect(ref ImGuiTable table, ImRect* rect)
+		{
+			fixed (ImGuiTable* ptable = &table)
+			{
+				ImGuiPNative.TableApplyExternalUnclipRect((ImGuiTable*)ptable, rect);
+			}
+		}
+		public static void TableApplyExternalUnclipRect(ImGuiTablePtr table, ref ImRect rect)
+		{
+			fixed (ImRect* prect = &rect)
+			{
+				ImGuiPNative.TableApplyExternalUnclipRect((ImGuiTable*)table, (ImRect*)prect);
+			}
+		}
+		public static void TableApplyExternalUnclipRect(ref ImGuiTable table, ref ImRect rect)
+		{
+			fixed (ImGuiTable* ptable = &table)
+			{
+				fixed (ImRect* prect = &rect)
+				{
+					ImGuiPNative.TableApplyExternalUnclipRect((ImGuiTable*)ptable, (ImRect*)prect);
+				}
+			}
+		}
+		public static void TableDrawBorders(ImGuiTablePtr table)
+		{
+			ImGuiPNative.TableDrawBorders((ImGuiTable*)table);
+		}
+		public static void TableDrawBorders(ref ImGuiTable table)
+		{
+			fixed (ImGuiTable* ptable = &table)
+			{
+				ImGuiPNative.TableDrawBorders((ImGuiTable*)ptable);
+			}
+		}
+		public static void TableDrawDefaultContextMenu(ImGuiTablePtr table, ImGuiTableFlags flagsForSectionToDisplay)
+		{
+			ImGuiPNative.TableDrawDefaultContextMenu((ImGuiTable*)table, flagsForSectionToDisplay);
+		}
+		public static void TableDrawDefaultContextMenu(ref ImGuiTable table, ImGuiTableFlags flagsForSectionToDisplay)
+		{
+			fixed (ImGuiTable* ptable = &table)
+			{
+				ImGuiPNative.TableDrawDefaultContextMenu((ImGuiTable*)ptable, flagsForSectionToDisplay);
+			}
+		}
+		public static bool TableBeginContextMenuPopup(ImGuiTablePtr table)
+		{
+			byte ret = ImGuiPNative.TableBeginContextMenuPopup((ImGuiTable*)table);
+			return ret != 0;
+		}
+		public static bool TableBeginContextMenuPopup(ref ImGuiTable table)
+		{
+			fixed (ImGuiTable* ptable = &table)
+			{
+				byte ret = ImGuiPNative.TableBeginContextMenuPopup((ImGuiTable*)ptable);
+				return ret != 0;
+			}
+		}
+		public static void TableMergeDrawChannels(ImGuiTablePtr table)
+		{
+			ImGuiPNative.TableMergeDrawChannels((ImGuiTable*)table);
+		}
+		public static void TableMergeDrawChannels(ref ImGuiTable table)
+		{
+			fixed (ImGuiTable* ptable = &table)
+			{
+				ImGuiPNative.TableMergeDrawChannels((ImGuiTable*)ptable);
+			}
+		}
+		public static ImGuiTableInstanceDataPtr TableGetInstanceData(ImGuiTablePtr table, int instanceNo)
+		{
+			ImGuiTableInstanceDataPtr ret = ImGuiPNative.TableGetInstanceData((ImGuiTable*)table, instanceNo);
+			return ret;
+		}
+		public static ImGuiTableInstanceDataPtr TableGetInstanceData(ref ImGuiTable table, int instanceNo)
+		{
+			fixed (ImGuiTable* ptable = &table)
+			{
+				ImGuiTableInstanceDataPtr ret = ImGuiPNative.TableGetInstanceData((ImGuiTable*)ptable, instanceNo);
+				return ret;
+			}
+		}
+		public static uint TableGetInstanceID(ImGuiTablePtr table, int instanceNo)
+		{
+			uint ret = ImGuiPNative.TableGetInstanceID((ImGuiTable*)table, instanceNo);
+			return ret;
+		}
+		public static uint TableGetInstanceID(ref ImGuiTable table, int instanceNo)
+		{
+			fixed (ImGuiTable* ptable = &table)
+			{
+				uint ret = ImGuiPNative.TableGetInstanceID((ImGuiTable*)ptable, instanceNo);
+				return ret;
+			}
+		}
+		public static void TableFixDisplayOrder(ImGuiTablePtr table)
+		{
+			ImGuiPNative.TableFixDisplayOrder((ImGuiTable*)table);
+		}
+		public static void TableFixDisplayOrder(ref ImGuiTable table)
+		{
+			fixed (ImGuiTable* ptable = &table)
+			{
+				ImGuiPNative.TableFixDisplayOrder((ImGuiTable*)ptable);
+			}
+		}
+		public static void TableSortSpecsSanitize(ImGuiTablePtr table)
+		{
+			ImGuiPNative.TableSortSpecsSanitize((ImGuiTable*)table);
+		}
+		public static void TableSortSpecsSanitize(ref ImGuiTable table)
+		{
+			fixed (ImGuiTable* ptable = &table)
+			{
+				ImGuiPNative.TableSortSpecsSanitize((ImGuiTable*)ptable);
+			}
+		}
+		public static void TableSortSpecsBuild(ImGuiTablePtr table)
+		{
+			ImGuiPNative.TableSortSpecsBuild((ImGuiTable*)table);
+		}
+		public static void TableSortSpecsBuild(ref ImGuiTable table)
+		{
+			fixed (ImGuiTable* ptable = &table)
+			{
+				ImGuiPNative.TableSortSpecsBuild((ImGuiTable*)ptable);
+			}
+		}
+		public static void TableInitColumnDefaults(ImGuiTablePtr table, ImGuiTableColumnPtr column, ImGuiTableColumnFlags initMask)
+		{
+			ImGuiPNative.TableInitColumnDefaults((ImGuiTable*)table, (ImGuiTableColumn*)column, initMask);
+		}
+		public static void TableInitColumnDefaults(ref ImGuiTable table, ImGuiTableColumnPtr column, ImGuiTableColumnFlags initMask)
+		{
+			fixed (ImGuiTable* ptable = &table)
+			{
+				ImGuiPNative.TableInitColumnDefaults((ImGuiTable*)ptable, (ImGuiTableColumn*)column, initMask);
+			}
+		}
+		public static void TableInitColumnDefaults(ImGuiTablePtr table, ref ImGuiTableColumn column, ImGuiTableColumnFlags initMask)
+		{
+			fixed (ImGuiTableColumn* pcolumn = &column)
+			{
+				ImGuiPNative.TableInitColumnDefaults((ImGuiTable*)table, (ImGuiTableColumn*)pcolumn, initMask);
+			}
+		}
+		public static void TableInitColumnDefaults(ref ImGuiTable table, ref ImGuiTableColumn column, ImGuiTableColumnFlags initMask)
+		{
+			fixed (ImGuiTable* ptable = &table)
+			{
+				fixed (ImGuiTableColumn* pcolumn = &column)
+				{
+					ImGuiPNative.TableInitColumnDefaults((ImGuiTable*)ptable, (ImGuiTableColumn*)pcolumn, initMask);
+				}
+			}
+		}
+		public static ImGuiSortDirection TableGetColumnNextSortDirection(ImGuiTableColumnPtr column)
+		{
+			ImGuiSortDirection ret = ImGuiPNative.TableGetColumnNextSortDirection((ImGuiTableColumn*)column);
+			return ret;
+		}
+		public static ImGuiSortDirection TableGetColumnNextSortDirection(ref ImGuiTableColumn column)
+		{
+			fixed (ImGuiTableColumn* pcolumn = &column)
+			{
+				ImGuiSortDirection ret = ImGuiPNative.TableGetColumnNextSortDirection((ImGuiTableColumn*)pcolumn);
+				return ret;
+			}
+		}
+		public static void TableFixColumnSortDirection(ImGuiTablePtr table, ImGuiTableColumnPtr column)
+		{
+			ImGuiPNative.TableFixColumnSortDirection((ImGuiTable*)table, (ImGuiTableColumn*)column);
+		}
+		public static void TableFixColumnSortDirection(ref ImGuiTable table, ImGuiTableColumnPtr column)
+		{
+			fixed (ImGuiTable* ptable = &table)
+			{
+				ImGuiPNative.TableFixColumnSortDirection((ImGuiTable*)ptable, (ImGuiTableColumn*)column);
+			}
+		}
+		public static void TableFixColumnSortDirection(ImGuiTablePtr table, ref ImGuiTableColumn column)
+		{
+			fixed (ImGuiTableColumn* pcolumn = &column)
+			{
+				ImGuiPNative.TableFixColumnSortDirection((ImGuiTable*)table, (ImGuiTableColumn*)pcolumn);
+			}
+		}
+		public static void TableFixColumnSortDirection(ref ImGuiTable table, ref ImGuiTableColumn column)
+		{
+			fixed (ImGuiTable* ptable = &table)
+			{
+				fixed (ImGuiTableColumn* pcolumn = &column)
+				{
+					ImGuiPNative.TableFixColumnSortDirection((ImGuiTable*)ptable, (ImGuiTableColumn*)pcolumn);
+				}
+			}
+		}
+		public static float TableGetColumnWidthAuto(ImGuiTablePtr table, ImGuiTableColumnPtr column)
+		{
+			float ret = ImGuiPNative.TableGetColumnWidthAuto((ImGuiTable*)table, (ImGuiTableColumn*)column);
+			return ret;
+		}
+		public static float TableGetColumnWidthAuto(ref ImGuiTable table, ImGuiTableColumnPtr column)
+		{
+			fixed (ImGuiTable* ptable = &table)
+			{
+				float ret = ImGuiPNative.TableGetColumnWidthAuto((ImGuiTable*)ptable, (ImGuiTableColumn*)column);
+				return ret;
+			}
+		}
+		public static float TableGetColumnWidthAuto(ImGuiTablePtr table, ref ImGuiTableColumn column)
+		{
+			fixed (ImGuiTableColumn* pcolumn = &column)
+			{
+				float ret = ImGuiPNative.TableGetColumnWidthAuto((ImGuiTable*)table, (ImGuiTableColumn*)pcolumn);
+				return ret;
+			}
+		}
+		public static float TableGetColumnWidthAuto(ref ImGuiTable table, ref ImGuiTableColumn column)
+		{
+			fixed (ImGuiTable* ptable = &table)
+			{
+				fixed (ImGuiTableColumn* pcolumn = &column)
+				{
+					float ret = ImGuiPNative.TableGetColumnWidthAuto((ImGuiTable*)ptable, (ImGuiTableColumn*)pcolumn);
+					return ret;
+				}
+			}
+		}
+		public static void TableBeginRow(ImGuiTablePtr table)
+		{
+			ImGuiPNative.TableBeginRow((ImGuiTable*)table);
+		}
+		public static void TableBeginRow(ref ImGuiTable table)
+		{
+			fixed (ImGuiTable* ptable = &table)
+			{
+				ImGuiPNative.TableBeginRow((ImGuiTable*)ptable);
+			}
+		}
+		public static void TableEndRow(ImGuiTablePtr table)
+		{
+			ImGuiPNative.TableEndRow((ImGuiTable*)table);
+		}
+		public static void TableEndRow(ref ImGuiTable table)
+		{
+			fixed (ImGuiTable* ptable = &table)
+			{
+				ImGuiPNative.TableEndRow((ImGuiTable*)ptable);
+			}
+		}
+		public static void TableBeginCell(ImGuiTablePtr table, int columnN)
+		{
+			ImGuiPNative.TableBeginCell((ImGuiTable*)table, columnN);
+		}
+		public static void TableBeginCell(ref ImGuiTable table, int columnN)
+		{
+			fixed (ImGuiTable* ptable = &table)
+			{
+				ImGuiPNative.TableBeginCell((ImGuiTable*)ptable, columnN);
+			}
+		}
+		public static void TableEndCell(ImGuiTablePtr table)
+		{
+			ImGuiPNative.TableEndCell((ImGuiTable*)table);
+		}
+		public static void TableEndCell(ref ImGuiTable table)
+		{
+			fixed (ImGuiTable* ptable = &table)
+			{
+				ImGuiPNative.TableEndCell((ImGuiTable*)ptable);
+			}
+		}
+		public static ImRect TableGetCellBgRect(ImGuiTablePtr table, int columnN)
+		{
+			ImRect ret = ImGuiPNative.TableGetCellBgRect((ImGuiTable*)table, columnN);
+			return ret;
+		}
+		public static ImRect TableGetCellBgRect(in ImGuiTable table, int columnN)
+		{
+			fixed (ImGuiTable* ptable = &table)
+			{
+				ImRect ret = ImGuiPNative.TableGetCellBgRect((ImGuiTable*)ptable, columnN);
+				return ret;
+			}
+		}
+		public static uint TableGetColumnResizeID(ImGuiTablePtr table, int columnN, int instanceNo)
+		{
+			uint ret = ImGuiPNative.TableGetColumnResizeID((ImGuiTable*)table, columnN, instanceNo);
+			return ret;
+		}
+		public static uint TableGetColumnResizeID(ImGuiTablePtr table, int columnN)
+		{
+			uint ret = ImGuiPNative.TableGetColumnResizeID((ImGuiTable*)table, columnN, (int)(0));
+			return ret;
+		}
+		public static uint TableGetColumnResizeID(ref ImGuiTable table, int columnN, int instanceNo)
+		{
+			fixed (ImGuiTable* ptable = &table)
+			{
+				uint ret = ImGuiPNative.TableGetColumnResizeID((ImGuiTable*)ptable, columnN, instanceNo);
+				return ret;
+			}
+		}
+		public static uint TableGetColumnResizeID(ref ImGuiTable table, int columnN)
+		{
+			fixed (ImGuiTable* ptable = &table)
+			{
+				uint ret = ImGuiPNative.TableGetColumnResizeID((ImGuiTable*)ptable, columnN, (int)(0));
+				return ret;
+			}
+		}
+		public static float TableCalcMaxColumnWidth(ImGuiTablePtr table, int columnN)
+		{
+			float ret = ImGuiPNative.TableCalcMaxColumnWidth((ImGuiTable*)table, columnN);
+			return ret;
+		}
+		public static float TableCalcMaxColumnWidth(in ImGuiTable table, int columnN)
+		{
+			fixed (ImGuiTable* ptable = &table)
+			{
+				float ret = ImGuiPNative.TableCalcMaxColumnWidth((ImGuiTable*)ptable, columnN);
+				return ret;
+			}
+		}
+		public static void TableSetColumnWidthAutoSingle(ImGuiTablePtr table, int columnN)
+		{
+			ImGuiPNative.TableSetColumnWidthAutoSingle((ImGuiTable*)table, columnN);
+		}
+		public static void TableSetColumnWidthAutoSingle(ref ImGuiTable table, int columnN)
+		{
+			fixed (ImGuiTable* ptable = &table)
+			{
+				ImGuiPNative.TableSetColumnWidthAutoSingle((ImGuiTable*)ptable, columnN);
+			}
+		}
+		public static void TableSetColumnWidthAutoAll(ImGuiTablePtr table)
+		{
+			ImGuiPNative.TableSetColumnWidthAutoAll((ImGuiTable*)table);
+		}
+		public static void TableSetColumnWidthAutoAll(ref ImGuiTable table)
+		{
+			fixed (ImGuiTable* ptable = &table)
+			{
+				ImGuiPNative.TableSetColumnWidthAutoAll((ImGuiTable*)ptable);
+			}
+		}
+		public static void TableSetColumnDisplayOrder(ImGuiTablePtr table, int columnN, int dstOrder)
+		{
+			ImGuiPNative.TableSetColumnDisplayOrder((ImGuiTable*)table, columnN, dstOrder);
+		}
+		public static void TableSetColumnDisplayOrder(ref ImGuiTable table, int columnN, int dstOrder)
+		{
+			fixed (ImGuiTable* ptable = &table)
+			{
+				ImGuiPNative.TableSetColumnDisplayOrder((ImGuiTable*)ptable, columnN, dstOrder);
+			}
+		}
+		public static void TableQueueSetColumnDisplayOrder(ImGuiTablePtr table, int columnN, int dstOrder)
+		{
+			ImGuiPNative.TableQueueSetColumnDisplayOrder((ImGuiTable*)table, columnN, dstOrder);
+		}
+		public static void TableQueueSetColumnDisplayOrder(ref ImGuiTable table, int columnN, int dstOrder)
+		{
+			fixed (ImGuiTable* ptable = &table)
+			{
+				ImGuiPNative.TableQueueSetColumnDisplayOrder((ImGuiTable*)ptable, columnN, dstOrder);
+			}
+		}
+		public static void TableRemove(ImGuiTablePtr table)
+		{
+			ImGuiPNative.TableRemove((ImGuiTable*)table);
+		}
+		public static void TableRemove(ref ImGuiTable table)
+		{
+			fixed (ImGuiTable* ptable = &table)
+			{
+				ImGuiPNative.TableRemove((ImGuiTable*)ptable);
+			}
+		}
+		public static void TableGcCompactTransientBuffers(ImGuiTablePtr table)
+		{
+			ImGuiPNative.TableGcCompactTransientBuffers((ImGuiTable*)table);
+		}
+		public static void TableGcCompactTransientBuffers(ref ImGuiTable table)
+		{
+			fixed (ImGuiTable* ptable = &table)
+			{
+				ImGuiPNative.TableGcCompactTransientBuffers((ImGuiTable*)ptable);
+			}
+		}
+		public static void TableGcCompactTransientBuffers(ImGuiTableTempDataPtr table)
+		{
+			ImGuiPNative.TableGcCompactTransientBuffers((ImGuiTableTempData*)table);
+		}
+		public static void TableGcCompactTransientBuffers(ref ImGuiTableTempData table)
+		{
+			fixed (ImGuiTableTempData* ptable = &table)
+			{
+				ImGuiPNative.TableGcCompactTransientBuffers((ImGuiTableTempData*)ptable);
+			}
+		}
+		public static void TableGcCompactSettings()
+		{
+			ImGuiPNative.TableGcCompactSettings();
+		}
+		public static void TableLoadSettings(ImGuiTablePtr table)
+		{
+			ImGuiPNative.TableLoadSettings((ImGuiTable*)table);
+		}
+		public static void TableLoadSettings(ref ImGuiTable table)
+		{
+			fixed (ImGuiTable* ptable = &table)
+			{
+				ImGuiPNative.TableLoadSettings((ImGuiTable*)ptable);
+			}
+		}
+		public static void TableLoadSettingsForColumns(ImGuiTablePtr table)
+		{
+			ImGuiPNative.TableLoadSettingsForColumns((ImGuiTable*)table);
+		}
+		public static void TableLoadSettingsForColumns(ref ImGuiTable table)
+		{
+			fixed (ImGuiTable* ptable = &table)
+			{
+				ImGuiPNative.TableLoadSettingsForColumns((ImGuiTable*)ptable);
+			}
+		}
+		public static void TableLoadSettingsForColumn(ImGuiTableColumnPtr column, ImGuiTableColumnSettingsPtr columnSettings, ImGuiTableFlags loadFlags)
+		{
+			ImGuiPNative.TableLoadSettingsForColumn((ImGuiTableColumn*)column, (ImGuiTableColumnSettings*)columnSettings, loadFlags);
+		}
+		public static void TableLoadSettingsForColumn(ref ImGuiTableColumn column, ImGuiTableColumnSettingsPtr columnSettings, ImGuiTableFlags loadFlags)
+		{
+			fixed (ImGuiTableColumn* pcolumn = &column)
+			{
+				ImGuiPNative.TableLoadSettingsForColumn((ImGuiTableColumn*)pcolumn, (ImGuiTableColumnSettings*)columnSettings, loadFlags);
+			}
+		}
+		public static void TableLoadSettingsForColumn(ImGuiTableColumnPtr column, ref ImGuiTableColumnSettings columnSettings, ImGuiTableFlags loadFlags)
+		{
+			fixed (ImGuiTableColumnSettings* pcolumnSettings = &columnSettings)
+			{
+				ImGuiPNative.TableLoadSettingsForColumn((ImGuiTableColumn*)column, (ImGuiTableColumnSettings*)pcolumnSettings, loadFlags);
+			}
+		}
+		public static void TableLoadSettingsForColumn(ref ImGuiTableColumn column, ref ImGuiTableColumnSettings columnSettings, ImGuiTableFlags loadFlags)
+		{
+			fixed (ImGuiTableColumn* pcolumn = &column)
+			{
+				fixed (ImGuiTableColumnSettings* pcolumnSettings = &columnSettings)
+				{
+					ImGuiPNative.TableLoadSettingsForColumn((ImGuiTableColumn*)pcolumn, (ImGuiTableColumnSettings*)pcolumnSettings, loadFlags);
+				}
+			}
+		}
+		public static void TableSaveSettings(ImGuiTablePtr table)
+		{
+			ImGuiPNative.TableSaveSettings((ImGuiTable*)table);
+		}
+		public static void TableSaveSettings(ref ImGuiTable table)
+		{
+			fixed (ImGuiTable* ptable = &table)
+			{
+				ImGuiPNative.TableSaveSettings((ImGuiTable*)ptable);
+			}
+		}
+		public static void TableResetSettings(ImGuiTablePtr table)
+		{
+			ImGuiPNative.TableResetSettings((ImGuiTable*)table);
+		}
+		public static void TableResetSettings(ref ImGuiTable table)
+		{
+			fixed (ImGuiTable* ptable = &table)
+			{
+				ImGuiPNative.TableResetSettings((ImGuiTable*)ptable);
+			}
+		}
+		public static ImGuiTableSettingsPtr TableGetBoundSettings(ImGuiTablePtr table)
+		{
+			ImGuiTableSettingsPtr ret = ImGuiPNative.TableGetBoundSettings((ImGuiTable*)table);
+			return ret;
+		}
+		public static ImGuiTableSettingsPtr TableGetBoundSettings(ref ImGuiTable table)
+		{
+			fixed (ImGuiTable* ptable = &table)
+			{
+				ImGuiTableSettingsPtr ret = ImGuiPNative.TableGetBoundSettings((ImGuiTable*)ptable);
+				return ret;
+			}
+		}
+		public static void TableSettingsAddSettingsHandler()
+		{
+			ImGuiPNative.TableSettingsAddSettingsHandler();
+		}
+		public static ImGuiTableSettingsPtr TableSettingsCreate(uint id, int columnsCount)
+		{
+			ImGuiTableSettingsPtr ret = ImGuiPNative.TableSettingsCreate(id, columnsCount);
+			return ret;
+		}
+		public static ImGuiTableSettingsPtr TableSettingsFindByID(uint id)
+		{
+			ImGuiTableSettingsPtr ret = ImGuiPNative.TableSettingsFindByID(id);
+			return ret;
+		}
+		public static void SetWindowClipRectBeforeSetChannel(ImGuiWindowPtr window, ImRect clipRect)
+		{
+			ImGuiPNative.SetWindowClipRectBeforeSetChannel((ImGuiWindow*)window, clipRect);
+		}
+		public static void SetWindowClipRectBeforeSetChannel(ref ImGuiWindow window, ImRect clipRect)
+		{
+			fixed (ImGuiWindow* pwindow = &window)
+			{
+				ImGuiPNative.SetWindowClipRectBeforeSetChannel((ImGuiWindow*)pwindow, clipRect);
+			}
+		}
+		public static void EndColumns()
+		{
+			ImGuiPNative.EndColumns();
+		}
+		public static void PushColumnClipRect(int columnIndex)
+		{
+			ImGuiPNative.PushColumnClipRect(columnIndex);
+		}
+		public static void PushColumnsBackground()
+		{
+			ImGuiPNative.PushColumnsBackground();
+		}
+		public static void PopColumnsBackground()
+		{
+			ImGuiPNative.PopColumnsBackground();
+		}
+		public static ImGuiOldColumnsPtr FindOrCreateColumns(ImGuiWindowPtr window, uint id)
+		{
+			ImGuiOldColumnsPtr ret = ImGuiPNative.FindOrCreateColumns((ImGuiWindow*)window, id);
+			return ret;
+		}
+		public static ImGuiOldColumnsPtr FindOrCreateColumns(ref ImGuiWindow window, uint id)
+		{
+			fixed (ImGuiWindow* pwindow = &window)
+			{
+				ImGuiOldColumnsPtr ret = ImGuiPNative.FindOrCreateColumns((ImGuiWindow*)pwindow, id);
+				return ret;
+			}
+		}
+		public static float GetColumnOffsetFromNorm(ImGuiOldColumnsPtr columns, float offsetNorm)
+		{
+			float ret = ImGuiPNative.GetColumnOffsetFromNorm((ImGuiOldColumns*)columns, offsetNorm);
+			return ret;
+		}
+		public static float GetColumnOffsetFromNorm(in ImGuiOldColumns columns, float offsetNorm)
+		{
+			fixed (ImGuiOldColumns* pcolumns = &columns)
+			{
+				float ret = ImGuiPNative.GetColumnOffsetFromNorm((ImGuiOldColumns*)pcolumns, offsetNorm);
+				return ret;
+			}
+		}
+		public static float GetColumnNormFromOffset(ImGuiOldColumnsPtr columns, float offset)
+		{
+			float ret = ImGuiPNative.GetColumnNormFromOffset((ImGuiOldColumns*)columns, offset);
+			return ret;
+		}
+		public static float GetColumnNormFromOffset(in ImGuiOldColumns columns, float offset)
+		{
+			fixed (ImGuiOldColumns* pcolumns = &columns)
+			{
+				float ret = ImGuiPNative.GetColumnNormFromOffset((ImGuiOldColumns*)pcolumns, offset);
+				return ret;
+			}
+		}
+		public static ImGuiIOPtr GetIO(ImGuiContextPtr ctx)
+		{
+			ImGuiIOPtr ret = ImGuiPNative.GetIO((ImGuiContext*)ctx);
+			return ret;
+		}
+		public static ImGuiIOPtr GetIO(ref ImGuiContext ctx)
+		{
+			fixed (ImGuiContext* pctx = &ctx)
+			{
+				ImGuiIOPtr ret = ImGuiPNative.GetIO((ImGuiContext*)pctx);
+				return ret;
+			}
+		}
+		public static ImGuiPlatformIOPtr GetPlatformIO(ImGuiContextPtr ctx)
+		{
+			ImGuiPlatformIOPtr ret = ImGuiPNative.GetPlatformIO((ImGuiContext*)ctx);
+			return ret;
+		}
+		public static ImGuiPlatformIOPtr GetPlatformIO(ref ImGuiContext ctx)
+		{
+			fixed (ImGuiContext* pctx = &ctx)
+			{
+				ImGuiPlatformIOPtr ret = ImGuiPNative.GetPlatformIO((ImGuiContext*)pctx);
+				return ret;
+			}
+		}
+		public static float GetScale()
+		{
+			float ret = ImGuiPNative.GetScale();
+			return ret;
 		}
 		public static ImGuiWindowPtr GetCurrentWindowRead()
 		{
@@ -2395,20 +3383,20 @@ public unsafe partial class ImGuiP
 		}
 		public static void UpdateWindowParentAndRootLinks(ImGuiWindowPtr window, ImGuiWindowFlags flags, ImGuiWindowPtr parentWindow)
 		{
-			ImGuiPNative.UpdateWindowParentAndRootLinks(window, flags, parentWindow);
+			ImGuiPNative.UpdateWindowParentAndRootLinks((ImGuiWindow*)window, flags, (ImGuiWindow*)parentWindow);
 		}
 		public static void UpdateWindowParentAndRootLinks(ref ImGuiWindow window, ImGuiWindowFlags flags, ImGuiWindowPtr parentWindow)
 		{
 			fixed (ImGuiWindow* pwindow = &window)
 			{
-				ImGuiPNative.UpdateWindowParentAndRootLinks((ImGuiWindow*)pwindow, flags, parentWindow);
+				ImGuiPNative.UpdateWindowParentAndRootLinks((ImGuiWindow*)pwindow, flags, (ImGuiWindow*)parentWindow);
 			}
 		}
 		public static void UpdateWindowParentAndRootLinks(ImGuiWindowPtr window, ImGuiWindowFlags flags, ref ImGuiWindow parentWindow)
 		{
 			fixed (ImGuiWindow* pparentWindow = &parentWindow)
 			{
-				ImGuiPNative.UpdateWindowParentAndRootLinks(window, flags, (ImGuiWindow*)pparentWindow);
+				ImGuiPNative.UpdateWindowParentAndRootLinks((ImGuiWindow*)window, flags, (ImGuiWindow*)pparentWindow);
 			}
 		}
 		public static void UpdateWindowParentAndRootLinks(ref ImGuiWindow window, ImGuiWindowFlags flags, ref ImGuiWindow parentWindow)
@@ -2421,59 +3409,40 @@ public unsafe partial class ImGuiP
 				}
 			}
 		}
+		public static void UpdateWindowSkipRefresh(ImGuiWindowPtr window)
+		{
+			ImGuiPNative.UpdateWindowSkipRefresh((ImGuiWindow*)window);
+		}
+		public static void UpdateWindowSkipRefresh(ref ImGuiWindow window)
+		{
+			fixed (ImGuiWindow* pwindow = &window)
+			{
+				ImGuiPNative.UpdateWindowSkipRefresh((ImGuiWindow*)pwindow);
+			}
+		}
 		public static Vector2 CalcWindowNextAutoFitSize(ImGuiWindowPtr window)
 		{
-			Vector2 ret;
-			ImGuiPNative.CalcWindowNextAutoFitSize(&ret, window);
+			Vector2 ret = ImGuiPNative.CalcWindowNextAutoFitSize((ImGuiWindow*)window);
 			return ret;
-		}
-		public static void CalcWindowNextAutoFitSize(Vector2* pOut, ImGuiWindowPtr window)
-		{
-			ImGuiPNative.CalcWindowNextAutoFitSize(pOut, window);
-		}
-		public static void CalcWindowNextAutoFitSize(ref Vector2 pOut, ImGuiWindowPtr window)
-		{
-			fixed (Vector2* ppOut = &pOut)
-			{
-				ImGuiPNative.CalcWindowNextAutoFitSize((Vector2*)ppOut, window);
-			}
 		}
 		public static Vector2 CalcWindowNextAutoFitSize(ref ImGuiWindow window)
 		{
 			fixed (ImGuiWindow* pwindow = &window)
 			{
-				Vector2 ret;
-				ImGuiPNative.CalcWindowNextAutoFitSize(&ret, (ImGuiWindow*)pwindow);
+				Vector2 ret = ImGuiPNative.CalcWindowNextAutoFitSize((ImGuiWindow*)pwindow);
 				return ret;
-			}
-		}
-		public static void CalcWindowNextAutoFitSize(Vector2* pOut, ref ImGuiWindow window)
-		{
-			fixed (ImGuiWindow* pwindow = &window)
-			{
-				ImGuiPNative.CalcWindowNextAutoFitSize(pOut, (ImGuiWindow*)pwindow);
-			}
-		}
-		public static void CalcWindowNextAutoFitSize(ref Vector2 pOut, ref ImGuiWindow window)
-		{
-			fixed (Vector2* ppOut = &pOut)
-			{
-				fixed (ImGuiWindow* pwindow = &window)
-				{
-					ImGuiPNative.CalcWindowNextAutoFitSize((Vector2*)ppOut, (ImGuiWindow*)pwindow);
-				}
 			}
 		}
 		public static bool IsWindowChildOf(ImGuiWindowPtr window, ImGuiWindowPtr potentialParent, bool popupHierarchy, bool dockHierarchy)
 		{
-			byte ret = ImGuiPNative.IsWindowChildOf(window, potentialParent, popupHierarchy ? (byte)1 : (byte)0, dockHierarchy ? (byte)1 : (byte)0);
+			byte ret = ImGuiPNative.IsWindowChildOf((ImGuiWindow*)window, (ImGuiWindow*)potentialParent, popupHierarchy ? (byte)1 : (byte)0, dockHierarchy ? (byte)1 : (byte)0);
 			return ret != 0;
 		}
 		public static bool IsWindowChildOf(ref ImGuiWindow window, ImGuiWindowPtr potentialParent, bool popupHierarchy, bool dockHierarchy)
 		{
 			fixed (ImGuiWindow* pwindow = &window)
 			{
-				byte ret = ImGuiPNative.IsWindowChildOf((ImGuiWindow*)pwindow, potentialParent, popupHierarchy ? (byte)1 : (byte)0, dockHierarchy ? (byte)1 : (byte)0);
+				byte ret = ImGuiPNative.IsWindowChildOf((ImGuiWindow*)pwindow, (ImGuiWindow*)potentialParent, popupHierarchy ? (byte)1 : (byte)0, dockHierarchy ? (byte)1 : (byte)0);
 				return ret != 0;
 			}
 		}
@@ -2481,7 +3450,7 @@ public unsafe partial class ImGuiP
 		{
 			fixed (ImGuiWindow* ppotentialParent = &potentialParent)
 			{
-				byte ret = ImGuiPNative.IsWindowChildOf(window, (ImGuiWindow*)ppotentialParent, popupHierarchy ? (byte)1 : (byte)0, dockHierarchy ? (byte)1 : (byte)0);
+				byte ret = ImGuiPNative.IsWindowChildOf((ImGuiWindow*)window, (ImGuiWindow*)ppotentialParent, popupHierarchy ? (byte)1 : (byte)0, dockHierarchy ? (byte)1 : (byte)0);
 				return ret != 0;
 			}
 		}
@@ -2496,16 +3465,29 @@ public unsafe partial class ImGuiP
 				}
 			}
 		}
+		public static bool IsWindowInBeginStack(ImGuiWindowPtr window)
+		{
+			byte ret = ImGuiPNative.IsWindowInBeginStack((ImGuiWindow*)window);
+			return ret != 0;
+		}
+		public static bool IsWindowInBeginStack(ref ImGuiWindow window)
+		{
+			fixed (ImGuiWindow* pwindow = &window)
+			{
+				byte ret = ImGuiPNative.IsWindowInBeginStack((ImGuiWindow*)pwindow);
+				return ret != 0;
+			}
+		}
 		public static bool IsWindowWithinBeginStackOf(ImGuiWindowPtr window, ImGuiWindowPtr potentialParent)
 		{
-			byte ret = ImGuiPNative.IsWindowWithinBeginStackOf(window, potentialParent);
+			byte ret = ImGuiPNative.IsWindowWithinBeginStackOf((ImGuiWindow*)window, (ImGuiWindow*)potentialParent);
 			return ret != 0;
 		}
 		public static bool IsWindowWithinBeginStackOf(ref ImGuiWindow window, ImGuiWindowPtr potentialParent)
 		{
 			fixed (ImGuiWindow* pwindow = &window)
 			{
-				byte ret = ImGuiPNative.IsWindowWithinBeginStackOf((ImGuiWindow*)pwindow, potentialParent);
+				byte ret = ImGuiPNative.IsWindowWithinBeginStackOf((ImGuiWindow*)pwindow, (ImGuiWindow*)potentialParent);
 				return ret != 0;
 			}
 		}
@@ -2513,7 +3495,7 @@ public unsafe partial class ImGuiP
 		{
 			fixed (ImGuiWindow* ppotentialParent = &potentialParent)
 			{
-				byte ret = ImGuiPNative.IsWindowWithinBeginStackOf(window, (ImGuiWindow*)ppotentialParent);
+				byte ret = ImGuiPNative.IsWindowWithinBeginStackOf((ImGuiWindow*)window, (ImGuiWindow*)ppotentialParent);
 				return ret != 0;
 			}
 		}
@@ -2530,14 +3512,14 @@ public unsafe partial class ImGuiP
 		}
 		public static bool IsWindowAbove(ImGuiWindowPtr potentialAbove, ImGuiWindowPtr potentialBelow)
 		{
-			byte ret = ImGuiPNative.IsWindowAbove(potentialAbove, potentialBelow);
+			byte ret = ImGuiPNative.IsWindowAbove((ImGuiWindow*)potentialAbove, (ImGuiWindow*)potentialBelow);
 			return ret != 0;
 		}
 		public static bool IsWindowAbove(ref ImGuiWindow potentialAbove, ImGuiWindowPtr potentialBelow)
 		{
 			fixed (ImGuiWindow* ppotentialAbove = &potentialAbove)
 			{
-				byte ret = ImGuiPNative.IsWindowAbove((ImGuiWindow*)ppotentialAbove, potentialBelow);
+				byte ret = ImGuiPNative.IsWindowAbove((ImGuiWindow*)ppotentialAbove, (ImGuiWindow*)potentialBelow);
 				return ret != 0;
 			}
 		}
@@ -2545,7 +3527,7 @@ public unsafe partial class ImGuiP
 		{
 			fixed (ImGuiWindow* ppotentialBelow = &potentialBelow)
 			{
-				byte ret = ImGuiPNative.IsWindowAbove(potentialAbove, (ImGuiWindow*)ppotentialBelow);
+				byte ret = ImGuiPNative.IsWindowAbove((ImGuiWindow*)potentialAbove, (ImGuiWindow*)ppotentialBelow);
 				return ret != 0;
 			}
 		}
@@ -2562,7 +3544,7 @@ public unsafe partial class ImGuiP
 		}
 		public static bool IsWindowNavFocusable(ImGuiWindowPtr window)
 		{
-			byte ret = ImGuiPNative.IsWindowNavFocusable(window);
+			byte ret = ImGuiPNative.IsWindowNavFocusable((ImGuiWindow*)window);
 			return ret != 0;
 		}
 		public static bool IsWindowNavFocusable(ref ImGuiWindow window)
@@ -2575,11 +3557,11 @@ public unsafe partial class ImGuiP
 		}
 		public static void SetWindowPos(ImGuiWindowPtr window, Vector2 pos, ImGuiCond cond)
 		{
-			ImGuiPNative.SetWindowPos(window, pos, cond);
+			ImGuiPNative.SetWindowPos((ImGuiWindow*)window, pos, cond);
 		}
 		public static void SetWindowPos(ImGuiWindowPtr window, Vector2 pos)
 		{
-			ImGuiPNative.SetWindowPos(window, pos, (ImGuiCond)(0));
+			ImGuiPNative.SetWindowPos((ImGuiWindow*)window, pos, (ImGuiCond)(0));
 		}
 		public static void SetWindowPos(ref ImGuiWindow window, Vector2 pos, ImGuiCond cond)
 		{
@@ -2597,11 +3579,11 @@ public unsafe partial class ImGuiP
 		}
 		public static void SetWindowSize(ImGuiWindowPtr window, Vector2 size, ImGuiCond cond)
 		{
-			ImGuiPNative.SetWindowSize(window, size, cond);
+			ImGuiPNative.SetWindowSize((ImGuiWindow*)window, size, cond);
 		}
 		public static void SetWindowSize(ImGuiWindowPtr window, Vector2 size)
 		{
-			ImGuiPNative.SetWindowSize(window, size, (ImGuiCond)(0));
+			ImGuiPNative.SetWindowSize((ImGuiWindow*)window, size, (ImGuiCond)(0));
 		}
 		public static void SetWindowSize(ref ImGuiWindow window, Vector2 size, ImGuiCond cond)
 		{
@@ -2619,11 +3601,11 @@ public unsafe partial class ImGuiP
 		}
 		public static void SetWindowCollapsed(ImGuiWindowPtr window, bool collapsed, ImGuiCond cond)
 		{
-			ImGuiPNative.SetWindowCollapsed(window, collapsed ? (byte)1 : (byte)0, cond);
+			ImGuiPNative.SetWindowCollapsed((ImGuiWindow*)window, collapsed ? (byte)1 : (byte)0, cond);
 		}
 		public static void SetWindowCollapsed(ImGuiWindowPtr window, bool collapsed)
 		{
-			ImGuiPNative.SetWindowCollapsed(window, collapsed ? (byte)1 : (byte)0, (ImGuiCond)(0));
+			ImGuiPNative.SetWindowCollapsed((ImGuiWindow*)window, collapsed ? (byte)1 : (byte)0, (ImGuiCond)(0));
 		}
 		public static void SetWindowCollapsed(ref ImGuiWindow window, bool collapsed, ImGuiCond cond)
 		{
@@ -2641,7 +3623,7 @@ public unsafe partial class ImGuiP
 		}
 		public static void SetWindowHitTestHole(ImGuiWindowPtr window, Vector2 pos, Vector2 size)
 		{
-			ImGuiPNative.SetWindowHitTestHole(window, pos, size);
+			ImGuiPNative.SetWindowHitTestHole((ImGuiWindow*)window, pos, size);
 		}
 		public static void SetWindowHitTestHole(ref ImGuiWindow window, Vector2 pos, Vector2 size)
 		{
@@ -2650,134 +3632,190 @@ public unsafe partial class ImGuiP
 				ImGuiPNative.SetWindowHitTestHole((ImGuiWindow*)pwindow, pos, size);
 			}
 		}
+		public static void SetWindowHiddenAndSkipItemsForCurrentFrame(ImGuiWindowPtr window)
+		{
+			ImGuiPNative.SetWindowHiddenAndSkipItemsForCurrentFrame((ImGuiWindow*)window);
+		}
+		public static void SetWindowHiddenAndSkipItemsForCurrentFrame(ref ImGuiWindow window)
+		{
+			fixed (ImGuiWindow* pwindow = &window)
+			{
+				ImGuiPNative.SetWindowHiddenAndSkipItemsForCurrentFrame((ImGuiWindow*)pwindow);
+			}
+		}
+		public static void SetWindowParentWindowForFocusRoute(ImGuiWindowPtr window, ImGuiWindowPtr parentWindow)
+		{
+			ImGuiPNative.SetWindowParentWindowForFocusRoute((ImGuiWindow*)window, (ImGuiWindow*)parentWindow);
+		}
+		public static void SetWindowParentWindowForFocusRoute(ref ImGuiWindow window, ImGuiWindowPtr parentWindow)
+		{
+			fixed (ImGuiWindow* pwindow = &window)
+			{
+				ImGuiPNative.SetWindowParentWindowForFocusRoute((ImGuiWindow*)pwindow, (ImGuiWindow*)parentWindow);
+			}
+		}
+		public static void SetWindowParentWindowForFocusRoute(ImGuiWindowPtr window, ref ImGuiWindow parentWindow)
+		{
+			fixed (ImGuiWindow* pparentWindow = &parentWindow)
+			{
+				ImGuiPNative.SetWindowParentWindowForFocusRoute((ImGuiWindow*)window, (ImGuiWindow*)pparentWindow);
+			}
+		}
+		public static void SetWindowParentWindowForFocusRoute(ref ImGuiWindow window, ref ImGuiWindow parentWindow)
+		{
+			fixed (ImGuiWindow* pwindow = &window)
+			{
+				fixed (ImGuiWindow* pparentWindow = &parentWindow)
+				{
+					ImGuiPNative.SetWindowParentWindowForFocusRoute((ImGuiWindow*)pwindow, (ImGuiWindow*)pparentWindow);
+				}
+			}
+		}
 		public static ImRect WindowRectAbsToRel(ImGuiWindowPtr window, ImRect r)
 		{
-			ImRect ret;
-			ImGuiPNative.WindowRectAbsToRel(&ret, window, r);
+			ImRect ret = ImGuiPNative.WindowRectAbsToRel((ImGuiWindow*)window, r);
 			return ret;
-		}
-		public static void WindowRectAbsToRel(ImRectPtr pOut, ImGuiWindowPtr window, ImRect r)
-		{
-			ImGuiPNative.WindowRectAbsToRel(pOut, window, r);
-		}
-		public static void WindowRectAbsToRel(ref ImRect pOut, ImGuiWindowPtr window, ImRect r)
-		{
-			fixed (ImRect* ppOut = &pOut)
-			{
-				ImGuiPNative.WindowRectAbsToRel((ImRect*)ppOut, window, r);
-			}
 		}
 		public static ImRect WindowRectAbsToRel(ref ImGuiWindow window, ImRect r)
 		{
 			fixed (ImGuiWindow* pwindow = &window)
 			{
-				ImRect ret;
-				ImGuiPNative.WindowRectAbsToRel(&ret, (ImGuiWindow*)pwindow, r);
+				ImRect ret = ImGuiPNative.WindowRectAbsToRel((ImGuiWindow*)pwindow, r);
 				return ret;
-			}
-		}
-		public static void WindowRectAbsToRel(ImRectPtr pOut, ref ImGuiWindow window, ImRect r)
-		{
-			fixed (ImGuiWindow* pwindow = &window)
-			{
-				ImGuiPNative.WindowRectAbsToRel(pOut, (ImGuiWindow*)pwindow, r);
-			}
-		}
-		public static void WindowRectAbsToRel(ref ImRect pOut, ref ImGuiWindow window, ImRect r)
-		{
-			fixed (ImRect* ppOut = &pOut)
-			{
-				fixed (ImGuiWindow* pwindow = &window)
-				{
-					ImGuiPNative.WindowRectAbsToRel((ImRect*)ppOut, (ImGuiWindow*)pwindow, r);
-				}
 			}
 		}
 		public static ImRect WindowRectRelToAbs(ImGuiWindowPtr window, ImRect r)
 		{
-			ImRect ret;
-			ImGuiPNative.WindowRectRelToAbs(&ret, window, r);
+			ImRect ret = ImGuiPNative.WindowRectRelToAbs((ImGuiWindow*)window, r);
 			return ret;
-		}
-		public static void WindowRectRelToAbs(ImRectPtr pOut, ImGuiWindowPtr window, ImRect r)
-		{
-			ImGuiPNative.WindowRectRelToAbs(pOut, window, r);
-		}
-		public static void WindowRectRelToAbs(ref ImRect pOut, ImGuiWindowPtr window, ImRect r)
-		{
-			fixed (ImRect* ppOut = &pOut)
-			{
-				ImGuiPNative.WindowRectRelToAbs((ImRect*)ppOut, window, r);
-			}
 		}
 		public static ImRect WindowRectRelToAbs(ref ImGuiWindow window, ImRect r)
 		{
 			fixed (ImGuiWindow* pwindow = &window)
 			{
-				ImRect ret;
-				ImGuiPNative.WindowRectRelToAbs(&ret, (ImGuiWindow*)pwindow, r);
+				ImRect ret = ImGuiPNative.WindowRectRelToAbs((ImGuiWindow*)pwindow, r);
 				return ret;
 			}
 		}
-		public static void WindowRectRelToAbs(ImRectPtr pOut, ref ImGuiWindow window, ImRect r)
+		public static Vector2 WindowPosAbsToRel(ImGuiWindowPtr window, Vector2 p)
+		{
+			Vector2 ret = ImGuiPNative.WindowPosAbsToRel((ImGuiWindow*)window, p);
+			return ret;
+		}
+		public static Vector2 WindowPosAbsToRel(ref ImGuiWindow window, Vector2 p)
 		{
 			fixed (ImGuiWindow* pwindow = &window)
 			{
-				ImGuiPNative.WindowRectRelToAbs(pOut, (ImGuiWindow*)pwindow, r);
+				Vector2 ret = ImGuiPNative.WindowPosAbsToRel((ImGuiWindow*)pwindow, p);
+				return ret;
 			}
 		}
-		public static void WindowRectRelToAbs(ref ImRect pOut, ref ImGuiWindow window, ImRect r)
+		public static Vector2 WindowPosRelToAbs(ImGuiWindowPtr window, Vector2 p)
 		{
-			fixed (ImRect* ppOut = &pOut)
+			Vector2 ret = ImGuiPNative.WindowPosRelToAbs((ImGuiWindow*)window, p);
+			return ret;
+		}
+		public static Vector2 WindowPosRelToAbs(ref ImGuiWindow window, Vector2 p)
+		{
+			fixed (ImGuiWindow* pwindow = &window)
 			{
-				fixed (ImGuiWindow* pwindow = &window)
-				{
-					ImGuiPNative.WindowRectRelToAbs((ImRect*)ppOut, (ImGuiWindow*)pwindow, r);
-				}
+				Vector2 ret = ImGuiPNative.WindowPosRelToAbs((ImGuiWindow*)pwindow, p);
+				return ret;
 			}
+		}
+		public static void FocusWindow(ImGuiWindowPtr window, ImGuiFocusRequestFlags flags)
+		{
+			ImGuiPNative.FocusWindow((ImGuiWindow*)window, flags);
 		}
 		public static void FocusWindow(ImGuiWindowPtr window)
 		{
-			ImGuiPNative.FocusWindow(window);
+			ImGuiPNative.FocusWindow((ImGuiWindow*)window, (ImGuiFocusRequestFlags)(0));
+		}
+		public static void FocusWindow(ref ImGuiWindow window, ImGuiFocusRequestFlags flags)
+		{
+			fixed (ImGuiWindow* pwindow = &window)
+			{
+				ImGuiPNative.FocusWindow((ImGuiWindow*)pwindow, flags);
+			}
 		}
 		public static void FocusWindow(ref ImGuiWindow window)
 		{
 			fixed (ImGuiWindow* pwindow = &window)
 			{
-				ImGuiPNative.FocusWindow((ImGuiWindow*)pwindow);
+				ImGuiPNative.FocusWindow((ImGuiWindow*)pwindow, (ImGuiFocusRequestFlags)(0));
 			}
 		}
-		public static void FocusTopMostWindowUnderOne(ImGuiWindowPtr underThisWindow, ImGuiWindowPtr ignoreWindow)
+		public static void FocusTopMostWindowUnderOne(ImGuiWindowPtr underThisWindow, ImGuiWindowPtr ignoreWindow, ImGuiViewportPtr filterViewport, ImGuiFocusRequestFlags flags)
 		{
-			ImGuiPNative.FocusTopMostWindowUnderOne(underThisWindow, ignoreWindow);
+			ImGuiPNative.FocusTopMostWindowUnderOne((ImGuiWindow*)underThisWindow, (ImGuiWindow*)ignoreWindow, (ImGuiViewport*)filterViewport, flags);
 		}
-		public static void FocusTopMostWindowUnderOne(ref ImGuiWindow underThisWindow, ImGuiWindowPtr ignoreWindow)
+		public static void FocusTopMostWindowUnderOne(ref ImGuiWindow underThisWindow, ImGuiWindowPtr ignoreWindow, ImGuiViewportPtr filterViewport, ImGuiFocusRequestFlags flags)
 		{
 			fixed (ImGuiWindow* punderThisWindow = &underThisWindow)
 			{
-				ImGuiPNative.FocusTopMostWindowUnderOne((ImGuiWindow*)punderThisWindow, ignoreWindow);
+				ImGuiPNative.FocusTopMostWindowUnderOne((ImGuiWindow*)punderThisWindow, (ImGuiWindow*)ignoreWindow, (ImGuiViewport*)filterViewport, flags);
 			}
 		}
-		public static void FocusTopMostWindowUnderOne(ImGuiWindowPtr underThisWindow, ref ImGuiWindow ignoreWindow)
+		public static void FocusTopMostWindowUnderOne(ImGuiWindowPtr underThisWindow, ref ImGuiWindow ignoreWindow, ImGuiViewportPtr filterViewport, ImGuiFocusRequestFlags flags)
 		{
 			fixed (ImGuiWindow* pignoreWindow = &ignoreWindow)
 			{
-				ImGuiPNative.FocusTopMostWindowUnderOne(underThisWindow, (ImGuiWindow*)pignoreWindow);
+				ImGuiPNative.FocusTopMostWindowUnderOne((ImGuiWindow*)underThisWindow, (ImGuiWindow*)pignoreWindow, (ImGuiViewport*)filterViewport, flags);
 			}
 		}
-		public static void FocusTopMostWindowUnderOne(ref ImGuiWindow underThisWindow, ref ImGuiWindow ignoreWindow)
+		public static void FocusTopMostWindowUnderOne(ref ImGuiWindow underThisWindow, ref ImGuiWindow ignoreWindow, ImGuiViewportPtr filterViewport, ImGuiFocusRequestFlags flags)
 		{
 			fixed (ImGuiWindow* punderThisWindow = &underThisWindow)
 			{
 				fixed (ImGuiWindow* pignoreWindow = &ignoreWindow)
 				{
-					ImGuiPNative.FocusTopMostWindowUnderOne((ImGuiWindow*)punderThisWindow, (ImGuiWindow*)pignoreWindow);
+					ImGuiPNative.FocusTopMostWindowUnderOne((ImGuiWindow*)punderThisWindow, (ImGuiWindow*)pignoreWindow, (ImGuiViewport*)filterViewport, flags);
+				}
+			}
+		}
+		public static void FocusTopMostWindowUnderOne(ImGuiWindowPtr underThisWindow, ImGuiWindowPtr ignoreWindow, ref ImGuiViewport filterViewport, ImGuiFocusRequestFlags flags)
+		{
+			fixed (ImGuiViewport* pfilterViewport = &filterViewport)
+			{
+				ImGuiPNative.FocusTopMostWindowUnderOne((ImGuiWindow*)underThisWindow, (ImGuiWindow*)ignoreWindow, (ImGuiViewport*)pfilterViewport, flags);
+			}
+		}
+		public static void FocusTopMostWindowUnderOne(ref ImGuiWindow underThisWindow, ImGuiWindowPtr ignoreWindow, ref ImGuiViewport filterViewport, ImGuiFocusRequestFlags flags)
+		{
+			fixed (ImGuiWindow* punderThisWindow = &underThisWindow)
+			{
+				fixed (ImGuiViewport* pfilterViewport = &filterViewport)
+				{
+					ImGuiPNative.FocusTopMostWindowUnderOne((ImGuiWindow*)punderThisWindow, (ImGuiWindow*)ignoreWindow, (ImGuiViewport*)pfilterViewport, flags);
+				}
+			}
+		}
+		public static void FocusTopMostWindowUnderOne(ImGuiWindowPtr underThisWindow, ref ImGuiWindow ignoreWindow, ref ImGuiViewport filterViewport, ImGuiFocusRequestFlags flags)
+		{
+			fixed (ImGuiWindow* pignoreWindow = &ignoreWindow)
+			{
+				fixed (ImGuiViewport* pfilterViewport = &filterViewport)
+				{
+					ImGuiPNative.FocusTopMostWindowUnderOne((ImGuiWindow*)underThisWindow, (ImGuiWindow*)pignoreWindow, (ImGuiViewport*)pfilterViewport, flags);
+				}
+			}
+		}
+		public static void FocusTopMostWindowUnderOne(ref ImGuiWindow underThisWindow, ref ImGuiWindow ignoreWindow, ref ImGuiViewport filterViewport, ImGuiFocusRequestFlags flags)
+		{
+			fixed (ImGuiWindow* punderThisWindow = &underThisWindow)
+			{
+				fixed (ImGuiWindow* pignoreWindow = &ignoreWindow)
+				{
+					fixed (ImGuiViewport* pfilterViewport = &filterViewport)
+					{
+						ImGuiPNative.FocusTopMostWindowUnderOne((ImGuiWindow*)punderThisWindow, (ImGuiWindow*)pignoreWindow, (ImGuiViewport*)pfilterViewport, flags);
+					}
 				}
 			}
 		}
 		public static void BringWindowToFocusFront(ImGuiWindowPtr window)
 		{
-			ImGuiPNative.BringWindowToFocusFront(window);
+			ImGuiPNative.BringWindowToFocusFront((ImGuiWindow*)window);
 		}
 		public static void BringWindowToFocusFront(ref ImGuiWindow window)
 		{
@@ -2788,7 +3826,7 @@ public unsafe partial class ImGuiP
 		}
 		public static void BringWindowToDisplayFront(ImGuiWindowPtr window)
 		{
-			ImGuiPNative.BringWindowToDisplayFront(window);
+			ImGuiPNative.BringWindowToDisplayFront((ImGuiWindow*)window);
 		}
 		public static void BringWindowToDisplayFront(ref ImGuiWindow window)
 		{
@@ -2799,7 +3837,7 @@ public unsafe partial class ImGuiP
 		}
 		public static void BringWindowToDisplayBack(ImGuiWindowPtr window)
 		{
-			ImGuiPNative.BringWindowToDisplayBack(window);
+			ImGuiPNative.BringWindowToDisplayBack((ImGuiWindow*)window);
 		}
 		public static void BringWindowToDisplayBack(ref ImGuiWindow window)
 		{
@@ -2810,20 +3848,20 @@ public unsafe partial class ImGuiP
 		}
 		public static void BringWindowToDisplayBehind(ImGuiWindowPtr window, ImGuiWindowPtr aboveWindow)
 		{
-			ImGuiPNative.BringWindowToDisplayBehind(window, aboveWindow);
+			ImGuiPNative.BringWindowToDisplayBehind((ImGuiWindow*)window, (ImGuiWindow*)aboveWindow);
 		}
 		public static void BringWindowToDisplayBehind(ref ImGuiWindow window, ImGuiWindowPtr aboveWindow)
 		{
 			fixed (ImGuiWindow* pwindow = &window)
 			{
-				ImGuiPNative.BringWindowToDisplayBehind((ImGuiWindow*)pwindow, aboveWindow);
+				ImGuiPNative.BringWindowToDisplayBehind((ImGuiWindow*)pwindow, (ImGuiWindow*)aboveWindow);
 			}
 		}
 		public static void BringWindowToDisplayBehind(ImGuiWindowPtr window, ref ImGuiWindow aboveWindow)
 		{
 			fixed (ImGuiWindow* paboveWindow = &aboveWindow)
 			{
-				ImGuiPNative.BringWindowToDisplayBehind(window, (ImGuiWindow*)paboveWindow);
+				ImGuiPNative.BringWindowToDisplayBehind((ImGuiWindow*)window, (ImGuiWindow*)paboveWindow);
 			}
 		}
 		public static void BringWindowToDisplayBehind(ref ImGuiWindow window, ref ImGuiWindow aboveWindow)
@@ -2838,7 +3876,7 @@ public unsafe partial class ImGuiP
 		}
 		public static int FindWindowDisplayIndex(ImGuiWindowPtr window)
 		{
-			int ret = ImGuiPNative.FindWindowDisplayIndex(window);
+			int ret = ImGuiPNative.FindWindowDisplayIndex((ImGuiWindow*)window);
 			return ret;
 		}
 		public static int FindWindowDisplayIndex(ref ImGuiWindow window)
@@ -2851,7 +3889,7 @@ public unsafe partial class ImGuiP
 		}
 		public static ImGuiWindowPtr FindBottomMostVisibleWindowWithinBeginStack(ImGuiWindowPtr window)
 		{
-			ImGuiWindowPtr ret = ImGuiPNative.FindBottomMostVisibleWindowWithinBeginStack(window);
+			ImGuiWindowPtr ret = ImGuiPNative.FindBottomMostVisibleWindowWithinBeginStack((ImGuiWindow*)window);
 			return ret;
 		}
 		public static ImGuiWindowPtr FindBottomMostVisibleWindowWithinBeginStack(ref ImGuiWindow window)
@@ -2862,25 +3900,99 @@ public unsafe partial class ImGuiP
 				return ret;
 			}
 		}
-		public static void SetCurrentFont(ImFontPtr font)
+		public static void SetNextWindowRefreshPolicy(ImGuiWindowRefreshFlags flags)
 		{
-			ImGuiPNative.SetCurrentFont(font);
+			ImGuiPNative.SetNextWindowRefreshPolicy(flags);
 		}
-		public static void SetCurrentFont(ref ImFont font)
+		public static void RegisterUserTexture(ImTextureDataPtr tex)
+		{
+			ImGuiPNative.RegisterUserTexture((ImTextureData*)tex);
+		}
+		public static void RegisterUserTexture(ref ImTextureData tex)
+		{
+			fixed (ImTextureData* ptex = &tex)
+			{
+				ImGuiPNative.RegisterUserTexture((ImTextureData*)ptex);
+			}
+		}
+		public static void UnregisterUserTexture(ImTextureDataPtr tex)
+		{
+			ImGuiPNative.UnregisterUserTexture((ImTextureData*)tex);
+		}
+		public static void UnregisterUserTexture(ref ImTextureData tex)
+		{
+			fixed (ImTextureData* ptex = &tex)
+			{
+				ImGuiPNative.UnregisterUserTexture((ImTextureData*)ptex);
+			}
+		}
+		public static void RegisterFontAtlas(ImFontAtlasPtr atlas)
+		{
+			ImGuiPNative.RegisterFontAtlas((ImFontAtlas*)atlas);
+		}
+		public static void RegisterFontAtlas(ref ImFontAtlas atlas)
+		{
+			fixed (ImFontAtlas* patlas = &atlas)
+			{
+				ImGuiPNative.RegisterFontAtlas((ImFontAtlas*)patlas);
+			}
+		}
+		public static void UnregisterFontAtlas(ImFontAtlasPtr atlas)
+		{
+			ImGuiPNative.UnregisterFontAtlas((ImFontAtlas*)atlas);
+		}
+		public static void UnregisterFontAtlas(ref ImFontAtlas atlas)
+		{
+			fixed (ImFontAtlas* patlas = &atlas)
+			{
+				ImGuiPNative.UnregisterFontAtlas((ImFontAtlas*)patlas);
+			}
+		}
+		public static void SetCurrentFont(ImFontPtr font, float fontSizeBeforeScaling, float fontSizeAfterScaling)
+		{
+			ImGuiPNative.SetCurrentFont((ImFont*)font, fontSizeBeforeScaling, fontSizeAfterScaling);
+		}
+		public static void SetCurrentFont(ref ImFont font, float fontSizeBeforeScaling, float fontSizeAfterScaling)
 		{
 			fixed (ImFont* pfont = &font)
 			{
-				ImGuiPNative.SetCurrentFont((ImFont*)pfont);
+				ImGuiPNative.SetCurrentFont((ImFont*)pfont, fontSizeBeforeScaling, fontSizeAfterScaling);
 			}
+		}
+		public static void UpdateCurrentFontSize(float restoreFontSizeAfterScaling)
+		{
+			ImGuiPNative.UpdateCurrentFontSize(restoreFontSizeAfterScaling);
+		}
+		public static void SetFontRasterizerDensity(float rasterizerDensity)
+		{
+			ImGuiPNative.SetFontRasterizerDensity(rasterizerDensity);
+		}
+		public static float GetFontRasterizerDensity()
+		{
+			float ret = ImGuiPNative.GetFontRasterizerDensity();
+			return ret;
+		}
+		public static float GetRoundedFontSize(float size)
+		{
+			float ret = ImGuiPNative.GetRoundedFontSize(size);
+			return ret;
 		}
 		public static ImFontPtr GetDefaultFont()
 		{
 			ImFontPtr ret = ImGuiPNative.GetDefaultFont();
 			return ret;
 		}
+		public static void PushPasswordFont()
+		{
+			ImGuiPNative.PushPasswordFont();
+		}
+		public static void PopPasswordFont()
+		{
+			ImGuiPNative.PopPasswordFont();
+		}
 		public static ImDrawListPtr GetForegroundDrawList(ImGuiWindowPtr window)
 		{
-			ImDrawListPtr ret = ImGuiPNative.GetForegroundDrawList(window);
+			ImDrawListPtr ret = ImGuiPNative.GetForegroundDrawList((ImGuiWindow*)window);
 			return ret;
 		}
 		public static ImDrawListPtr GetForegroundDrawList(ref ImGuiWindow window)
@@ -2891,6 +4003,74 @@ public unsafe partial class ImGuiP
 				return ret;
 			}
 		}
+		public static void AddDrawListToDrawDataEx(ImDrawDataPtr drawData, ImVector<ImDrawListPtr>* outList, ImDrawListPtr drawList)
+		{
+			ImGuiPNative.AddDrawListToDrawDataEx((ImDrawData*)drawData, outList, (ImDrawList*)drawList);
+		}
+		public static void AddDrawListToDrawDataEx(ref ImDrawData drawData, ImVector<ImDrawListPtr>* outList, ImDrawListPtr drawList)
+		{
+			fixed (ImDrawData* pdrawData = &drawData)
+			{
+				ImGuiPNative.AddDrawListToDrawDataEx((ImDrawData*)pdrawData, outList, (ImDrawList*)drawList);
+			}
+		}
+		public static void AddDrawListToDrawDataEx(ImDrawDataPtr drawData, ref ImVector<ImDrawListPtr> outList, ImDrawListPtr drawList)
+		{
+			fixed (ImVector<ImDrawListPtr>* poutList = &outList)
+			{
+				ImGuiPNative.AddDrawListToDrawDataEx((ImDrawData*)drawData, (ImVector<ImDrawListPtr>*)poutList, (ImDrawList*)drawList);
+			}
+		}
+		public static void AddDrawListToDrawDataEx(ref ImDrawData drawData, ref ImVector<ImDrawListPtr> outList, ImDrawListPtr drawList)
+		{
+			fixed (ImDrawData* pdrawData = &drawData)
+			{
+				fixed (ImVector<ImDrawListPtr>* poutList = &outList)
+				{
+					ImGuiPNative.AddDrawListToDrawDataEx((ImDrawData*)pdrawData, (ImVector<ImDrawListPtr>*)poutList, (ImDrawList*)drawList);
+				}
+			}
+		}
+		public static void AddDrawListToDrawDataEx(ImDrawDataPtr drawData, ImVector<ImDrawListPtr>* outList, ref ImDrawList drawList)
+		{
+			fixed (ImDrawList* pdrawList = &drawList)
+			{
+				ImGuiPNative.AddDrawListToDrawDataEx((ImDrawData*)drawData, outList, (ImDrawList*)pdrawList);
+			}
+		}
+		public static void AddDrawListToDrawDataEx(ref ImDrawData drawData, ImVector<ImDrawListPtr>* outList, ref ImDrawList drawList)
+		{
+			fixed (ImDrawData* pdrawData = &drawData)
+			{
+				fixed (ImDrawList* pdrawList = &drawList)
+				{
+					ImGuiPNative.AddDrawListToDrawDataEx((ImDrawData*)pdrawData, outList, (ImDrawList*)pdrawList);
+				}
+			}
+		}
+		public static void AddDrawListToDrawDataEx(ImDrawDataPtr drawData, ref ImVector<ImDrawListPtr> outList, ref ImDrawList drawList)
+		{
+			fixed (ImVector<ImDrawListPtr>* poutList = &outList)
+			{
+				fixed (ImDrawList* pdrawList = &drawList)
+				{
+					ImGuiPNative.AddDrawListToDrawDataEx((ImDrawData*)drawData, (ImVector<ImDrawListPtr>*)poutList, (ImDrawList*)pdrawList);
+				}
+			}
+		}
+		public static void AddDrawListToDrawDataEx(ref ImDrawData drawData, ref ImVector<ImDrawListPtr> outList, ref ImDrawList drawList)
+		{
+			fixed (ImDrawData* pdrawData = &drawData)
+			{
+				fixed (ImVector<ImDrawListPtr>* poutList = &outList)
+				{
+					fixed (ImDrawList* pdrawList = &drawList)
+					{
+						ImGuiPNative.AddDrawListToDrawDataEx((ImDrawData*)pdrawData, (ImVector<ImDrawListPtr>*)poutList, (ImDrawList*)pdrawList);
+					}
+				}
+			}
+		}
 		public static void Initialize()
 		{
 			ImGuiPNative.Initialize();
@@ -2899,17 +4079,99 @@ public unsafe partial class ImGuiP
 		{
 			ImGuiPNative.Shutdown();
 		}
+		public static uint AddContextHook(ImGuiContextPtr ctx, ImGuiContextHookPtr hook)
+		{
+			uint ret = ImGuiPNative.AddContextHook((ImGuiContext*)ctx, (ImGuiContextHook*)hook);
+			return ret;
+		}
+		public static uint AddContextHook(ref ImGuiContext ctx, ImGuiContextHookPtr hook)
+		{
+			fixed (ImGuiContext* pctx = &ctx)
+			{
+				uint ret = ImGuiPNative.AddContextHook((ImGuiContext*)pctx, (ImGuiContextHook*)hook);
+				return ret;
+			}
+		}
+		public static uint AddContextHook(ImGuiContextPtr ctx, in ImGuiContextHook hook)
+		{
+			fixed (ImGuiContextHook* phook = &hook)
+			{
+				uint ret = ImGuiPNative.AddContextHook((ImGuiContext*)ctx, (ImGuiContextHook*)phook);
+				return ret;
+			}
+		}
+		public static uint AddContextHook(ref ImGuiContext ctx, in ImGuiContextHook hook)
+		{
+			fixed (ImGuiContext* pctx = &ctx)
+			{
+				fixed (ImGuiContextHook* phook = &hook)
+				{
+					uint ret = ImGuiPNative.AddContextHook((ImGuiContext*)pctx, (ImGuiContextHook*)phook);
+					return ret;
+				}
+			}
+		}
+		public static void RemoveContextHook(ImGuiContextPtr ctx, uint hookToRemove)
+		{
+			ImGuiPNative.RemoveContextHook((ImGuiContext*)ctx, hookToRemove);
+		}
+		public static void RemoveContextHook(ref ImGuiContext ctx, uint hookToRemove)
+		{
+			fixed (ImGuiContext* pctx = &ctx)
+			{
+				ImGuiPNative.RemoveContextHook((ImGuiContext*)pctx, hookToRemove);
+			}
+		}
+		public static void CallContextHooks(ImGuiContextPtr ctx, ImGuiContextHookType type)
+		{
+			ImGuiPNative.CallContextHooks((ImGuiContext*)ctx, type);
+		}
+		public static void CallContextHooks(ref ImGuiContext ctx, ImGuiContextHookType type)
+		{
+			fixed (ImGuiContext* pctx = &ctx)
+			{
+				ImGuiPNative.CallContextHooks((ImGuiContext*)pctx, type);
+			}
+		}
 		public static void UpdateInputEvents(bool trickleFastInputs)
 		{
 			ImGuiPNative.UpdateInputEvents(trickleFastInputs ? (byte)1 : (byte)0);
 		}
-		public static void UpdateHoveredWindowAndCaptureFlags()
+		public static void UpdateHoveredWindowAndCaptureFlags(Vector2 mousePos)
 		{
-			ImGuiPNative.UpdateHoveredWindowAndCaptureFlags();
+			ImGuiPNative.UpdateHoveredWindowAndCaptureFlags(mousePos);
+		}
+		public static void FindHoveredWindowEx(Vector2 pos, bool findFirstAndInAnyViewport, ImGuiWindowPtrPtr outHoveredWindow, ImGuiWindowPtrPtr outHoveredWindowUnderMovingWindow)
+		{
+			ImGuiPNative.FindHoveredWindowEx(pos, findFirstAndInAnyViewport ? (byte)1 : (byte)0, (ImGuiWindow**)outHoveredWindow, (ImGuiWindow**)outHoveredWindowUnderMovingWindow);
+		}
+		public static void FindHoveredWindowEx(Vector2 pos, bool findFirstAndInAnyViewport, ref ImGuiWindow* outHoveredWindow, ImGuiWindowPtrPtr outHoveredWindowUnderMovingWindow)
+		{
+			fixed (ImGuiWindow** poutHoveredWindow = &outHoveredWindow)
+			{
+				ImGuiPNative.FindHoveredWindowEx(pos, findFirstAndInAnyViewport ? (byte)1 : (byte)0, (ImGuiWindow**)poutHoveredWindow, (ImGuiWindow**)outHoveredWindowUnderMovingWindow);
+			}
+		}
+		public static void FindHoveredWindowEx(Vector2 pos, bool findFirstAndInAnyViewport, ImGuiWindowPtrPtr outHoveredWindow, ref ImGuiWindow* outHoveredWindowUnderMovingWindow)
+		{
+			fixed (ImGuiWindow** poutHoveredWindowUnderMovingWindow = &outHoveredWindowUnderMovingWindow)
+			{
+				ImGuiPNative.FindHoveredWindowEx(pos, findFirstAndInAnyViewport ? (byte)1 : (byte)0, (ImGuiWindow**)outHoveredWindow, (ImGuiWindow**)poutHoveredWindowUnderMovingWindow);
+			}
+		}
+		public static void FindHoveredWindowEx(Vector2 pos, bool findFirstAndInAnyViewport, ref ImGuiWindow* outHoveredWindow, ref ImGuiWindow* outHoveredWindowUnderMovingWindow)
+		{
+			fixed (ImGuiWindow** poutHoveredWindow = &outHoveredWindow)
+			{
+				fixed (ImGuiWindow** poutHoveredWindowUnderMovingWindow = &outHoveredWindowUnderMovingWindow)
+				{
+					ImGuiPNative.FindHoveredWindowEx(pos, findFirstAndInAnyViewport ? (byte)1 : (byte)0, (ImGuiWindow**)poutHoveredWindow, (ImGuiWindow**)poutHoveredWindowUnderMovingWindow);
+				}
+			}
 		}
 		public static void StartMouseMovingWindow(ImGuiWindowPtr window)
 		{
-			ImGuiPNative.StartMouseMovingWindow(window);
+			ImGuiPNative.StartMouseMovingWindow((ImGuiWindow*)window);
 		}
 		public static void StartMouseMovingWindow(ref ImGuiWindow window)
 		{
@@ -2918,33 +4180,37 @@ public unsafe partial class ImGuiP
 				ImGuiPNative.StartMouseMovingWindow((ImGuiWindow*)pwindow);
 			}
 		}
-		public static void StartMouseMovingWindowOrNode(ImGuiWindowPtr window, ImGuiDockNodePtr node, bool undockFloatingNode)
+		public static void StartMouseMovingWindowOrNode(ImGuiWindowPtr window, ImGuiDockNodePtr node, bool undock)
 		{
-			ImGuiPNative.StartMouseMovingWindowOrNode(window, node, undockFloatingNode ? (byte)1 : (byte)0);
+			ImGuiPNative.StartMouseMovingWindowOrNode((ImGuiWindow*)window, (ImGuiDockNode*)node, undock ? (byte)1 : (byte)0);
 		}
-		public static void StartMouseMovingWindowOrNode(ref ImGuiWindow window, ImGuiDockNodePtr node, bool undockFloatingNode)
+		public static void StartMouseMovingWindowOrNode(ref ImGuiWindow window, ImGuiDockNodePtr node, bool undock)
 		{
 			fixed (ImGuiWindow* pwindow = &window)
 			{
-				ImGuiPNative.StartMouseMovingWindowOrNode((ImGuiWindow*)pwindow, node, undockFloatingNode ? (byte)1 : (byte)0);
+				ImGuiPNative.StartMouseMovingWindowOrNode((ImGuiWindow*)pwindow, (ImGuiDockNode*)node, undock ? (byte)1 : (byte)0);
 			}
 		}
-		public static void StartMouseMovingWindowOrNode(ImGuiWindowPtr window, ref ImGuiDockNode node, bool undockFloatingNode)
+		public static void StartMouseMovingWindowOrNode(ImGuiWindowPtr window, ref ImGuiDockNode node, bool undock)
 		{
 			fixed (ImGuiDockNode* pnode = &node)
 			{
-				ImGuiPNative.StartMouseMovingWindowOrNode(window, (ImGuiDockNode*)pnode, undockFloatingNode ? (byte)1 : (byte)0);
+				ImGuiPNative.StartMouseMovingWindowOrNode((ImGuiWindow*)window, (ImGuiDockNode*)pnode, undock ? (byte)1 : (byte)0);
 			}
 		}
-		public static void StartMouseMovingWindowOrNode(ref ImGuiWindow window, ref ImGuiDockNode node, bool undockFloatingNode)
+		public static void StartMouseMovingWindowOrNode(ref ImGuiWindow window, ref ImGuiDockNode node, bool undock)
 		{
 			fixed (ImGuiWindow* pwindow = &window)
 			{
 				fixed (ImGuiDockNode* pnode = &node)
 				{
-					ImGuiPNative.StartMouseMovingWindowOrNode((ImGuiWindow*)pwindow, (ImGuiDockNode*)pnode, undockFloatingNode ? (byte)1 : (byte)0);
+					ImGuiPNative.StartMouseMovingWindowOrNode((ImGuiWindow*)pwindow, (ImGuiDockNode*)pnode, undock ? (byte)1 : (byte)0);
 				}
 			}
+		}
+		public static void StopMouseMovingWindow()
+		{
+			ImGuiPNative.StopMouseMovingWindow();
 		}
 		public static void UpdateMouseMovingWindowNewFrame()
 		{
@@ -2954,74 +4220,20 @@ public unsafe partial class ImGuiP
 		{
 			ImGuiPNative.UpdateMouseMovingWindowEndFrame();
 		}
-		public static uint AddContextHook(ImGuiContextPtr context, ImGuiContextHookPtr hook)
+		public static void TranslateWindowsInViewport(ImGuiViewportPPtr viewport, Vector2 oldPos, Vector2 newPos, Vector2 oldSize, Vector2 newSize)
 		{
-			uint ret = ImGuiPNative.AddContextHook(context, hook);
-			return ret;
+			ImGuiPNative.TranslateWindowsInViewport((ImGuiViewportP*)viewport, oldPos, newPos, oldSize, newSize);
 		}
-		public static uint AddContextHook(ref ImGuiContext context, ImGuiContextHookPtr hook)
-		{
-			fixed (ImGuiContext* pcontext = &context)
-			{
-				uint ret = ImGuiPNative.AddContextHook((ImGuiContext*)pcontext, hook);
-				return ret;
-			}
-		}
-		public static uint AddContextHook(ImGuiContextPtr context, ref ImGuiContextHook hook)
-		{
-			fixed (ImGuiContextHook* phook = &hook)
-			{
-				uint ret = ImGuiPNative.AddContextHook(context, (ImGuiContextHook*)phook);
-				return ret;
-			}
-		}
-		public static uint AddContextHook(ref ImGuiContext context, ref ImGuiContextHook hook)
-		{
-			fixed (ImGuiContext* pcontext = &context)
-			{
-				fixed (ImGuiContextHook* phook = &hook)
-				{
-					uint ret = ImGuiPNative.AddContextHook((ImGuiContext*)pcontext, (ImGuiContextHook*)phook);
-					return ret;
-				}
-			}
-		}
-		public static void RemoveContextHook(ImGuiContextPtr context, uint hookToRemove)
-		{
-			ImGuiPNative.RemoveContextHook(context, hookToRemove);
-		}
-		public static void RemoveContextHook(ref ImGuiContext context, uint hookToRemove)
-		{
-			fixed (ImGuiContext* pcontext = &context)
-			{
-				ImGuiPNative.RemoveContextHook((ImGuiContext*)pcontext, hookToRemove);
-			}
-		}
-		public static void CallContextHooks(ImGuiContextPtr context, ImGuiContextHookType type)
-		{
-			ImGuiPNative.CallContextHooks(context, type);
-		}
-		public static void CallContextHooks(ref ImGuiContext context, ImGuiContextHookType type)
-		{
-			fixed (ImGuiContext* pcontext = &context)
-			{
-				ImGuiPNative.CallContextHooks((ImGuiContext*)pcontext, type);
-			}
-		}
-		public static void TranslateWindowsInViewport(ImGuiViewportPPtr viewport, Vector2 oldPos, Vector2 newPos)
-		{
-			ImGuiPNative.TranslateWindowsInViewport(viewport, oldPos, newPos);
-		}
-		public static void TranslateWindowsInViewport(ref ImGuiViewportP viewport, Vector2 oldPos, Vector2 newPos)
+		public static void TranslateWindowsInViewport(ref ImGuiViewportP viewport, Vector2 oldPos, Vector2 newPos, Vector2 oldSize, Vector2 newSize)
 		{
 			fixed (ImGuiViewportP* pviewport = &viewport)
 			{
-				ImGuiPNative.TranslateWindowsInViewport((ImGuiViewportP*)pviewport, oldPos, newPos);
+				ImGuiPNative.TranslateWindowsInViewport((ImGuiViewportP*)pviewport, oldPos, newPos, oldSize, newSize);
 			}
 		}
 		public static void ScaleWindowsInViewport(ImGuiViewportPPtr viewport, float scale)
 		{
-			ImGuiPNative.ScaleWindowsInViewport(viewport, scale);
+			ImGuiPNative.ScaleWindowsInViewport((ImGuiViewportP*)viewport, scale);
 		}
 		public static void ScaleWindowsInViewport(ref ImGuiViewportP viewport, float scale)
 		{
@@ -3032,7 +4244,7 @@ public unsafe partial class ImGuiP
 		}
 		public static void DestroyPlatformWindow(ImGuiViewportPPtr viewport)
 		{
-			ImGuiPNative.DestroyPlatformWindow(viewport);
+			ImGuiPNative.DestroyPlatformWindow((ImGuiViewportP*)viewport);
 		}
 		public static void DestroyPlatformWindow(ref ImGuiViewportP viewport)
 		{
@@ -3043,20 +4255,20 @@ public unsafe partial class ImGuiP
 		}
 		public static void SetWindowViewport(ImGuiWindowPtr window, ImGuiViewportPPtr viewport)
 		{
-			ImGuiPNative.SetWindowViewport(window, viewport);
+			ImGuiPNative.SetWindowViewport((ImGuiWindow*)window, (ImGuiViewportP*)viewport);
 		}
 		public static void SetWindowViewport(ref ImGuiWindow window, ImGuiViewportPPtr viewport)
 		{
 			fixed (ImGuiWindow* pwindow = &window)
 			{
-				ImGuiPNative.SetWindowViewport((ImGuiWindow*)pwindow, viewport);
+				ImGuiPNative.SetWindowViewport((ImGuiWindow*)pwindow, (ImGuiViewportP*)viewport);
 			}
 		}
 		public static void SetWindowViewport(ImGuiWindowPtr window, ref ImGuiViewportP viewport)
 		{
 			fixed (ImGuiViewportP* pviewport = &viewport)
 			{
-				ImGuiPNative.SetWindowViewport(window, (ImGuiViewportP*)pviewport);
+				ImGuiPNative.SetWindowViewport((ImGuiWindow*)window, (ImGuiViewportP*)pviewport);
 			}
 		}
 		public static void SetWindowViewport(ref ImGuiWindow window, ref ImGuiViewportP viewport)
@@ -3071,20 +4283,20 @@ public unsafe partial class ImGuiP
 		}
 		public static void SetCurrentViewport(ImGuiWindowPtr window, ImGuiViewportPPtr viewport)
 		{
-			ImGuiPNative.SetCurrentViewport(window, viewport);
+			ImGuiPNative.SetCurrentViewport((ImGuiWindow*)window, (ImGuiViewportP*)viewport);
 		}
 		public static void SetCurrentViewport(ref ImGuiWindow window, ImGuiViewportPPtr viewport)
 		{
 			fixed (ImGuiWindow* pwindow = &window)
 			{
-				ImGuiPNative.SetCurrentViewport((ImGuiWindow*)pwindow, viewport);
+				ImGuiPNative.SetCurrentViewport((ImGuiWindow*)pwindow, (ImGuiViewportP*)viewport);
 			}
 		}
 		public static void SetCurrentViewport(ImGuiWindowPtr window, ref ImGuiViewportP viewport)
 		{
 			fixed (ImGuiViewportP* pviewport = &viewport)
 			{
-				ImGuiPNative.SetCurrentViewport(window, (ImGuiViewportP*)pviewport);
+				ImGuiPNative.SetCurrentViewport((ImGuiWindow*)window, (ImGuiViewportP*)pviewport);
 			}
 		}
 		public static void SetCurrentViewport(ref ImGuiWindow window, ref ImGuiViewportP viewport)
@@ -3099,7 +4311,7 @@ public unsafe partial class ImGuiP
 		}
 		public static ImGuiPlatformMonitorPtr GetViewportPlatformMonitor(ImGuiViewportPtr viewport)
 		{
-			ImGuiPlatformMonitorPtr ret = ImGuiPNative.GetViewportPlatformMonitor(viewport);
+			ImGuiPlatformMonitorPtr ret = ImGuiPNative.GetViewportPlatformMonitor((ImGuiViewport*)viewport);
 			return ret;
 		}
 		public static ImGuiPlatformMonitorPtr GetViewportPlatformMonitor(ref ImGuiViewport viewport)
@@ -3121,7 +4333,7 @@ public unsafe partial class ImGuiP
 		}
 		public static void MarkIniSettingsDirty(ImGuiWindowPtr window)
 		{
-			ImGuiPNative.MarkIniSettingsDirty(window);
+			ImGuiPNative.MarkIniSettingsDirty((ImGuiWindow*)window);
 		}
 		public static void MarkIniSettingsDirty(ref ImGuiWindow window)
 		{
@@ -3134,29 +4346,60 @@ public unsafe partial class ImGuiP
 		{
 			ImGuiPNative.ClearIniSettings();
 		}
-		public static ImGuiWindowSettingsPtr FindWindowSettings(uint id)
+		public static void CleanupIniSettings(ImGuiSettingsCleanupArgsPtr args)
 		{
-			ImGuiWindowSettingsPtr ret = ImGuiPNative.FindWindowSettings(id);
-			return ret;
+			ImGuiPNative.CleanupIniSettings((ImGuiSettingsCleanupArgs*)args);
+		}
+		public static void CleanupIniSettings(ref ImGuiSettingsCleanupArgs args)
+		{
+			fixed (ImGuiSettingsCleanupArgs* pargs = &args)
+			{
+				ImGuiPNative.CleanupIniSettings((ImGuiSettingsCleanupArgs*)pargs);
+			}
 		}
 		public static void AddSettingsHandler(ImGuiSettingsHandlerPtr handler)
 		{
-			ImGuiPNative.AddSettingsHandler(handler);
+			ImGuiPNative.AddSettingsHandler((ImGuiSettingsHandler*)handler);
 		}
-		public static void AddSettingsHandler(ref ImGuiSettingsHandler handler)
+		public static void AddSettingsHandler(in ImGuiSettingsHandler handler)
 		{
 			fixed (ImGuiSettingsHandler* phandler = &handler)
 			{
 				ImGuiPNative.AddSettingsHandler((ImGuiSettingsHandler*)phandler);
 			}
 		}
-		public static void SetNextWindowScroll(Vector2 scroll)
+		public static ImGuiWindowSettingsPtr FindWindowSettingsByID(uint id)
 		{
-			ImGuiPNative.SetNextWindowScroll(scroll);
+			ImGuiWindowSettingsPtr ret = ImGuiPNative.FindWindowSettingsByID(id);
+			return ret;
+		}
+		public static ImGuiWindowSettingsPtr FindWindowSettingsByWindow(ImGuiWindowPtr window)
+		{
+			ImGuiWindowSettingsPtr ret = ImGuiPNative.FindWindowSettingsByWindow((ImGuiWindow*)window);
+			return ret;
+		}
+		public static ImGuiWindowSettingsPtr FindWindowSettingsByWindow(ref ImGuiWindow window)
+		{
+			fixed (ImGuiWindow* pwindow = &window)
+			{
+				ImGuiWindowSettingsPtr ret = ImGuiPNative.FindWindowSettingsByWindow((ImGuiWindow*)pwindow);
+				return ret;
+			}
+		}
+		public static void LocalizeRegisterEntries(ImGuiLocEntryPtr entries, int count)
+		{
+			ImGuiPNative.LocalizeRegisterEntries((ImGuiLocEntry*)entries, count);
+		}
+		public static void LocalizeRegisterEntries(in ImGuiLocEntry entries, int count)
+		{
+			fixed (ImGuiLocEntry* pentries = &entries)
+			{
+				ImGuiPNative.LocalizeRegisterEntries((ImGuiLocEntry*)pentries, count);
+			}
 		}
 		public static void SetScrollX(ImGuiWindowPtr window, float scrollX)
 		{
-			ImGuiPNative.SetScrollX(window, scrollX);
+			ImGuiPNative.SetScrollX((ImGuiWindow*)window, scrollX);
 		}
 		public static void SetScrollX(ref ImGuiWindow window, float scrollX)
 		{
@@ -3167,7 +4410,7 @@ public unsafe partial class ImGuiP
 		}
 		public static void SetScrollY(ImGuiWindowPtr window, float scrollY)
 		{
-			ImGuiPNative.SetScrollY(window, scrollY);
+			ImGuiPNative.SetScrollY((ImGuiWindow*)window, scrollY);
 		}
 		public static void SetScrollY(ref ImGuiWindow window, float scrollY)
 		{
@@ -3178,7 +4421,7 @@ public unsafe partial class ImGuiP
 		}
 		public static void SetScrollFromPosX(ImGuiWindowPtr window, float localX, float centerXRatio)
 		{
-			ImGuiPNative.SetScrollFromPosX(window, localX, centerXRatio);
+			ImGuiPNative.SetScrollFromPosX((ImGuiWindow*)window, localX, centerXRatio);
 		}
 		public static void SetScrollFromPosX(ref ImGuiWindow window, float localX, float centerXRatio)
 		{
@@ -3189,7 +4432,7 @@ public unsafe partial class ImGuiP
 		}
 		public static void SetScrollFromPosY(ImGuiWindowPtr window, float localY, float centerYRatio)
 		{
-			ImGuiPNative.SetScrollFromPosY(window, localY, centerYRatio);
+			ImGuiPNative.SetScrollFromPosY((ImGuiWindow*)window, localY, centerYRatio);
 		}
 		public static void SetScrollFromPosY(ref ImGuiWindow window, float localY, float centerYRatio)
 		{
@@ -3208,11 +4451,11 @@ public unsafe partial class ImGuiP
 		}
 		public static void ScrollToRect(ImGuiWindowPtr window, ImRect rect, ImGuiScrollFlags flags)
 		{
-			ImGuiPNative.ScrollToRect(window, rect, flags);
+			ImGuiPNative.ScrollToRect((ImGuiWindow*)window, rect, flags);
 		}
 		public static void ScrollToRect(ImGuiWindowPtr window, ImRect rect)
 		{
-			ImGuiPNative.ScrollToRect(window, rect, (ImGuiScrollFlags)(0));
+			ImGuiPNative.ScrollToRect((ImGuiWindow*)window, rect, (ImGuiScrollFlags)(0));
 		}
 		public static void ScrollToRect(ref ImGuiWindow window, ImRect rect, ImGuiScrollFlags flags)
 		{
@@ -3228,95 +4471,35 @@ public unsafe partial class ImGuiP
 				ImGuiPNative.ScrollToRect((ImGuiWindow*)pwindow, rect, (ImGuiScrollFlags)(0));
 			}
 		}
-		public static Vector2 ScrollToRectEx(ImGuiWindowPtr window, ImRect rect)
-		{
-			Vector2 ret;
-			ImGuiPNative.ScrollToRectEx(&ret, window, rect, (ImGuiScrollFlags)(0));
-			return ret;
-		}
 		public static Vector2 ScrollToRectEx(ImGuiWindowPtr window, ImRect rect, ImGuiScrollFlags flags)
 		{
-			Vector2 ret;
-			ImGuiPNative.ScrollToRectEx(&ret, window, rect, flags);
+			Vector2 ret = ImGuiPNative.ScrollToRectEx((ImGuiWindow*)window, rect, flags);
 			return ret;
 		}
-		public static void ScrollToRectEx(Vector2* pOut, ImGuiWindowPtr window, ImRect rect, ImGuiScrollFlags flags)
+		public static Vector2 ScrollToRectEx(ImGuiWindowPtr window, ImRect rect)
 		{
-			ImGuiPNative.ScrollToRectEx(pOut, window, rect, flags);
+			Vector2 ret = ImGuiPNative.ScrollToRectEx((ImGuiWindow*)window, rect, (ImGuiScrollFlags)(0));
+			return ret;
 		}
-		public static void ScrollToRectEx(Vector2* pOut, ImGuiWindowPtr window, ImRect rect)
+		public static Vector2 ScrollToRectEx(ref ImGuiWindow window, ImRect rect, ImGuiScrollFlags flags)
 		{
-			ImGuiPNative.ScrollToRectEx(pOut, window, rect, (ImGuiScrollFlags)(0));
-		}
-		public static void ScrollToRectEx(ref Vector2 pOut, ImGuiWindowPtr window, ImRect rect, ImGuiScrollFlags flags)
-		{
-			fixed (Vector2* ppOut = &pOut)
+			fixed (ImGuiWindow* pwindow = &window)
 			{
-				ImGuiPNative.ScrollToRectEx((Vector2*)ppOut, window, rect, flags);
-			}
-		}
-		public static void ScrollToRectEx(ref Vector2 pOut, ImGuiWindowPtr window, ImRect rect)
-		{
-			fixed (Vector2* ppOut = &pOut)
-			{
-				ImGuiPNative.ScrollToRectEx((Vector2*)ppOut, window, rect, (ImGuiScrollFlags)(0));
+				Vector2 ret = ImGuiPNative.ScrollToRectEx((ImGuiWindow*)pwindow, rect, flags);
+				return ret;
 			}
 		}
 		public static Vector2 ScrollToRectEx(ref ImGuiWindow window, ImRect rect)
 		{
 			fixed (ImGuiWindow* pwindow = &window)
 			{
-				Vector2 ret;
-				ImGuiPNative.ScrollToRectEx(&ret, (ImGuiWindow*)pwindow, rect, (ImGuiScrollFlags)(0));
+				Vector2 ret = ImGuiPNative.ScrollToRectEx((ImGuiWindow*)pwindow, rect, (ImGuiScrollFlags)(0));
 				return ret;
-			}
-		}
-		public static Vector2 ScrollToRectEx(ref ImGuiWindow window, ImRect rect, ImGuiScrollFlags flags)
-		{
-			fixed (ImGuiWindow* pwindow = &window)
-			{
-				Vector2 ret;
-				ImGuiPNative.ScrollToRectEx(&ret, (ImGuiWindow*)pwindow, rect, flags);
-				return ret;
-			}
-		}
-		public static void ScrollToRectEx(Vector2* pOut, ref ImGuiWindow window, ImRect rect, ImGuiScrollFlags flags)
-		{
-			fixed (ImGuiWindow* pwindow = &window)
-			{
-				ImGuiPNative.ScrollToRectEx(pOut, (ImGuiWindow*)pwindow, rect, flags);
-			}
-		}
-		public static void ScrollToRectEx(Vector2* pOut, ref ImGuiWindow window, ImRect rect)
-		{
-			fixed (ImGuiWindow* pwindow = &window)
-			{
-				ImGuiPNative.ScrollToRectEx(pOut, (ImGuiWindow*)pwindow, rect, (ImGuiScrollFlags)(0));
-			}
-		}
-		public static void ScrollToRectEx(ref Vector2 pOut, ref ImGuiWindow window, ImRect rect, ImGuiScrollFlags flags)
-		{
-			fixed (Vector2* ppOut = &pOut)
-			{
-				fixed (ImGuiWindow* pwindow = &window)
-				{
-					ImGuiPNative.ScrollToRectEx((Vector2*)ppOut, (ImGuiWindow*)pwindow, rect, flags);
-				}
-			}
-		}
-		public static void ScrollToRectEx(ref Vector2 pOut, ref ImGuiWindow window, ImRect rect)
-		{
-			fixed (Vector2* ppOut = &pOut)
-			{
-				fixed (ImGuiWindow* pwindow = &window)
-				{
-					ImGuiPNative.ScrollToRectEx((Vector2*)ppOut, (ImGuiWindow*)pwindow, rect, (ImGuiScrollFlags)(0));
-				}
 			}
 		}
 		public static void ScrollToBringRectIntoView(ImGuiWindowPtr window, ImRect rect)
 		{
-			ImGuiPNative.ScrollToBringRectIntoView(window, rect);
+			ImGuiPNative.ScrollToBringRectIntoView((ImGuiWindow*)window, rect);
 		}
 		public static void ScrollToBringRectIntoView(ref ImGuiWindow window, ImRect rect)
 		{
@@ -3325,19 +4508,9 @@ public unsafe partial class ImGuiP
 				ImGuiPNative.ScrollToBringRectIntoView((ImGuiWindow*)pwindow, rect);
 			}
 		}
-		public static uint GetItemID()
-		{
-			uint ret = ImGuiPNative.GetItemID();
-			return ret;
-		}
 		public static ImGuiItemStatusFlags GetItemStatusFlags()
 		{
 			ImGuiItemStatusFlags ret = ImGuiPNative.GetItemStatusFlags();
-			return ret;
-		}
-		public static ImGuiItemFlags GetItemFlags()
-		{
-			ImGuiItemFlags ret = ImGuiPNative.GetItemFlags();
 			return ret;
 		}
 		public static uint GetActiveID()
@@ -3352,7 +4525,7 @@ public unsafe partial class ImGuiP
 		}
 		public static void SetActiveID(uint id, ImGuiWindowPtr window)
 		{
-			ImGuiPNative.SetActiveID(id, window);
+			ImGuiPNative.SetActiveID(id, (ImGuiWindow*)window);
 		}
 		public static void SetActiveID(uint id, ref ImGuiWindow window)
 		{
@@ -3363,7 +4536,7 @@ public unsafe partial class ImGuiP
 		}
 		public static void SetFocusID(uint id, ImGuiWindowPtr window)
 		{
-			ImGuiPNative.SetFocusID(id, window);
+			ImGuiPNative.SetFocusID(id, (ImGuiWindow*)window);
 		}
 		public static void SetFocusID(uint id, ref ImGuiWindow window)
 		{
@@ -3413,12 +4586,12 @@ public unsafe partial class ImGuiP
 		{
 			ImGuiPNative.ItemSize(bb, (float)(-1.0f));
 		}
-		public static bool ItemAdd(ImRect bb, uint id, ImRectPtr navBb, ImGuiItemFlags extraFlags)
+		public static bool ItemAdd(ImRect bb, uint id, ImRect* navBb, ImGuiItemFlags extraFlags)
 		{
 			byte ret = ImGuiPNative.ItemAdd(bb, id, navBb, extraFlags);
 			return ret != 0;
 		}
-		public static bool ItemAdd(ImRect bb, uint id, ImRectPtr navBb)
+		public static bool ItemAdd(ImRect bb, uint id, ImRect* navBb)
 		{
 			byte ret = ImGuiPNative.ItemAdd(bb, id, navBb, (ImGuiItemFlags)(0));
 			return ret != 0;
@@ -3433,7 +4606,7 @@ public unsafe partial class ImGuiP
 			byte ret = ImGuiPNative.ItemAdd(bb, id, (ImRect*)(default), extraFlags);
 			return ret != 0;
 		}
-		public static bool ItemAdd(ImRect bb, uint id, ref ImRect navBb, ImGuiItemFlags extraFlags)
+		public static bool ItemAdd(ImRect bb, uint id, in ImRect navBb, ImGuiItemFlags extraFlags)
 		{
 			fixed (ImRect* pnavBb = &navBb)
 			{
@@ -3441,7 +4614,7 @@ public unsafe partial class ImGuiP
 				return ret != 0;
 			}
 		}
-		public static bool ItemAdd(ImRect bb, uint id, ref ImRect navBb)
+		public static bool ItemAdd(ImRect bb, uint id, in ImRect navBb)
 		{
 			fixed (ImRect* pnavBb = &navBb)
 			{
@@ -3449,36 +4622,50 @@ public unsafe partial class ImGuiP
 				return ret != 0;
 			}
 		}
-		public static bool ItemHoverable(ImRect bb, uint id)
+		public static bool ItemHoverable(ImRect bb, uint id, ImGuiItemFlags itemFlags)
 		{
-			byte ret = ImGuiPNative.ItemHoverable(bb, id);
+			byte ret = ImGuiPNative.ItemHoverable(bb, id, itemFlags);
 			return ret != 0;
+		}
+		public static bool IsWindowContentHoverable(ImGuiWindowPtr window, ImGuiHoveredFlags flags)
+		{
+			byte ret = ImGuiPNative.IsWindowContentHoverable((ImGuiWindow*)window, flags);
+			return ret != 0;
+		}
+		public static bool IsWindowContentHoverable(ImGuiWindowPtr window)
+		{
+			byte ret = ImGuiPNative.IsWindowContentHoverable((ImGuiWindow*)window, (ImGuiHoveredFlags)(0));
+			return ret != 0;
+		}
+		public static bool IsWindowContentHoverable(ref ImGuiWindow window, ImGuiHoveredFlags flags)
+		{
+			fixed (ImGuiWindow* pwindow = &window)
+			{
+				byte ret = ImGuiPNative.IsWindowContentHoverable((ImGuiWindow*)pwindow, flags);
+				return ret != 0;
+			}
+		}
+		public static bool IsWindowContentHoverable(ref ImGuiWindow window)
+		{
+			fixed (ImGuiWindow* pwindow = &window)
+			{
+				byte ret = ImGuiPNative.IsWindowContentHoverable((ImGuiWindow*)pwindow, (ImGuiHoveredFlags)(0));
+				return ret != 0;
+			}
 		}
 		public static bool IsClippedEx(ImRect bb, uint id)
 		{
 			byte ret = ImGuiPNative.IsClippedEx(bb, id);
 			return ret != 0;
 		}
-		public static void SetLastItemData(uint itemId, ImGuiItemFlags inFlags, ImGuiItemStatusFlags statusFlags, ImRect itemRect)
+		public static void SetLastItemData(uint itemId, ImGuiItemFlags itemFlags, ImGuiItemStatusFlags statusFlags, ImRect itemRect)
 		{
-			ImGuiPNative.SetLastItemData(itemId, inFlags, statusFlags, itemRect);
+			ImGuiPNative.SetLastItemData(itemId, itemFlags, statusFlags, itemRect);
 		}
 		public static Vector2 CalcItemSize(Vector2 size, float defaultW, float defaultH)
 		{
-			Vector2 ret;
-			ImGuiPNative.CalcItemSize(&ret, size, defaultW, defaultH);
+			Vector2 ret = ImGuiPNative.CalcItemSize(size, defaultW, defaultH);
 			return ret;
-		}
-		public static void CalcItemSize(Vector2* pOut, Vector2 size, float defaultW, float defaultH)
-		{
-			ImGuiPNative.CalcItemSize(pOut, size, defaultW, defaultH);
-		}
-		public static void CalcItemSize(ref Vector2 pOut, Vector2 size, float defaultW, float defaultH)
-		{
-			fixed (Vector2* ppOut = &pOut)
-			{
-				ImGuiPNative.CalcItemSize((Vector2*)ppOut, size, defaultW, defaultH);
-			}
 		}
 		public static float CalcWrapWidthForPos(Vector2 pos, float wrapPosX)
 		{
@@ -3489,50 +4676,61 @@ public unsafe partial class ImGuiP
 		{
 			ImGuiPNative.PushMultiItemsWidths(components, widthFull);
 		}
-		public static bool IsItemToggledSelection()
+		public static void ShrinkWidths(ImGuiShrinkWidthItemPtr items, int count, float widthExcess, float widthMin)
 		{
-			byte ret = ImGuiPNative.IsItemToggledSelection();
-			return ret != 0;
+			ImGuiPNative.ShrinkWidths((ImGuiShrinkWidthItem*)items, count, widthExcess, widthMin);
 		}
-		public static Vector2 GetContentRegionMaxAbs()
-		{
-			Vector2 ret;
-			ImGuiPNative.GetContentRegionMaxAbs(&ret);
-			return ret;
-		}
-		public static void GetContentRegionMaxAbs(Vector2* pOut)
-		{
-			ImGuiPNative.GetContentRegionMaxAbs(pOut);
-		}
-		public static void GetContentRegionMaxAbs(ref Vector2 pOut)
-		{
-			fixed (Vector2* ppOut = &pOut)
-			{
-				ImGuiPNative.GetContentRegionMaxAbs((Vector2*)ppOut);
-			}
-		}
-		public static void ShrinkWidths(ImGuiShrinkWidthItemPtr items, int count, float widthExcess)
-		{
-			ImGuiPNative.ShrinkWidths(items, count, widthExcess);
-		}
-		public static void ShrinkWidths(ref ImGuiShrinkWidthItem items, int count, float widthExcess)
+		public static void ShrinkWidths(ref ImGuiShrinkWidthItem items, int count, float widthExcess, float widthMin)
 		{
 			fixed (ImGuiShrinkWidthItem* pitems = &items)
 			{
-				ImGuiPNative.ShrinkWidths((ImGuiShrinkWidthItem*)pitems, count, widthExcess);
+				ImGuiPNative.ShrinkWidths((ImGuiShrinkWidthItem*)pitems, count, widthExcess, widthMin);
 			}
 		}
-		public static void PushItemFlag(ImGuiItemFlags option, bool enabled)
+		public static void CalcClipRectVisibleItemsY(ImRect clipRect, Vector2 pos, float itemsHeight, int* outVisibleStart, int* outVisibleEnd)
 		{
-			ImGuiPNative.PushItemFlag(option, enabled ? (byte)1 : (byte)0);
+			ImGuiPNative.CalcClipRectVisibleItemsY(clipRect, pos, itemsHeight, outVisibleStart, outVisibleEnd);
 		}
-		public static void PopItemFlag()
+		public static void CalcClipRectVisibleItemsY(ImRect clipRect, Vector2 pos, float itemsHeight, ref int outVisibleStart, int* outVisibleEnd)
 		{
-			ImGuiPNative.PopItemFlag();
+			fixed (int* poutVisibleStart = &outVisibleStart)
+			{
+				ImGuiPNative.CalcClipRectVisibleItemsY(clipRect, pos, itemsHeight, (int*)poutVisibleStart, outVisibleEnd);
+			}
 		}
-		public static void LogBegin(ImGuiLogType type, int autoOpenDepth)
+		public static void CalcClipRectVisibleItemsY(ImRect clipRect, Vector2 pos, float itemsHeight, int* outVisibleStart, ref int outVisibleEnd)
 		{
-			ImGuiPNative.LogBegin(type, autoOpenDepth);
+			fixed (int* poutVisibleEnd = &outVisibleEnd)
+			{
+				ImGuiPNative.CalcClipRectVisibleItemsY(clipRect, pos, itemsHeight, outVisibleStart, (int*)poutVisibleEnd);
+			}
+		}
+		public static void CalcClipRectVisibleItemsY(ImRect clipRect, Vector2 pos, float itemsHeight, ref int outVisibleStart, ref int outVisibleEnd)
+		{
+			fixed (int* poutVisibleStart = &outVisibleStart)
+			{
+				fixed (int* poutVisibleEnd = &outVisibleEnd)
+				{
+					ImGuiPNative.CalcClipRectVisibleItemsY(clipRect, pos, itemsHeight, (int*)poutVisibleStart, (int*)poutVisibleEnd);
+				}
+			}
+		}
+		public static ImGuiStyleVarInfoPtr GetStyleVarInfo(ImGuiStyleVar idx)
+		{
+			ImGuiStyleVarInfoPtr ret = ImGuiPNative.GetStyleVarInfo(idx);
+			return ret;
+		}
+		public static void BeginDisabledOverrideReenable()
+		{
+			ImGuiPNative.BeginDisabledOverrideReenable();
+		}
+		public static void EndDisabledOverrideReenable()
+		{
+			ImGuiPNative.EndDisabledOverrideReenable();
+		}
+		public static void LogBegin(ImGuiLogFlags flags, int autoOpenDepth)
+		{
+			ImGuiPNative.LogBegin(flags, autoOpenDepth);
 		}
 		public static void LogToBuffer(int autoOpenDepth)
 		{
@@ -3542,13 +4740,33 @@ public unsafe partial class ImGuiP
 		{
 			ImGuiPNative.LogToBuffer((int)(-1));
 		}
-		public static void OpenPopupEx(uint id, ImGuiPopupFlags popupFlags)
+		public static ImGuiWindowPtr FindFrontMostVisibleChildWindow(ImGuiWindowPtr window)
 		{
-			ImGuiPNative.OpenPopupEx(id, popupFlags);
+			ImGuiWindowPtr ret = ImGuiPNative.FindFrontMostVisibleChildWindow((ImGuiWindow*)window);
+			return ret;
 		}
-		public static void OpenPopupEx(uint id)
+		public static ImGuiWindowPtr FindFrontMostVisibleChildWindow(ref ImGuiWindow window)
 		{
-			ImGuiPNative.OpenPopupEx(id, (ImGuiPopupFlags)(ImGuiPopupFlags.None));
+			fixed (ImGuiWindow* pwindow = &window)
+			{
+				ImGuiWindowPtr ret = ImGuiPNative.FindFrontMostVisibleChildWindow((ImGuiWindow*)pwindow);
+				return ret;
+			}
+		}
+		public static bool BeginPopupEx(uint id, ImGuiWindowFlags extraWindowFlags)
+		{
+			byte ret = ImGuiPNative.BeginPopupEx(id, extraWindowFlags);
+			return ret != 0;
+		}
+		public static bool OpenPopupEx(uint id, ImGuiPopupFlags popupFlags)
+		{
+			byte ret = ImGuiPNative.OpenPopupEx(id, popupFlags);
+			return ret != 0;
+		}
+		public static bool OpenPopupEx(uint id)
+		{
+			byte ret = ImGuiPNative.OpenPopupEx(id, (ImGuiPopupFlags)(ImGuiPopupFlags.None));
+			return ret != 0;
 		}
 		public static void ClosePopupToLevel(int remaining, bool restoreFocusToWindowUnderPopup)
 		{
@@ -3556,7 +4774,7 @@ public unsafe partial class ImGuiP
 		}
 		public static void ClosePopupsOverWindow(ImGuiWindowPtr refWindow, bool restoreFocusToWindowUnderPopup)
 		{
-			ImGuiPNative.ClosePopupsOverWindow(refWindow, restoreFocusToWindowUnderPopup ? (byte)1 : (byte)0);
+			ImGuiPNative.ClosePopupsOverWindow((ImGuiWindow*)refWindow, restoreFocusToWindowUnderPopup ? (byte)1 : (byte)0);
 		}
 		public static void ClosePopupsOverWindow(ref ImGuiWindow refWindow, bool restoreFocusToWindowUnderPopup)
 		{
@@ -3574,56 +4792,17 @@ public unsafe partial class ImGuiP
 			byte ret = ImGuiPNative.IsPopupOpen(id, popupFlags);
 			return ret != 0;
 		}
-		public static bool BeginPopupEx(uint id, ImGuiWindowFlags extraFlags)
-		{
-			byte ret = ImGuiPNative.BeginPopupEx(id, extraFlags);
-			return ret != 0;
-		}
-		public static void BeginTooltipEx(ImGuiTooltipFlags tooltipFlags, ImGuiWindowFlags extraWindowFlags)
-		{
-			ImGuiPNative.BeginTooltipEx(tooltipFlags, extraWindowFlags);
-		}
 		public static ImRect GetPopupAllowedExtentRect(ImGuiWindowPtr window)
 		{
-			ImRect ret;
-			ImGuiPNative.GetPopupAllowedExtentRect(&ret, window);
+			ImRect ret = ImGuiPNative.GetPopupAllowedExtentRect((ImGuiWindow*)window);
 			return ret;
-		}
-		public static void GetPopupAllowedExtentRect(ImRectPtr pOut, ImGuiWindowPtr window)
-		{
-			ImGuiPNative.GetPopupAllowedExtentRect(pOut, window);
-		}
-		public static void GetPopupAllowedExtentRect(ref ImRect pOut, ImGuiWindowPtr window)
-		{
-			fixed (ImRect* ppOut = &pOut)
-			{
-				ImGuiPNative.GetPopupAllowedExtentRect((ImRect*)ppOut, window);
-			}
 		}
 		public static ImRect GetPopupAllowedExtentRect(ref ImGuiWindow window)
 		{
 			fixed (ImGuiWindow* pwindow = &window)
 			{
-				ImRect ret;
-				ImGuiPNative.GetPopupAllowedExtentRect(&ret, (ImGuiWindow*)pwindow);
+				ImRect ret = ImGuiPNative.GetPopupAllowedExtentRect((ImGuiWindow*)pwindow);
 				return ret;
-			}
-		}
-		public static void GetPopupAllowedExtentRect(ImRectPtr pOut, ref ImGuiWindow window)
-		{
-			fixed (ImGuiWindow* pwindow = &window)
-			{
-				ImGuiPNative.GetPopupAllowedExtentRect(pOut, (ImGuiWindow*)pwindow);
-			}
-		}
-		public static void GetPopupAllowedExtentRect(ref ImRect pOut, ref ImGuiWindow window)
-		{
-			fixed (ImRect* ppOut = &pOut)
-			{
-				fixed (ImGuiWindow* pwindow = &window)
-				{
-					ImGuiPNative.GetPopupAllowedExtentRect((ImRect*)ppOut, (ImGuiWindow*)pwindow);
-				}
 			}
 		}
 		public static ImGuiWindowPtr GetTopMostPopupModal()
@@ -3636,65 +4815,69 @@ public unsafe partial class ImGuiP
 			ImGuiWindowPtr ret = ImGuiPNative.GetTopMostAndVisiblePopupModal();
 			return ret;
 		}
-		public static Vector2 FindBestWindowPosForPopup(ImGuiWindowPtr window)
+		public static ImGuiWindowPtr FindBlockingModal(ImGuiWindowPtr window)
 		{
-			Vector2 ret;
-			ImGuiPNative.FindBestWindowPosForPopup(&ret, window);
+			ImGuiWindowPtr ret = ImGuiPNative.FindBlockingModal((ImGuiWindow*)window);
 			return ret;
 		}
-		public static void FindBestWindowPosForPopup(Vector2* pOut, ImGuiWindowPtr window)
+		public static ImGuiWindowPtr FindBlockingModal(ref ImGuiWindow window)
 		{
-			ImGuiPNative.FindBestWindowPosForPopup(pOut, window);
-		}
-		public static void FindBestWindowPosForPopup(ref Vector2 pOut, ImGuiWindowPtr window)
-		{
-			fixed (Vector2* ppOut = &pOut)
+			fixed (ImGuiWindow* pwindow = &window)
 			{
-				ImGuiPNative.FindBestWindowPosForPopup((Vector2*)ppOut, window);
+				ImGuiWindowPtr ret = ImGuiPNative.FindBlockingModal((ImGuiWindow*)pwindow);
+				return ret;
 			}
+		}
+		public static Vector2 FindBestWindowPosForPopup(ImGuiWindowPtr window)
+		{
+			Vector2 ret = ImGuiPNative.FindBestWindowPosForPopup((ImGuiWindow*)window);
+			return ret;
 		}
 		public static Vector2 FindBestWindowPosForPopup(ref ImGuiWindow window)
 		{
 			fixed (ImGuiWindow* pwindow = &window)
 			{
-				Vector2 ret;
-				ImGuiPNative.FindBestWindowPosForPopup(&ret, (ImGuiWindow*)pwindow);
+				Vector2 ret = ImGuiPNative.FindBestWindowPosForPopup((ImGuiWindow*)pwindow);
 				return ret;
-			}
-		}
-		public static void FindBestWindowPosForPopup(Vector2* pOut, ref ImGuiWindow window)
-		{
-			fixed (ImGuiWindow* pwindow = &window)
-			{
-				ImGuiPNative.FindBestWindowPosForPopup(pOut, (ImGuiWindow*)pwindow);
-			}
-		}
-		public static void FindBestWindowPosForPopup(ref Vector2 pOut, ref ImGuiWindow window)
-		{
-			fixed (Vector2* ppOut = &pOut)
-			{
-				fixed (ImGuiWindow* pwindow = &window)
-				{
-					ImGuiPNative.FindBestWindowPosForPopup((Vector2*)ppOut, (ImGuiWindow*)pwindow);
-				}
 			}
 		}
 		public static Vector2 FindBestWindowPosForPopupEx(Vector2 refPos, Vector2 size, ImGuiDir* lastDir, ImRect rOuter, ImRect rAvoid, ImGuiPopupPositionPolicy policy)
 		{
-			Vector2 ret;
-			ImGuiPNative.FindBestWindowPosForPopupEx(&ret, refPos, size, lastDir, rOuter, rAvoid, policy);
+			Vector2 ret = ImGuiPNative.FindBestWindowPosForPopupEx(refPos, size, lastDir, rOuter, rAvoid, policy);
 			return ret;
 		}
-		public static void FindBestWindowPosForPopupEx(Vector2* pOut, Vector2 refPos, Vector2 size, ImGuiDir* lastDir, ImRect rOuter, ImRect rAvoid, ImGuiPopupPositionPolicy policy)
+		public static Vector2 FindBestWindowPosForPopupEx(Vector2 refPos, Vector2 size, ref ImGuiDir lastDir, ImRect rOuter, ImRect rAvoid, ImGuiPopupPositionPolicy policy)
 		{
-			ImGuiPNative.FindBestWindowPosForPopupEx(pOut, refPos, size, lastDir, rOuter, rAvoid, policy);
-		}
-		public static void FindBestWindowPosForPopupEx(ref Vector2 pOut, Vector2 refPos, Vector2 size, ImGuiDir* lastDir, ImRect rOuter, ImRect rAvoid, ImGuiPopupPositionPolicy policy)
-		{
-			fixed (Vector2* ppOut = &pOut)
+			fixed (ImGuiDir* plastDir = &lastDir)
 			{
-				ImGuiPNative.FindBestWindowPosForPopupEx((Vector2*)ppOut, refPos, size, lastDir, rOuter, rAvoid, policy);
+				Vector2 ret = ImGuiPNative.FindBestWindowPosForPopupEx(refPos, size, (ImGuiDir*)plastDir, rOuter, rAvoid, policy);
+				return ret;
 			}
+		}
+		public static ImGuiMouseButton GetMouseButtonFromPopupFlags(ImGuiPopupFlags flags)
+		{
+			ImGuiMouseButton ret = ImGuiPNative.GetMouseButtonFromPopupFlags(flags);
+			return ret;
+		}
+		public static bool IsPopupOpenRequestForItem(ImGuiPopupFlags flags, uint id)
+		{
+			byte ret = ImGuiPNative.IsPopupOpenRequestForItem(flags, id);
+			return ret != 0;
+		}
+		public static bool IsPopupOpenRequestForWindow(ImGuiPopupFlags flags)
+		{
+			byte ret = ImGuiPNative.IsPopupOpenRequestForWindow(flags);
+			return ret != 0;
+		}
+		public static bool BeginTooltipEx(ImGuiTooltipFlags tooltipFlags, ImGuiWindowFlags extraWindowFlags)
+		{
+			byte ret = ImGuiPNative.BeginTooltipEx(tooltipFlags, extraWindowFlags);
+			return ret != 0;
+		}
+		public static bool BeginTooltipHidden()
+		{
+			byte ret = ImGuiPNative.BeginTooltipHidden();
+			return ret != 0;
 		}
 		public static bool BeginComboPopup(uint popupId, ImRect bb, ImGuiComboFlags flags)
 		{
@@ -3712,7 +4895,7 @@ public unsafe partial class ImGuiP
 		}
 		public static void NavInitWindow(ImGuiWindowPtr window, bool forceReinit)
 		{
-			ImGuiPNative.NavInitWindow(window, forceReinit ? (byte)1 : (byte)0);
+			ImGuiPNative.NavInitWindow((ImGuiWindow*)window, forceReinit ? (byte)1 : (byte)0);
 		}
 		public static void NavInitWindow(ref ImGuiWindow window, bool forceReinit)
 		{
@@ -3740,13 +4923,41 @@ public unsafe partial class ImGuiP
 		}
 		public static void NavMoveRequestResolveWithLastItem(ImGuiNavItemDataPtr result)
 		{
-			ImGuiPNative.NavMoveRequestResolveWithLastItem(result);
+			ImGuiPNative.NavMoveRequestResolveWithLastItem((ImGuiNavItemData*)result);
 		}
 		public static void NavMoveRequestResolveWithLastItem(ref ImGuiNavItemData result)
 		{
 			fixed (ImGuiNavItemData* presult = &result)
 			{
 				ImGuiPNative.NavMoveRequestResolveWithLastItem((ImGuiNavItemData*)presult);
+			}
+		}
+		public static void NavMoveRequestResolveWithPastTreeNode(ImGuiNavItemDataPtr result, ImGuiTreeNodeStackDataPtr treeNodeData)
+		{
+			ImGuiPNative.NavMoveRequestResolveWithPastTreeNode((ImGuiNavItemData*)result, (ImGuiTreeNodeStackData*)treeNodeData);
+		}
+		public static void NavMoveRequestResolveWithPastTreeNode(ref ImGuiNavItemData result, ImGuiTreeNodeStackDataPtr treeNodeData)
+		{
+			fixed (ImGuiNavItemData* presult = &result)
+			{
+				ImGuiPNative.NavMoveRequestResolveWithPastTreeNode((ImGuiNavItemData*)presult, (ImGuiTreeNodeStackData*)treeNodeData);
+			}
+		}
+		public static void NavMoveRequestResolveWithPastTreeNode(ImGuiNavItemDataPtr result, in ImGuiTreeNodeStackData treeNodeData)
+		{
+			fixed (ImGuiTreeNodeStackData* ptreeNodeData = &treeNodeData)
+			{
+				ImGuiPNative.NavMoveRequestResolveWithPastTreeNode((ImGuiNavItemData*)result, (ImGuiTreeNodeStackData*)ptreeNodeData);
+			}
+		}
+		public static void NavMoveRequestResolveWithPastTreeNode(ref ImGuiNavItemData result, in ImGuiTreeNodeStackData treeNodeData)
+		{
+			fixed (ImGuiNavItemData* presult = &result)
+			{
+				fixed (ImGuiTreeNodeStackData* ptreeNodeData = &treeNodeData)
+				{
+					ImGuiPNative.NavMoveRequestResolveWithPastTreeNode((ImGuiNavItemData*)presult, (ImGuiTreeNodeStackData*)ptreeNodeData);
+				}
 			}
 		}
 		public static void NavMoveRequestCancel()
@@ -3759,7 +4970,7 @@ public unsafe partial class ImGuiP
 		}
 		public static void NavMoveRequestTryWrapping(ImGuiWindowPtr window, ImGuiNavMoveFlags moveFlags)
 		{
-			ImGuiPNative.NavMoveRequestTryWrapping(window, moveFlags);
+			ImGuiPNative.NavMoveRequestTryWrapping((ImGuiWindow*)window, moveFlags);
 		}
 		public static void NavMoveRequestTryWrapping(ref ImGuiWindow window, ImGuiNavMoveFlags moveFlags)
 		{
@@ -3768,74 +4979,25 @@ public unsafe partial class ImGuiP
 				ImGuiPNative.NavMoveRequestTryWrapping((ImGuiWindow*)pwindow, moveFlags);
 			}
 		}
-		public static float GetNavInputAmount(ImGuiNavInput n, ImGuiNavReadMode mode)
+		public static void NavHighlightActivated(uint id)
 		{
-			float ret = ImGuiPNative.GetNavInputAmount(n, mode);
-			return ret;
+			ImGuiPNative.NavHighlightActivated(id);
 		}
-		public static Vector2 GetNavInputAmount2d(ImGuiNavDirSourceFlags dirSources, ImGuiNavReadMode mode)
+		public static void NavClearPreferredPosForAxis(ImGuiAxis axis)
 		{
-			Vector2 ret;
-			ImGuiPNative.GetNavInputAmount2d(&ret, dirSources, mode, (float)(0.0f), (float)(0.0f));
-			return ret;
+			ImGuiPNative.NavClearPreferredPosForAxis(axis);
 		}
-		public static Vector2 GetNavInputAmount2d(ImGuiNavDirSourceFlags dirSources, ImGuiNavReadMode mode, float slowFactor)
+		public static void SetNavCursorVisibleAfterMove()
 		{
-			Vector2 ret;
-			ImGuiPNative.GetNavInputAmount2d(&ret, dirSources, mode, slowFactor, (float)(0.0f));
-			return ret;
+			ImGuiPNative.SetNavCursorVisibleAfterMove();
 		}
-		public static void GetNavInputAmount2d(Vector2* pOut, ImGuiNavDirSourceFlags dirSources, ImGuiNavReadMode mode)
+		public static void NavUpdateCurrentWindowIsScrollPushableX()
 		{
-			ImGuiPNative.GetNavInputAmount2d(pOut, dirSources, mode, (float)(0.0f), (float)(0.0f));
-		}
-		public static Vector2 GetNavInputAmount2d(ImGuiNavDirSourceFlags dirSources, ImGuiNavReadMode mode, float slowFactor, float fastFactor)
-		{
-			Vector2 ret;
-			ImGuiPNative.GetNavInputAmount2d(&ret, dirSources, mode, slowFactor, fastFactor);
-			return ret;
-		}
-		public static void GetNavInputAmount2d(Vector2* pOut, ImGuiNavDirSourceFlags dirSources, ImGuiNavReadMode mode, float slowFactor, float fastFactor)
-		{
-			ImGuiPNative.GetNavInputAmount2d(pOut, dirSources, mode, slowFactor, fastFactor);
-		}
-		public static void GetNavInputAmount2d(Vector2* pOut, ImGuiNavDirSourceFlags dirSources, ImGuiNavReadMode mode, float slowFactor)
-		{
-			ImGuiPNative.GetNavInputAmount2d(pOut, dirSources, mode, slowFactor, (float)(0.0f));
-		}
-		public static void GetNavInputAmount2d(ref Vector2 pOut, ImGuiNavDirSourceFlags dirSources, ImGuiNavReadMode mode, float slowFactor, float fastFactor)
-		{
-			fixed (Vector2* ppOut = &pOut)
-			{
-				ImGuiPNative.GetNavInputAmount2d((Vector2*)ppOut, dirSources, mode, slowFactor, fastFactor);
-			}
-		}
-		public static void GetNavInputAmount2d(ref Vector2 pOut, ImGuiNavDirSourceFlags dirSources, ImGuiNavReadMode mode, float slowFactor)
-		{
-			fixed (Vector2* ppOut = &pOut)
-			{
-				ImGuiPNative.GetNavInputAmount2d((Vector2*)ppOut, dirSources, mode, slowFactor, (float)(0.0f));
-			}
-		}
-		public static void GetNavInputAmount2d(ref Vector2 pOut, ImGuiNavDirSourceFlags dirSources, ImGuiNavReadMode mode)
-		{
-			fixed (Vector2* ppOut = &pOut)
-			{
-				ImGuiPNative.GetNavInputAmount2d((Vector2*)ppOut, dirSources, mode, (float)(0.0f), (float)(0.0f));
-			}
-		}
-		public static int CalcTypematicRepeatAmount(float t0, float t1, float repeatDelay, float repeatRate)
-		{
-			int ret = ImGuiPNative.CalcTypematicRepeatAmount(t0, t1, repeatDelay, repeatRate);
-			return ret;
-		}
-		public static void ActivateItem(uint id)
-		{
-			ImGuiPNative.ActivateItem(id);
+			ImGuiPNative.NavUpdateCurrentWindowIsScrollPushableX();
 		}
 		public static void SetNavWindow(ImGuiWindowPtr window)
 		{
-			ImGuiPNative.SetNavWindow(window);
+			ImGuiPNative.SetNavWindow((ImGuiWindow*)window);
 		}
 		public static void SetNavWindow(ref ImGuiWindow window)
 		{
@@ -3848,27 +5010,26 @@ public unsafe partial class ImGuiP
 		{
 			ImGuiPNative.SetNavID(id, navLayer, focusScopeId, rectRel);
 		}
-		public static void PushFocusScope(uint id)
+		public static void SetNavFocusScope(uint focusScopeId)
 		{
-			ImGuiPNative.PushFocusScope(id);
+			ImGuiPNative.SetNavFocusScope(focusScopeId);
 		}
-		public static void PopFocusScope()
+		public static void FocusItem()
 		{
-			ImGuiPNative.PopFocusScope();
+			ImGuiPNative.FocusItem();
 		}
-		public static uint GetFocusedFocusScope()
+		public static void ActivateItemByID(uint id)
 		{
-			uint ret = ImGuiPNative.GetFocusedFocusScope();
-			return ret;
-		}
-		public static uint GetFocusScope()
-		{
-			uint ret = ImGuiPNative.GetFocusScope();
-			return ret;
+			ImGuiPNative.ActivateItemByID(id);
 		}
 		public static bool IsNamedKey(ImGuiKey key)
 		{
 			byte ret = ImGuiPNative.IsNamedKey(key);
+			return ret != 0;
+		}
+		public static bool IsNamedKeyOrMod(ImGuiKey key)
+		{
+			byte ret = ImGuiPNative.IsNamedKeyOrMod(key);
 			return ret != 0;
 		}
 		public static bool IsLegacyKey(ImGuiKey key)
@@ -3876,42 +5037,63 @@ public unsafe partial class ImGuiP
 			byte ret = ImGuiPNative.IsLegacyKey(key);
 			return ret != 0;
 		}
+		public static bool IsKeyboardKey(ImGuiKey key)
+		{
+			byte ret = ImGuiPNative.IsKeyboardKey(key);
+			return ret != 0;
+		}
 		public static bool IsGamepadKey(ImGuiKey key)
 		{
 			byte ret = ImGuiPNative.IsGamepadKey(key);
 			return ret != 0;
+		}
+		public static bool IsMouseKey(ImGuiKey key)
+		{
+			byte ret = ImGuiPNative.IsMouseKey(key);
+			return ret != 0;
+		}
+		public static bool IsAliasKey(ImGuiKey key)
+		{
+			byte ret = ImGuiPNative.IsAliasKey(key);
+			return ret != 0;
+		}
+		public static bool IsLRModKey(ImGuiKey key)
+		{
+			byte ret = ImGuiPNative.IsLRModKey(key);
+			return ret != 0;
+		}
+		public static int FixupKeyChord(int keyChord)
+		{
+			int ret = ImGuiPNative.FixupKeyChord(keyChord);
+			return ret;
+		}
+		public static ImGuiKey ConvertSingleModFlagToKey(ImGuiKey key)
+		{
+			ImGuiKey ret = ImGuiPNative.ConvertSingleModFlagToKey(key);
+			return ret;
+		}
+		public static ImGuiKeyDataPtr GetKeyData(ImGuiContextPtr ctx, ImGuiKey key)
+		{
+			ImGuiKeyDataPtr ret = ImGuiPNative.GetKeyData((ImGuiContext*)ctx, key);
+			return ret;
+		}
+		public static ImGuiKeyDataPtr GetKeyData(ref ImGuiContext ctx, ImGuiKey key)
+		{
+			fixed (ImGuiContext* pctx = &ctx)
+			{
+				ImGuiKeyDataPtr ret = ImGuiPNative.GetKeyData((ImGuiContext*)pctx, key);
+				return ret;
+			}
 		}
 		public static ImGuiKeyDataPtr GetKeyData(ImGuiKey key)
 		{
 			ImGuiKeyDataPtr ret = ImGuiPNative.GetKeyData(key);
 			return ret;
 		}
-		public static void SetItemUsingMouseWheel()
+		public static ImGuiKey MouseButtonToKey(ImGuiMouseButton button)
 		{
-			ImGuiPNative.SetItemUsingMouseWheel();
-		}
-		public static void SetActiveIdUsingNavAndKeys()
-		{
-			ImGuiPNative.SetActiveIdUsingNavAndKeys();
-		}
-		public static bool IsActiveIdUsingNavDir(ImGuiDir dir)
-		{
-			byte ret = ImGuiPNative.IsActiveIdUsingNavDir(dir);
-			return ret != 0;
-		}
-		public static bool IsActiveIdUsingNavInput(ImGuiNavInput input)
-		{
-			byte ret = ImGuiPNative.IsActiveIdUsingNavInput(input);
-			return ret != 0;
-		}
-		public static bool IsActiveIdUsingKey(ImGuiKey key)
-		{
-			byte ret = ImGuiPNative.IsActiveIdUsingKey(key);
-			return ret != 0;
-		}
-		public static void SetActiveIdUsingKey(ImGuiKey key)
-		{
-			ImGuiPNative.SetActiveIdUsingKey(key);
+			ImGuiKey ret = ImGuiPNative.MouseButtonToKey(button);
+			return ret;
 		}
 		public static bool IsMouseDragPastThreshold(ImGuiMouseButton button, float lockThreshold)
 		{
@@ -3923,34 +5105,184 @@ public unsafe partial class ImGuiP
 			byte ret = ImGuiPNative.IsMouseDragPastThreshold(button, (float)(-1.0f));
 			return ret != 0;
 		}
-		public static bool IsNavInputDown(ImGuiNavInput n)
+		public static Vector2 GetKeyMagnitude2d(ImGuiKey keyLeft, ImGuiKey keyRight, ImGuiKey keyUp, ImGuiKey keyDown)
 		{
-			byte ret = ImGuiPNative.IsNavInputDown(n);
-			return ret != 0;
-		}
-		public static bool IsNavInputTest(ImGuiNavInput n, ImGuiNavReadMode rm)
-		{
-			byte ret = ImGuiPNative.IsNavInputTest(n, rm);
-			return ret != 0;
-		}
-		public static ImGuiModFlags GetMergedModFlags()
-		{
-			ImGuiModFlags ret = ImGuiPNative.GetMergedModFlags();
+			Vector2 ret = ImGuiPNative.GetKeyMagnitude2d(keyLeft, keyRight, keyUp, keyDown);
 			return ret;
 		}
-		public static bool IsKeyPressedMap(ImGuiKey key, bool repeat)
+		public static float GetNavTweakPressedAmount(ImGuiAxis axis)
 		{
-			byte ret = ImGuiPNative.IsKeyPressedMap(key, repeat ? (byte)1 : (byte)0);
+			float ret = ImGuiPNative.GetNavTweakPressedAmount(axis);
+			return ret;
+		}
+		public static int CalcTypematicRepeatAmount(float t0, float t1, float repeatDelay, float repeatRate)
+		{
+			int ret = ImGuiPNative.CalcTypematicRepeatAmount(t0, t1, repeatDelay, repeatRate);
+			return ret;
+		}
+		public static void GetTypematicRepeatRate(ImGuiInputFlags flags, float* repeatDelay, float* repeatRate)
+		{
+			ImGuiPNative.GetTypematicRepeatRate(flags, repeatDelay, repeatRate);
+		}
+		public static void GetTypematicRepeatRate(ImGuiInputFlags flags, ref float repeatDelay, float* repeatRate)
+		{
+			fixed (float* prepeatDelay = &repeatDelay)
+			{
+				ImGuiPNative.GetTypematicRepeatRate(flags, (float*)prepeatDelay, repeatRate);
+			}
+		}
+		public static void GetTypematicRepeatRate(ImGuiInputFlags flags, float* repeatDelay, ref float repeatRate)
+		{
+			fixed (float* prepeatRate = &repeatRate)
+			{
+				ImGuiPNative.GetTypematicRepeatRate(flags, repeatDelay, (float*)prepeatRate);
+			}
+		}
+		public static void GetTypematicRepeatRate(ImGuiInputFlags flags, ref float repeatDelay, ref float repeatRate)
+		{
+			fixed (float* prepeatDelay = &repeatDelay)
+			{
+				fixed (float* prepeatRate = &repeatRate)
+				{
+					ImGuiPNative.GetTypematicRepeatRate(flags, (float*)prepeatDelay, (float*)prepeatRate);
+				}
+			}
+		}
+		public static void TeleportMousePos(Vector2 pos)
+		{
+			ImGuiPNative.TeleportMousePos(pos);
+		}
+		public static void SetActiveIdUsingAllKeyboardKeys()
+		{
+			ImGuiPNative.SetActiveIdUsingAllKeyboardKeys();
+		}
+		public static bool IsActiveIdUsingNavDir(ImGuiDir dir)
+		{
+			byte ret = ImGuiPNative.IsActiveIdUsingNavDir(dir);
 			return ret != 0;
 		}
-		public static bool IsKeyPressedMap(ImGuiKey key)
+		public static uint GetKeyOwner(ImGuiKey key)
 		{
-			byte ret = ImGuiPNative.IsKeyPressedMap(key, (byte)(1));
+			uint ret = ImGuiPNative.GetKeyOwner(key);
+			return ret;
+		}
+		public static void SetKeyOwner(ImGuiKey key, uint ownerId, ImGuiInputFlags flags)
+		{
+			ImGuiPNative.SetKeyOwner(key, ownerId, flags);
+		}
+		public static void SetKeyOwner(ImGuiKey key, uint ownerId)
+		{
+			ImGuiPNative.SetKeyOwner(key, ownerId, (ImGuiInputFlags)(0));
+		}
+		public static void SetKeyOwnersForKeyChord(int key, uint ownerId, ImGuiInputFlags flags)
+		{
+			ImGuiPNative.SetKeyOwnersForKeyChord(key, ownerId, flags);
+		}
+		public static void SetKeyOwnersForKeyChord(int key, uint ownerId)
+		{
+			ImGuiPNative.SetKeyOwnersForKeyChord(key, ownerId, (ImGuiInputFlags)(0));
+		}
+		public static bool SetItemKeyOwner(ImGuiKey key, ImGuiInputFlags flags)
+		{
+			byte ret = ImGuiPNative.SetItemKeyOwner(key, flags);
 			return ret != 0;
+		}
+		public static bool TestKeyOwner(ImGuiKey key, uint ownerId)
+		{
+			byte ret = ImGuiPNative.TestKeyOwner(key, ownerId);
+			return ret != 0;
+		}
+		public static ImGuiKeyOwnerDataPtr GetKeyOwnerData(ImGuiContextPtr ctx, ImGuiKey key)
+		{
+			ImGuiKeyOwnerDataPtr ret = ImGuiPNative.GetKeyOwnerData((ImGuiContext*)ctx, key);
+			return ret;
+		}
+		public static ImGuiKeyOwnerDataPtr GetKeyOwnerData(ref ImGuiContext ctx, ImGuiKey key)
+		{
+			fixed (ImGuiContext* pctx = &ctx)
+			{
+				ImGuiKeyOwnerDataPtr ret = ImGuiPNative.GetKeyOwnerData((ImGuiContext*)pctx, key);
+				return ret;
+			}
+		}
+		public static bool IsKeyDown(ImGuiKey key, uint ownerId)
+		{
+			byte ret = ImGuiPNative.IsKeyDown(key, ownerId);
+			return ret != 0;
+		}
+		public static bool IsKeyPressed(ImGuiKey key, ImGuiInputFlags flags, uint ownerId)
+		{
+			byte ret = ImGuiPNative.IsKeyPressed(key, flags, ownerId);
+			return ret != 0;
+		}
+		public static bool IsKeyPressed(ImGuiKey key, ImGuiInputFlags flags)
+		{
+			byte ret = ImGuiPNative.IsKeyPressed(key, flags, (uint)(0));
+			return ret != 0;
+		}
+		public static bool IsKeyReleased(ImGuiKey key, uint ownerId)
+		{
+			byte ret = ImGuiPNative.IsKeyReleased(key, ownerId);
+			return ret != 0;
+		}
+		public static bool IsKeyChordPressed(int keyChord, ImGuiInputFlags flags, uint ownerId)
+		{
+			byte ret = ImGuiPNative.IsKeyChordPressed(keyChord, flags, ownerId);
+			return ret != 0;
+		}
+		public static bool IsKeyChordPressed(int keyChord, ImGuiInputFlags flags)
+		{
+			byte ret = ImGuiPNative.IsKeyChordPressed(keyChord, flags, (uint)(0));
+			return ret != 0;
+		}
+		public static bool IsMouseDown(ImGuiMouseButton button, uint ownerId)
+		{
+			byte ret = ImGuiPNative.IsMouseDown(button, ownerId);
+			return ret != 0;
+		}
+		public static bool IsMouseClicked(ImGuiMouseButton button, ImGuiInputFlags flags, uint ownerId)
+		{
+			byte ret = ImGuiPNative.IsMouseClicked(button, flags, ownerId);
+			return ret != 0;
+		}
+		public static bool IsMouseClicked(ImGuiMouseButton button, ImGuiInputFlags flags)
+		{
+			byte ret = ImGuiPNative.IsMouseClicked(button, flags, (uint)(0));
+			return ret != 0;
+		}
+		public static bool IsMouseReleased(ImGuiMouseButton button, uint ownerId)
+		{
+			byte ret = ImGuiPNative.IsMouseReleased(button, ownerId);
+			return ret != 0;
+		}
+		public static bool IsMouseDoubleClicked(ImGuiMouseButton button, uint ownerId)
+		{
+			byte ret = ImGuiPNative.IsMouseDoubleClicked(button, ownerId);
+			return ret != 0;
+		}
+		public static bool Shortcut(int keyChord, ImGuiInputFlags flags, uint ownerId)
+		{
+			byte ret = ImGuiPNative.Shortcut(keyChord, flags, ownerId);
+			return ret != 0;
+		}
+		public static bool SetShortcutRouting(int keyChord, ImGuiInputFlags flags, uint ownerId)
+		{
+			byte ret = ImGuiPNative.SetShortcutRouting(keyChord, flags, ownerId);
+			return ret != 0;
+		}
+		public static bool TestShortcutRouting(int keyChord, uint ownerId)
+		{
+			byte ret = ImGuiPNative.TestShortcutRouting(keyChord, ownerId);
+			return ret != 0;
+		}
+		public static ImGuiKeyRoutingDataPtr GetShortcutRoutingData(int keyChord)
+		{
+			ImGuiKeyRoutingDataPtr ret = ImGuiPNative.GetShortcutRoutingData(keyChord);
+			return ret;
 		}
 		public static void DockContextInitialize(ImGuiContextPtr ctx)
 		{
-			ImGuiPNative.DockContextInitialize(ctx);
+			ImGuiPNative.DockContextInitialize((ImGuiContext*)ctx);
 		}
 		public static void DockContextInitialize(ref ImGuiContext ctx)
 		{
@@ -3961,7 +5293,7 @@ public unsafe partial class ImGuiP
 		}
 		public static void DockContextShutdown(ImGuiContextPtr ctx)
 		{
-			ImGuiPNative.DockContextShutdown(ctx);
+			ImGuiPNative.DockContextShutdown((ImGuiContext*)ctx);
 		}
 		public static void DockContextShutdown(ref ImGuiContext ctx)
 		{
@@ -3972,7 +5304,7 @@ public unsafe partial class ImGuiP
 		}
 		public static void DockContextClearNodes(ImGuiContextPtr ctx, uint rootId, bool clearSettingsRefs)
 		{
-			ImGuiPNative.DockContextClearNodes(ctx, rootId, clearSettingsRefs ? (byte)1 : (byte)0);
+			ImGuiPNative.DockContextClearNodes((ImGuiContext*)ctx, rootId, clearSettingsRefs ? (byte)1 : (byte)0);
 		}
 		public static void DockContextClearNodes(ref ImGuiContext ctx, uint rootId, bool clearSettingsRefs)
 		{
@@ -3983,7 +5315,7 @@ public unsafe partial class ImGuiP
 		}
 		public static void DockContextRebuildNodes(ImGuiContextPtr ctx)
 		{
-			ImGuiPNative.DockContextRebuildNodes(ctx);
+			ImGuiPNative.DockContextRebuildNodes((ImGuiContext*)ctx);
 		}
 		public static void DockContextRebuildNodes(ref ImGuiContext ctx)
 		{
@@ -3994,7 +5326,7 @@ public unsafe partial class ImGuiP
 		}
 		public static void DockContextNewFrameUpdateUndocking(ImGuiContextPtr ctx)
 		{
-			ImGuiPNative.DockContextNewFrameUpdateUndocking(ctx);
+			ImGuiPNative.DockContextNewFrameUpdateUndocking((ImGuiContext*)ctx);
 		}
 		public static void DockContextNewFrameUpdateUndocking(ref ImGuiContext ctx)
 		{
@@ -4005,7 +5337,7 @@ public unsafe partial class ImGuiP
 		}
 		public static void DockContextNewFrameUpdateDocking(ImGuiContextPtr ctx)
 		{
-			ImGuiPNative.DockContextNewFrameUpdateDocking(ctx);
+			ImGuiPNative.DockContextNewFrameUpdateDocking((ImGuiContext*)ctx);
 		}
 		public static void DockContextNewFrameUpdateDocking(ref ImGuiContext ctx)
 		{
@@ -4016,7 +5348,7 @@ public unsafe partial class ImGuiP
 		}
 		public static void DockContextEndFrame(ImGuiContextPtr ctx)
 		{
-			ImGuiPNative.DockContextEndFrame(ctx);
+			ImGuiPNative.DockContextEndFrame((ImGuiContext*)ctx);
 		}
 		public static void DockContextEndFrame(ref ImGuiContext ctx)
 		{
@@ -4027,7 +5359,7 @@ public unsafe partial class ImGuiP
 		}
 		public static uint DockContextGenNodeID(ImGuiContextPtr ctx)
 		{
-			uint ret = ImGuiPNative.DockContextGenNodeID(ctx);
+			uint ret = ImGuiPNative.DockContextGenNodeID((ImGuiContext*)ctx);
 			return ret;
 		}
 		public static uint DockContextGenNodeID(ref ImGuiContext ctx)
@@ -4040,20 +5372,20 @@ public unsafe partial class ImGuiP
 		}
 		public static void DockContextQueueDock(ImGuiContextPtr ctx, ImGuiWindowPtr target, ImGuiDockNodePtr targetNode, ImGuiWindowPtr payload, ImGuiDir splitDir, float splitRatio, bool splitOuter)
 		{
-			ImGuiPNative.DockContextQueueDock(ctx, target, targetNode, payload, splitDir, splitRatio, splitOuter ? (byte)1 : (byte)0);
+			ImGuiPNative.DockContextQueueDock((ImGuiContext*)ctx, (ImGuiWindow*)target, (ImGuiDockNode*)targetNode, (ImGuiWindow*)payload, splitDir, splitRatio, splitOuter ? (byte)1 : (byte)0);
 		}
 		public static void DockContextQueueDock(ref ImGuiContext ctx, ImGuiWindowPtr target, ImGuiDockNodePtr targetNode, ImGuiWindowPtr payload, ImGuiDir splitDir, float splitRatio, bool splitOuter)
 		{
 			fixed (ImGuiContext* pctx = &ctx)
 			{
-				ImGuiPNative.DockContextQueueDock((ImGuiContext*)pctx, target, targetNode, payload, splitDir, splitRatio, splitOuter ? (byte)1 : (byte)0);
+				ImGuiPNative.DockContextQueueDock((ImGuiContext*)pctx, (ImGuiWindow*)target, (ImGuiDockNode*)targetNode, (ImGuiWindow*)payload, splitDir, splitRatio, splitOuter ? (byte)1 : (byte)0);
 			}
 		}
 		public static void DockContextQueueDock(ImGuiContextPtr ctx, ref ImGuiWindow target, ImGuiDockNodePtr targetNode, ImGuiWindowPtr payload, ImGuiDir splitDir, float splitRatio, bool splitOuter)
 		{
 			fixed (ImGuiWindow* ptarget = &target)
 			{
-				ImGuiPNative.DockContextQueueDock(ctx, (ImGuiWindow*)ptarget, targetNode, payload, splitDir, splitRatio, splitOuter ? (byte)1 : (byte)0);
+				ImGuiPNative.DockContextQueueDock((ImGuiContext*)ctx, (ImGuiWindow*)ptarget, (ImGuiDockNode*)targetNode, (ImGuiWindow*)payload, splitDir, splitRatio, splitOuter ? (byte)1 : (byte)0);
 			}
 		}
 		public static void DockContextQueueDock(ref ImGuiContext ctx, ref ImGuiWindow target, ImGuiDockNodePtr targetNode, ImGuiWindowPtr payload, ImGuiDir splitDir, float splitRatio, bool splitOuter)
@@ -4062,7 +5394,7 @@ public unsafe partial class ImGuiP
 			{
 				fixed (ImGuiWindow* ptarget = &target)
 				{
-					ImGuiPNative.DockContextQueueDock((ImGuiContext*)pctx, (ImGuiWindow*)ptarget, targetNode, payload, splitDir, splitRatio, splitOuter ? (byte)1 : (byte)0);
+					ImGuiPNative.DockContextQueueDock((ImGuiContext*)pctx, (ImGuiWindow*)ptarget, (ImGuiDockNode*)targetNode, (ImGuiWindow*)payload, splitDir, splitRatio, splitOuter ? (byte)1 : (byte)0);
 				}
 			}
 		}
@@ -4070,7 +5402,7 @@ public unsafe partial class ImGuiP
 		{
 			fixed (ImGuiDockNode* ptargetNode = &targetNode)
 			{
-				ImGuiPNative.DockContextQueueDock(ctx, target, (ImGuiDockNode*)ptargetNode, payload, splitDir, splitRatio, splitOuter ? (byte)1 : (byte)0);
+				ImGuiPNative.DockContextQueueDock((ImGuiContext*)ctx, (ImGuiWindow*)target, (ImGuiDockNode*)ptargetNode, (ImGuiWindow*)payload, splitDir, splitRatio, splitOuter ? (byte)1 : (byte)0);
 			}
 		}
 		public static void DockContextQueueDock(ref ImGuiContext ctx, ImGuiWindowPtr target, ref ImGuiDockNode targetNode, ImGuiWindowPtr payload, ImGuiDir splitDir, float splitRatio, bool splitOuter)
@@ -4079,7 +5411,7 @@ public unsafe partial class ImGuiP
 			{
 				fixed (ImGuiDockNode* ptargetNode = &targetNode)
 				{
-					ImGuiPNative.DockContextQueueDock((ImGuiContext*)pctx, target, (ImGuiDockNode*)ptargetNode, payload, splitDir, splitRatio, splitOuter ? (byte)1 : (byte)0);
+					ImGuiPNative.DockContextQueueDock((ImGuiContext*)pctx, (ImGuiWindow*)target, (ImGuiDockNode*)ptargetNode, (ImGuiWindow*)payload, splitDir, splitRatio, splitOuter ? (byte)1 : (byte)0);
 				}
 			}
 		}
@@ -4089,7 +5421,7 @@ public unsafe partial class ImGuiP
 			{
 				fixed (ImGuiDockNode* ptargetNode = &targetNode)
 				{
-					ImGuiPNative.DockContextQueueDock(ctx, (ImGuiWindow*)ptarget, (ImGuiDockNode*)ptargetNode, payload, splitDir, splitRatio, splitOuter ? (byte)1 : (byte)0);
+					ImGuiPNative.DockContextQueueDock((ImGuiContext*)ctx, (ImGuiWindow*)ptarget, (ImGuiDockNode*)ptargetNode, (ImGuiWindow*)payload, splitDir, splitRatio, splitOuter ? (byte)1 : (byte)0);
 				}
 			}
 		}
@@ -4101,7 +5433,7 @@ public unsafe partial class ImGuiP
 				{
 					fixed (ImGuiDockNode* ptargetNode = &targetNode)
 					{
-						ImGuiPNative.DockContextQueueDock((ImGuiContext*)pctx, (ImGuiWindow*)ptarget, (ImGuiDockNode*)ptargetNode, payload, splitDir, splitRatio, splitOuter ? (byte)1 : (byte)0);
+						ImGuiPNative.DockContextQueueDock((ImGuiContext*)pctx, (ImGuiWindow*)ptarget, (ImGuiDockNode*)ptargetNode, (ImGuiWindow*)payload, splitDir, splitRatio, splitOuter ? (byte)1 : (byte)0);
 					}
 				}
 			}
@@ -4110,7 +5442,7 @@ public unsafe partial class ImGuiP
 		{
 			fixed (ImGuiWindow* ppayload = &payload)
 			{
-				ImGuiPNative.DockContextQueueDock(ctx, target, targetNode, (ImGuiWindow*)ppayload, splitDir, splitRatio, splitOuter ? (byte)1 : (byte)0);
+				ImGuiPNative.DockContextQueueDock((ImGuiContext*)ctx, (ImGuiWindow*)target, (ImGuiDockNode*)targetNode, (ImGuiWindow*)ppayload, splitDir, splitRatio, splitOuter ? (byte)1 : (byte)0);
 			}
 		}
 		public static void DockContextQueueDock(ref ImGuiContext ctx, ImGuiWindowPtr target, ImGuiDockNodePtr targetNode, ref ImGuiWindow payload, ImGuiDir splitDir, float splitRatio, bool splitOuter)
@@ -4119,7 +5451,7 @@ public unsafe partial class ImGuiP
 			{
 				fixed (ImGuiWindow* ppayload = &payload)
 				{
-					ImGuiPNative.DockContextQueueDock((ImGuiContext*)pctx, target, targetNode, (ImGuiWindow*)ppayload, splitDir, splitRatio, splitOuter ? (byte)1 : (byte)0);
+					ImGuiPNative.DockContextQueueDock((ImGuiContext*)pctx, (ImGuiWindow*)target, (ImGuiDockNode*)targetNode, (ImGuiWindow*)ppayload, splitDir, splitRatio, splitOuter ? (byte)1 : (byte)0);
 				}
 			}
 		}
@@ -4129,7 +5461,7 @@ public unsafe partial class ImGuiP
 			{
 				fixed (ImGuiWindow* ppayload = &payload)
 				{
-					ImGuiPNative.DockContextQueueDock(ctx, (ImGuiWindow*)ptarget, targetNode, (ImGuiWindow*)ppayload, splitDir, splitRatio, splitOuter ? (byte)1 : (byte)0);
+					ImGuiPNative.DockContextQueueDock((ImGuiContext*)ctx, (ImGuiWindow*)ptarget, (ImGuiDockNode*)targetNode, (ImGuiWindow*)ppayload, splitDir, splitRatio, splitOuter ? (byte)1 : (byte)0);
 				}
 			}
 		}
@@ -4141,7 +5473,7 @@ public unsafe partial class ImGuiP
 				{
 					fixed (ImGuiWindow* ppayload = &payload)
 					{
-						ImGuiPNative.DockContextQueueDock((ImGuiContext*)pctx, (ImGuiWindow*)ptarget, targetNode, (ImGuiWindow*)ppayload, splitDir, splitRatio, splitOuter ? (byte)1 : (byte)0);
+						ImGuiPNative.DockContextQueueDock((ImGuiContext*)pctx, (ImGuiWindow*)ptarget, (ImGuiDockNode*)targetNode, (ImGuiWindow*)ppayload, splitDir, splitRatio, splitOuter ? (byte)1 : (byte)0);
 					}
 				}
 			}
@@ -4152,7 +5484,7 @@ public unsafe partial class ImGuiP
 			{
 				fixed (ImGuiWindow* ppayload = &payload)
 				{
-					ImGuiPNative.DockContextQueueDock(ctx, target, (ImGuiDockNode*)ptargetNode, (ImGuiWindow*)ppayload, splitDir, splitRatio, splitOuter ? (byte)1 : (byte)0);
+					ImGuiPNative.DockContextQueueDock((ImGuiContext*)ctx, (ImGuiWindow*)target, (ImGuiDockNode*)ptargetNode, (ImGuiWindow*)ppayload, splitDir, splitRatio, splitOuter ? (byte)1 : (byte)0);
 				}
 			}
 		}
@@ -4164,7 +5496,7 @@ public unsafe partial class ImGuiP
 				{
 					fixed (ImGuiWindow* ppayload = &payload)
 					{
-						ImGuiPNative.DockContextQueueDock((ImGuiContext*)pctx, target, (ImGuiDockNode*)ptargetNode, (ImGuiWindow*)ppayload, splitDir, splitRatio, splitOuter ? (byte)1 : (byte)0);
+						ImGuiPNative.DockContextQueueDock((ImGuiContext*)pctx, (ImGuiWindow*)target, (ImGuiDockNode*)ptargetNode, (ImGuiWindow*)ppayload, splitDir, splitRatio, splitOuter ? (byte)1 : (byte)0);
 					}
 				}
 			}
@@ -4177,7 +5509,7 @@ public unsafe partial class ImGuiP
 				{
 					fixed (ImGuiWindow* ppayload = &payload)
 					{
-						ImGuiPNative.DockContextQueueDock(ctx, (ImGuiWindow*)ptarget, (ImGuiDockNode*)ptargetNode, (ImGuiWindow*)ppayload, splitDir, splitRatio, splitOuter ? (byte)1 : (byte)0);
+						ImGuiPNative.DockContextQueueDock((ImGuiContext*)ctx, (ImGuiWindow*)ptarget, (ImGuiDockNode*)ptargetNode, (ImGuiWindow*)ppayload, splitDir, splitRatio, splitOuter ? (byte)1 : (byte)0);
 					}
 				}
 			}
@@ -4200,20 +5532,20 @@ public unsafe partial class ImGuiP
 		}
 		public static void DockContextQueueUndockWindow(ImGuiContextPtr ctx, ImGuiWindowPtr window)
 		{
-			ImGuiPNative.DockContextQueueUndockWindow(ctx, window);
+			ImGuiPNative.DockContextQueueUndockWindow((ImGuiContext*)ctx, (ImGuiWindow*)window);
 		}
 		public static void DockContextQueueUndockWindow(ref ImGuiContext ctx, ImGuiWindowPtr window)
 		{
 			fixed (ImGuiContext* pctx = &ctx)
 			{
-				ImGuiPNative.DockContextQueueUndockWindow((ImGuiContext*)pctx, window);
+				ImGuiPNative.DockContextQueueUndockWindow((ImGuiContext*)pctx, (ImGuiWindow*)window);
 			}
 		}
 		public static void DockContextQueueUndockWindow(ImGuiContextPtr ctx, ref ImGuiWindow window)
 		{
 			fixed (ImGuiWindow* pwindow = &window)
 			{
-				ImGuiPNative.DockContextQueueUndockWindow(ctx, (ImGuiWindow*)pwindow);
+				ImGuiPNative.DockContextQueueUndockWindow((ImGuiContext*)ctx, (ImGuiWindow*)pwindow);
 			}
 		}
 		public static void DockContextQueueUndockWindow(ref ImGuiContext ctx, ref ImGuiWindow window)
@@ -4228,20 +5560,20 @@ public unsafe partial class ImGuiP
 		}
 		public static void DockContextQueueUndockNode(ImGuiContextPtr ctx, ImGuiDockNodePtr node)
 		{
-			ImGuiPNative.DockContextQueueUndockNode(ctx, node);
+			ImGuiPNative.DockContextQueueUndockNode((ImGuiContext*)ctx, (ImGuiDockNode*)node);
 		}
 		public static void DockContextQueueUndockNode(ref ImGuiContext ctx, ImGuiDockNodePtr node)
 		{
 			fixed (ImGuiContext* pctx = &ctx)
 			{
-				ImGuiPNative.DockContextQueueUndockNode((ImGuiContext*)pctx, node);
+				ImGuiPNative.DockContextQueueUndockNode((ImGuiContext*)pctx, (ImGuiDockNode*)node);
 			}
 		}
 		public static void DockContextQueueUndockNode(ImGuiContextPtr ctx, ref ImGuiDockNode node)
 		{
 			fixed (ImGuiDockNode* pnode = &node)
 			{
-				ImGuiPNative.DockContextQueueUndockNode(ctx, (ImGuiDockNode*)pnode);
+				ImGuiPNative.DockContextQueueUndockNode((ImGuiContext*)ctx, (ImGuiDockNode*)pnode);
 			}
 		}
 		public static void DockContextQueueUndockNode(ref ImGuiContext ctx, ref ImGuiDockNode node)
@@ -4254,185 +5586,574 @@ public unsafe partial class ImGuiP
 				}
 			}
 		}
-		public static bool DockContextCalcDropPosForDocking(ImGuiWindowPtr target, ImGuiDockNodePtr targetNode, ImGuiWindowPtr payload, ImGuiDir splitDir, bool splitOuter, Vector2* outPos)
+		public static void DockContextProcessUndockWindow(ImGuiContextPtr ctx, ImGuiWindowPtr window, bool clearPersistentDockingRef)
 		{
-			byte ret = ImGuiPNative.DockContextCalcDropPosForDocking(target, targetNode, payload, splitDir, splitOuter ? (byte)1 : (byte)0, outPos);
+			ImGuiPNative.DockContextProcessUndockWindow((ImGuiContext*)ctx, (ImGuiWindow*)window, clearPersistentDockingRef ? (byte)1 : (byte)0);
+		}
+		public static void DockContextProcessUndockWindow(ImGuiContextPtr ctx, ImGuiWindowPtr window)
+		{
+			ImGuiPNative.DockContextProcessUndockWindow((ImGuiContext*)ctx, (ImGuiWindow*)window, (byte)(1));
+		}
+		public static void DockContextProcessUndockWindow(ref ImGuiContext ctx, ImGuiWindowPtr window, bool clearPersistentDockingRef)
+		{
+			fixed (ImGuiContext* pctx = &ctx)
+			{
+				ImGuiPNative.DockContextProcessUndockWindow((ImGuiContext*)pctx, (ImGuiWindow*)window, clearPersistentDockingRef ? (byte)1 : (byte)0);
+			}
+		}
+		public static void DockContextProcessUndockWindow(ref ImGuiContext ctx, ImGuiWindowPtr window)
+		{
+			fixed (ImGuiContext* pctx = &ctx)
+			{
+				ImGuiPNative.DockContextProcessUndockWindow((ImGuiContext*)pctx, (ImGuiWindow*)window, (byte)(1));
+			}
+		}
+		public static void DockContextProcessUndockWindow(ImGuiContextPtr ctx, ref ImGuiWindow window, bool clearPersistentDockingRef)
+		{
+			fixed (ImGuiWindow* pwindow = &window)
+			{
+				ImGuiPNative.DockContextProcessUndockWindow((ImGuiContext*)ctx, (ImGuiWindow*)pwindow, clearPersistentDockingRef ? (byte)1 : (byte)0);
+			}
+		}
+		public static void DockContextProcessUndockWindow(ImGuiContextPtr ctx, ref ImGuiWindow window)
+		{
+			fixed (ImGuiWindow* pwindow = &window)
+			{
+				ImGuiPNative.DockContextProcessUndockWindow((ImGuiContext*)ctx, (ImGuiWindow*)pwindow, (byte)(1));
+			}
+		}
+		public static void DockContextProcessUndockWindow(ref ImGuiContext ctx, ref ImGuiWindow window, bool clearPersistentDockingRef)
+		{
+			fixed (ImGuiContext* pctx = &ctx)
+			{
+				fixed (ImGuiWindow* pwindow = &window)
+				{
+					ImGuiPNative.DockContextProcessUndockWindow((ImGuiContext*)pctx, (ImGuiWindow*)pwindow, clearPersistentDockingRef ? (byte)1 : (byte)0);
+				}
+			}
+		}
+		public static void DockContextProcessUndockWindow(ref ImGuiContext ctx, ref ImGuiWindow window)
+		{
+			fixed (ImGuiContext* pctx = &ctx)
+			{
+				fixed (ImGuiWindow* pwindow = &window)
+				{
+					ImGuiPNative.DockContextProcessUndockWindow((ImGuiContext*)pctx, (ImGuiWindow*)pwindow, (byte)(1));
+				}
+			}
+		}
+		public static void DockContextProcessUndockNode(ImGuiContextPtr ctx, ImGuiDockNodePtr node)
+		{
+			ImGuiPNative.DockContextProcessUndockNode((ImGuiContext*)ctx, (ImGuiDockNode*)node);
+		}
+		public static void DockContextProcessUndockNode(ref ImGuiContext ctx, ImGuiDockNodePtr node)
+		{
+			fixed (ImGuiContext* pctx = &ctx)
+			{
+				ImGuiPNative.DockContextProcessUndockNode((ImGuiContext*)pctx, (ImGuiDockNode*)node);
+			}
+		}
+		public static void DockContextProcessUndockNode(ImGuiContextPtr ctx, ref ImGuiDockNode node)
+		{
+			fixed (ImGuiDockNode* pnode = &node)
+			{
+				ImGuiPNative.DockContextProcessUndockNode((ImGuiContext*)ctx, (ImGuiDockNode*)pnode);
+			}
+		}
+		public static void DockContextProcessUndockNode(ref ImGuiContext ctx, ref ImGuiDockNode node)
+		{
+			fixed (ImGuiContext* pctx = &ctx)
+			{
+				fixed (ImGuiDockNode* pnode = &node)
+				{
+					ImGuiPNative.DockContextProcessUndockNode((ImGuiContext*)pctx, (ImGuiDockNode*)pnode);
+				}
+			}
+		}
+		public static bool DockContextCalcDropPosForDocking(ImGuiWindowPtr target, ImGuiDockNodePtr targetNode, ImGuiWindowPtr payloadWindow, ImGuiDockNodePtr payloadNode, ImGuiDir splitDir, bool splitOuter, Vector2* outPos)
+		{
+			byte ret = ImGuiPNative.DockContextCalcDropPosForDocking((ImGuiWindow*)target, (ImGuiDockNode*)targetNode, (ImGuiWindow*)payloadWindow, (ImGuiDockNode*)payloadNode, splitDir, splitOuter ? (byte)1 : (byte)0, outPos);
 			return ret != 0;
 		}
-		public static bool DockContextCalcDropPosForDocking(ref ImGuiWindow target, ImGuiDockNodePtr targetNode, ImGuiWindowPtr payload, ImGuiDir splitDir, bool splitOuter, Vector2* outPos)
+		public static bool DockContextCalcDropPosForDocking(ref ImGuiWindow target, ImGuiDockNodePtr targetNode, ImGuiWindowPtr payloadWindow, ImGuiDockNodePtr payloadNode, ImGuiDir splitDir, bool splitOuter, Vector2* outPos)
 		{
 			fixed (ImGuiWindow* ptarget = &target)
 			{
-				byte ret = ImGuiPNative.DockContextCalcDropPosForDocking((ImGuiWindow*)ptarget, targetNode, payload, splitDir, splitOuter ? (byte)1 : (byte)0, outPos);
+				byte ret = ImGuiPNative.DockContextCalcDropPosForDocking((ImGuiWindow*)ptarget, (ImGuiDockNode*)targetNode, (ImGuiWindow*)payloadWindow, (ImGuiDockNode*)payloadNode, splitDir, splitOuter ? (byte)1 : (byte)0, outPos);
 				return ret != 0;
 			}
 		}
-		public static bool DockContextCalcDropPosForDocking(ImGuiWindowPtr target, ref ImGuiDockNode targetNode, ImGuiWindowPtr payload, ImGuiDir splitDir, bool splitOuter, Vector2* outPos)
+		public static bool DockContextCalcDropPosForDocking(ImGuiWindowPtr target, ref ImGuiDockNode targetNode, ImGuiWindowPtr payloadWindow, ImGuiDockNodePtr payloadNode, ImGuiDir splitDir, bool splitOuter, Vector2* outPos)
 		{
 			fixed (ImGuiDockNode* ptargetNode = &targetNode)
 			{
-				byte ret = ImGuiPNative.DockContextCalcDropPosForDocking(target, (ImGuiDockNode*)ptargetNode, payload, splitDir, splitOuter ? (byte)1 : (byte)0, outPos);
+				byte ret = ImGuiPNative.DockContextCalcDropPosForDocking((ImGuiWindow*)target, (ImGuiDockNode*)ptargetNode, (ImGuiWindow*)payloadWindow, (ImGuiDockNode*)payloadNode, splitDir, splitOuter ? (byte)1 : (byte)0, outPos);
 				return ret != 0;
 			}
 		}
-		public static bool DockContextCalcDropPosForDocking(ref ImGuiWindow target, ref ImGuiDockNode targetNode, ImGuiWindowPtr payload, ImGuiDir splitDir, bool splitOuter, Vector2* outPos)
+		public static bool DockContextCalcDropPosForDocking(ref ImGuiWindow target, ref ImGuiDockNode targetNode, ImGuiWindowPtr payloadWindow, ImGuiDockNodePtr payloadNode, ImGuiDir splitDir, bool splitOuter, Vector2* outPos)
 		{
 			fixed (ImGuiWindow* ptarget = &target)
 			{
 				fixed (ImGuiDockNode* ptargetNode = &targetNode)
 				{
-					byte ret = ImGuiPNative.DockContextCalcDropPosForDocking((ImGuiWindow*)ptarget, (ImGuiDockNode*)ptargetNode, payload, splitDir, splitOuter ? (byte)1 : (byte)0, outPos);
+					byte ret = ImGuiPNative.DockContextCalcDropPosForDocking((ImGuiWindow*)ptarget, (ImGuiDockNode*)ptargetNode, (ImGuiWindow*)payloadWindow, (ImGuiDockNode*)payloadNode, splitDir, splitOuter ? (byte)1 : (byte)0, outPos);
 					return ret != 0;
 				}
 			}
 		}
-		public static bool DockContextCalcDropPosForDocking(ImGuiWindowPtr target, ImGuiDockNodePtr targetNode, ref ImGuiWindow payload, ImGuiDir splitDir, bool splitOuter, Vector2* outPos)
+		public static bool DockContextCalcDropPosForDocking(ImGuiWindowPtr target, ImGuiDockNodePtr targetNode, ref ImGuiWindow payloadWindow, ImGuiDockNodePtr payloadNode, ImGuiDir splitDir, bool splitOuter, Vector2* outPos)
 		{
-			fixed (ImGuiWindow* ppayload = &payload)
+			fixed (ImGuiWindow* ppayloadWindow = &payloadWindow)
 			{
-				byte ret = ImGuiPNative.DockContextCalcDropPosForDocking(target, targetNode, (ImGuiWindow*)ppayload, splitDir, splitOuter ? (byte)1 : (byte)0, outPos);
+				byte ret = ImGuiPNative.DockContextCalcDropPosForDocking((ImGuiWindow*)target, (ImGuiDockNode*)targetNode, (ImGuiWindow*)ppayloadWindow, (ImGuiDockNode*)payloadNode, splitDir, splitOuter ? (byte)1 : (byte)0, outPos);
 				return ret != 0;
 			}
 		}
-		public static bool DockContextCalcDropPosForDocking(ref ImGuiWindow target, ImGuiDockNodePtr targetNode, ref ImGuiWindow payload, ImGuiDir splitDir, bool splitOuter, Vector2* outPos)
+		public static bool DockContextCalcDropPosForDocking(ref ImGuiWindow target, ImGuiDockNodePtr targetNode, ref ImGuiWindow payloadWindow, ImGuiDockNodePtr payloadNode, ImGuiDir splitDir, bool splitOuter, Vector2* outPos)
 		{
 			fixed (ImGuiWindow* ptarget = &target)
 			{
-				fixed (ImGuiWindow* ppayload = &payload)
+				fixed (ImGuiWindow* ppayloadWindow = &payloadWindow)
 				{
-					byte ret = ImGuiPNative.DockContextCalcDropPosForDocking((ImGuiWindow*)ptarget, targetNode, (ImGuiWindow*)ppayload, splitDir, splitOuter ? (byte)1 : (byte)0, outPos);
+					byte ret = ImGuiPNative.DockContextCalcDropPosForDocking((ImGuiWindow*)ptarget, (ImGuiDockNode*)targetNode, (ImGuiWindow*)ppayloadWindow, (ImGuiDockNode*)payloadNode, splitDir, splitOuter ? (byte)1 : (byte)0, outPos);
 					return ret != 0;
 				}
 			}
 		}
-		public static bool DockContextCalcDropPosForDocking(ImGuiWindowPtr target, ref ImGuiDockNode targetNode, ref ImGuiWindow payload, ImGuiDir splitDir, bool splitOuter, Vector2* outPos)
+		public static bool DockContextCalcDropPosForDocking(ImGuiWindowPtr target, ref ImGuiDockNode targetNode, ref ImGuiWindow payloadWindow, ImGuiDockNodePtr payloadNode, ImGuiDir splitDir, bool splitOuter, Vector2* outPos)
 		{
 			fixed (ImGuiDockNode* ptargetNode = &targetNode)
 			{
-				fixed (ImGuiWindow* ppayload = &payload)
+				fixed (ImGuiWindow* ppayloadWindow = &payloadWindow)
 				{
-					byte ret = ImGuiPNative.DockContextCalcDropPosForDocking(target, (ImGuiDockNode*)ptargetNode, (ImGuiWindow*)ppayload, splitDir, splitOuter ? (byte)1 : (byte)0, outPos);
+					byte ret = ImGuiPNative.DockContextCalcDropPosForDocking((ImGuiWindow*)target, (ImGuiDockNode*)ptargetNode, (ImGuiWindow*)ppayloadWindow, (ImGuiDockNode*)payloadNode, splitDir, splitOuter ? (byte)1 : (byte)0, outPos);
 					return ret != 0;
 				}
 			}
 		}
-		public static bool DockContextCalcDropPosForDocking(ref ImGuiWindow target, ref ImGuiDockNode targetNode, ref ImGuiWindow payload, ImGuiDir splitDir, bool splitOuter, Vector2* outPos)
+		public static bool DockContextCalcDropPosForDocking(ref ImGuiWindow target, ref ImGuiDockNode targetNode, ref ImGuiWindow payloadWindow, ImGuiDockNodePtr payloadNode, ImGuiDir splitDir, bool splitOuter, Vector2* outPos)
 		{
 			fixed (ImGuiWindow* ptarget = &target)
 			{
 				fixed (ImGuiDockNode* ptargetNode = &targetNode)
 				{
-					fixed (ImGuiWindow* ppayload = &payload)
+					fixed (ImGuiWindow* ppayloadWindow = &payloadWindow)
 					{
-						byte ret = ImGuiPNative.DockContextCalcDropPosForDocking((ImGuiWindow*)ptarget, (ImGuiDockNode*)ptargetNode, (ImGuiWindow*)ppayload, splitDir, splitOuter ? (byte)1 : (byte)0, outPos);
+						byte ret = ImGuiPNative.DockContextCalcDropPosForDocking((ImGuiWindow*)ptarget, (ImGuiDockNode*)ptargetNode, (ImGuiWindow*)ppayloadWindow, (ImGuiDockNode*)payloadNode, splitDir, splitOuter ? (byte)1 : (byte)0, outPos);
 						return ret != 0;
 					}
 				}
 			}
 		}
-		public static bool DockContextCalcDropPosForDocking(ImGuiWindowPtr target, ImGuiDockNodePtr targetNode, ImGuiWindowPtr payload, ImGuiDir splitDir, bool splitOuter, ref Vector2 outPos)
+		public static bool DockContextCalcDropPosForDocking(ImGuiWindowPtr target, ImGuiDockNodePtr targetNode, ImGuiWindowPtr payloadWindow, ref ImGuiDockNode payloadNode, ImGuiDir splitDir, bool splitOuter, Vector2* outPos)
 		{
-			fixed (Vector2* poutPos = &outPos)
+			fixed (ImGuiDockNode* ppayloadNode = &payloadNode)
 			{
-				byte ret = ImGuiPNative.DockContextCalcDropPosForDocking(target, targetNode, payload, splitDir, splitOuter ? (byte)1 : (byte)0, (Vector2*)poutPos);
+				byte ret = ImGuiPNative.DockContextCalcDropPosForDocking((ImGuiWindow*)target, (ImGuiDockNode*)targetNode, (ImGuiWindow*)payloadWindow, (ImGuiDockNode*)ppayloadNode, splitDir, splitOuter ? (byte)1 : (byte)0, outPos);
 				return ret != 0;
 			}
 		}
-		public static bool DockContextCalcDropPosForDocking(ref ImGuiWindow target, ImGuiDockNodePtr targetNode, ImGuiWindowPtr payload, ImGuiDir splitDir, bool splitOuter, ref Vector2 outPos)
+		public static bool DockContextCalcDropPosForDocking(ref ImGuiWindow target, ImGuiDockNodePtr targetNode, ImGuiWindowPtr payloadWindow, ref ImGuiDockNode payloadNode, ImGuiDir splitDir, bool splitOuter, Vector2* outPos)
 		{
 			fixed (ImGuiWindow* ptarget = &target)
 			{
-				fixed (Vector2* poutPos = &outPos)
+				fixed (ImGuiDockNode* ppayloadNode = &payloadNode)
 				{
-					byte ret = ImGuiPNative.DockContextCalcDropPosForDocking((ImGuiWindow*)ptarget, targetNode, payload, splitDir, splitOuter ? (byte)1 : (byte)0, (Vector2*)poutPos);
+					byte ret = ImGuiPNative.DockContextCalcDropPosForDocking((ImGuiWindow*)ptarget, (ImGuiDockNode*)targetNode, (ImGuiWindow*)payloadWindow, (ImGuiDockNode*)ppayloadNode, splitDir, splitOuter ? (byte)1 : (byte)0, outPos);
 					return ret != 0;
 				}
 			}
 		}
-		public static bool DockContextCalcDropPosForDocking(ImGuiWindowPtr target, ref ImGuiDockNode targetNode, ImGuiWindowPtr payload, ImGuiDir splitDir, bool splitOuter, ref Vector2 outPos)
+		public static bool DockContextCalcDropPosForDocking(ImGuiWindowPtr target, ref ImGuiDockNode targetNode, ImGuiWindowPtr payloadWindow, ref ImGuiDockNode payloadNode, ImGuiDir splitDir, bool splitOuter, Vector2* outPos)
 		{
 			fixed (ImGuiDockNode* ptargetNode = &targetNode)
 			{
-				fixed (Vector2* poutPos = &outPos)
+				fixed (ImGuiDockNode* ppayloadNode = &payloadNode)
 				{
-					byte ret = ImGuiPNative.DockContextCalcDropPosForDocking(target, (ImGuiDockNode*)ptargetNode, payload, splitDir, splitOuter ? (byte)1 : (byte)0, (Vector2*)poutPos);
+					byte ret = ImGuiPNative.DockContextCalcDropPosForDocking((ImGuiWindow*)target, (ImGuiDockNode*)ptargetNode, (ImGuiWindow*)payloadWindow, (ImGuiDockNode*)ppayloadNode, splitDir, splitOuter ? (byte)1 : (byte)0, outPos);
 					return ret != 0;
 				}
 			}
 		}
-		public static bool DockContextCalcDropPosForDocking(ref ImGuiWindow target, ref ImGuiDockNode targetNode, ImGuiWindowPtr payload, ImGuiDir splitDir, bool splitOuter, ref Vector2 outPos)
+		public static bool DockContextCalcDropPosForDocking(ref ImGuiWindow target, ref ImGuiDockNode targetNode, ImGuiWindowPtr payloadWindow, ref ImGuiDockNode payloadNode, ImGuiDir splitDir, bool splitOuter, Vector2* outPos)
 		{
 			fixed (ImGuiWindow* ptarget = &target)
 			{
 				fixed (ImGuiDockNode* ptargetNode = &targetNode)
 				{
-					fixed (Vector2* poutPos = &outPos)
+					fixed (ImGuiDockNode* ppayloadNode = &payloadNode)
 					{
-						byte ret = ImGuiPNative.DockContextCalcDropPosForDocking((ImGuiWindow*)ptarget, (ImGuiDockNode*)ptargetNode, payload, splitDir, splitOuter ? (byte)1 : (byte)0, (Vector2*)poutPos);
+						byte ret = ImGuiPNative.DockContextCalcDropPosForDocking((ImGuiWindow*)ptarget, (ImGuiDockNode*)ptargetNode, (ImGuiWindow*)payloadWindow, (ImGuiDockNode*)ppayloadNode, splitDir, splitOuter ? (byte)1 : (byte)0, outPos);
 						return ret != 0;
 					}
 				}
 			}
 		}
-		public static bool DockContextCalcDropPosForDocking(ImGuiWindowPtr target, ImGuiDockNodePtr targetNode, ref ImGuiWindow payload, ImGuiDir splitDir, bool splitOuter, ref Vector2 outPos)
+		public static bool DockContextCalcDropPosForDocking(ImGuiWindowPtr target, ImGuiDockNodePtr targetNode, ref ImGuiWindow payloadWindow, ref ImGuiDockNode payloadNode, ImGuiDir splitDir, bool splitOuter, Vector2* outPos)
 		{
-			fixed (ImGuiWindow* ppayload = &payload)
+			fixed (ImGuiWindow* ppayloadWindow = &payloadWindow)
 			{
-				fixed (Vector2* poutPos = &outPos)
+				fixed (ImGuiDockNode* ppayloadNode = &payloadNode)
 				{
-					byte ret = ImGuiPNative.DockContextCalcDropPosForDocking(target, targetNode, (ImGuiWindow*)ppayload, splitDir, splitOuter ? (byte)1 : (byte)0, (Vector2*)poutPos);
+					byte ret = ImGuiPNative.DockContextCalcDropPosForDocking((ImGuiWindow*)target, (ImGuiDockNode*)targetNode, (ImGuiWindow*)ppayloadWindow, (ImGuiDockNode*)ppayloadNode, splitDir, splitOuter ? (byte)1 : (byte)0, outPos);
 					return ret != 0;
 				}
 			}
 		}
-		public static bool DockContextCalcDropPosForDocking(ref ImGuiWindow target, ImGuiDockNodePtr targetNode, ref ImGuiWindow payload, ImGuiDir splitDir, bool splitOuter, ref Vector2 outPos)
+		public static bool DockContextCalcDropPosForDocking(ref ImGuiWindow target, ImGuiDockNodePtr targetNode, ref ImGuiWindow payloadWindow, ref ImGuiDockNode payloadNode, ImGuiDir splitDir, bool splitOuter, Vector2* outPos)
 		{
 			fixed (ImGuiWindow* ptarget = &target)
 			{
-				fixed (ImGuiWindow* ppayload = &payload)
+				fixed (ImGuiWindow* ppayloadWindow = &payloadWindow)
 				{
-					fixed (Vector2* poutPos = &outPos)
+					fixed (ImGuiDockNode* ppayloadNode = &payloadNode)
 					{
-						byte ret = ImGuiPNative.DockContextCalcDropPosForDocking((ImGuiWindow*)ptarget, targetNode, (ImGuiWindow*)ppayload, splitDir, splitOuter ? (byte)1 : (byte)0, (Vector2*)poutPos);
+						byte ret = ImGuiPNative.DockContextCalcDropPosForDocking((ImGuiWindow*)ptarget, (ImGuiDockNode*)targetNode, (ImGuiWindow*)ppayloadWindow, (ImGuiDockNode*)ppayloadNode, splitDir, splitOuter ? (byte)1 : (byte)0, outPos);
 						return ret != 0;
 					}
 				}
 			}
 		}
-		public static bool DockContextCalcDropPosForDocking(ImGuiWindowPtr target, ref ImGuiDockNode targetNode, ref ImGuiWindow payload, ImGuiDir splitDir, bool splitOuter, ref Vector2 outPos)
+		public static bool DockContextCalcDropPosForDocking(ImGuiWindowPtr target, ref ImGuiDockNode targetNode, ref ImGuiWindow payloadWindow, ref ImGuiDockNode payloadNode, ImGuiDir splitDir, bool splitOuter, Vector2* outPos)
 		{
 			fixed (ImGuiDockNode* ptargetNode = &targetNode)
 			{
-				fixed (ImGuiWindow* ppayload = &payload)
+				fixed (ImGuiWindow* ppayloadWindow = &payloadWindow)
 				{
-					fixed (Vector2* poutPos = &outPos)
+					fixed (ImGuiDockNode* ppayloadNode = &payloadNode)
 					{
-						byte ret = ImGuiPNative.DockContextCalcDropPosForDocking(target, (ImGuiDockNode*)ptargetNode, (ImGuiWindow*)ppayload, splitDir, splitOuter ? (byte)1 : (byte)0, (Vector2*)poutPos);
+						byte ret = ImGuiPNative.DockContextCalcDropPosForDocking((ImGuiWindow*)target, (ImGuiDockNode*)ptargetNode, (ImGuiWindow*)ppayloadWindow, (ImGuiDockNode*)ppayloadNode, splitDir, splitOuter ? (byte)1 : (byte)0, outPos);
 						return ret != 0;
 					}
 				}
 			}
 		}
-		public static bool DockContextCalcDropPosForDocking(ref ImGuiWindow target, ref ImGuiDockNode targetNode, ref ImGuiWindow payload, ImGuiDir splitDir, bool splitOuter, ref Vector2 outPos)
+		public static bool DockContextCalcDropPosForDocking(ref ImGuiWindow target, ref ImGuiDockNode targetNode, ref ImGuiWindow payloadWindow, ref ImGuiDockNode payloadNode, ImGuiDir splitDir, bool splitOuter, Vector2* outPos)
 		{
 			fixed (ImGuiWindow* ptarget = &target)
 			{
 				fixed (ImGuiDockNode* ptargetNode = &targetNode)
 				{
-					fixed (ImGuiWindow* ppayload = &payload)
+					fixed (ImGuiWindow* ppayloadWindow = &payloadWindow)
 					{
-						fixed (Vector2* poutPos = &outPos)
+						fixed (ImGuiDockNode* ppayloadNode = &payloadNode)
 						{
-							byte ret = ImGuiPNative.DockContextCalcDropPosForDocking((ImGuiWindow*)ptarget, (ImGuiDockNode*)ptargetNode, (ImGuiWindow*)ppayload, splitDir, splitOuter ? (byte)1 : (byte)0, (Vector2*)poutPos);
+							byte ret = ImGuiPNative.DockContextCalcDropPosForDocking((ImGuiWindow*)ptarget, (ImGuiDockNode*)ptargetNode, (ImGuiWindow*)ppayloadWindow, (ImGuiDockNode*)ppayloadNode, splitDir, splitOuter ? (byte)1 : (byte)0, outPos);
 							return ret != 0;
 						}
 					}
 				}
 			}
 		}
+		public static bool DockContextCalcDropPosForDocking(ImGuiWindowPtr target, ImGuiDockNodePtr targetNode, ImGuiWindowPtr payloadWindow, ImGuiDockNodePtr payloadNode, ImGuiDir splitDir, bool splitOuter, ref Vector2 outPos)
+		{
+			fixed (Vector2* poutPos = &outPos)
+			{
+				byte ret = ImGuiPNative.DockContextCalcDropPosForDocking((ImGuiWindow*)target, (ImGuiDockNode*)targetNode, (ImGuiWindow*)payloadWindow, (ImGuiDockNode*)payloadNode, splitDir, splitOuter ? (byte)1 : (byte)0, (Vector2*)poutPos);
+				return ret != 0;
+			}
+		}
+		public static bool DockContextCalcDropPosForDocking(ref ImGuiWindow target, ImGuiDockNodePtr targetNode, ImGuiWindowPtr payloadWindow, ImGuiDockNodePtr payloadNode, ImGuiDir splitDir, bool splitOuter, ref Vector2 outPos)
+		{
+			fixed (ImGuiWindow* ptarget = &target)
+			{
+				fixed (Vector2* poutPos = &outPos)
+				{
+					byte ret = ImGuiPNative.DockContextCalcDropPosForDocking((ImGuiWindow*)ptarget, (ImGuiDockNode*)targetNode, (ImGuiWindow*)payloadWindow, (ImGuiDockNode*)payloadNode, splitDir, splitOuter ? (byte)1 : (byte)0, (Vector2*)poutPos);
+					return ret != 0;
+				}
+			}
+		}
+		public static bool DockContextCalcDropPosForDocking(ImGuiWindowPtr target, ref ImGuiDockNode targetNode, ImGuiWindowPtr payloadWindow, ImGuiDockNodePtr payloadNode, ImGuiDir splitDir, bool splitOuter, ref Vector2 outPos)
+		{
+			fixed (ImGuiDockNode* ptargetNode = &targetNode)
+			{
+				fixed (Vector2* poutPos = &outPos)
+				{
+					byte ret = ImGuiPNative.DockContextCalcDropPosForDocking((ImGuiWindow*)target, (ImGuiDockNode*)ptargetNode, (ImGuiWindow*)payloadWindow, (ImGuiDockNode*)payloadNode, splitDir, splitOuter ? (byte)1 : (byte)0, (Vector2*)poutPos);
+					return ret != 0;
+				}
+			}
+		}
+		public static bool DockContextCalcDropPosForDocking(ref ImGuiWindow target, ref ImGuiDockNode targetNode, ImGuiWindowPtr payloadWindow, ImGuiDockNodePtr payloadNode, ImGuiDir splitDir, bool splitOuter, ref Vector2 outPos)
+		{
+			fixed (ImGuiWindow* ptarget = &target)
+			{
+				fixed (ImGuiDockNode* ptargetNode = &targetNode)
+				{
+					fixed (Vector2* poutPos = &outPos)
+					{
+						byte ret = ImGuiPNative.DockContextCalcDropPosForDocking((ImGuiWindow*)ptarget, (ImGuiDockNode*)ptargetNode, (ImGuiWindow*)payloadWindow, (ImGuiDockNode*)payloadNode, splitDir, splitOuter ? (byte)1 : (byte)0, (Vector2*)poutPos);
+						return ret != 0;
+					}
+				}
+			}
+		}
+		public static bool DockContextCalcDropPosForDocking(ImGuiWindowPtr target, ImGuiDockNodePtr targetNode, ref ImGuiWindow payloadWindow, ImGuiDockNodePtr payloadNode, ImGuiDir splitDir, bool splitOuter, ref Vector2 outPos)
+		{
+			fixed (ImGuiWindow* ppayloadWindow = &payloadWindow)
+			{
+				fixed (Vector2* poutPos = &outPos)
+				{
+					byte ret = ImGuiPNative.DockContextCalcDropPosForDocking((ImGuiWindow*)target, (ImGuiDockNode*)targetNode, (ImGuiWindow*)ppayloadWindow, (ImGuiDockNode*)payloadNode, splitDir, splitOuter ? (byte)1 : (byte)0, (Vector2*)poutPos);
+					return ret != 0;
+				}
+			}
+		}
+		public static bool DockContextCalcDropPosForDocking(ref ImGuiWindow target, ImGuiDockNodePtr targetNode, ref ImGuiWindow payloadWindow, ImGuiDockNodePtr payloadNode, ImGuiDir splitDir, bool splitOuter, ref Vector2 outPos)
+		{
+			fixed (ImGuiWindow* ptarget = &target)
+			{
+				fixed (ImGuiWindow* ppayloadWindow = &payloadWindow)
+				{
+					fixed (Vector2* poutPos = &outPos)
+					{
+						byte ret = ImGuiPNative.DockContextCalcDropPosForDocking((ImGuiWindow*)ptarget, (ImGuiDockNode*)targetNode, (ImGuiWindow*)ppayloadWindow, (ImGuiDockNode*)payloadNode, splitDir, splitOuter ? (byte)1 : (byte)0, (Vector2*)poutPos);
+						return ret != 0;
+					}
+				}
+			}
+		}
+		public static bool DockContextCalcDropPosForDocking(ImGuiWindowPtr target, ref ImGuiDockNode targetNode, ref ImGuiWindow payloadWindow, ImGuiDockNodePtr payloadNode, ImGuiDir splitDir, bool splitOuter, ref Vector2 outPos)
+		{
+			fixed (ImGuiDockNode* ptargetNode = &targetNode)
+			{
+				fixed (ImGuiWindow* ppayloadWindow = &payloadWindow)
+				{
+					fixed (Vector2* poutPos = &outPos)
+					{
+						byte ret = ImGuiPNative.DockContextCalcDropPosForDocking((ImGuiWindow*)target, (ImGuiDockNode*)ptargetNode, (ImGuiWindow*)ppayloadWindow, (ImGuiDockNode*)payloadNode, splitDir, splitOuter ? (byte)1 : (byte)0, (Vector2*)poutPos);
+						return ret != 0;
+					}
+				}
+			}
+		}
+		public static bool DockContextCalcDropPosForDocking(ref ImGuiWindow target, ref ImGuiDockNode targetNode, ref ImGuiWindow payloadWindow, ImGuiDockNodePtr payloadNode, ImGuiDir splitDir, bool splitOuter, ref Vector2 outPos)
+		{
+			fixed (ImGuiWindow* ptarget = &target)
+			{
+				fixed (ImGuiDockNode* ptargetNode = &targetNode)
+				{
+					fixed (ImGuiWindow* ppayloadWindow = &payloadWindow)
+					{
+						fixed (Vector2* poutPos = &outPos)
+						{
+							byte ret = ImGuiPNative.DockContextCalcDropPosForDocking((ImGuiWindow*)ptarget, (ImGuiDockNode*)ptargetNode, (ImGuiWindow*)ppayloadWindow, (ImGuiDockNode*)payloadNode, splitDir, splitOuter ? (byte)1 : (byte)0, (Vector2*)poutPos);
+							return ret != 0;
+						}
+					}
+				}
+			}
+		}
+		public static bool DockContextCalcDropPosForDocking(ImGuiWindowPtr target, ImGuiDockNodePtr targetNode, ImGuiWindowPtr payloadWindow, ref ImGuiDockNode payloadNode, ImGuiDir splitDir, bool splitOuter, ref Vector2 outPos)
+		{
+			fixed (ImGuiDockNode* ppayloadNode = &payloadNode)
+			{
+				fixed (Vector2* poutPos = &outPos)
+				{
+					byte ret = ImGuiPNative.DockContextCalcDropPosForDocking((ImGuiWindow*)target, (ImGuiDockNode*)targetNode, (ImGuiWindow*)payloadWindow, (ImGuiDockNode*)ppayloadNode, splitDir, splitOuter ? (byte)1 : (byte)0, (Vector2*)poutPos);
+					return ret != 0;
+				}
+			}
+		}
+		public static bool DockContextCalcDropPosForDocking(ref ImGuiWindow target, ImGuiDockNodePtr targetNode, ImGuiWindowPtr payloadWindow, ref ImGuiDockNode payloadNode, ImGuiDir splitDir, bool splitOuter, ref Vector2 outPos)
+		{
+			fixed (ImGuiWindow* ptarget = &target)
+			{
+				fixed (ImGuiDockNode* ppayloadNode = &payloadNode)
+				{
+					fixed (Vector2* poutPos = &outPos)
+					{
+						byte ret = ImGuiPNative.DockContextCalcDropPosForDocking((ImGuiWindow*)ptarget, (ImGuiDockNode*)targetNode, (ImGuiWindow*)payloadWindow, (ImGuiDockNode*)ppayloadNode, splitDir, splitOuter ? (byte)1 : (byte)0, (Vector2*)poutPos);
+						return ret != 0;
+					}
+				}
+			}
+		}
+		public static bool DockContextCalcDropPosForDocking(ImGuiWindowPtr target, ref ImGuiDockNode targetNode, ImGuiWindowPtr payloadWindow, ref ImGuiDockNode payloadNode, ImGuiDir splitDir, bool splitOuter, ref Vector2 outPos)
+		{
+			fixed (ImGuiDockNode* ptargetNode = &targetNode)
+			{
+				fixed (ImGuiDockNode* ppayloadNode = &payloadNode)
+				{
+					fixed (Vector2* poutPos = &outPos)
+					{
+						byte ret = ImGuiPNative.DockContextCalcDropPosForDocking((ImGuiWindow*)target, (ImGuiDockNode*)ptargetNode, (ImGuiWindow*)payloadWindow, (ImGuiDockNode*)ppayloadNode, splitDir, splitOuter ? (byte)1 : (byte)0, (Vector2*)poutPos);
+						return ret != 0;
+					}
+				}
+			}
+		}
+		public static bool DockContextCalcDropPosForDocking(ref ImGuiWindow target, ref ImGuiDockNode targetNode, ImGuiWindowPtr payloadWindow, ref ImGuiDockNode payloadNode, ImGuiDir splitDir, bool splitOuter, ref Vector2 outPos)
+		{
+			fixed (ImGuiWindow* ptarget = &target)
+			{
+				fixed (ImGuiDockNode* ptargetNode = &targetNode)
+				{
+					fixed (ImGuiDockNode* ppayloadNode = &payloadNode)
+					{
+						fixed (Vector2* poutPos = &outPos)
+						{
+							byte ret = ImGuiPNative.DockContextCalcDropPosForDocking((ImGuiWindow*)ptarget, (ImGuiDockNode*)ptargetNode, (ImGuiWindow*)payloadWindow, (ImGuiDockNode*)ppayloadNode, splitDir, splitOuter ? (byte)1 : (byte)0, (Vector2*)poutPos);
+							return ret != 0;
+						}
+					}
+				}
+			}
+		}
+		public static bool DockContextCalcDropPosForDocking(ImGuiWindowPtr target, ImGuiDockNodePtr targetNode, ref ImGuiWindow payloadWindow, ref ImGuiDockNode payloadNode, ImGuiDir splitDir, bool splitOuter, ref Vector2 outPos)
+		{
+			fixed (ImGuiWindow* ppayloadWindow = &payloadWindow)
+			{
+				fixed (ImGuiDockNode* ppayloadNode = &payloadNode)
+				{
+					fixed (Vector2* poutPos = &outPos)
+					{
+						byte ret = ImGuiPNative.DockContextCalcDropPosForDocking((ImGuiWindow*)target, (ImGuiDockNode*)targetNode, (ImGuiWindow*)ppayloadWindow, (ImGuiDockNode*)ppayloadNode, splitDir, splitOuter ? (byte)1 : (byte)0, (Vector2*)poutPos);
+						return ret != 0;
+					}
+				}
+			}
+		}
+		public static bool DockContextCalcDropPosForDocking(ref ImGuiWindow target, ImGuiDockNodePtr targetNode, ref ImGuiWindow payloadWindow, ref ImGuiDockNode payloadNode, ImGuiDir splitDir, bool splitOuter, ref Vector2 outPos)
+		{
+			fixed (ImGuiWindow* ptarget = &target)
+			{
+				fixed (ImGuiWindow* ppayloadWindow = &payloadWindow)
+				{
+					fixed (ImGuiDockNode* ppayloadNode = &payloadNode)
+					{
+						fixed (Vector2* poutPos = &outPos)
+						{
+							byte ret = ImGuiPNative.DockContextCalcDropPosForDocking((ImGuiWindow*)ptarget, (ImGuiDockNode*)targetNode, (ImGuiWindow*)ppayloadWindow, (ImGuiDockNode*)ppayloadNode, splitDir, splitOuter ? (byte)1 : (byte)0, (Vector2*)poutPos);
+							return ret != 0;
+						}
+					}
+				}
+			}
+		}
+		public static bool DockContextCalcDropPosForDocking(ImGuiWindowPtr target, ref ImGuiDockNode targetNode, ref ImGuiWindow payloadWindow, ref ImGuiDockNode payloadNode, ImGuiDir splitDir, bool splitOuter, ref Vector2 outPos)
+		{
+			fixed (ImGuiDockNode* ptargetNode = &targetNode)
+			{
+				fixed (ImGuiWindow* ppayloadWindow = &payloadWindow)
+				{
+					fixed (ImGuiDockNode* ppayloadNode = &payloadNode)
+					{
+						fixed (Vector2* poutPos = &outPos)
+						{
+							byte ret = ImGuiPNative.DockContextCalcDropPosForDocking((ImGuiWindow*)target, (ImGuiDockNode*)ptargetNode, (ImGuiWindow*)ppayloadWindow, (ImGuiDockNode*)ppayloadNode, splitDir, splitOuter ? (byte)1 : (byte)0, (Vector2*)poutPos);
+							return ret != 0;
+						}
+					}
+				}
+			}
+		}
+		public static bool DockContextCalcDropPosForDocking(ref ImGuiWindow target, ref ImGuiDockNode targetNode, ref ImGuiWindow payloadWindow, ref ImGuiDockNode payloadNode, ImGuiDir splitDir, bool splitOuter, ref Vector2 outPos)
+		{
+			fixed (ImGuiWindow* ptarget = &target)
+			{
+				fixed (ImGuiDockNode* ptargetNode = &targetNode)
+				{
+					fixed (ImGuiWindow* ppayloadWindow = &payloadWindow)
+					{
+						fixed (ImGuiDockNode* ppayloadNode = &payloadNode)
+						{
+							fixed (Vector2* poutPos = &outPos)
+							{
+								byte ret = ImGuiPNative.DockContextCalcDropPosForDocking((ImGuiWindow*)ptarget, (ImGuiDockNode*)ptargetNode, (ImGuiWindow*)ppayloadWindow, (ImGuiDockNode*)ppayloadNode, splitDir, splitOuter ? (byte)1 : (byte)0, (Vector2*)poutPos);
+								return ret != 0;
+							}
+						}
+					}
+				}
+			}
+		}
+		public static ImGuiDockNodePtr DockContextFindNodeByID(ImGuiContextPtr ctx, uint id)
+		{
+			ImGuiDockNodePtr ret = ImGuiPNative.DockContextFindNodeByID((ImGuiContext*)ctx, id);
+			return ret;
+		}
+		public static ImGuiDockNodePtr DockContextFindNodeByID(ref ImGuiContext ctx, uint id)
+		{
+			fixed (ImGuiContext* pctx = &ctx)
+			{
+				ImGuiDockNodePtr ret = ImGuiPNative.DockContextFindNodeByID((ImGuiContext*)pctx, id);
+				return ret;
+			}
+		}
+		public static void DockNodeWindowMenuHandler_Default(ImGuiContextPtr ctx, ImGuiDockNodePtr node, ImGuiTabBarPtr tabBar)
+		{
+			ImGuiPNative.DockNodeWindowMenuHandler_Default((ImGuiContext*)ctx, (ImGuiDockNode*)node, (ImGuiTabBar*)tabBar);
+		}
+		public static void DockNodeWindowMenuHandler_Default(ref ImGuiContext ctx, ImGuiDockNodePtr node, ImGuiTabBarPtr tabBar)
+		{
+			fixed (ImGuiContext* pctx = &ctx)
+			{
+				ImGuiPNative.DockNodeWindowMenuHandler_Default((ImGuiContext*)pctx, (ImGuiDockNode*)node, (ImGuiTabBar*)tabBar);
+			}
+		}
+		public static void DockNodeWindowMenuHandler_Default(ImGuiContextPtr ctx, ref ImGuiDockNode node, ImGuiTabBarPtr tabBar)
+		{
+			fixed (ImGuiDockNode* pnode = &node)
+			{
+				ImGuiPNative.DockNodeWindowMenuHandler_Default((ImGuiContext*)ctx, (ImGuiDockNode*)pnode, (ImGuiTabBar*)tabBar);
+			}
+		}
+		public static void DockNodeWindowMenuHandler_Default(ref ImGuiContext ctx, ref ImGuiDockNode node, ImGuiTabBarPtr tabBar)
+		{
+			fixed (ImGuiContext* pctx = &ctx)
+			{
+				fixed (ImGuiDockNode* pnode = &node)
+				{
+					ImGuiPNative.DockNodeWindowMenuHandler_Default((ImGuiContext*)pctx, (ImGuiDockNode*)pnode, (ImGuiTabBar*)tabBar);
+				}
+			}
+		}
+		public static void DockNodeWindowMenuHandler_Default(ImGuiContextPtr ctx, ImGuiDockNodePtr node, ref ImGuiTabBar tabBar)
+		{
+			fixed (ImGuiTabBar* ptabBar = &tabBar)
+			{
+				ImGuiPNative.DockNodeWindowMenuHandler_Default((ImGuiContext*)ctx, (ImGuiDockNode*)node, (ImGuiTabBar*)ptabBar);
+			}
+		}
+		public static void DockNodeWindowMenuHandler_Default(ref ImGuiContext ctx, ImGuiDockNodePtr node, ref ImGuiTabBar tabBar)
+		{
+			fixed (ImGuiContext* pctx = &ctx)
+			{
+				fixed (ImGuiTabBar* ptabBar = &tabBar)
+				{
+					ImGuiPNative.DockNodeWindowMenuHandler_Default((ImGuiContext*)pctx, (ImGuiDockNode*)node, (ImGuiTabBar*)ptabBar);
+				}
+			}
+		}
+		public static void DockNodeWindowMenuHandler_Default(ImGuiContextPtr ctx, ref ImGuiDockNode node, ref ImGuiTabBar tabBar)
+		{
+			fixed (ImGuiDockNode* pnode = &node)
+			{
+				fixed (ImGuiTabBar* ptabBar = &tabBar)
+				{
+					ImGuiPNative.DockNodeWindowMenuHandler_Default((ImGuiContext*)ctx, (ImGuiDockNode*)pnode, (ImGuiTabBar*)ptabBar);
+				}
+			}
+		}
+		public static void DockNodeWindowMenuHandler_Default(ref ImGuiContext ctx, ref ImGuiDockNode node, ref ImGuiTabBar tabBar)
+		{
+			fixed (ImGuiContext* pctx = &ctx)
+			{
+				fixed (ImGuiDockNode* pnode = &node)
+				{
+					fixed (ImGuiTabBar* ptabBar = &tabBar)
+					{
+						ImGuiPNative.DockNodeWindowMenuHandler_Default((ImGuiContext*)pctx, (ImGuiDockNode*)pnode, (ImGuiTabBar*)ptabBar);
+					}
+				}
+			}
+		}
 		public static bool DockNodeBeginAmendTabBar(ImGuiDockNodePtr node)
 		{
-			byte ret = ImGuiPNative.DockNodeBeginAmendTabBar(node);
+			byte ret = ImGuiPNative.DockNodeBeginAmendTabBar((ImGuiDockNode*)node);
 			return ret != 0;
 		}
 		public static bool DockNodeBeginAmendTabBar(ref ImGuiDockNode node)
@@ -4449,7 +6170,7 @@ public unsafe partial class ImGuiP
 		}
 		public static ImGuiDockNodePtr DockNodeGetRootNode(ImGuiDockNodePtr node)
 		{
-			ImGuiDockNodePtr ret = ImGuiPNative.DockNodeGetRootNode(node);
+			ImGuiDockNodePtr ret = ImGuiPNative.DockNodeGetRootNode((ImGuiDockNode*)node);
 			return ret;
 		}
 		public static ImGuiDockNodePtr DockNodeGetRootNode(ref ImGuiDockNode node)
@@ -4462,14 +6183,14 @@ public unsafe partial class ImGuiP
 		}
 		public static bool DockNodeIsInHierarchyOf(ImGuiDockNodePtr node, ImGuiDockNodePtr parent)
 		{
-			byte ret = ImGuiPNative.DockNodeIsInHierarchyOf(node, parent);
+			byte ret = ImGuiPNative.DockNodeIsInHierarchyOf((ImGuiDockNode*)node, (ImGuiDockNode*)parent);
 			return ret != 0;
 		}
 		public static bool DockNodeIsInHierarchyOf(ref ImGuiDockNode node, ImGuiDockNodePtr parent)
 		{
 			fixed (ImGuiDockNode* pnode = &node)
 			{
-				byte ret = ImGuiPNative.DockNodeIsInHierarchyOf((ImGuiDockNode*)pnode, parent);
+				byte ret = ImGuiPNative.DockNodeIsInHierarchyOf((ImGuiDockNode*)pnode, (ImGuiDockNode*)parent);
 				return ret != 0;
 			}
 		}
@@ -4477,7 +6198,7 @@ public unsafe partial class ImGuiP
 		{
 			fixed (ImGuiDockNode* pparent = &parent)
 			{
-				byte ret = ImGuiPNative.DockNodeIsInHierarchyOf(node, (ImGuiDockNode*)pparent);
+				byte ret = ImGuiPNative.DockNodeIsInHierarchyOf((ImGuiDockNode*)node, (ImGuiDockNode*)pparent);
 				return ret != 0;
 			}
 		}
@@ -4494,10 +6215,10 @@ public unsafe partial class ImGuiP
 		}
 		public static int DockNodeGetDepth(ImGuiDockNodePtr node)
 		{
-			int ret = ImGuiPNative.DockNodeGetDepth(node);
+			int ret = ImGuiPNative.DockNodeGetDepth((ImGuiDockNode*)node);
 			return ret;
 		}
-		public static int DockNodeGetDepth(ref ImGuiDockNode node)
+		public static int DockNodeGetDepth(in ImGuiDockNode node)
 		{
 			fixed (ImGuiDockNode* pnode = &node)
 			{
@@ -4507,10 +6228,10 @@ public unsafe partial class ImGuiP
 		}
 		public static uint DockNodeGetWindowMenuButtonId(ImGuiDockNodePtr node)
 		{
-			uint ret = ImGuiPNative.DockNodeGetWindowMenuButtonId(node);
+			uint ret = ImGuiPNative.DockNodeGetWindowMenuButtonId((ImGuiDockNode*)node);
 			return ret;
 		}
-		public static uint DockNodeGetWindowMenuButtonId(ref ImGuiDockNode node)
+		public static uint DockNodeGetWindowMenuButtonId(in ImGuiDockNode node)
 		{
 			fixed (ImGuiDockNode* pnode = &node)
 			{
@@ -4525,7 +6246,7 @@ public unsafe partial class ImGuiP
 		}
 		public static bool GetWindowAlwaysWantOwnTabBar(ImGuiWindowPtr window)
 		{
-			byte ret = ImGuiPNative.GetWindowAlwaysWantOwnTabBar(window);
+			byte ret = ImGuiPNative.GetWindowAlwaysWantOwnTabBar((ImGuiWindow*)window);
 			return ret != 0;
 		}
 		public static bool GetWindowAlwaysWantOwnTabBar(ref ImGuiWindow window)
@@ -4538,7 +6259,7 @@ public unsafe partial class ImGuiP
 		}
 		public static void BeginDocked(ImGuiWindowPtr window, bool* pOpen)
 		{
-			ImGuiPNative.BeginDocked(window, pOpen);
+			ImGuiPNative.BeginDocked((ImGuiWindow*)window, pOpen);
 		}
 		public static void BeginDocked(ref ImGuiWindow window, bool* pOpen)
 		{
@@ -4551,7 +6272,7 @@ public unsafe partial class ImGuiP
 		{
 			fixed (bool* ppOpen = &pOpen)
 			{
-				ImGuiPNative.BeginDocked(window, (bool*)ppOpen);
+				ImGuiPNative.BeginDocked((ImGuiWindow*)window, (bool*)ppOpen);
 			}
 		}
 		public static void BeginDocked(ref ImGuiWindow window, ref bool pOpen)
@@ -4566,7 +6287,7 @@ public unsafe partial class ImGuiP
 		}
 		public static void BeginDockableDragDropSource(ImGuiWindowPtr window)
 		{
-			ImGuiPNative.BeginDockableDragDropSource(window);
+			ImGuiPNative.BeginDockableDragDropSource((ImGuiWindow*)window);
 		}
 		public static void BeginDockableDragDropSource(ref ImGuiWindow window)
 		{
@@ -4577,7 +6298,7 @@ public unsafe partial class ImGuiP
 		}
 		public static void BeginDockableDragDropTarget(ImGuiWindowPtr window)
 		{
-			ImGuiPNative.BeginDockableDragDropTarget(window);
+			ImGuiPNative.BeginDockableDragDropTarget((ImGuiWindow*)window);
 		}
 		public static void BeginDockableDragDropTarget(ref ImGuiWindow window)
 		{
@@ -4588,7 +6309,7 @@ public unsafe partial class ImGuiP
 		}
 		public static void SetWindowDock(ImGuiWindowPtr window, uint dockId, ImGuiCond cond)
 		{
-			ImGuiPNative.SetWindowDock(window, dockId, cond);
+			ImGuiPNative.SetWindowDock((ImGuiWindow*)window, dockId, cond);
 		}
 		public static void SetWindowDock(ref ImGuiWindow window, uint dockId, ImGuiCond cond)
 		{
@@ -4656,6 +6377,33 @@ public unsafe partial class ImGuiP
 			uint ret = ImGuiPNative.DockBuilderSplitNode(nodeId, splitDir, sizeRatioForNodeAtDir, outIdAtDir, outIdAtOppositeDir);
 			return ret;
 		}
+		public static uint DockBuilderSplitNode(uint nodeId, ImGuiDir splitDir, float sizeRatioForNodeAtDir, ref uint outIdAtDir, uint* outIdAtOppositeDir)
+		{
+			fixed (uint* poutIdAtDir = &outIdAtDir)
+			{
+				uint ret = ImGuiPNative.DockBuilderSplitNode(nodeId, splitDir, sizeRatioForNodeAtDir, (uint*)poutIdAtDir, outIdAtOppositeDir);
+				return ret;
+			}
+		}
+		public static uint DockBuilderSplitNode(uint nodeId, ImGuiDir splitDir, float sizeRatioForNodeAtDir, uint* outIdAtDir, ref uint outIdAtOppositeDir)
+		{
+			fixed (uint* poutIdAtOppositeDir = &outIdAtOppositeDir)
+			{
+				uint ret = ImGuiPNative.DockBuilderSplitNode(nodeId, splitDir, sizeRatioForNodeAtDir, outIdAtDir, (uint*)poutIdAtOppositeDir);
+				return ret;
+			}
+		}
+		public static uint DockBuilderSplitNode(uint nodeId, ImGuiDir splitDir, float sizeRatioForNodeAtDir, ref uint outIdAtDir, ref uint outIdAtOppositeDir)
+		{
+			fixed (uint* poutIdAtDir = &outIdAtDir)
+			{
+				fixed (uint* poutIdAtOppositeDir = &outIdAtOppositeDir)
+				{
+					uint ret = ImGuiPNative.DockBuilderSplitNode(nodeId, splitDir, sizeRatioForNodeAtDir, (uint*)poutIdAtDir, (uint*)poutIdAtOppositeDir);
+					return ret;
+				}
+			}
+		}
 		public static void DockBuilderCopyDockSpace(uint srcDockspaceId, uint dstDockspaceId, ImVector<ConstPointer<byte>>* inWindowRemapPairs)
 		{
 			ImGuiPNative.DockBuilderCopyDockSpace(srcDockspaceId, dstDockspaceId, inWindowRemapPairs);
@@ -4682,6 +6430,24 @@ public unsafe partial class ImGuiP
 		{
 			ImGuiPNative.DockBuilderFinish(nodeId);
 		}
+		public static void PushFocusScope(uint id)
+		{
+			ImGuiPNative.PushFocusScope(id);
+		}
+		public static void PopFocusScope()
+		{
+			ImGuiPNative.PopFocusScope();
+		}
+		public static bool IsInNavFocusRoute(uint focusScopeId)
+		{
+			byte ret = ImGuiPNative.IsInNavFocusRoute(focusScopeId);
+			return ret != 0;
+		}
+		public static uint GetCurrentFocusScope()
+		{
+			uint ret = ImGuiPNative.GetCurrentFocusScope();
+			return ret;
+		}
 		public static bool IsDragDropActive()
 		{
 			byte ret = ImGuiPNative.IsDragDropActive();
@@ -4692,6 +6458,51 @@ public unsafe partial class ImGuiP
 			byte ret = ImGuiPNative.BeginDragDropTargetCustom(bb, id);
 			return ret != 0;
 		}
+		public static bool BeginDragDropTargetViewport(ImGuiViewportPtr viewport, ImRect* pBb)
+		{
+			byte ret = ImGuiPNative.BeginDragDropTargetViewport((ImGuiViewport*)viewport, pBb);
+			return ret != 0;
+		}
+		public static bool BeginDragDropTargetViewport(ImGuiViewportPtr viewport)
+		{
+			byte ret = ImGuiPNative.BeginDragDropTargetViewport((ImGuiViewport*)viewport, (ImRect*)(default));
+			return ret != 0;
+		}
+		public static bool BeginDragDropTargetViewport(ref ImGuiViewport viewport, ImRect* pBb)
+		{
+			fixed (ImGuiViewport* pviewport = &viewport)
+			{
+				byte ret = ImGuiPNative.BeginDragDropTargetViewport((ImGuiViewport*)pviewport, pBb);
+				return ret != 0;
+			}
+		}
+		public static bool BeginDragDropTargetViewport(ref ImGuiViewport viewport)
+		{
+			fixed (ImGuiViewport* pviewport = &viewport)
+			{
+				byte ret = ImGuiPNative.BeginDragDropTargetViewport((ImGuiViewport*)pviewport, (ImRect*)(default));
+				return ret != 0;
+			}
+		}
+		public static bool BeginDragDropTargetViewport(ImGuiViewportPtr viewport, in ImRect pBb)
+		{
+			fixed (ImRect* ppBb = &pBb)
+			{
+				byte ret = ImGuiPNative.BeginDragDropTargetViewport((ImGuiViewport*)viewport, (ImRect*)ppBb);
+				return ret != 0;
+			}
+		}
+		public static bool BeginDragDropTargetViewport(ref ImGuiViewport viewport, in ImRect pBb)
+		{
+			fixed (ImGuiViewport* pviewport = &viewport)
+			{
+				fixed (ImRect* ppBb = &pBb)
+				{
+					byte ret = ImGuiPNative.BeginDragDropTargetViewport((ImGuiViewport*)pviewport, (ImRect*)ppBb);
+					return ret != 0;
+				}
+			}
+		}
 		public static void ClearDragDrop()
 		{
 			ImGuiPNative.ClearDragDrop();
@@ -4701,603 +6512,279 @@ public unsafe partial class ImGuiP
 			byte ret = ImGuiPNative.IsDragDropPayloadBeingAccepted();
 			return ret != 0;
 		}
-		public static void SetWindowClipRectBeforeSetChannel(ImGuiWindowPtr window, ImRect clipRect)
+		public static void RenderDragDropTargetRectForItem(ImRect bb)
 		{
-			ImGuiPNative.SetWindowClipRectBeforeSetChannel(window, clipRect);
+			ImGuiPNative.RenderDragDropTargetRectForItem(bb);
 		}
-		public static void SetWindowClipRectBeforeSetChannel(ref ImGuiWindow window, ImRect clipRect)
+		public static void RenderDragDropTargetRectEx(ImDrawListPtr drawList, ImRect bb, float rounding)
 		{
-			fixed (ImGuiWindow* pwindow = &window)
+			ImGuiPNative.RenderDragDropTargetRectEx((ImDrawList*)drawList, bb, rounding);
+		}
+		public static void RenderDragDropTargetRectEx(ref ImDrawList drawList, ImRect bb, float rounding)
+		{
+			fixed (ImDrawList* pdrawList = &drawList)
 			{
-				ImGuiPNative.SetWindowClipRectBeforeSetChannel((ImGuiWindow*)pwindow, clipRect);
+				ImGuiPNative.RenderDragDropTargetRectEx((ImDrawList*)pdrawList, bb, rounding);
 			}
 		}
-		public static void EndColumns()
+		public static ImGuiTypingSelectRequestPtr GetTypingSelectRequest(ImGuiTypingSelectFlags flags)
 		{
-			ImGuiPNative.EndColumns();
-		}
-		public static void PushColumnClipRect(int columnIndex)
-		{
-			ImGuiPNative.PushColumnClipRect(columnIndex);
-		}
-		public static void PushColumnsBackground()
-		{
-			ImGuiPNative.PushColumnsBackground();
-		}
-		public static void PopColumnsBackground()
-		{
-			ImGuiPNative.PopColumnsBackground();
-		}
-		public static ImGuiOldColumnsPtr FindOrCreateColumns(ImGuiWindowPtr window, uint id)
-		{
-			ImGuiOldColumnsPtr ret = ImGuiPNative.FindOrCreateColumns(window, id);
+			ImGuiTypingSelectRequestPtr ret = ImGuiPNative.GetTypingSelectRequest(flags);
 			return ret;
 		}
-		public static ImGuiOldColumnsPtr FindOrCreateColumns(ref ImGuiWindow window, uint id)
+		public static ImGuiTypingSelectRequestPtr GetTypingSelectRequest()
 		{
-			fixed (ImGuiWindow* pwindow = &window)
+			ImGuiTypingSelectRequestPtr ret = ImGuiPNative.GetTypingSelectRequest((ImGuiTypingSelectFlags)(ImGuiTypingSelectFlags.None));
+			return ret;
+		}
+		public static int TypingSelectFindMatch(ImGuiTypingSelectRequestPtr req, int itemsCount, delegate*<void*, int, byte*> getItemNameFunc, void* userData, int navItemIdx)
+		{
+			int ret = ImGuiPNative.TypingSelectFindMatch((ImGuiTypingSelectRequest*)req, itemsCount, getItemNameFunc, userData, navItemIdx);
+			return ret;
+		}
+		public static int TypingSelectFindMatch(ref ImGuiTypingSelectRequest req, int itemsCount, delegate*<void*, int, byte*> getItemNameFunc, void* userData, int navItemIdx)
+		{
+			fixed (ImGuiTypingSelectRequest* preq = &req)
 			{
-				ImGuiOldColumnsPtr ret = ImGuiPNative.FindOrCreateColumns((ImGuiWindow*)pwindow, id);
+				int ret = ImGuiPNative.TypingSelectFindMatch((ImGuiTypingSelectRequest*)preq, itemsCount, getItemNameFunc, userData, navItemIdx);
 				return ret;
 			}
 		}
-		public static float GetColumnOffsetFromNorm(ImGuiOldColumnsPtr columns, float offsetNorm)
+		public static int TypingSelectFindMatch(ImGuiTypingSelectRequestPtr req, int itemsCount, delegate*<void*, int, byte*> getItemNameFunc, nint userData, int navItemIdx)
 		{
-			float ret = ImGuiPNative.GetColumnOffsetFromNorm(columns, offsetNorm);
+			int ret = ImGuiPNative.TypingSelectFindMatch((ImGuiTypingSelectRequest*)req, itemsCount, getItemNameFunc, (void*)userData, navItemIdx);
 			return ret;
 		}
-		public static float GetColumnOffsetFromNorm(ref ImGuiOldColumns columns, float offsetNorm)
+		public static int TypingSelectFindMatch(ref ImGuiTypingSelectRequest req, int itemsCount, delegate*<void*, int, byte*> getItemNameFunc, nint userData, int navItemIdx)
 		{
-			fixed (ImGuiOldColumns* pcolumns = &columns)
+			fixed (ImGuiTypingSelectRequest* preq = &req)
 			{
-				float ret = ImGuiPNative.GetColumnOffsetFromNorm((ImGuiOldColumns*)pcolumns, offsetNorm);
+				int ret = ImGuiPNative.TypingSelectFindMatch((ImGuiTypingSelectRequest*)preq, itemsCount, getItemNameFunc, (void*)userData, navItemIdx);
 				return ret;
 			}
 		}
-		public static float GetColumnNormFromOffset(ImGuiOldColumnsPtr columns, float offset)
+		public static int TypingSelectFindNextSingleCharMatch(ImGuiTypingSelectRequestPtr req, int itemsCount, delegate*<void*, int, byte*> getItemNameFunc, void* userData, int navItemIdx)
 		{
-			float ret = ImGuiPNative.GetColumnNormFromOffset(columns, offset);
+			int ret = ImGuiPNative.TypingSelectFindNextSingleCharMatch((ImGuiTypingSelectRequest*)req, itemsCount, getItemNameFunc, userData, navItemIdx);
 			return ret;
 		}
-		public static float GetColumnNormFromOffset(ref ImGuiOldColumns columns, float offset)
+		public static int TypingSelectFindNextSingleCharMatch(ref ImGuiTypingSelectRequest req, int itemsCount, delegate*<void*, int, byte*> getItemNameFunc, void* userData, int navItemIdx)
 		{
-			fixed (ImGuiOldColumns* pcolumns = &columns)
+			fixed (ImGuiTypingSelectRequest* preq = &req)
 			{
-				float ret = ImGuiPNative.GetColumnNormFromOffset((ImGuiOldColumns*)pcolumns, offset);
+				int ret = ImGuiPNative.TypingSelectFindNextSingleCharMatch((ImGuiTypingSelectRequest*)preq, itemsCount, getItemNameFunc, userData, navItemIdx);
 				return ret;
 			}
 		}
-		public static void TableOpenContextMenu(int columnN)
+		public static int TypingSelectFindNextSingleCharMatch(ImGuiTypingSelectRequestPtr req, int itemsCount, delegate*<void*, int, byte*> getItemNameFunc, nint userData, int navItemIdx)
 		{
-			ImGuiPNative.TableOpenContextMenu(columnN);
-		}
-		public static void TableOpenContextMenu()
-		{
-			ImGuiPNative.TableOpenContextMenu((int)(-1));
-		}
-		public static void TableSetColumnWidth(int columnN, float width)
-		{
-			ImGuiPNative.TableSetColumnWidth(columnN, width);
-		}
-		public static void TableSetColumnSortDirection(int columnN, ImGuiSortDirection sortDirection, bool appendToSortSpecs)
-		{
-			ImGuiPNative.TableSetColumnSortDirection(columnN, sortDirection, appendToSortSpecs ? (byte)1 : (byte)0);
-		}
-		public static int TableGetHoveredColumn()
-		{
-			int ret = ImGuiPNative.TableGetHoveredColumn();
+			int ret = ImGuiPNative.TypingSelectFindNextSingleCharMatch((ImGuiTypingSelectRequest*)req, itemsCount, getItemNameFunc, (void*)userData, navItemIdx);
 			return ret;
 		}
-		public static float TableGetHeaderRowHeight()
+		public static int TypingSelectFindNextSingleCharMatch(ref ImGuiTypingSelectRequest req, int itemsCount, delegate*<void*, int, byte*> getItemNameFunc, nint userData, int navItemIdx)
 		{
-			float ret = ImGuiPNative.TableGetHeaderRowHeight();
-			return ret;
-		}
-		public static void TablePushBackgroundChannel()
-		{
-			ImGuiPNative.TablePushBackgroundChannel();
-		}
-		public static void TablePopBackgroundChannel()
-		{
-			ImGuiPNative.TablePopBackgroundChannel();
-		}
-		public static ImGuiTablePtr GetCurrentTable()
-		{
-			ImGuiTablePtr ret = ImGuiPNative.GetCurrentTable();
-			return ret;
-		}
-		public static ImGuiTablePtr TableFindByID(uint id)
-		{
-			ImGuiTablePtr ret = ImGuiPNative.TableFindByID(id);
-			return ret;
-		}
-		public static void TableBeginInitMemory(ImGuiTablePtr table, int columnsCount)
-		{
-			ImGuiPNative.TableBeginInitMemory(table, columnsCount);
-		}
-		public static void TableBeginInitMemory(ref ImGuiTable table, int columnsCount)
-		{
-			fixed (ImGuiTable* ptable = &table)
+			fixed (ImGuiTypingSelectRequest* preq = &req)
 			{
-				ImGuiPNative.TableBeginInitMemory((ImGuiTable*)ptable, columnsCount);
-			}
-		}
-		public static void TableBeginApplyRequests(ImGuiTablePtr table)
-		{
-			ImGuiPNative.TableBeginApplyRequests(table);
-		}
-		public static void TableBeginApplyRequests(ref ImGuiTable table)
-		{
-			fixed (ImGuiTable* ptable = &table)
-			{
-				ImGuiPNative.TableBeginApplyRequests((ImGuiTable*)ptable);
-			}
-		}
-		public static void TableSetupDrawChannels(ImGuiTablePtr table)
-		{
-			ImGuiPNative.TableSetupDrawChannels(table);
-		}
-		public static void TableSetupDrawChannels(ref ImGuiTable table)
-		{
-			fixed (ImGuiTable* ptable = &table)
-			{
-				ImGuiPNative.TableSetupDrawChannels((ImGuiTable*)ptable);
-			}
-		}
-		public static void TableUpdateLayout(ImGuiTablePtr table)
-		{
-			ImGuiPNative.TableUpdateLayout(table);
-		}
-		public static void TableUpdateLayout(ref ImGuiTable table)
-		{
-			fixed (ImGuiTable* ptable = &table)
-			{
-				ImGuiPNative.TableUpdateLayout((ImGuiTable*)ptable);
-			}
-		}
-		public static void TableUpdateBorders(ImGuiTablePtr table)
-		{
-			ImGuiPNative.TableUpdateBorders(table);
-		}
-		public static void TableUpdateBorders(ref ImGuiTable table)
-		{
-			fixed (ImGuiTable* ptable = &table)
-			{
-				ImGuiPNative.TableUpdateBorders((ImGuiTable*)ptable);
-			}
-		}
-		public static void TableUpdateColumnsWeightFromWidth(ImGuiTablePtr table)
-		{
-			ImGuiPNative.TableUpdateColumnsWeightFromWidth(table);
-		}
-		public static void TableUpdateColumnsWeightFromWidth(ref ImGuiTable table)
-		{
-			fixed (ImGuiTable* ptable = &table)
-			{
-				ImGuiPNative.TableUpdateColumnsWeightFromWidth((ImGuiTable*)ptable);
-			}
-		}
-		public static void TableDrawBorders(ImGuiTablePtr table)
-		{
-			ImGuiPNative.TableDrawBorders(table);
-		}
-		public static void TableDrawBorders(ref ImGuiTable table)
-		{
-			fixed (ImGuiTable* ptable = &table)
-			{
-				ImGuiPNative.TableDrawBorders((ImGuiTable*)ptable);
-			}
-		}
-		public static void TableDrawContextMenu(ImGuiTablePtr table)
-		{
-			ImGuiPNative.TableDrawContextMenu(table);
-		}
-		public static void TableDrawContextMenu(ref ImGuiTable table)
-		{
-			fixed (ImGuiTable* ptable = &table)
-			{
-				ImGuiPNative.TableDrawContextMenu((ImGuiTable*)ptable);
-			}
-		}
-		public static void TableMergeDrawChannels(ImGuiTablePtr table)
-		{
-			ImGuiPNative.TableMergeDrawChannels(table);
-		}
-		public static void TableMergeDrawChannels(ref ImGuiTable table)
-		{
-			fixed (ImGuiTable* ptable = &table)
-			{
-				ImGuiPNative.TableMergeDrawChannels((ImGuiTable*)ptable);
-			}
-		}
-		public static ImGuiTableInstanceDataPtr TableGetInstanceData(ImGuiTablePtr table, int instanceNo)
-		{
-			ImGuiTableInstanceDataPtr ret = ImGuiPNative.TableGetInstanceData(table, instanceNo);
-			return ret;
-		}
-		public static ImGuiTableInstanceDataPtr TableGetInstanceData(ref ImGuiTable table, int instanceNo)
-		{
-			fixed (ImGuiTable* ptable = &table)
-			{
-				ImGuiTableInstanceDataPtr ret = ImGuiPNative.TableGetInstanceData((ImGuiTable*)ptable, instanceNo);
+				int ret = ImGuiPNative.TypingSelectFindNextSingleCharMatch((ImGuiTypingSelectRequest*)preq, itemsCount, getItemNameFunc, (void*)userData, navItemIdx);
 				return ret;
 			}
 		}
-		public static void TableSortSpecsSanitize(ImGuiTablePtr table)
+		public static int TypingSelectFindBestLeadingMatch(ImGuiTypingSelectRequestPtr req, int itemsCount, delegate*<void*, int, byte*> getItemNameFunc, void* userData)
 		{
-			ImGuiPNative.TableSortSpecsSanitize(table);
-		}
-		public static void TableSortSpecsSanitize(ref ImGuiTable table)
-		{
-			fixed (ImGuiTable* ptable = &table)
-			{
-				ImGuiPNative.TableSortSpecsSanitize((ImGuiTable*)ptable);
-			}
-		}
-		public static void TableSortSpecsBuild(ImGuiTablePtr table)
-		{
-			ImGuiPNative.TableSortSpecsBuild(table);
-		}
-		public static void TableSortSpecsBuild(ref ImGuiTable table)
-		{
-			fixed (ImGuiTable* ptable = &table)
-			{
-				ImGuiPNative.TableSortSpecsBuild((ImGuiTable*)ptable);
-			}
-		}
-		public static ImGuiSortDirection TableGetColumnNextSortDirection(ImGuiTableColumnPtr column)
-		{
-			ImGuiSortDirection ret = ImGuiPNative.TableGetColumnNextSortDirection(column);
+			int ret = ImGuiPNative.TypingSelectFindBestLeadingMatch((ImGuiTypingSelectRequest*)req, itemsCount, getItemNameFunc, userData);
 			return ret;
 		}
-		public static ImGuiSortDirection TableGetColumnNextSortDirection(ref ImGuiTableColumn column)
+		public static int TypingSelectFindBestLeadingMatch(ref ImGuiTypingSelectRequest req, int itemsCount, delegate*<void*, int, byte*> getItemNameFunc, void* userData)
 		{
-			fixed (ImGuiTableColumn* pcolumn = &column)
+			fixed (ImGuiTypingSelectRequest* preq = &req)
 			{
-				ImGuiSortDirection ret = ImGuiPNative.TableGetColumnNextSortDirection((ImGuiTableColumn*)pcolumn);
+				int ret = ImGuiPNative.TypingSelectFindBestLeadingMatch((ImGuiTypingSelectRequest*)preq, itemsCount, getItemNameFunc, userData);
 				return ret;
 			}
 		}
-		public static void TableFixColumnSortDirection(ImGuiTablePtr table, ImGuiTableColumnPtr column)
+		public static int TypingSelectFindBestLeadingMatch(ImGuiTypingSelectRequestPtr req, int itemsCount, delegate*<void*, int, byte*> getItemNameFunc, nint userData)
 		{
-			ImGuiPNative.TableFixColumnSortDirection(table, column);
-		}
-		public static void TableFixColumnSortDirection(ref ImGuiTable table, ImGuiTableColumnPtr column)
-		{
-			fixed (ImGuiTable* ptable = &table)
-			{
-				ImGuiPNative.TableFixColumnSortDirection((ImGuiTable*)ptable, column);
-			}
-		}
-		public static void TableFixColumnSortDirection(ImGuiTablePtr table, ref ImGuiTableColumn column)
-		{
-			fixed (ImGuiTableColumn* pcolumn = &column)
-			{
-				ImGuiPNative.TableFixColumnSortDirection(table, (ImGuiTableColumn*)pcolumn);
-			}
-		}
-		public static void TableFixColumnSortDirection(ref ImGuiTable table, ref ImGuiTableColumn column)
-		{
-			fixed (ImGuiTable* ptable = &table)
-			{
-				fixed (ImGuiTableColumn* pcolumn = &column)
-				{
-					ImGuiPNative.TableFixColumnSortDirection((ImGuiTable*)ptable, (ImGuiTableColumn*)pcolumn);
-				}
-			}
-		}
-		public static float TableGetColumnWidthAuto(ImGuiTablePtr table, ImGuiTableColumnPtr column)
-		{
-			float ret = ImGuiPNative.TableGetColumnWidthAuto(table, column);
+			int ret = ImGuiPNative.TypingSelectFindBestLeadingMatch((ImGuiTypingSelectRequest*)req, itemsCount, getItemNameFunc, (void*)userData);
 			return ret;
 		}
-		public static float TableGetColumnWidthAuto(ref ImGuiTable table, ImGuiTableColumnPtr column)
+		public static int TypingSelectFindBestLeadingMatch(ref ImGuiTypingSelectRequest req, int itemsCount, delegate*<void*, int, byte*> getItemNameFunc, nint userData)
 		{
-			fixed (ImGuiTable* ptable = &table)
+			fixed (ImGuiTypingSelectRequest* preq = &req)
 			{
-				float ret = ImGuiPNative.TableGetColumnWidthAuto((ImGuiTable*)ptable, column);
+				int ret = ImGuiPNative.TypingSelectFindBestLeadingMatch((ImGuiTypingSelectRequest*)preq, itemsCount, getItemNameFunc, (void*)userData);
 				return ret;
 			}
 		}
-		public static float TableGetColumnWidthAuto(ImGuiTablePtr table, ref ImGuiTableColumn column)
+		public static bool BeginBoxSelect(ImRect scopeRect, ImGuiWindowPtr window, uint boxSelectId, ImGuiMultiSelectFlags msFlags)
 		{
-			fixed (ImGuiTableColumn* pcolumn = &column)
-			{
-				float ret = ImGuiPNative.TableGetColumnWidthAuto(table, (ImGuiTableColumn*)pcolumn);
-				return ret;
-			}
-		}
-		public static float TableGetColumnWidthAuto(ref ImGuiTable table, ref ImGuiTableColumn column)
-		{
-			fixed (ImGuiTable* ptable = &table)
-			{
-				fixed (ImGuiTableColumn* pcolumn = &column)
-				{
-					float ret = ImGuiPNative.TableGetColumnWidthAuto((ImGuiTable*)ptable, (ImGuiTableColumn*)pcolumn);
-					return ret;
-				}
-			}
-		}
-		public static void TableBeginRow(ImGuiTablePtr table)
-		{
-			ImGuiPNative.TableBeginRow(table);
-		}
-		public static void TableBeginRow(ref ImGuiTable table)
-		{
-			fixed (ImGuiTable* ptable = &table)
-			{
-				ImGuiPNative.TableBeginRow((ImGuiTable*)ptable);
-			}
-		}
-		public static void TableEndRow(ImGuiTablePtr table)
-		{
-			ImGuiPNative.TableEndRow(table);
-		}
-		public static void TableEndRow(ref ImGuiTable table)
-		{
-			fixed (ImGuiTable* ptable = &table)
-			{
-				ImGuiPNative.TableEndRow((ImGuiTable*)ptable);
-			}
-		}
-		public static void TableBeginCell(ImGuiTablePtr table, int columnN)
-		{
-			ImGuiPNative.TableBeginCell(table, columnN);
-		}
-		public static void TableBeginCell(ref ImGuiTable table, int columnN)
-		{
-			fixed (ImGuiTable* ptable = &table)
-			{
-				ImGuiPNative.TableBeginCell((ImGuiTable*)ptable, columnN);
-			}
-		}
-		public static void TableEndCell(ImGuiTablePtr table)
-		{
-			ImGuiPNative.TableEndCell(table);
-		}
-		public static void TableEndCell(ref ImGuiTable table)
-		{
-			fixed (ImGuiTable* ptable = &table)
-			{
-				ImGuiPNative.TableEndCell((ImGuiTable*)ptable);
-			}
-		}
-		public static ImRect TableGetCellBgRect(ImGuiTablePtr table, int columnN)
-		{
-			ImRect ret;
-			ImGuiPNative.TableGetCellBgRect(&ret, table, columnN);
-			return ret;
-		}
-		public static void TableGetCellBgRect(ImRectPtr pOut, ImGuiTablePtr table, int columnN)
-		{
-			ImGuiPNative.TableGetCellBgRect(pOut, table, columnN);
-		}
-		public static void TableGetCellBgRect(ref ImRect pOut, ImGuiTablePtr table, int columnN)
-		{
-			fixed (ImRect* ppOut = &pOut)
-			{
-				ImGuiPNative.TableGetCellBgRect((ImRect*)ppOut, table, columnN);
-			}
-		}
-		public static ImRect TableGetCellBgRect(ref ImGuiTable table, int columnN)
-		{
-			fixed (ImGuiTable* ptable = &table)
-			{
-				ImRect ret;
-				ImGuiPNative.TableGetCellBgRect(&ret, (ImGuiTable*)ptable, columnN);
-				return ret;
-			}
-		}
-		public static void TableGetCellBgRect(ImRectPtr pOut, ref ImGuiTable table, int columnN)
-		{
-			fixed (ImGuiTable* ptable = &table)
-			{
-				ImGuiPNative.TableGetCellBgRect(pOut, (ImGuiTable*)ptable, columnN);
-			}
-		}
-		public static void TableGetCellBgRect(ref ImRect pOut, ref ImGuiTable table, int columnN)
-		{
-			fixed (ImRect* ppOut = &pOut)
-			{
-				fixed (ImGuiTable* ptable = &table)
-				{
-					ImGuiPNative.TableGetCellBgRect((ImRect*)ppOut, (ImGuiTable*)ptable, columnN);
-				}
-			}
-		}
-		public static uint TableGetColumnResizeID(ImGuiTablePtr table, int columnN, int instanceNo)
-		{
-			uint ret = ImGuiPNative.TableGetColumnResizeID(table, columnN, instanceNo);
-			return ret;
-		}
-		public static uint TableGetColumnResizeID(ImGuiTablePtr table, int columnN)
-		{
-			uint ret = ImGuiPNative.TableGetColumnResizeID(table, columnN, (int)(0));
-			return ret;
-		}
-		public static uint TableGetColumnResizeID(ref ImGuiTable table, int columnN, int instanceNo)
-		{
-			fixed (ImGuiTable* ptable = &table)
-			{
-				uint ret = ImGuiPNative.TableGetColumnResizeID((ImGuiTable*)ptable, columnN, instanceNo);
-				return ret;
-			}
-		}
-		public static uint TableGetColumnResizeID(ref ImGuiTable table, int columnN)
-		{
-			fixed (ImGuiTable* ptable = &table)
-			{
-				uint ret = ImGuiPNative.TableGetColumnResizeID((ImGuiTable*)ptable, columnN, (int)(0));
-				return ret;
-			}
-		}
-		public static float TableGetMaxColumnWidth(ImGuiTablePtr table, int columnN)
-		{
-			float ret = ImGuiPNative.TableGetMaxColumnWidth(table, columnN);
-			return ret;
-		}
-		public static float TableGetMaxColumnWidth(ref ImGuiTable table, int columnN)
-		{
-			fixed (ImGuiTable* ptable = &table)
-			{
-				float ret = ImGuiPNative.TableGetMaxColumnWidth((ImGuiTable*)ptable, columnN);
-				return ret;
-			}
-		}
-		public static void TableSetColumnWidthAutoSingle(ImGuiTablePtr table, int columnN)
-		{
-			ImGuiPNative.TableSetColumnWidthAutoSingle(table, columnN);
-		}
-		public static void TableSetColumnWidthAutoSingle(ref ImGuiTable table, int columnN)
-		{
-			fixed (ImGuiTable* ptable = &table)
-			{
-				ImGuiPNative.TableSetColumnWidthAutoSingle((ImGuiTable*)ptable, columnN);
-			}
-		}
-		public static void TableSetColumnWidthAutoAll(ImGuiTablePtr table)
-		{
-			ImGuiPNative.TableSetColumnWidthAutoAll(table);
-		}
-		public static void TableSetColumnWidthAutoAll(ref ImGuiTable table)
-		{
-			fixed (ImGuiTable* ptable = &table)
-			{
-				ImGuiPNative.TableSetColumnWidthAutoAll((ImGuiTable*)ptable);
-			}
-		}
-		public static void TableRemove(ImGuiTablePtr table)
-		{
-			ImGuiPNative.TableRemove(table);
-		}
-		public static void TableRemove(ref ImGuiTable table)
-		{
-			fixed (ImGuiTable* ptable = &table)
-			{
-				ImGuiPNative.TableRemove((ImGuiTable*)ptable);
-			}
-		}
-		public static void TableGcCompactTransientBuffers(ImGuiTablePtr table)
-		{
-			ImGuiPNative.TableGcCompactTransientBuffers(table);
-		}
-		public static void TableGcCompactTransientBuffers(ref ImGuiTable table)
-		{
-			fixed (ImGuiTable* ptable = &table)
-			{
-				ImGuiPNative.TableGcCompactTransientBuffers((ImGuiTable*)ptable);
-			}
-		}
-		public static void TableGcCompactTransientBuffers(ImGuiTableTempDataPtr table)
-		{
-			ImGuiPNative.TableGcCompactTransientBuffers(table);
-		}
-		public static void TableGcCompactTransientBuffers(ref ImGuiTableTempData table)
-		{
-			fixed (ImGuiTableTempData* ptable = &table)
-			{
-				ImGuiPNative.TableGcCompactTransientBuffers((ImGuiTableTempData*)ptable);
-			}
-		}
-		public static void TableGcCompactSettings()
-		{
-			ImGuiPNative.TableGcCompactSettings();
-		}
-		public static void TableLoadSettings(ImGuiTablePtr table)
-		{
-			ImGuiPNative.TableLoadSettings(table);
-		}
-		public static void TableLoadSettings(ref ImGuiTable table)
-		{
-			fixed (ImGuiTable* ptable = &table)
-			{
-				ImGuiPNative.TableLoadSettings((ImGuiTable*)ptable);
-			}
-		}
-		public static void TableSaveSettings(ImGuiTablePtr table)
-		{
-			ImGuiPNative.TableSaveSettings(table);
-		}
-		public static void TableSaveSettings(ref ImGuiTable table)
-		{
-			fixed (ImGuiTable* ptable = &table)
-			{
-				ImGuiPNative.TableSaveSettings((ImGuiTable*)ptable);
-			}
-		}
-		public static void TableResetSettings(ImGuiTablePtr table)
-		{
-			ImGuiPNative.TableResetSettings(table);
-		}
-		public static void TableResetSettings(ref ImGuiTable table)
-		{
-			fixed (ImGuiTable* ptable = &table)
-			{
-				ImGuiPNative.TableResetSettings((ImGuiTable*)ptable);
-			}
-		}
-		public static ImGuiTableSettingsPtr TableGetBoundSettings(ImGuiTablePtr table)
-		{
-			ImGuiTableSettingsPtr ret = ImGuiPNative.TableGetBoundSettings(table);
-			return ret;
-		}
-		public static ImGuiTableSettingsPtr TableGetBoundSettings(ref ImGuiTable table)
-		{
-			fixed (ImGuiTable* ptable = &table)
-			{
-				ImGuiTableSettingsPtr ret = ImGuiPNative.TableGetBoundSettings((ImGuiTable*)ptable);
-				return ret;
-			}
-		}
-		public static void TableSettingsAddSettingsHandler()
-		{
-			ImGuiPNative.TableSettingsAddSettingsHandler();
-		}
-		public static ImGuiTableSettingsPtr TableSettingsCreate(uint id, int columnsCount)
-		{
-			ImGuiTableSettingsPtr ret = ImGuiPNative.TableSettingsCreate(id, columnsCount);
-			return ret;
-		}
-		public static ImGuiTableSettingsPtr TableSettingsFindByID(uint id)
-		{
-			ImGuiTableSettingsPtr ret = ImGuiPNative.TableSettingsFindByID(id);
-			return ret;
-		}
-		public static bool BeginTabBarEx(ImGuiTabBarPtr tabBar, ImRect bb, ImGuiTabBarFlags flags, ImGuiDockNodePtr dockNode)
-		{
-			byte ret = ImGuiPNative.BeginTabBarEx(tabBar, bb, flags, dockNode);
+			byte ret = ImGuiPNative.BeginBoxSelect(scopeRect, (ImGuiWindow*)window, boxSelectId, msFlags);
 			return ret != 0;
 		}
-		public static bool BeginTabBarEx(ref ImGuiTabBar tabBar, ImRect bb, ImGuiTabBarFlags flags, ImGuiDockNodePtr dockNode)
+		public static bool BeginBoxSelect(ImRect scopeRect, ref ImGuiWindow window, uint boxSelectId, ImGuiMultiSelectFlags msFlags)
 		{
-			fixed (ImGuiTabBar* ptabBar = &tabBar)
+			fixed (ImGuiWindow* pwindow = &window)
 			{
-				byte ret = ImGuiPNative.BeginTabBarEx((ImGuiTabBar*)ptabBar, bb, flags, dockNode);
+				byte ret = ImGuiPNative.BeginBoxSelect(scopeRect, (ImGuiWindow*)pwindow, boxSelectId, msFlags);
 				return ret != 0;
 			}
 		}
-		public static bool BeginTabBarEx(ImGuiTabBarPtr tabBar, ImRect bb, ImGuiTabBarFlags flags, ref ImGuiDockNode dockNode)
+		public static void EndBoxSelect(ImRect scopeRect, ImGuiMultiSelectFlags msFlags)
 		{
-			fixed (ImGuiDockNode* pdockNode = &dockNode)
+			ImGuiPNative.EndBoxSelect(scopeRect, msFlags);
+		}
+		public static void MultiSelectItemHeader(uint id, bool* pSelected, ImGuiButtonFlags* pButtonFlags)
+		{
+			ImGuiPNative.MultiSelectItemHeader(id, pSelected, pButtonFlags);
+		}
+		public static void MultiSelectItemHeader(uint id, ref bool pSelected, ImGuiButtonFlags* pButtonFlags)
+		{
+			fixed (bool* ppSelected = &pSelected)
 			{
-				byte ret = ImGuiPNative.BeginTabBarEx(tabBar, bb, flags, (ImGuiDockNode*)pdockNode);
-				return ret != 0;
+				ImGuiPNative.MultiSelectItemHeader(id, (bool*)ppSelected, pButtonFlags);
 			}
 		}
-		public static bool BeginTabBarEx(ref ImGuiTabBar tabBar, ImRect bb, ImGuiTabBarFlags flags, ref ImGuiDockNode dockNode)
+		public static void MultiSelectItemHeader(uint id, bool* pSelected, ref ImGuiButtonFlags pButtonFlags)
 		{
-			fixed (ImGuiTabBar* ptabBar = &tabBar)
+			fixed (ImGuiButtonFlags* ppButtonFlags = &pButtonFlags)
 			{
-				fixed (ImGuiDockNode* pdockNode = &dockNode)
+				ImGuiPNative.MultiSelectItemHeader(id, pSelected, (ImGuiButtonFlags*)ppButtonFlags);
+			}
+		}
+		public static void MultiSelectItemHeader(uint id, ref bool pSelected, ref ImGuiButtonFlags pButtonFlags)
+		{
+			fixed (bool* ppSelected = &pSelected)
+			{
+				fixed (ImGuiButtonFlags* ppButtonFlags = &pButtonFlags)
 				{
-					byte ret = ImGuiPNative.BeginTabBarEx((ImGuiTabBar*)ptabBar, bb, flags, (ImGuiDockNode*)pdockNode);
-					return ret != 0;
+					ImGuiPNative.MultiSelectItemHeader(id, (bool*)ppSelected, (ImGuiButtonFlags*)ppButtonFlags);
 				}
+			}
+		}
+		public static void MultiSelectItemFooter(uint id, bool* pSelected, bool* pPressed, ImGuiMultiSelectFlags extraFlags)
+		{
+			ImGuiPNative.MultiSelectItemFooter(id, pSelected, pPressed, extraFlags);
+		}
+		public static void MultiSelectItemFooter(uint id, bool* pSelected, bool* pPressed)
+		{
+			ImGuiPNative.MultiSelectItemFooter(id, pSelected, pPressed, (ImGuiMultiSelectFlags)(0));
+		}
+		public static void MultiSelectItemFooter(uint id, ref bool pSelected, bool* pPressed, ImGuiMultiSelectFlags extraFlags)
+		{
+			fixed (bool* ppSelected = &pSelected)
+			{
+				ImGuiPNative.MultiSelectItemFooter(id, (bool*)ppSelected, pPressed, extraFlags);
+			}
+		}
+		public static void MultiSelectItemFooter(uint id, ref bool pSelected, bool* pPressed)
+		{
+			fixed (bool* ppSelected = &pSelected)
+			{
+				ImGuiPNative.MultiSelectItemFooter(id, (bool*)ppSelected, pPressed, (ImGuiMultiSelectFlags)(0));
+			}
+		}
+		public static void MultiSelectItemFooter(uint id, bool* pSelected, ref bool pPressed, ImGuiMultiSelectFlags extraFlags)
+		{
+			fixed (bool* ppPressed = &pPressed)
+			{
+				ImGuiPNative.MultiSelectItemFooter(id, pSelected, (bool*)ppPressed, extraFlags);
+			}
+		}
+		public static void MultiSelectItemFooter(uint id, bool* pSelected, ref bool pPressed)
+		{
+			fixed (bool* ppPressed = &pPressed)
+			{
+				ImGuiPNative.MultiSelectItemFooter(id, pSelected, (bool*)ppPressed, (ImGuiMultiSelectFlags)(0));
+			}
+		}
+		public static void MultiSelectItemFooter(uint id, ref bool pSelected, ref bool pPressed, ImGuiMultiSelectFlags extraFlags)
+		{
+			fixed (bool* ppSelected = &pSelected)
+			{
+				fixed (bool* ppPressed = &pPressed)
+				{
+					ImGuiPNative.MultiSelectItemFooter(id, (bool*)ppSelected, (bool*)ppPressed, extraFlags);
+				}
+			}
+		}
+		public static void MultiSelectItemFooter(uint id, ref bool pSelected, ref bool pPressed)
+		{
+			fixed (bool* ppSelected = &pSelected)
+			{
+				fixed (bool* ppPressed = &pPressed)
+				{
+					ImGuiPNative.MultiSelectItemFooter(id, (bool*)ppSelected, (bool*)ppPressed, (ImGuiMultiSelectFlags)(0));
+				}
+			}
+		}
+		public static void MultiSelectAddSetAll(ImGuiMultiSelectTempDataPtr ms, bool selected)
+		{
+			ImGuiPNative.MultiSelectAddSetAll((ImGuiMultiSelectTempData*)ms, selected ? (byte)1 : (byte)0);
+		}
+		public static void MultiSelectAddSetAll(ref ImGuiMultiSelectTempData ms, bool selected)
+		{
+			fixed (ImGuiMultiSelectTempData* pms = &ms)
+			{
+				ImGuiPNative.MultiSelectAddSetAll((ImGuiMultiSelectTempData*)pms, selected ? (byte)1 : (byte)0);
+			}
+		}
+		public static void MultiSelectAddSetRange(ImGuiMultiSelectTempDataPtr ms, bool selected, int rangeDir, long firstItem, long lastItem)
+		{
+			ImGuiPNative.MultiSelectAddSetRange((ImGuiMultiSelectTempData*)ms, selected ? (byte)1 : (byte)0, rangeDir, firstItem, lastItem);
+		}
+		public static void MultiSelectAddSetRange(ref ImGuiMultiSelectTempData ms, bool selected, int rangeDir, long firstItem, long lastItem)
+		{
+			fixed (ImGuiMultiSelectTempData* pms = &ms)
+			{
+				ImGuiPNative.MultiSelectAddSetRange((ImGuiMultiSelectTempData*)pms, selected ? (byte)1 : (byte)0, rangeDir, firstItem, lastItem);
+			}
+		}
+		public static ImGuiBoxSelectStatePtr GetBoxSelectState(uint id)
+		{
+			ImGuiBoxSelectStatePtr ret = ImGuiPNative.GetBoxSelectState(id);
+			return ret;
+		}
+		public static ImGuiMultiSelectStatePtr GetMultiSelectState(uint id)
+		{
+			ImGuiMultiSelectStatePtr ret = ImGuiPNative.GetMultiSelectState(id);
+			return ret;
+		}
+		public static ImGuiTabBarPtr GetCurrentTabBar()
+		{
+			ImGuiTabBarPtr ret = ImGuiPNative.GetCurrentTabBar();
+			return ret;
+		}
+		public static ImGuiTabBarPtr TabBarFindByID(uint id)
+		{
+			ImGuiTabBarPtr ret = ImGuiPNative.TabBarFindByID(id);
+			return ret;
+		}
+		public static void TabBarRemove(ImGuiTabBarPtr tabBar)
+		{
+			ImGuiPNative.TabBarRemove((ImGuiTabBar*)tabBar);
+		}
+		public static void TabBarRemove(ref ImGuiTabBar tabBar)
+		{
+			fixed (ImGuiTabBar* ptabBar = &tabBar)
+			{
+				ImGuiPNative.TabBarRemove((ImGuiTabBar*)ptabBar);
+			}
+		}
+		public static bool BeginTabBarEx(ImGuiTabBarPtr tabBar, ImRect bb, ImGuiTabBarFlags flags)
+		{
+			byte ret = ImGuiPNative.BeginTabBarEx((ImGuiTabBar*)tabBar, bb, flags);
+			return ret != 0;
+		}
+		public static bool BeginTabBarEx(ref ImGuiTabBar tabBar, ImRect bb, ImGuiTabBarFlags flags)
+		{
+			fixed (ImGuiTabBar* ptabBar = &tabBar)
+			{
+				byte ret = ImGuiPNative.BeginTabBarEx((ImGuiTabBar*)ptabBar, bb, flags);
+				return ret != 0;
 			}
 		}
 		public static ImGuiTabItemPtr TabBarFindTabByID(ImGuiTabBarPtr tabBar, uint tabId)
 		{
-			ImGuiTabItemPtr ret = ImGuiPNative.TabBarFindTabByID(tabBar, tabId);
+			ImGuiTabItemPtr ret = ImGuiPNative.TabBarFindTabByID((ImGuiTabBar*)tabBar, tabId);
 			return ret;
 		}
 		public static ImGuiTabItemPtr TabBarFindTabByID(ref ImGuiTabBar tabBar, uint tabId)
@@ -5308,9 +6795,22 @@ public unsafe partial class ImGuiP
 				return ret;
 			}
 		}
+		public static ImGuiTabItemPtr TabBarFindTabByOrder(ImGuiTabBarPtr tabBar, int order)
+		{
+			ImGuiTabItemPtr ret = ImGuiPNative.TabBarFindTabByOrder((ImGuiTabBar*)tabBar, order);
+			return ret;
+		}
+		public static ImGuiTabItemPtr TabBarFindTabByOrder(ref ImGuiTabBar tabBar, int order)
+		{
+			fixed (ImGuiTabBar* ptabBar = &tabBar)
+			{
+				ImGuiTabItemPtr ret = ImGuiPNative.TabBarFindTabByOrder((ImGuiTabBar*)ptabBar, order);
+				return ret;
+			}
+		}
 		public static ImGuiTabItemPtr TabBarFindMostRecentlySelectedTabForActiveWindow(ImGuiTabBarPtr tabBar)
 		{
-			ImGuiTabItemPtr ret = ImGuiPNative.TabBarFindMostRecentlySelectedTabForActiveWindow(tabBar);
+			ImGuiTabItemPtr ret = ImGuiPNative.TabBarFindMostRecentlySelectedTabForActiveWindow((ImGuiTabBar*)tabBar);
 			return ret;
 		}
 		public static ImGuiTabItemPtr TabBarFindMostRecentlySelectedTabForActiveWindow(ref ImGuiTabBar tabBar)
@@ -5321,22 +6821,67 @@ public unsafe partial class ImGuiP
 				return ret;
 			}
 		}
+		public static ImGuiTabItemPtr TabBarGetCurrentTab(ImGuiTabBarPtr tabBar)
+		{
+			ImGuiTabItemPtr ret = ImGuiPNative.TabBarGetCurrentTab((ImGuiTabBar*)tabBar);
+			return ret;
+		}
+		public static ImGuiTabItemPtr TabBarGetCurrentTab(ref ImGuiTabBar tabBar)
+		{
+			fixed (ImGuiTabBar* ptabBar = &tabBar)
+			{
+				ImGuiTabItemPtr ret = ImGuiPNative.TabBarGetCurrentTab((ImGuiTabBar*)ptabBar);
+				return ret;
+			}
+		}
+		public static int TabBarGetTabOrder(ImGuiTabBarPtr tabBar, ImGuiTabItemPtr tab)
+		{
+			int ret = ImGuiPNative.TabBarGetTabOrder((ImGuiTabBar*)tabBar, (ImGuiTabItem*)tab);
+			return ret;
+		}
+		public static int TabBarGetTabOrder(ref ImGuiTabBar tabBar, ImGuiTabItemPtr tab)
+		{
+			fixed (ImGuiTabBar* ptabBar = &tabBar)
+			{
+				int ret = ImGuiPNative.TabBarGetTabOrder((ImGuiTabBar*)ptabBar, (ImGuiTabItem*)tab);
+				return ret;
+			}
+		}
+		public static int TabBarGetTabOrder(ImGuiTabBarPtr tabBar, ref ImGuiTabItem tab)
+		{
+			fixed (ImGuiTabItem* ptab = &tab)
+			{
+				int ret = ImGuiPNative.TabBarGetTabOrder((ImGuiTabBar*)tabBar, (ImGuiTabItem*)ptab);
+				return ret;
+			}
+		}
+		public static int TabBarGetTabOrder(ref ImGuiTabBar tabBar, ref ImGuiTabItem tab)
+		{
+			fixed (ImGuiTabBar* ptabBar = &tabBar)
+			{
+				fixed (ImGuiTabItem* ptab = &tab)
+				{
+					int ret = ImGuiPNative.TabBarGetTabOrder((ImGuiTabBar*)ptabBar, (ImGuiTabItem*)ptab);
+					return ret;
+				}
+			}
+		}
 		public static void TabBarAddTab(ImGuiTabBarPtr tabBar, ImGuiTabItemFlags tabFlags, ImGuiWindowPtr window)
 		{
-			ImGuiPNative.TabBarAddTab(tabBar, tabFlags, window);
+			ImGuiPNative.TabBarAddTab((ImGuiTabBar*)tabBar, tabFlags, (ImGuiWindow*)window);
 		}
 		public static void TabBarAddTab(ref ImGuiTabBar tabBar, ImGuiTabItemFlags tabFlags, ImGuiWindowPtr window)
 		{
 			fixed (ImGuiTabBar* ptabBar = &tabBar)
 			{
-				ImGuiPNative.TabBarAddTab((ImGuiTabBar*)ptabBar, tabFlags, window);
+				ImGuiPNative.TabBarAddTab((ImGuiTabBar*)ptabBar, tabFlags, (ImGuiWindow*)window);
 			}
 		}
 		public static void TabBarAddTab(ImGuiTabBarPtr tabBar, ImGuiTabItemFlags tabFlags, ref ImGuiWindow window)
 		{
 			fixed (ImGuiWindow* pwindow = &window)
 			{
-				ImGuiPNative.TabBarAddTab(tabBar, tabFlags, (ImGuiWindow*)pwindow);
+				ImGuiPNative.TabBarAddTab((ImGuiTabBar*)tabBar, tabFlags, (ImGuiWindow*)pwindow);
 			}
 		}
 		public static void TabBarAddTab(ref ImGuiTabBar tabBar, ImGuiTabItemFlags tabFlags, ref ImGuiWindow window)
@@ -5351,7 +6896,7 @@ public unsafe partial class ImGuiP
 		}
 		public static void TabBarRemoveTab(ImGuiTabBarPtr tabBar, uint tabId)
 		{
-			ImGuiPNative.TabBarRemoveTab(tabBar, tabId);
+			ImGuiPNative.TabBarRemoveTab((ImGuiTabBar*)tabBar, tabId);
 		}
 		public static void TabBarRemoveTab(ref ImGuiTabBar tabBar, uint tabId)
 		{
@@ -5362,20 +6907,20 @@ public unsafe partial class ImGuiP
 		}
 		public static void TabBarCloseTab(ImGuiTabBarPtr tabBar, ImGuiTabItemPtr tab)
 		{
-			ImGuiPNative.TabBarCloseTab(tabBar, tab);
+			ImGuiPNative.TabBarCloseTab((ImGuiTabBar*)tabBar, (ImGuiTabItem*)tab);
 		}
 		public static void TabBarCloseTab(ref ImGuiTabBar tabBar, ImGuiTabItemPtr tab)
 		{
 			fixed (ImGuiTabBar* ptabBar = &tabBar)
 			{
-				ImGuiPNative.TabBarCloseTab((ImGuiTabBar*)ptabBar, tab);
+				ImGuiPNative.TabBarCloseTab((ImGuiTabBar*)ptabBar, (ImGuiTabItem*)tab);
 			}
 		}
 		public static void TabBarCloseTab(ImGuiTabBarPtr tabBar, ref ImGuiTabItem tab)
 		{
 			fixed (ImGuiTabItem* ptab = &tab)
 			{
-				ImGuiPNative.TabBarCloseTab(tabBar, (ImGuiTabItem*)ptab);
+				ImGuiPNative.TabBarCloseTab((ImGuiTabBar*)tabBar, (ImGuiTabItem*)ptab);
 			}
 		}
 		public static void TabBarCloseTab(ref ImGuiTabBar tabBar, ref ImGuiTabItem tab)
@@ -5390,20 +6935,20 @@ public unsafe partial class ImGuiP
 		}
 		public static void TabBarQueueReorder(ImGuiTabBarPtr tabBar, ImGuiTabItemPtr tab, int offset)
 		{
-			ImGuiPNative.TabBarQueueReorder(tabBar, tab, offset);
+			ImGuiPNative.TabBarQueueReorder((ImGuiTabBar*)tabBar, (ImGuiTabItem*)tab, offset);
 		}
 		public static void TabBarQueueReorder(ref ImGuiTabBar tabBar, ImGuiTabItemPtr tab, int offset)
 		{
 			fixed (ImGuiTabBar* ptabBar = &tabBar)
 			{
-				ImGuiPNative.TabBarQueueReorder((ImGuiTabBar*)ptabBar, tab, offset);
+				ImGuiPNative.TabBarQueueReorder((ImGuiTabBar*)ptabBar, (ImGuiTabItem*)tab, offset);
 			}
 		}
 		public static void TabBarQueueReorder(ImGuiTabBarPtr tabBar, ref ImGuiTabItem tab, int offset)
 		{
 			fixed (ImGuiTabItem* ptab = &tab)
 			{
-				ImGuiPNative.TabBarQueueReorder(tabBar, (ImGuiTabItem*)ptab, offset);
+				ImGuiPNative.TabBarQueueReorder((ImGuiTabBar*)tabBar, (ImGuiTabItem*)ptab, offset);
 			}
 		}
 		public static void TabBarQueueReorder(ref ImGuiTabBar tabBar, ref ImGuiTabItem tab, int offset)
@@ -5418,20 +6963,20 @@ public unsafe partial class ImGuiP
 		}
 		public static void TabBarQueueReorderFromMousePos(ImGuiTabBarPtr tabBar, ImGuiTabItemPtr tab, Vector2 mousePos)
 		{
-			ImGuiPNative.TabBarQueueReorderFromMousePos(tabBar, tab, mousePos);
+			ImGuiPNative.TabBarQueueReorderFromMousePos((ImGuiTabBar*)tabBar, (ImGuiTabItem*)tab, mousePos);
 		}
 		public static void TabBarQueueReorderFromMousePos(ref ImGuiTabBar tabBar, ImGuiTabItemPtr tab, Vector2 mousePos)
 		{
 			fixed (ImGuiTabBar* ptabBar = &tabBar)
 			{
-				ImGuiPNative.TabBarQueueReorderFromMousePos((ImGuiTabBar*)ptabBar, tab, mousePos);
+				ImGuiPNative.TabBarQueueReorderFromMousePos((ImGuiTabBar*)ptabBar, (ImGuiTabItem*)tab, mousePos);
 			}
 		}
 		public static void TabBarQueueReorderFromMousePos(ImGuiTabBarPtr tabBar, ref ImGuiTabItem tab, Vector2 mousePos)
 		{
 			fixed (ImGuiTabItem* ptab = &tab)
 			{
-				ImGuiPNative.TabBarQueueReorderFromMousePos(tabBar, (ImGuiTabItem*)ptab, mousePos);
+				ImGuiPNative.TabBarQueueReorderFromMousePos((ImGuiTabBar*)tabBar, (ImGuiTabItem*)ptab, mousePos);
 			}
 		}
 		public static void TabBarQueueReorderFromMousePos(ref ImGuiTabBar tabBar, ref ImGuiTabItem tab, Vector2 mousePos)
@@ -5446,7 +6991,7 @@ public unsafe partial class ImGuiP
 		}
 		public static bool TabBarProcessReorder(ImGuiTabBarPtr tabBar)
 		{
-			byte ret = ImGuiPNative.TabBarProcessReorder(tabBar);
+			byte ret = ImGuiPNative.TabBarProcessReorder((ImGuiTabBar*)tabBar);
 			return ret != 0;
 		}
 		public static bool TabBarProcessReorder(ref ImGuiTabBar tabBar)
@@ -5459,7 +7004,7 @@ public unsafe partial class ImGuiP
 		}
 		public static void TabItemBackground(ImDrawListPtr drawList, ImRect bb, ImGuiTabItemFlags flags, uint col)
 		{
-			ImGuiPNative.TabItemBackground(drawList, bb, flags, col);
+			ImGuiPNative.TabItemBackground((ImDrawList*)drawList, bb, flags, col);
 		}
 		public static void TabItemBackground(ref ImDrawList drawList, ImRect bb, ImGuiTabItemFlags flags, uint col)
 		{
@@ -5468,13 +7013,13 @@ public unsafe partial class ImGuiP
 				ImGuiPNative.TabItemBackground((ImDrawList*)pdrawList, bb, flags, col);
 			}
 		}
-		public static void RenderFrame(Vector2 pMin, Vector2 pMax, uint fillCol, bool border, float rounding)
+		public static void RenderFrame(Vector2 pMin, Vector2 pMax, uint fillCol, bool borders, float rounding)
 		{
-			ImGuiPNative.RenderFrame(pMin, pMax, fillCol, border ? (byte)1 : (byte)0, rounding);
+			ImGuiPNative.RenderFrame(pMin, pMax, fillCol, borders ? (byte)1 : (byte)0, rounding);
 		}
-		public static void RenderFrame(Vector2 pMin, Vector2 pMax, uint fillCol, bool border)
+		public static void RenderFrame(Vector2 pMin, Vector2 pMax, uint fillCol, bool borders)
 		{
-			ImGuiPNative.RenderFrame(pMin, pMax, fillCol, border ? (byte)1 : (byte)0, (float)(0.0f));
+			ImGuiPNative.RenderFrame(pMin, pMax, fillCol, borders ? (byte)1 : (byte)0, (float)(0.0f));
 		}
 		public static void RenderFrame(Vector2 pMin, Vector2 pMax, uint fillCol)
 		{
@@ -5492,21 +7037,25 @@ public unsafe partial class ImGuiP
 		{
 			ImGuiPNative.RenderFrameBorder(pMin, pMax, (float)(0.0f));
 		}
+		public static void RenderColorComponentMarker(ImRect bb, uint col, float rounding)
+		{
+			ImGuiPNative.RenderColorComponentMarker(bb, col, rounding);
+		}
 		public static void RenderColorRectWithAlphaCheckerboard(ImDrawListPtr drawList, Vector2 pMin, Vector2 pMax, uint fillCol, float gridStep, Vector2 gridOff, float rounding, ImDrawFlags flags)
 		{
-			ImGuiPNative.RenderColorRectWithAlphaCheckerboard(drawList, pMin, pMax, fillCol, gridStep, gridOff, rounding, flags);
+			ImGuiPNative.RenderColorRectWithAlphaCheckerboard((ImDrawList*)drawList, pMin, pMax, fillCol, gridStep, gridOff, rounding, flags);
 		}
 		public static void RenderColorRectWithAlphaCheckerboard(ImDrawListPtr drawList, Vector2 pMin, Vector2 pMax, uint fillCol, float gridStep, Vector2 gridOff, float rounding)
 		{
-			ImGuiPNative.RenderColorRectWithAlphaCheckerboard(drawList, pMin, pMax, fillCol, gridStep, gridOff, rounding, (ImDrawFlags)(0));
+			ImGuiPNative.RenderColorRectWithAlphaCheckerboard((ImDrawList*)drawList, pMin, pMax, fillCol, gridStep, gridOff, rounding, (ImDrawFlags)(0));
 		}
 		public static void RenderColorRectWithAlphaCheckerboard(ImDrawListPtr drawList, Vector2 pMin, Vector2 pMax, uint fillCol, float gridStep, Vector2 gridOff)
 		{
-			ImGuiPNative.RenderColorRectWithAlphaCheckerboard(drawList, pMin, pMax, fillCol, gridStep, gridOff, (float)(0.0f), (ImDrawFlags)(0));
+			ImGuiPNative.RenderColorRectWithAlphaCheckerboard((ImDrawList*)drawList, pMin, pMax, fillCol, gridStep, gridOff, (float)(0.0f), (ImDrawFlags)(0));
 		}
 		public static void RenderColorRectWithAlphaCheckerboard(ImDrawListPtr drawList, Vector2 pMin, Vector2 pMax, uint fillCol, float gridStep, Vector2 gridOff, ImDrawFlags flags)
 		{
-			ImGuiPNative.RenderColorRectWithAlphaCheckerboard(drawList, pMin, pMax, fillCol, gridStep, gridOff, (float)(0.0f), flags);
+			ImGuiPNative.RenderColorRectWithAlphaCheckerboard((ImDrawList*)drawList, pMin, pMax, fillCol, gridStep, gridOff, (float)(0.0f), flags);
 		}
 		public static void RenderColorRectWithAlphaCheckerboard(ref ImDrawList drawList, Vector2 pMin, Vector2 pMax, uint fillCol, float gridStep, Vector2 gridOff, float rounding, ImDrawFlags flags)
 		{
@@ -5536,13 +7085,21 @@ public unsafe partial class ImGuiP
 				ImGuiPNative.RenderColorRectWithAlphaCheckerboard((ImDrawList*)pdrawList, pMin, pMax, fillCol, gridStep, gridOff, (float)(0.0f), flags);
 			}
 		}
-		public static void RenderNavHighlight(ImRect bb, uint id, ImGuiNavHighlightFlags flags)
+		public static void RenderNavCursor(ImRect bb, uint id, ImGuiNavRenderCursorFlags flags, float rounding)
 		{
-			ImGuiPNative.RenderNavHighlight(bb, id, flags);
+			ImGuiPNative.RenderNavCursor(bb, id, flags, rounding);
 		}
-		public static void RenderNavHighlight(ImRect bb, uint id)
+		public static void RenderNavCursor(ImRect bb, uint id, ImGuiNavRenderCursorFlags flags)
 		{
-			ImGuiPNative.RenderNavHighlight(bb, id, (ImGuiNavHighlightFlags)(ImGuiNavHighlightFlags.TypeDefault));
+			ImGuiPNative.RenderNavCursor(bb, id, flags, (float)(-1.0f));
+		}
+		public static void RenderNavCursor(ImRect bb, uint id)
+		{
+			ImGuiPNative.RenderNavCursor(bb, id, (ImGuiNavRenderCursorFlags)(ImGuiNavRenderCursorFlags.None), (float)(-1.0f));
+		}
+		public static void RenderNavCursor(ImRect bb, uint id, float rounding)
+		{
+			ImGuiPNative.RenderNavCursor(bb, id, (ImGuiNavRenderCursorFlags)(ImGuiNavRenderCursorFlags.None), rounding);
 		}
 		public static void RenderMouseCursor(Vector2 pos, float scale, ImGuiMouseCursor mouseCursor, uint colFill, uint colBorder, uint colShadow)
 		{
@@ -5550,11 +7107,11 @@ public unsafe partial class ImGuiP
 		}
 		public static void RenderArrow(ImDrawListPtr drawList, Vector2 pos, uint col, ImGuiDir dir, float scale)
 		{
-			ImGuiPNative.RenderArrow(drawList, pos, col, dir, scale);
+			ImGuiPNative.RenderArrow((ImDrawList*)drawList, pos, col, dir, scale);
 		}
 		public static void RenderArrow(ImDrawListPtr drawList, Vector2 pos, uint col, ImGuiDir dir)
 		{
-			ImGuiPNative.RenderArrow(drawList, pos, col, dir, (float)(1.0f));
+			ImGuiPNative.RenderArrow((ImDrawList*)drawList, pos, col, dir, (float)(1.0f));
 		}
 		public static void RenderArrow(ref ImDrawList drawList, Vector2 pos, uint col, ImGuiDir dir, float scale)
 		{
@@ -5572,7 +7129,7 @@ public unsafe partial class ImGuiP
 		}
 		public static void RenderBullet(ImDrawListPtr drawList, Vector2 pos, uint col)
 		{
-			ImGuiPNative.RenderBullet(drawList, pos, col);
+			ImGuiPNative.RenderBullet((ImDrawList*)drawList, pos, col);
 		}
 		public static void RenderBullet(ref ImDrawList drawList, Vector2 pos, uint col)
 		{
@@ -5583,7 +7140,7 @@ public unsafe partial class ImGuiP
 		}
 		public static void RenderCheckMark(ImDrawListPtr drawList, Vector2 pos, uint col, float sz)
 		{
-			ImGuiPNative.RenderCheckMark(drawList, pos, col, sz);
+			ImGuiPNative.RenderCheckMark((ImDrawList*)drawList, pos, col, sz);
 		}
 		public static void RenderCheckMark(ref ImDrawList drawList, Vector2 pos, uint col, float sz)
 		{
@@ -5594,7 +7151,7 @@ public unsafe partial class ImGuiP
 		}
 		public static void RenderArrowPointingAt(ImDrawListPtr drawList, Vector2 pos, Vector2 halfSz, ImGuiDir direction, uint col)
 		{
-			ImGuiPNative.RenderArrowPointingAt(drawList, pos, halfSz, direction, col);
+			ImGuiPNative.RenderArrowPointingAt((ImDrawList*)drawList, pos, halfSz, direction, col);
 		}
 		public static void RenderArrowPointingAt(ref ImDrawList drawList, Vector2 pos, Vector2 halfSz, ImGuiDir direction, uint col)
 		{
@@ -5605,7 +7162,7 @@ public unsafe partial class ImGuiP
 		}
 		public static void RenderArrowDockMenu(ImDrawListPtr drawList, Vector2 pMin, float sz, uint col)
 		{
-			ImGuiPNative.RenderArrowDockMenu(drawList, pMin, sz, col);
+			ImGuiPNative.RenderArrowDockMenu((ImDrawList*)drawList, pMin, sz, col);
 		}
 		public static void RenderArrowDockMenu(ref ImDrawList drawList, Vector2 pMin, float sz, uint col)
 		{
@@ -5614,20 +7171,20 @@ public unsafe partial class ImGuiP
 				ImGuiPNative.RenderArrowDockMenu((ImDrawList*)pdrawList, pMin, sz, col);
 			}
 		}
-		public static void RenderRectFilledRangeH(ImDrawListPtr drawList, ImRect rect, uint col, float xStartNorm, float xEndNorm, float rounding)
+		public static void RenderRectFilledInRangeH(ImDrawListPtr drawList, ImRect rect, uint col, float fillx0, float fillx1, float rounding)
 		{
-			ImGuiPNative.RenderRectFilledRangeH(drawList, rect, col, xStartNorm, xEndNorm, rounding);
+			ImGuiPNative.RenderRectFilledInRangeH((ImDrawList*)drawList, rect, col, fillx0, fillx1, rounding);
 		}
-		public static void RenderRectFilledRangeH(ref ImDrawList drawList, ImRect rect, uint col, float xStartNorm, float xEndNorm, float rounding)
+		public static void RenderRectFilledInRangeH(ref ImDrawList drawList, ImRect rect, uint col, float fillx0, float fillx1, float rounding)
 		{
 			fixed (ImDrawList* pdrawList = &drawList)
 			{
-				ImGuiPNative.RenderRectFilledRangeH((ImDrawList*)pdrawList, rect, col, xStartNorm, xEndNorm, rounding);
+				ImGuiPNative.RenderRectFilledInRangeH((ImDrawList*)pdrawList, rect, col, fillx0, fillx1, rounding);
 			}
 		}
 		public static void RenderRectFilledWithHole(ImDrawListPtr drawList, ImRect outer, ImRect inner, uint col, float rounding)
 		{
-			ImGuiPNative.RenderRectFilledWithHole(drawList, outer, inner, col, rounding);
+			ImGuiPNative.RenderRectFilledWithHole((ImDrawList*)drawList, outer, inner, col, rounding);
 		}
 		public static void RenderRectFilledWithHole(ref ImDrawList drawList, ImRect outer, ImRect inner, uint col, float rounding)
 		{
@@ -5641,6 +7198,24 @@ public unsafe partial class ImGuiP
 			ImDrawFlags ret = ImGuiPNative.CalcRoundingFlagsForRectInRect(rIn, rOuter, threshold);
 			return ret;
 		}
+		public static bool ImageButtonEx(uint id, ImTextureRef texRef, Vector2 imageSize, Vector2 uv0, Vector2 uv1, Vector4 bgCol, Vector4 tintCol, ImGuiButtonFlags flags)
+		{
+			byte ret = ImGuiPNative.ImageButtonEx(id, texRef, imageSize, uv0, uv1, bgCol, tintCol, flags);
+			return ret != 0;
+		}
+		public static bool ImageButtonEx(uint id, ImTextureRef texRef, Vector2 imageSize, Vector2 uv0, Vector2 uv1, Vector4 bgCol, Vector4 tintCol)
+		{
+			byte ret = ImGuiPNative.ImageButtonEx(id, texRef, imageSize, uv0, uv1, bgCol, tintCol, (ImGuiButtonFlags)(0));
+			return ret != 0;
+		}
+		public static void SeparatorEx(ImGuiSeparatorFlags flags, float thickness)
+		{
+			ImGuiPNative.SeparatorEx(flags, thickness);
+		}
+		public static void SeparatorEx(ImGuiSeparatorFlags flags)
+		{
+			ImGuiPNative.SeparatorEx(flags, (float)(1.0f));
+		}
 		public static bool CloseButton(uint id, Vector2 pos)
 		{
 			byte ret = ImGuiPNative.CloseButton(id, pos);
@@ -5648,7 +7223,7 @@ public unsafe partial class ImGuiP
 		}
 		public static bool CollapseButton(uint id, Vector2 pos, ImGuiDockNodePtr dockNode)
 		{
-			byte ret = ImGuiPNative.CollapseButton(id, pos, dockNode);
+			byte ret = ImGuiPNative.CollapseButton(id, pos, (ImGuiDockNode*)dockNode);
 			return ret != 0;
 		}
 		public static bool CollapseButton(uint id, Vector2 pos, ref ImGuiDockNode dockNode)
@@ -5663,62 +7238,48 @@ public unsafe partial class ImGuiP
 		{
 			ImGuiPNative.Scrollbar(axis);
 		}
-		public static bool ScrollbarEx(ImRect bb, uint id, ImGuiAxis axis, long* pScrollV, long availV, long contentsV, ImDrawFlags flags)
+		public static bool ScrollbarEx(ImRect bb, uint id, ImGuiAxis axis, long* pScrollV, long availV, long contentsV, ImDrawFlags drawRoundingFlags)
 		{
-			byte ret = ImGuiPNative.ScrollbarEx(bb, id, axis, pScrollV, availV, contentsV, flags);
+			byte ret = ImGuiPNative.ScrollbarEx(bb, id, axis, pScrollV, availV, contentsV, drawRoundingFlags);
 			return ret != 0;
 		}
-		public static bool ImageButtonEx(uint id, ImTextureID textureId, Vector2 size, Vector2 uv0, Vector2 uv1, Vector2 padding, Vector4 bgCol, Vector4 tintCol)
+		public static bool ScrollbarEx(ImRect bb, uint id, ImGuiAxis axis, long* pScrollV, long availV, long contentsV)
 		{
-			byte ret = ImGuiPNative.ImageButtonEx(id, textureId, size, uv0, uv1, padding, bgCol, tintCol);
+			byte ret = ImGuiPNative.ScrollbarEx(bb, id, axis, pScrollV, availV, contentsV, (ImDrawFlags)(0));
 			return ret != 0;
+		}
+		public static bool ScrollbarEx(ImRect bb, uint id, ImGuiAxis axis, ref long pScrollV, long availV, long contentsV, ImDrawFlags drawRoundingFlags)
+		{
+			fixed (long* ppScrollV = &pScrollV)
+			{
+				byte ret = ImGuiPNative.ScrollbarEx(bb, id, axis, (long*)ppScrollV, availV, contentsV, drawRoundingFlags);
+				return ret != 0;
+			}
+		}
+		public static bool ScrollbarEx(ImRect bb, uint id, ImGuiAxis axis, ref long pScrollV, long availV, long contentsV)
+		{
+			fixed (long* ppScrollV = &pScrollV)
+			{
+				byte ret = ImGuiPNative.ScrollbarEx(bb, id, axis, (long*)ppScrollV, availV, contentsV, (ImDrawFlags)(0));
+				return ret != 0;
+			}
 		}
 		public static ImRect GetWindowScrollbarRect(ImGuiWindowPtr window, ImGuiAxis axis)
 		{
-			ImRect ret;
-			ImGuiPNative.GetWindowScrollbarRect(&ret, window, axis);
+			ImRect ret = ImGuiPNative.GetWindowScrollbarRect((ImGuiWindow*)window, axis);
 			return ret;
-		}
-		public static void GetWindowScrollbarRect(ImRectPtr pOut, ImGuiWindowPtr window, ImGuiAxis axis)
-		{
-			ImGuiPNative.GetWindowScrollbarRect(pOut, window, axis);
-		}
-		public static void GetWindowScrollbarRect(ref ImRect pOut, ImGuiWindowPtr window, ImGuiAxis axis)
-		{
-			fixed (ImRect* ppOut = &pOut)
-			{
-				ImGuiPNative.GetWindowScrollbarRect((ImRect*)ppOut, window, axis);
-			}
 		}
 		public static ImRect GetWindowScrollbarRect(ref ImGuiWindow window, ImGuiAxis axis)
 		{
 			fixed (ImGuiWindow* pwindow = &window)
 			{
-				ImRect ret;
-				ImGuiPNative.GetWindowScrollbarRect(&ret, (ImGuiWindow*)pwindow, axis);
+				ImRect ret = ImGuiPNative.GetWindowScrollbarRect((ImGuiWindow*)pwindow, axis);
 				return ret;
-			}
-		}
-		public static void GetWindowScrollbarRect(ImRectPtr pOut, ref ImGuiWindow window, ImGuiAxis axis)
-		{
-			fixed (ImGuiWindow* pwindow = &window)
-			{
-				ImGuiPNative.GetWindowScrollbarRect(pOut, (ImGuiWindow*)pwindow, axis);
-			}
-		}
-		public static void GetWindowScrollbarRect(ref ImRect pOut, ref ImGuiWindow window, ImGuiAxis axis)
-		{
-			fixed (ImRect* ppOut = &pOut)
-			{
-				fixed (ImGuiWindow* pwindow = &window)
-				{
-					ImGuiPNative.GetWindowScrollbarRect((ImRect*)ppOut, (ImGuiWindow*)pwindow, axis);
-				}
 			}
 		}
 		public static uint GetWindowScrollbarID(ImGuiWindowPtr window, ImGuiAxis axis)
 		{
-			uint ret = ImGuiPNative.GetWindowScrollbarID(window, axis);
+			uint ret = ImGuiPNative.GetWindowScrollbarID((ImGuiWindow*)window, axis);
 			return ret;
 		}
 		public static uint GetWindowScrollbarID(ref ImGuiWindow window, ImGuiAxis axis)
@@ -5731,7 +7292,7 @@ public unsafe partial class ImGuiP
 		}
 		public static uint GetWindowResizeCornerID(ImGuiWindowPtr window, int n)
 		{
-			uint ret = ImGuiPNative.GetWindowResizeCornerID(window, n);
+			uint ret = ImGuiPNative.GetWindowResizeCornerID((ImGuiWindow*)window, n);
 			return ret;
 		}
 		public static uint GetWindowResizeCornerID(ref ImGuiWindow window, int n)
@@ -5744,7 +7305,7 @@ public unsafe partial class ImGuiP
 		}
 		public static uint GetWindowResizeBorderID(ImGuiWindowPtr window, ImGuiDir dir)
 		{
-			uint ret = ImGuiPNative.GetWindowResizeBorderID(window, dir);
+			uint ret = ImGuiPNative.GetWindowResizeBorderID((ImGuiWindow*)window, dir);
 			return ret;
 		}
 		public static uint GetWindowResizeBorderID(ref ImGuiWindow window, ImGuiDir dir)
@@ -5755,9 +7316,33 @@ public unsafe partial class ImGuiP
 				return ret;
 			}
 		}
-		public static void SeparatorEx(ImGuiSeparatorFlags flags)
+		public static void ExtendHitBoxWhenNearViewportEdge(ImGuiWindowPtr window, ImRect* bb, float threshold, ImGuiAxis axis)
 		{
-			ImGuiPNative.SeparatorEx(flags);
+			ImGuiPNative.ExtendHitBoxWhenNearViewportEdge((ImGuiWindow*)window, bb, threshold, axis);
+		}
+		public static void ExtendHitBoxWhenNearViewportEdge(ref ImGuiWindow window, ImRect* bb, float threshold, ImGuiAxis axis)
+		{
+			fixed (ImGuiWindow* pwindow = &window)
+			{
+				ImGuiPNative.ExtendHitBoxWhenNearViewportEdge((ImGuiWindow*)pwindow, bb, threshold, axis);
+			}
+		}
+		public static void ExtendHitBoxWhenNearViewportEdge(ImGuiWindowPtr window, ref ImRect bb, float threshold, ImGuiAxis axis)
+		{
+			fixed (ImRect* pbb = &bb)
+			{
+				ImGuiPNative.ExtendHitBoxWhenNearViewportEdge((ImGuiWindow*)window, (ImRect*)pbb, threshold, axis);
+			}
+		}
+		public static void ExtendHitBoxWhenNearViewportEdge(ref ImGuiWindow window, ref ImRect bb, float threshold, ImGuiAxis axis)
+		{
+			fixed (ImGuiWindow* pwindow = &window)
+			{
+				fixed (ImRect* pbb = &bb)
+				{
+					ImGuiPNative.ExtendHitBoxWhenNearViewportEdge((ImGuiWindow*)pwindow, (ImRect*)pbb, threshold, axis);
+				}
+			}
 		}
 		public static bool ButtonBehavior(ImRect bb, uint id, bool* outHovered, bool* outHeld, ImGuiButtonFlags flags)
 		{
@@ -6015,19 +7600,33 @@ public unsafe partial class ImGuiP
 				}
 			}
 		}
-		public static bool TreeNodeBehaviorIsOpen(uint id, ImGuiTreeNodeFlags flags)
+		public static void TreeNodeDrawLineToChildNode(Vector2 targetPos)
 		{
-			byte ret = ImGuiPNative.TreeNodeBehaviorIsOpen(id, flags);
-			return ret != 0;
+			ImGuiPNative.TreeNodeDrawLineToChildNode(targetPos);
 		}
-		public static bool TreeNodeBehaviorIsOpen(uint id)
+		public static void TreeNodeDrawLineToTreePop(ImGuiTreeNodeStackDataPtr data)
 		{
-			byte ret = ImGuiPNative.TreeNodeBehaviorIsOpen(id, (ImGuiTreeNodeFlags)(0));
-			return ret != 0;
+			ImGuiPNative.TreeNodeDrawLineToTreePop((ImGuiTreeNodeStackData*)data);
+		}
+		public static void TreeNodeDrawLineToTreePop(in ImGuiTreeNodeStackData data)
+		{
+			fixed (ImGuiTreeNodeStackData* pdata = &data)
+			{
+				ImGuiPNative.TreeNodeDrawLineToTreePop((ImGuiTreeNodeStackData*)pdata);
+			}
 		}
 		public static void TreePushOverrideID(uint id)
 		{
 			ImGuiPNative.TreePushOverrideID(id);
+		}
+		public static void TreeNodeSetOpen(uint storageId, bool open)
+		{
+			ImGuiPNative.TreeNodeSetOpen(storageId, open ? (byte)1 : (byte)0);
+		}
+		public static bool TreeNodeUpdateNextOpen(uint storageId, ImGuiTreeNodeFlags flags)
+		{
+			byte ret = ImGuiPNative.TreeNodeUpdateNextOpen(storageId, flags);
+			return ret != 0;
 		}
 		public static ImGuiDataTypeInfoPtr DataTypeGetInfo(ImGuiDataType dataType)
 		{
@@ -6038,15 +7637,107 @@ public unsafe partial class ImGuiP
 		{
 			ImGuiPNative.DataTypeApplyOp(dataType, op, output, arg1, arg2);
 		}
+		public static void DataTypeApplyOp(ImGuiDataType dataType, int op, nint output, void* arg1, void* arg2)
+		{
+			ImGuiPNative.DataTypeApplyOp(dataType, op, (void*)output, arg1, arg2);
+		}
+		public static void DataTypeApplyOp(ImGuiDataType dataType, int op, void* output, nint arg1, void* arg2)
+		{
+			ImGuiPNative.DataTypeApplyOp(dataType, op, output, (void*)arg1, arg2);
+		}
+		public static void DataTypeApplyOp(ImGuiDataType dataType, int op, nint output, nint arg1, void* arg2)
+		{
+			ImGuiPNative.DataTypeApplyOp(dataType, op, (void*)output, (void*)arg1, arg2);
+		}
+		public static void DataTypeApplyOp(ImGuiDataType dataType, int op, void* output, void* arg1, nint arg2)
+		{
+			ImGuiPNative.DataTypeApplyOp(dataType, op, output, arg1, (void*)arg2);
+		}
+		public static void DataTypeApplyOp(ImGuiDataType dataType, int op, nint output, void* arg1, nint arg2)
+		{
+			ImGuiPNative.DataTypeApplyOp(dataType, op, (void*)output, arg1, (void*)arg2);
+		}
+		public static void DataTypeApplyOp(ImGuiDataType dataType, int op, void* output, nint arg1, nint arg2)
+		{
+			ImGuiPNative.DataTypeApplyOp(dataType, op, output, (void*)arg1, (void*)arg2);
+		}
+		public static void DataTypeApplyOp(ImGuiDataType dataType, int op, nint output, nint arg1, nint arg2)
+		{
+			ImGuiPNative.DataTypeApplyOp(dataType, op, (void*)output, (void*)arg1, (void*)arg2);
+		}
 		public static int DataTypeCompare(ImGuiDataType dataType, void* arg1, void* arg2)
 		{
 			int ret = ImGuiPNative.DataTypeCompare(dataType, arg1, arg2);
+			return ret;
+		}
+		public static int DataTypeCompare(ImGuiDataType dataType, nint arg1, void* arg2)
+		{
+			int ret = ImGuiPNative.DataTypeCompare(dataType, (void*)arg1, arg2);
+			return ret;
+		}
+		public static int DataTypeCompare(ImGuiDataType dataType, void* arg1, nint arg2)
+		{
+			int ret = ImGuiPNative.DataTypeCompare(dataType, arg1, (void*)arg2);
+			return ret;
+		}
+		public static int DataTypeCompare(ImGuiDataType dataType, nint arg1, nint arg2)
+		{
+			int ret = ImGuiPNative.DataTypeCompare(dataType, (void*)arg1, (void*)arg2);
 			return ret;
 		}
 		public static bool DataTypeClamp(ImGuiDataType dataType, void* pData, void* pMin, void* pMax)
 		{
 			byte ret = ImGuiPNative.DataTypeClamp(dataType, pData, pMin, pMax);
 			return ret != 0;
+		}
+		public static bool DataTypeClamp(ImGuiDataType dataType, nint pData, void* pMin, void* pMax)
+		{
+			byte ret = ImGuiPNative.DataTypeClamp(dataType, (void*)pData, pMin, pMax);
+			return ret != 0;
+		}
+		public static bool DataTypeClamp(ImGuiDataType dataType, void* pData, nint pMin, void* pMax)
+		{
+			byte ret = ImGuiPNative.DataTypeClamp(dataType, pData, (void*)pMin, pMax);
+			return ret != 0;
+		}
+		public static bool DataTypeClamp(ImGuiDataType dataType, nint pData, nint pMin, void* pMax)
+		{
+			byte ret = ImGuiPNative.DataTypeClamp(dataType, (void*)pData, (void*)pMin, pMax);
+			return ret != 0;
+		}
+		public static bool DataTypeClamp(ImGuiDataType dataType, void* pData, void* pMin, nint pMax)
+		{
+			byte ret = ImGuiPNative.DataTypeClamp(dataType, pData, pMin, (void*)pMax);
+			return ret != 0;
+		}
+		public static bool DataTypeClamp(ImGuiDataType dataType, nint pData, void* pMin, nint pMax)
+		{
+			byte ret = ImGuiPNative.DataTypeClamp(dataType, (void*)pData, pMin, (void*)pMax);
+			return ret != 0;
+		}
+		public static bool DataTypeClamp(ImGuiDataType dataType, void* pData, nint pMin, nint pMax)
+		{
+			byte ret = ImGuiPNative.DataTypeClamp(dataType, pData, (void*)pMin, (void*)pMax);
+			return ret != 0;
+		}
+		public static bool DataTypeClamp(ImGuiDataType dataType, nint pData, nint pMin, nint pMax)
+		{
+			byte ret = ImGuiPNative.DataTypeClamp(dataType, (void*)pData, (void*)pMin, (void*)pMax);
+			return ret != 0;
+		}
+		public static bool DataTypeIsZero(ImGuiDataType dataType, void* pData)
+		{
+			byte ret = ImGuiPNative.DataTypeIsZero(dataType, pData);
+			return ret != 0;
+		}
+		public static bool DataTypeIsZero(ImGuiDataType dataType, nint pData)
+		{
+			byte ret = ImGuiPNative.DataTypeIsZero(dataType, (void*)pData);
+			return ret != 0;
+		}
+		public static void InputTextDeactivateHook(uint id)
+		{
+			ImGuiPNative.InputTextDeactivateHook(id);
 		}
 		public static bool TempInputIsActive(uint id)
 		{
@@ -6058,9 +7749,26 @@ public unsafe partial class ImGuiP
 			ImGuiInputTextStatePtr ret = ImGuiPNative.GetInputTextState(id);
 			return ret;
 		}
+		public static void SetNextItemRefVal(ImGuiDataType dataType, void* pData)
+		{
+			ImGuiPNative.SetNextItemRefVal(dataType, pData);
+		}
+		public static void SetNextItemRefVal(ImGuiDataType dataType, nint pData)
+		{
+			ImGuiPNative.SetNextItemRefVal(dataType, (void*)pData);
+		}
+		public static bool IsItemActiveAsInputText()
+		{
+			byte ret = ImGuiPNative.IsItemActiveAsInputText();
+			return ret != 0;
+		}
+		public static void SetNextItemColorMarker(uint col)
+		{
+			ImGuiPNative.SetNextItemColorMarker(col);
+		}
 		public static void ShadeVertsLinearColorGradientKeepAlpha(ImDrawListPtr drawList, int vertStartIdx, int vertEndIdx, Vector2 gradientp0, Vector2 gradientp1, uint col0, uint col1)
 		{
-			ImGuiPNative.ShadeVertsLinearColorGradientKeepAlpha(drawList, vertStartIdx, vertEndIdx, gradientp0, gradientp1, col0, col1);
+			ImGuiPNative.ShadeVertsLinearColorGradientKeepAlpha((ImDrawList*)drawList, vertStartIdx, vertEndIdx, gradientp0, gradientp1, col0, col1);
 		}
 		public static void ShadeVertsLinearColorGradientKeepAlpha(ref ImDrawList drawList, int vertStartIdx, int vertEndIdx, Vector2 gradientp0, Vector2 gradientp1, uint col0, uint col1)
 		{
@@ -6071,7 +7779,7 @@ public unsafe partial class ImGuiP
 		}
 		public static void ShadeVertsLinearUV(ImDrawListPtr drawList, int vertStartIdx, int vertEndIdx, Vector2 a, Vector2 b, Vector2 uvA, Vector2 uvB, bool clamp)
 		{
-			ImGuiPNative.ShadeVertsLinearUV(drawList, vertStartIdx, vertEndIdx, a, b, uvA, uvB, clamp ? (byte)1 : (byte)0);
+			ImGuiPNative.ShadeVertsLinearUV((ImDrawList*)drawList, vertStartIdx, vertEndIdx, a, b, uvA, uvB, clamp ? (byte)1 : (byte)0);
 		}
 		public static void ShadeVertsLinearUV(ref ImDrawList drawList, int vertStartIdx, int vertEndIdx, Vector2 a, Vector2 b, Vector2 uvA, Vector2 uvB, bool clamp)
 		{
@@ -6080,13 +7788,24 @@ public unsafe partial class ImGuiP
 				ImGuiPNative.ShadeVertsLinearUV((ImDrawList*)pdrawList, vertStartIdx, vertEndIdx, a, b, uvA, uvB, clamp ? (byte)1 : (byte)0);
 			}
 		}
+		public static void ShadeVertsTransformPos(ImDrawListPtr drawList, int vertStartIdx, int vertEndIdx, Vector2 pivotIn, float cosA, float sinA, Vector2 pivotOut)
+		{
+			ImGuiPNative.ShadeVertsTransformPos((ImDrawList*)drawList, vertStartIdx, vertEndIdx, pivotIn, cosA, sinA, pivotOut);
+		}
+		public static void ShadeVertsTransformPos(ref ImDrawList drawList, int vertStartIdx, int vertEndIdx, Vector2 pivotIn, float cosA, float sinA, Vector2 pivotOut)
+		{
+			fixed (ImDrawList* pdrawList = &drawList)
+			{
+				ImGuiPNative.ShadeVertsTransformPos((ImDrawList*)pdrawList, vertStartIdx, vertEndIdx, pivotIn, cosA, sinA, pivotOut);
+			}
+		}
 		public static void GcCompactTransientMiscBuffers()
 		{
 			ImGuiPNative.GcCompactTransientMiscBuffers();
 		}
 		public static void GcCompactTransientWindowBuffers(ImGuiWindowPtr window)
 		{
-			ImGuiPNative.GcCompactTransientWindowBuffers(window);
+			ImGuiPNative.GcCompactTransientWindowBuffers((ImGuiWindow*)window);
 		}
 		public static void GcCompactTransientWindowBuffers(ref ImGuiWindow window)
 		{
@@ -6097,7 +7816,7 @@ public unsafe partial class ImGuiP
 		}
 		public static void GcAwakeTransientWindowBuffers(ImGuiWindowPtr window)
 		{
-			ImGuiPNative.GcAwakeTransientWindowBuffers(window);
+			ImGuiPNative.GcAwakeTransientWindowBuffers((ImGuiWindow*)window);
 		}
 		public static void GcAwakeTransientWindowBuffers(ref ImGuiWindow window)
 		{
@@ -6106,21 +7825,93 @@ public unsafe partial class ImGuiP
 				ImGuiPNative.GcAwakeTransientWindowBuffers((ImGuiWindow*)pwindow);
 			}
 		}
-		public static void ErrorCheckEndFrameRecover(ImGuiErrorLogCallback logCallback, void* userData)
+		public static void ErrorRecoveryStoreState(ImGuiErrorRecoveryStatePtr stateOut)
 		{
-			ImGuiPNative.ErrorCheckEndFrameRecover(logCallback, userData);
+			ImGuiPNative.ErrorRecoveryStoreState((ImGuiErrorRecoveryState*)stateOut);
 		}
-		public static void ErrorCheckEndFrameRecover(ImGuiErrorLogCallback logCallback)
+		public static void ErrorRecoveryStoreState(ref ImGuiErrorRecoveryState stateOut)
 		{
-			ImGuiPNative.ErrorCheckEndFrameRecover(logCallback, (void*)(default));
+			fixed (ImGuiErrorRecoveryState* pstateOut = &stateOut)
+			{
+				ImGuiPNative.ErrorRecoveryStoreState((ImGuiErrorRecoveryState*)pstateOut);
+			}
 		}
-		public static void ErrorCheckEndWindowRecover(ImGuiErrorLogCallback logCallback, void* userData)
+		public static void ErrorRecoveryTryToRecoverState(ImGuiErrorRecoveryStatePtr stateIn)
 		{
-			ImGuiPNative.ErrorCheckEndWindowRecover(logCallback, userData);
+			ImGuiPNative.ErrorRecoveryTryToRecoverState((ImGuiErrorRecoveryState*)stateIn);
 		}
-		public static void ErrorCheckEndWindowRecover(ImGuiErrorLogCallback logCallback)
+		public static void ErrorRecoveryTryToRecoverState(in ImGuiErrorRecoveryState stateIn)
 		{
-			ImGuiPNative.ErrorCheckEndWindowRecover(logCallback, (void*)(default));
+			fixed (ImGuiErrorRecoveryState* pstateIn = &stateIn)
+			{
+				ImGuiPNative.ErrorRecoveryTryToRecoverState((ImGuiErrorRecoveryState*)pstateIn);
+			}
+		}
+		public static void ErrorRecoveryTryToRecoverWindowState(ImGuiErrorRecoveryStatePtr stateIn)
+		{
+			ImGuiPNative.ErrorRecoveryTryToRecoverWindowState((ImGuiErrorRecoveryState*)stateIn);
+		}
+		public static void ErrorRecoveryTryToRecoverWindowState(in ImGuiErrorRecoveryState stateIn)
+		{
+			fixed (ImGuiErrorRecoveryState* pstateIn = &stateIn)
+			{
+				ImGuiPNative.ErrorRecoveryTryToRecoverWindowState((ImGuiErrorRecoveryState*)pstateIn);
+			}
+		}
+		public static void ErrorCheckUsingSetCursorPosToExtendParentBoundaries()
+		{
+			ImGuiPNative.ErrorCheckUsingSetCursorPosToExtendParentBoundaries();
+		}
+		public static void ErrorCheckEndFrameFinalizeErrorTooltip()
+		{
+			ImGuiPNative.ErrorCheckEndFrameFinalizeErrorTooltip();
+		}
+		public static bool BeginErrorTooltip()
+		{
+			byte ret = ImGuiPNative.BeginErrorTooltip();
+			return ret != 0;
+		}
+		public static void EndErrorTooltip()
+		{
+			ImGuiPNative.EndErrorTooltip();
+		}
+		public static void DebugAllocHook(ImGuiDebugAllocInfoPtr info, int frameCount, void* ptr, nuint size)
+		{
+			ImGuiPNative.DebugAllocHook((ImGuiDebugAllocInfo*)info, frameCount, ptr, size);
+		}
+		public static void DebugAllocHook(ref ImGuiDebugAllocInfo info, int frameCount, void* ptr, nuint size)
+		{
+			fixed (ImGuiDebugAllocInfo* pinfo = &info)
+			{
+				ImGuiPNative.DebugAllocHook((ImGuiDebugAllocInfo*)pinfo, frameCount, ptr, size);
+			}
+		}
+		public static void DebugAllocHook(ImGuiDebugAllocInfoPtr info, int frameCount, nint ptr, nuint size)
+		{
+			ImGuiPNative.DebugAllocHook((ImGuiDebugAllocInfo*)info, frameCount, (void*)ptr, size);
+		}
+		public static void DebugAllocHook(ref ImGuiDebugAllocInfo info, int frameCount, nint ptr, nuint size)
+		{
+			fixed (ImGuiDebugAllocInfo* pinfo = &info)
+			{
+				ImGuiPNative.DebugAllocHook((ImGuiDebugAllocInfo*)pinfo, frameCount, (void*)ptr, size);
+			}
+		}
+		public static void DebugDrawCursorPos(uint col)
+		{
+			ImGuiPNative.DebugDrawCursorPos(col);
+		}
+		public static void DebugDrawCursorPos()
+		{
+			ImGuiPNative.DebugDrawCursorPos((uint)(4278190335));
+		}
+		public static void DebugDrawLineExtents(uint col)
+		{
+			ImGuiPNative.DebugDrawLineExtents(col);
+		}
+		public static void DebugDrawLineExtents()
+		{
+			ImGuiPNative.DebugDrawLineExtents((uint)(4278190335));
 		}
 		public static void DebugDrawItemRect(uint col)
 		{
@@ -6130,13 +7921,25 @@ public unsafe partial class ImGuiP
 		{
 			ImGuiPNative.DebugDrawItemRect((uint)(4278190335));
 		}
-		public static void DebugStartItemPicker()
+		public static void DebugLocateItem(uint targetId)
 		{
-			ImGuiPNative.DebugStartItemPicker();
+			ImGuiPNative.DebugLocateItem(targetId);
+		}
+		public static void DebugLocateItemOnHover(uint targetId)
+		{
+			ImGuiPNative.DebugLocateItemOnHover(targetId);
+		}
+		public static void DebugLocateItemResolveWithLastItem()
+		{
+			ImGuiPNative.DebugLocateItemResolveWithLastItem();
+		}
+		public static void DebugBreakClearData()
+		{
+			ImGuiPNative.DebugBreakClearData();
 		}
 		public static void ShowFontAtlas(ImFontAtlasPtr atlas)
 		{
-			ImGuiPNative.ShowFontAtlas(atlas);
+			ImGuiPNative.ShowFontAtlas((ImFontAtlas*)atlas);
 		}
 		public static void ShowFontAtlas(ref ImFontAtlas atlas)
 		{
@@ -6145,13 +7948,30 @@ public unsafe partial class ImGuiP
 				ImGuiPNative.ShowFontAtlas((ImFontAtlas*)patlas);
 			}
 		}
+		public static ulong DebugTextureIDToU64(ImTextureID texId)
+		{
+			ulong ret = ImGuiPNative.DebugTextureIDToU64(texId);
+			return ret;
+		}
 		public static void DebugHookIdInfo(uint id, ImGuiDataType dataType, void* dataId, void* dataIdEnd)
 		{
 			ImGuiPNative.DebugHookIdInfo(id, dataType, dataId, dataIdEnd);
 		}
+		public static void DebugHookIdInfo(uint id, ImGuiDataType dataType, nint dataId, void* dataIdEnd)
+		{
+			ImGuiPNative.DebugHookIdInfo(id, dataType, (void*)dataId, dataIdEnd);
+		}
+		public static void DebugHookIdInfo(uint id, ImGuiDataType dataType, void* dataId, nint dataIdEnd)
+		{
+			ImGuiPNative.DebugHookIdInfo(id, dataType, dataId, (void*)dataIdEnd);
+		}
+		public static void DebugHookIdInfo(uint id, ImGuiDataType dataType, nint dataId, nint dataIdEnd)
+		{
+			ImGuiPNative.DebugHookIdInfo(id, dataType, (void*)dataId, (void*)dataIdEnd);
+		}
 		public static void DebugNodeColumns(ImGuiOldColumnsPtr columns)
 		{
-			ImGuiPNative.DebugNodeColumns(columns);
+			ImGuiPNative.DebugNodeColumns((ImGuiOldColumns*)columns);
 		}
 		public static void DebugNodeColumns(ref ImGuiOldColumns columns)
 		{
@@ -6162,60 +7982,60 @@ public unsafe partial class ImGuiP
 		}
 		public static void DebugNodeDrawCmdShowMeshAndBoundingBox(ImDrawListPtr outDrawList, ImDrawListPtr drawList, ImDrawCmdPtr drawCmd, bool showMesh, bool showAabb)
 		{
-			ImGuiPNative.DebugNodeDrawCmdShowMeshAndBoundingBox(outDrawList, drawList, drawCmd, showMesh ? (byte)1 : (byte)0, showAabb ? (byte)1 : (byte)0);
+			ImGuiPNative.DebugNodeDrawCmdShowMeshAndBoundingBox((ImDrawList*)outDrawList, (ImDrawList*)drawList, (ImDrawCmd*)drawCmd, showMesh ? (byte)1 : (byte)0, showAabb ? (byte)1 : (byte)0);
 		}
 		public static void DebugNodeDrawCmdShowMeshAndBoundingBox(ref ImDrawList outDrawList, ImDrawListPtr drawList, ImDrawCmdPtr drawCmd, bool showMesh, bool showAabb)
 		{
 			fixed (ImDrawList* poutDrawList = &outDrawList)
 			{
-				ImGuiPNative.DebugNodeDrawCmdShowMeshAndBoundingBox((ImDrawList*)poutDrawList, drawList, drawCmd, showMesh ? (byte)1 : (byte)0, showAabb ? (byte)1 : (byte)0);
+				ImGuiPNative.DebugNodeDrawCmdShowMeshAndBoundingBox((ImDrawList*)poutDrawList, (ImDrawList*)drawList, (ImDrawCmd*)drawCmd, showMesh ? (byte)1 : (byte)0, showAabb ? (byte)1 : (byte)0);
 			}
 		}
-		public static void DebugNodeDrawCmdShowMeshAndBoundingBox(ImDrawListPtr outDrawList, ref ImDrawList drawList, ImDrawCmdPtr drawCmd, bool showMesh, bool showAabb)
+		public static void DebugNodeDrawCmdShowMeshAndBoundingBox(ImDrawListPtr outDrawList, in ImDrawList drawList, ImDrawCmdPtr drawCmd, bool showMesh, bool showAabb)
 		{
 			fixed (ImDrawList* pdrawList = &drawList)
 			{
-				ImGuiPNative.DebugNodeDrawCmdShowMeshAndBoundingBox(outDrawList, (ImDrawList*)pdrawList, drawCmd, showMesh ? (byte)1 : (byte)0, showAabb ? (byte)1 : (byte)0);
+				ImGuiPNative.DebugNodeDrawCmdShowMeshAndBoundingBox((ImDrawList*)outDrawList, (ImDrawList*)pdrawList, (ImDrawCmd*)drawCmd, showMesh ? (byte)1 : (byte)0, showAabb ? (byte)1 : (byte)0);
 			}
 		}
-		public static void DebugNodeDrawCmdShowMeshAndBoundingBox(ref ImDrawList outDrawList, ref ImDrawList drawList, ImDrawCmdPtr drawCmd, bool showMesh, bool showAabb)
+		public static void DebugNodeDrawCmdShowMeshAndBoundingBox(ref ImDrawList outDrawList, in ImDrawList drawList, ImDrawCmdPtr drawCmd, bool showMesh, bool showAabb)
 		{
 			fixed (ImDrawList* poutDrawList = &outDrawList)
 			{
 				fixed (ImDrawList* pdrawList = &drawList)
 				{
-					ImGuiPNative.DebugNodeDrawCmdShowMeshAndBoundingBox((ImDrawList*)poutDrawList, (ImDrawList*)pdrawList, drawCmd, showMesh ? (byte)1 : (byte)0, showAabb ? (byte)1 : (byte)0);
+					ImGuiPNative.DebugNodeDrawCmdShowMeshAndBoundingBox((ImDrawList*)poutDrawList, (ImDrawList*)pdrawList, (ImDrawCmd*)drawCmd, showMesh ? (byte)1 : (byte)0, showAabb ? (byte)1 : (byte)0);
 				}
 			}
 		}
-		public static void DebugNodeDrawCmdShowMeshAndBoundingBox(ImDrawListPtr outDrawList, ImDrawListPtr drawList, ref ImDrawCmd drawCmd, bool showMesh, bool showAabb)
+		public static void DebugNodeDrawCmdShowMeshAndBoundingBox(ImDrawListPtr outDrawList, ImDrawListPtr drawList, in ImDrawCmd drawCmd, bool showMesh, bool showAabb)
 		{
 			fixed (ImDrawCmd* pdrawCmd = &drawCmd)
 			{
-				ImGuiPNative.DebugNodeDrawCmdShowMeshAndBoundingBox(outDrawList, drawList, (ImDrawCmd*)pdrawCmd, showMesh ? (byte)1 : (byte)0, showAabb ? (byte)1 : (byte)0);
+				ImGuiPNative.DebugNodeDrawCmdShowMeshAndBoundingBox((ImDrawList*)outDrawList, (ImDrawList*)drawList, (ImDrawCmd*)pdrawCmd, showMesh ? (byte)1 : (byte)0, showAabb ? (byte)1 : (byte)0);
 			}
 		}
-		public static void DebugNodeDrawCmdShowMeshAndBoundingBox(ref ImDrawList outDrawList, ImDrawListPtr drawList, ref ImDrawCmd drawCmd, bool showMesh, bool showAabb)
+		public static void DebugNodeDrawCmdShowMeshAndBoundingBox(ref ImDrawList outDrawList, ImDrawListPtr drawList, in ImDrawCmd drawCmd, bool showMesh, bool showAabb)
 		{
 			fixed (ImDrawList* poutDrawList = &outDrawList)
 			{
 				fixed (ImDrawCmd* pdrawCmd = &drawCmd)
 				{
-					ImGuiPNative.DebugNodeDrawCmdShowMeshAndBoundingBox((ImDrawList*)poutDrawList, drawList, (ImDrawCmd*)pdrawCmd, showMesh ? (byte)1 : (byte)0, showAabb ? (byte)1 : (byte)0);
+					ImGuiPNative.DebugNodeDrawCmdShowMeshAndBoundingBox((ImDrawList*)poutDrawList, (ImDrawList*)drawList, (ImDrawCmd*)pdrawCmd, showMesh ? (byte)1 : (byte)0, showAabb ? (byte)1 : (byte)0);
 				}
 			}
 		}
-		public static void DebugNodeDrawCmdShowMeshAndBoundingBox(ImDrawListPtr outDrawList, ref ImDrawList drawList, ref ImDrawCmd drawCmd, bool showMesh, bool showAabb)
+		public static void DebugNodeDrawCmdShowMeshAndBoundingBox(ImDrawListPtr outDrawList, in ImDrawList drawList, in ImDrawCmd drawCmd, bool showMesh, bool showAabb)
 		{
 			fixed (ImDrawList* pdrawList = &drawList)
 			{
 				fixed (ImDrawCmd* pdrawCmd = &drawCmd)
 				{
-					ImGuiPNative.DebugNodeDrawCmdShowMeshAndBoundingBox(outDrawList, (ImDrawList*)pdrawList, (ImDrawCmd*)pdrawCmd, showMesh ? (byte)1 : (byte)0, showAabb ? (byte)1 : (byte)0);
+					ImGuiPNative.DebugNodeDrawCmdShowMeshAndBoundingBox((ImDrawList*)outDrawList, (ImDrawList*)pdrawList, (ImDrawCmd*)pdrawCmd, showMesh ? (byte)1 : (byte)0, showAabb ? (byte)1 : (byte)0);
 				}
 			}
 		}
-		public static void DebugNodeDrawCmdShowMeshAndBoundingBox(ref ImDrawList outDrawList, ref ImDrawList drawList, ref ImDrawCmd drawCmd, bool showMesh, bool showAabb)
+		public static void DebugNodeDrawCmdShowMeshAndBoundingBox(ref ImDrawList outDrawList, in ImDrawList drawList, in ImDrawCmd drawCmd, bool showMesh, bool showAabb)
 		{
 			fixed (ImDrawList* poutDrawList = &outDrawList)
 			{
@@ -6230,7 +8050,7 @@ public unsafe partial class ImGuiP
 		}
 		public static void DebugNodeFont(ImFontPtr font)
 		{
-			ImGuiPNative.DebugNodeFont(font);
+			ImGuiPNative.DebugNodeFont((ImFont*)font);
 		}
 		public static void DebugNodeFont(ref ImFont font)
 		{
@@ -6239,25 +8059,53 @@ public unsafe partial class ImGuiP
 				ImGuiPNative.DebugNodeFont((ImFont*)pfont);
 			}
 		}
+		public static void DebugNodeFontGlyphsForSrcMask(ImFontPtr font, ImFontBakedPtr baked, int srcMask)
+		{
+			ImGuiPNative.DebugNodeFontGlyphsForSrcMask((ImFont*)font, (ImFontBaked*)baked, srcMask);
+		}
+		public static void DebugNodeFontGlyphsForSrcMask(ref ImFont font, ImFontBakedPtr baked, int srcMask)
+		{
+			fixed (ImFont* pfont = &font)
+			{
+				ImGuiPNative.DebugNodeFontGlyphsForSrcMask((ImFont*)pfont, (ImFontBaked*)baked, srcMask);
+			}
+		}
+		public static void DebugNodeFontGlyphsForSrcMask(ImFontPtr font, ref ImFontBaked baked, int srcMask)
+		{
+			fixed (ImFontBaked* pbaked = &baked)
+			{
+				ImGuiPNative.DebugNodeFontGlyphsForSrcMask((ImFont*)font, (ImFontBaked*)pbaked, srcMask);
+			}
+		}
+		public static void DebugNodeFontGlyphsForSrcMask(ref ImFont font, ref ImFontBaked baked, int srcMask)
+		{
+			fixed (ImFont* pfont = &font)
+			{
+				fixed (ImFontBaked* pbaked = &baked)
+				{
+					ImGuiPNative.DebugNodeFontGlyphsForSrcMask((ImFont*)pfont, (ImFontBaked*)pbaked, srcMask);
+				}
+			}
+		}
 		public static void DebugNodeFontGlyph(ImFontPtr font, ImFontGlyphPtr glyph)
 		{
-			ImGuiPNative.DebugNodeFontGlyph(font, glyph);
+			ImGuiPNative.DebugNodeFontGlyph((ImFont*)font, (ImFontGlyph*)glyph);
 		}
 		public static void DebugNodeFontGlyph(ref ImFont font, ImFontGlyphPtr glyph)
 		{
 			fixed (ImFont* pfont = &font)
 			{
-				ImGuiPNative.DebugNodeFontGlyph((ImFont*)pfont, glyph);
+				ImGuiPNative.DebugNodeFontGlyph((ImFont*)pfont, (ImFontGlyph*)glyph);
 			}
 		}
-		public static void DebugNodeFontGlyph(ImFontPtr font, ref ImFontGlyph glyph)
+		public static void DebugNodeFontGlyph(ImFontPtr font, in ImFontGlyph glyph)
 		{
 			fixed (ImFontGlyph* pglyph = &glyph)
 			{
-				ImGuiPNative.DebugNodeFontGlyph(font, (ImFontGlyph*)pglyph);
+				ImGuiPNative.DebugNodeFontGlyph((ImFont*)font, (ImFontGlyph*)pglyph);
 			}
 		}
-		public static void DebugNodeFontGlyph(ref ImFont font, ref ImFontGlyph glyph)
+		public static void DebugNodeFontGlyph(ref ImFont font, in ImFontGlyph glyph)
 		{
 			fixed (ImFont* pfont = &font)
 			{
@@ -6267,9 +8115,48 @@ public unsafe partial class ImGuiP
 				}
 			}
 		}
+		public static void DebugNodeTexture(ImTextureDataPtr tex, int intId, ImFontAtlasRectPtr highlightRect)
+		{
+			ImGuiPNative.DebugNodeTexture((ImTextureData*)tex, intId, (ImFontAtlasRect*)highlightRect);
+		}
+		public static void DebugNodeTexture(ImTextureDataPtr tex, int intId)
+		{
+			ImGuiPNative.DebugNodeTexture((ImTextureData*)tex, intId, (ImFontAtlasRect*)(default));
+		}
+		public static void DebugNodeTexture(ref ImTextureData tex, int intId, ImFontAtlasRectPtr highlightRect)
+		{
+			fixed (ImTextureData* ptex = &tex)
+			{
+				ImGuiPNative.DebugNodeTexture((ImTextureData*)ptex, intId, (ImFontAtlasRect*)highlightRect);
+			}
+		}
+		public static void DebugNodeTexture(ref ImTextureData tex, int intId)
+		{
+			fixed (ImTextureData* ptex = &tex)
+			{
+				ImGuiPNative.DebugNodeTexture((ImTextureData*)ptex, intId, (ImFontAtlasRect*)(default));
+			}
+		}
+		public static void DebugNodeTexture(ImTextureDataPtr tex, int intId, in ImFontAtlasRect highlightRect)
+		{
+			fixed (ImFontAtlasRect* phighlightRect = &highlightRect)
+			{
+				ImGuiPNative.DebugNodeTexture((ImTextureData*)tex, intId, (ImFontAtlasRect*)phighlightRect);
+			}
+		}
+		public static void DebugNodeTexture(ref ImTextureData tex, int intId, in ImFontAtlasRect highlightRect)
+		{
+			fixed (ImTextureData* ptex = &tex)
+			{
+				fixed (ImFontAtlasRect* phighlightRect = &highlightRect)
+				{
+					ImGuiPNative.DebugNodeTexture((ImTextureData*)ptex, intId, (ImFontAtlasRect*)phighlightRect);
+				}
+			}
+		}
 		public static void DebugNodeTable(ImGuiTablePtr table)
 		{
-			ImGuiPNative.DebugNodeTable(table);
+			ImGuiPNative.DebugNodeTable((ImGuiTable*)table);
 		}
 		public static void DebugNodeTable(ref ImGuiTable table)
 		{
@@ -6278,20 +8165,37 @@ public unsafe partial class ImGuiP
 				ImGuiPNative.DebugNodeTable((ImGuiTable*)ptable);
 			}
 		}
-		public static void DebugNodeTableSettings(ImGuiTableSettingsPtr settings)
+		public static void DebugNodeTableSettings(ImGuiTableSettingsPtr settings, ImGuiTablePtr table)
 		{
-			ImGuiPNative.DebugNodeTableSettings(settings);
+			ImGuiPNative.DebugNodeTableSettings((ImGuiTableSettings*)settings, (ImGuiTable*)table);
 		}
-		public static void DebugNodeTableSettings(ref ImGuiTableSettings settings)
+		public static void DebugNodeTableSettings(ref ImGuiTableSettings settings, ImGuiTablePtr table)
 		{
 			fixed (ImGuiTableSettings* psettings = &settings)
 			{
-				ImGuiPNative.DebugNodeTableSettings((ImGuiTableSettings*)psettings);
+				ImGuiPNative.DebugNodeTableSettings((ImGuiTableSettings*)psettings, (ImGuiTable*)table);
+			}
+		}
+		public static void DebugNodeTableSettings(ImGuiTableSettingsPtr settings, ref ImGuiTable table)
+		{
+			fixed (ImGuiTable* ptable = &table)
+			{
+				ImGuiPNative.DebugNodeTableSettings((ImGuiTableSettings*)settings, (ImGuiTable*)ptable);
+			}
+		}
+		public static void DebugNodeTableSettings(ref ImGuiTableSettings settings, ref ImGuiTable table)
+		{
+			fixed (ImGuiTableSettings* psettings = &settings)
+			{
+				fixed (ImGuiTable* ptable = &table)
+				{
+					ImGuiPNative.DebugNodeTableSettings((ImGuiTableSettings*)psettings, (ImGuiTable*)ptable);
+				}
 			}
 		}
 		public static void DebugNodeInputTextState(ImGuiInputTextStatePtr state)
 		{
-			ImGuiPNative.DebugNodeInputTextState(state);
+			ImGuiPNative.DebugNodeInputTextState((ImGuiInputTextState*)state);
 		}
 		public static void DebugNodeInputTextState(ref ImGuiInputTextState state)
 		{
@@ -6300,9 +8204,31 @@ public unsafe partial class ImGuiP
 				ImGuiPNative.DebugNodeInputTextState((ImGuiInputTextState*)pstate);
 			}
 		}
+		public static void DebugNodeTypingSelectState(ImGuiTypingSelectStatePtr state)
+		{
+			ImGuiPNative.DebugNodeTypingSelectState((ImGuiTypingSelectState*)state);
+		}
+		public static void DebugNodeTypingSelectState(ref ImGuiTypingSelectState state)
+		{
+			fixed (ImGuiTypingSelectState* pstate = &state)
+			{
+				ImGuiPNative.DebugNodeTypingSelectState((ImGuiTypingSelectState*)pstate);
+			}
+		}
+		public static void DebugNodeMultiSelectState(ImGuiMultiSelectStatePtr state)
+		{
+			ImGuiPNative.DebugNodeMultiSelectState((ImGuiMultiSelectState*)state);
+		}
+		public static void DebugNodeMultiSelectState(ref ImGuiMultiSelectState state)
+		{
+			fixed (ImGuiMultiSelectState* pstate = &state)
+			{
+				ImGuiPNative.DebugNodeMultiSelectState((ImGuiMultiSelectState*)pstate);
+			}
+		}
 		public static void DebugNodeWindowSettings(ImGuiWindowSettingsPtr settings)
 		{
-			ImGuiPNative.DebugNodeWindowSettings(settings);
+			ImGuiPNative.DebugNodeWindowSettings((ImGuiWindowSettings*)settings);
 		}
 		public static void DebugNodeWindowSettings(ref ImGuiWindowSettings settings)
 		{
@@ -6313,20 +8239,20 @@ public unsafe partial class ImGuiP
 		}
 		public static void DebugNodeWindowsListByBeginStackParent(ImGuiWindowPtrPtr windows, int windowsSize, ImGuiWindowPtr parentInBeginStack)
 		{
-			ImGuiPNative.DebugNodeWindowsListByBeginStackParent(windows, windowsSize, parentInBeginStack);
+			ImGuiPNative.DebugNodeWindowsListByBeginStackParent((ImGuiWindow**)windows, windowsSize, (ImGuiWindow*)parentInBeginStack);
 		}
 		public static void DebugNodeWindowsListByBeginStackParent(ref ImGuiWindow* windows, int windowsSize, ImGuiWindowPtr parentInBeginStack)
 		{
 			fixed (ImGuiWindow** pwindows = &windows)
 			{
-				ImGuiPNative.DebugNodeWindowsListByBeginStackParent((ImGuiWindow**)pwindows, windowsSize, parentInBeginStack);
+				ImGuiPNative.DebugNodeWindowsListByBeginStackParent((ImGuiWindow**)pwindows, windowsSize, (ImGuiWindow*)parentInBeginStack);
 			}
 		}
 		public static void DebugNodeWindowsListByBeginStackParent(ImGuiWindowPtrPtr windows, int windowsSize, ref ImGuiWindow parentInBeginStack)
 		{
 			fixed (ImGuiWindow* pparentInBeginStack = &parentInBeginStack)
 			{
-				ImGuiPNative.DebugNodeWindowsListByBeginStackParent(windows, windowsSize, (ImGuiWindow*)pparentInBeginStack);
+				ImGuiPNative.DebugNodeWindowsListByBeginStackParent((ImGuiWindow**)windows, windowsSize, (ImGuiWindow*)pparentInBeginStack);
 			}
 		}
 		public static void DebugNodeWindowsListByBeginStackParent(ref ImGuiWindow* windows, int windowsSize, ref ImGuiWindow parentInBeginStack)
@@ -6341,7 +8267,7 @@ public unsafe partial class ImGuiP
 		}
 		public static void DebugNodeViewport(ImGuiViewportPPtr viewport)
 		{
-			ImGuiPNative.DebugNodeViewport(viewport);
+			ImGuiPNative.DebugNodeViewport((ImGuiViewportP*)viewport);
 		}
 		public static void DebugNodeViewport(ref ImGuiViewportP viewport)
 		{
@@ -6350,22 +8276,33 @@ public unsafe partial class ImGuiP
 				ImGuiPNative.DebugNodeViewport((ImGuiViewportP*)pviewport);
 			}
 		}
+		public static void DebugRenderKeyboardPreview(ImDrawListPtr drawList)
+		{
+			ImGuiPNative.DebugRenderKeyboardPreview((ImDrawList*)drawList);
+		}
+		public static void DebugRenderKeyboardPreview(ref ImDrawList drawList)
+		{
+			fixed (ImDrawList* pdrawList = &drawList)
+			{
+				ImGuiPNative.DebugRenderKeyboardPreview((ImDrawList*)pdrawList);
+			}
+		}
 		public static void DebugRenderViewportThumbnail(ImDrawListPtr drawList, ImGuiViewportPPtr viewport, ImRect bb)
 		{
-			ImGuiPNative.DebugRenderViewportThumbnail(drawList, viewport, bb);
+			ImGuiPNative.DebugRenderViewportThumbnail((ImDrawList*)drawList, (ImGuiViewportP*)viewport, bb);
 		}
 		public static void DebugRenderViewportThumbnail(ref ImDrawList drawList, ImGuiViewportPPtr viewport, ImRect bb)
 		{
 			fixed (ImDrawList* pdrawList = &drawList)
 			{
-				ImGuiPNative.DebugRenderViewportThumbnail((ImDrawList*)pdrawList, viewport, bb);
+				ImGuiPNative.DebugRenderViewportThumbnail((ImDrawList*)pdrawList, (ImGuiViewportP*)viewport, bb);
 			}
 		}
 		public static void DebugRenderViewportThumbnail(ImDrawListPtr drawList, ref ImGuiViewportP viewport, ImRect bb)
 		{
 			fixed (ImGuiViewportP* pviewport = &viewport)
 			{
-				ImGuiPNative.DebugRenderViewportThumbnail(drawList, (ImGuiViewportP*)pviewport, bb);
+				ImGuiPNative.DebugRenderViewportThumbnail((ImDrawList*)drawList, (ImGuiViewportP*)pviewport, bb);
 			}
 		}
 		public static void DebugRenderViewportThumbnail(ref ImDrawList drawList, ref ImGuiViewportP viewport, ImRect bb)
@@ -6378,14 +8315,39 @@ public unsafe partial class ImGuiP
 				}
 			}
 		}
-		public static ImFontBuilderIOPtr ImFontAtlasGetBuilderForStbTruetype()
+		public static ImFontLoaderPtr ImFontLoader()
 		{
-			ImFontBuilderIOPtr ret = ImGuiPNative.ImFontAtlasGetBuilderForStbTruetype();
+			ImFontLoaderPtr ret = ImGuiPNative.ImFontLoader();
+			return ret;
+		}
+		public static ImFontLoaderPtr ImFontAtlasGetFontLoaderForStbTruetype()
+		{
+			ImFontLoaderPtr ret = ImGuiPNative.ImFontAtlasGetFontLoaderForStbTruetype();
+			return ret;
+		}
+		public static int ImFontAtlasRectId_GetIndex(int id)
+		{
+			int ret = ImGuiPNative.ImFontAtlasRectId_GetIndex(id);
+			return ret;
+		}
+		public static uint ImFontAtlasRectId_GetGeneration(int id)
+		{
+			uint ret = ImGuiPNative.ImFontAtlasRectId_GetGeneration(id);
+			return ret;
+		}
+		public static int ImFontAtlasRectId_Make(int indexIdx, int genIdx)
+		{
+			int ret = ImGuiPNative.ImFontAtlasRectId_Make(indexIdx, genIdx);
+			return ret;
+		}
+		public static ImFontAtlasBuilderPtr ImFontAtlasBuilder()
+		{
+			ImFontAtlasBuilderPtr ret = ImGuiPNative.ImFontAtlasBuilder();
 			return ret;
 		}
 		public static void ImFontAtlasBuildInit(ImFontAtlasPtr atlas)
 		{
-			ImGuiPNative.ImFontAtlasBuildInit(atlas);
+			ImGuiPNative.ImFontAtlasBuildInit((ImFontAtlas*)atlas);
 		}
 		public static void ImFontAtlasBuildInit(ref ImFontAtlas atlas)
 		{
@@ -6394,156 +8356,3264 @@ public unsafe partial class ImGuiP
 				ImGuiPNative.ImFontAtlasBuildInit((ImFontAtlas*)patlas);
 			}
 		}
-		public static void ImFontAtlasBuildSetupFont(ImFontAtlasPtr atlas, ImFontPtr font, ImFontConfigPtr fontConfig, float ascent, float descent)
+		public static void ImFontAtlasBuildDestroy(ImFontAtlasPtr atlas)
 		{
-			ImGuiPNative.ImFontAtlasBuildSetupFont(atlas, font, fontConfig, ascent, descent);
+			ImGuiPNative.ImFontAtlasBuildDestroy((ImFontAtlas*)atlas);
 		}
-		public static void ImFontAtlasBuildSetupFont(ref ImFontAtlas atlas, ImFontPtr font, ImFontConfigPtr fontConfig, float ascent, float descent)
+		public static void ImFontAtlasBuildDestroy(ref ImFontAtlas atlas)
 		{
 			fixed (ImFontAtlas* patlas = &atlas)
 			{
-				ImGuiPNative.ImFontAtlasBuildSetupFont((ImFontAtlas*)patlas, font, fontConfig, ascent, descent);
+				ImGuiPNative.ImFontAtlasBuildDestroy((ImFontAtlas*)patlas);
 			}
 		}
-		public static void ImFontAtlasBuildSetupFont(ImFontAtlasPtr atlas, ref ImFont font, ImFontConfigPtr fontConfig, float ascent, float descent)
+		public static void ImFontAtlasBuildMain(ImFontAtlasPtr atlas)
 		{
-			fixed (ImFont* pfont = &font)
-			{
-				ImGuiPNative.ImFontAtlasBuildSetupFont(atlas, (ImFont*)pfont, fontConfig, ascent, descent);
-			}
+			ImGuiPNative.ImFontAtlasBuildMain((ImFontAtlas*)atlas);
 		}
-		public static void ImFontAtlasBuildSetupFont(ref ImFontAtlas atlas, ref ImFont font, ImFontConfigPtr fontConfig, float ascent, float descent)
+		public static void ImFontAtlasBuildMain(ref ImFontAtlas atlas)
 		{
 			fixed (ImFontAtlas* patlas = &atlas)
 			{
-				fixed (ImFont* pfont = &font)
+				ImGuiPNative.ImFontAtlasBuildMain((ImFontAtlas*)patlas);
+			}
+		}
+		public static void ImFontAtlasBuildSetupFontLoader(ImFontAtlasPtr atlas, ImFontLoaderPtr fontLoader)
+		{
+			ImGuiPNative.ImFontAtlasBuildSetupFontLoader((ImFontAtlas*)atlas, (ImFontLoader*)fontLoader);
+		}
+		public static void ImFontAtlasBuildSetupFontLoader(ref ImFontAtlas atlas, ImFontLoaderPtr fontLoader)
+		{
+			fixed (ImFontAtlas* patlas = &atlas)
+			{
+				ImGuiPNative.ImFontAtlasBuildSetupFontLoader((ImFontAtlas*)patlas, (ImFontLoader*)fontLoader);
+			}
+		}
+		public static void ImFontAtlasBuildSetupFontLoader(ImFontAtlasPtr atlas, in ImFontLoader fontLoader)
+		{
+			fixed (ImFontLoader* pfontLoader = &fontLoader)
+			{
+				ImGuiPNative.ImFontAtlasBuildSetupFontLoader((ImFontAtlas*)atlas, (ImFontLoader*)pfontLoader);
+			}
+		}
+		public static void ImFontAtlasBuildSetupFontLoader(ref ImFontAtlas atlas, in ImFontLoader fontLoader)
+		{
+			fixed (ImFontAtlas* patlas = &atlas)
+			{
+				fixed (ImFontLoader* pfontLoader = &fontLoader)
 				{
-					ImGuiPNative.ImFontAtlasBuildSetupFont((ImFontAtlas*)patlas, (ImFont*)pfont, fontConfig, ascent, descent);
+					ImGuiPNative.ImFontAtlasBuildSetupFontLoader((ImFontAtlas*)patlas, (ImFontLoader*)pfontLoader);
 				}
 			}
 		}
-		public static void ImFontAtlasBuildSetupFont(ImFontAtlasPtr atlas, ImFontPtr font, ref ImFontConfig fontConfig, float ascent, float descent)
+		public static void ImFontAtlasBuildNotifySetFont(ImFontAtlasPtr atlas, ImFontPtr oldFont, ImFontPtr newFont)
 		{
-			fixed (ImFontConfig* pfontConfig = &fontConfig)
-			{
-				ImGuiPNative.ImFontAtlasBuildSetupFont(atlas, font, (ImFontConfig*)pfontConfig, ascent, descent);
-			}
+			ImGuiPNative.ImFontAtlasBuildNotifySetFont((ImFontAtlas*)atlas, (ImFont*)oldFont, (ImFont*)newFont);
 		}
-		public static void ImFontAtlasBuildSetupFont(ref ImFontAtlas atlas, ImFontPtr font, ref ImFontConfig fontConfig, float ascent, float descent)
+		public static void ImFontAtlasBuildNotifySetFont(ref ImFontAtlas atlas, ImFontPtr oldFont, ImFontPtr newFont)
 		{
 			fixed (ImFontAtlas* patlas = &atlas)
 			{
-				fixed (ImFontConfig* pfontConfig = &fontConfig)
-				{
-					ImGuiPNative.ImFontAtlasBuildSetupFont((ImFontAtlas*)patlas, font, (ImFontConfig*)pfontConfig, ascent, descent);
-				}
+				ImGuiPNative.ImFontAtlasBuildNotifySetFont((ImFontAtlas*)patlas, (ImFont*)oldFont, (ImFont*)newFont);
 			}
 		}
-		public static void ImFontAtlasBuildSetupFont(ImFontAtlasPtr atlas, ref ImFont font, ref ImFontConfig fontConfig, float ascent, float descent)
+		public static void ImFontAtlasBuildNotifySetFont(ImFontAtlasPtr atlas, ref ImFont oldFont, ImFontPtr newFont)
 		{
-			fixed (ImFont* pfont = &font)
+			fixed (ImFont* poldFont = &oldFont)
 			{
-				fixed (ImFontConfig* pfontConfig = &fontConfig)
-				{
-					ImGuiPNative.ImFontAtlasBuildSetupFont(atlas, (ImFont*)pfont, (ImFontConfig*)pfontConfig, ascent, descent);
-				}
+				ImGuiPNative.ImFontAtlasBuildNotifySetFont((ImFontAtlas*)atlas, (ImFont*)poldFont, (ImFont*)newFont);
 			}
 		}
-		public static void ImFontAtlasBuildSetupFont(ref ImFontAtlas atlas, ref ImFont font, ref ImFontConfig fontConfig, float ascent, float descent)
+		public static void ImFontAtlasBuildNotifySetFont(ref ImFontAtlas atlas, ref ImFont oldFont, ImFontPtr newFont)
 		{
 			fixed (ImFontAtlas* patlas = &atlas)
 			{
-				fixed (ImFont* pfont = &font)
+				fixed (ImFont* poldFont = &oldFont)
 				{
-					fixed (ImFontConfig* pfontConfig = &fontConfig)
+					ImGuiPNative.ImFontAtlasBuildNotifySetFont((ImFontAtlas*)patlas, (ImFont*)poldFont, (ImFont*)newFont);
+				}
+			}
+		}
+		public static void ImFontAtlasBuildNotifySetFont(ImFontAtlasPtr atlas, ImFontPtr oldFont, ref ImFont newFont)
+		{
+			fixed (ImFont* pnewFont = &newFont)
+			{
+				ImGuiPNative.ImFontAtlasBuildNotifySetFont((ImFontAtlas*)atlas, (ImFont*)oldFont, (ImFont*)pnewFont);
+			}
+		}
+		public static void ImFontAtlasBuildNotifySetFont(ref ImFontAtlas atlas, ImFontPtr oldFont, ref ImFont newFont)
+		{
+			fixed (ImFontAtlas* patlas = &atlas)
+			{
+				fixed (ImFont* pnewFont = &newFont)
+				{
+					ImGuiPNative.ImFontAtlasBuildNotifySetFont((ImFontAtlas*)patlas, (ImFont*)oldFont, (ImFont*)pnewFont);
+				}
+			}
+		}
+		public static void ImFontAtlasBuildNotifySetFont(ImFontAtlasPtr atlas, ref ImFont oldFont, ref ImFont newFont)
+		{
+			fixed (ImFont* poldFont = &oldFont)
+			{
+				fixed (ImFont* pnewFont = &newFont)
+				{
+					ImGuiPNative.ImFontAtlasBuildNotifySetFont((ImFontAtlas*)atlas, (ImFont*)poldFont, (ImFont*)pnewFont);
+				}
+			}
+		}
+		public static void ImFontAtlasBuildNotifySetFont(ref ImFontAtlas atlas, ref ImFont oldFont, ref ImFont newFont)
+		{
+			fixed (ImFontAtlas* patlas = &atlas)
+			{
+				fixed (ImFont* poldFont = &oldFont)
+				{
+					fixed (ImFont* pnewFont = &newFont)
 					{
-						ImGuiPNative.ImFontAtlasBuildSetupFont((ImFontAtlas*)patlas, (ImFont*)pfont, (ImFontConfig*)pfontConfig, ascent, descent);
+						ImGuiPNative.ImFontAtlasBuildNotifySetFont((ImFontAtlas*)patlas, (ImFont*)poldFont, (ImFont*)pnewFont);
 					}
 				}
 			}
 		}
-		public static void ImFontAtlasBuildFinish(ImFontAtlasPtr atlas)
+		public static void ImFontAtlasBuildUpdatePointers(ImFontAtlasPtr atlas)
 		{
-			ImGuiPNative.ImFontAtlasBuildFinish(atlas);
+			ImGuiPNative.ImFontAtlasBuildUpdatePointers((ImFontAtlas*)atlas);
 		}
-		public static void ImFontAtlasBuildFinish(ref ImFontAtlas atlas)
+		public static void ImFontAtlasBuildUpdatePointers(ref ImFontAtlas atlas)
 		{
 			fixed (ImFontAtlas* patlas = &atlas)
 			{
-				ImGuiPNative.ImFontAtlasBuildFinish((ImFontAtlas*)patlas);
+				ImGuiPNative.ImFontAtlasBuildUpdatePointers((ImFontAtlas*)patlas);
 			}
 		}
-		public static void ImFontAtlasBuildMultiplyCalcLookupTable(byte* outTable, float inMultiplyFactor, float gammaFactor)
+		public static void ImFontAtlasBuildClear(ImFontAtlasPtr atlas)
 		{
-			ImGuiPNative.ImFontAtlasBuildMultiplyCalcLookupTable(outTable, inMultiplyFactor, gammaFactor);
+			ImGuiPNative.ImFontAtlasBuildClear((ImFontAtlas*)atlas);
 		}
-		public static void ImFontAtlasBuildMultiplyCalcLookupTable(ref byte outTable, float inMultiplyFactor, float gammaFactor)
+		public static void ImFontAtlasBuildClear(ref ImFontAtlas atlas)
 		{
-			fixed (byte* poutTable = &outTable)
+			fixed (ImFontAtlas* patlas = &atlas)
 			{
-				ImGuiPNative.ImFontAtlasBuildMultiplyCalcLookupTable((byte*)poutTable, inMultiplyFactor, gammaFactor);
+				ImGuiPNative.ImFontAtlasBuildClear((ImFontAtlas*)patlas);
 			}
 		}
-		public static void ImFontAtlasBuildMultiplyCalcLookupTable(ReadOnlySpan<byte> outTable, float inMultiplyFactor, float gammaFactor)
+		public static ImTextureDataPtr ImFontAtlasTextureAdd(ImFontAtlasPtr atlas, int w, int h)
 		{
-			fixed (byte* poutTable = outTable)
+			ImTextureDataPtr ret = ImGuiPNative.ImFontAtlasTextureAdd((ImFontAtlas*)atlas, w, h);
+			return ret;
+		}
+		public static ImTextureDataPtr ImFontAtlasTextureAdd(ref ImFontAtlas atlas, int w, int h)
+		{
+			fixed (ImFontAtlas* patlas = &atlas)
 			{
-				ImGuiPNative.ImFontAtlasBuildMultiplyCalcLookupTable((byte*)poutTable, inMultiplyFactor, gammaFactor);
+				ImTextureDataPtr ret = ImGuiPNative.ImFontAtlasTextureAdd((ImFontAtlas*)patlas, w, h);
+				return ret;
+			}
+		}
+		public static void ImFontAtlasTextureMakeSpace(ImFontAtlasPtr atlas)
+		{
+			ImGuiPNative.ImFontAtlasTextureMakeSpace((ImFontAtlas*)atlas);
+		}
+		public static void ImFontAtlasTextureMakeSpace(ref ImFontAtlas atlas)
+		{
+			fixed (ImFontAtlas* patlas = &atlas)
+			{
+				ImGuiPNative.ImFontAtlasTextureMakeSpace((ImFontAtlas*)patlas);
+			}
+		}
+		public static void ImFontAtlasTextureRepack(ImFontAtlasPtr atlas, int w, int h)
+		{
+			ImGuiPNative.ImFontAtlasTextureRepack((ImFontAtlas*)atlas, w, h);
+		}
+		public static void ImFontAtlasTextureRepack(ref ImFontAtlas atlas, int w, int h)
+		{
+			fixed (ImFontAtlas* patlas = &atlas)
+			{
+				ImGuiPNative.ImFontAtlasTextureRepack((ImFontAtlas*)patlas, w, h);
+			}
+		}
+		public static void ImFontAtlasTextureGrow(ImFontAtlasPtr atlas, int oldW, int oldH)
+		{
+			ImGuiPNative.ImFontAtlasTextureGrow((ImFontAtlas*)atlas, oldW, oldH);
+		}
+		public static void ImFontAtlasTextureGrow(ImFontAtlasPtr atlas, int oldW)
+		{
+			ImGuiPNative.ImFontAtlasTextureGrow((ImFontAtlas*)atlas, oldW, (int)(-1));
+		}
+		public static void ImFontAtlasTextureGrow(ImFontAtlasPtr atlas)
+		{
+			ImGuiPNative.ImFontAtlasTextureGrow((ImFontAtlas*)atlas, (int)(-1), (int)(-1));
+		}
+		public static void ImFontAtlasTextureGrow(ref ImFontAtlas atlas, int oldW, int oldH)
+		{
+			fixed (ImFontAtlas* patlas = &atlas)
+			{
+				ImGuiPNative.ImFontAtlasTextureGrow((ImFontAtlas*)patlas, oldW, oldH);
+			}
+		}
+		public static void ImFontAtlasTextureGrow(ref ImFontAtlas atlas, int oldW)
+		{
+			fixed (ImFontAtlas* patlas = &atlas)
+			{
+				ImGuiPNative.ImFontAtlasTextureGrow((ImFontAtlas*)patlas, oldW, (int)(-1));
+			}
+		}
+		public static void ImFontAtlasTextureGrow(ref ImFontAtlas atlas)
+		{
+			fixed (ImFontAtlas* patlas = &atlas)
+			{
+				ImGuiPNative.ImFontAtlasTextureGrow((ImFontAtlas*)patlas, (int)(-1), (int)(-1));
+			}
+		}
+		public static void ImFontAtlasTextureCompact(ImFontAtlasPtr atlas)
+		{
+			ImGuiPNative.ImFontAtlasTextureCompact((ImFontAtlas*)atlas);
+		}
+		public static void ImFontAtlasTextureCompact(ref ImFontAtlas atlas)
+		{
+			fixed (ImFontAtlas* patlas = &atlas)
+			{
+				ImGuiPNative.ImFontAtlasTextureCompact((ImFontAtlas*)patlas);
+			}
+		}
+		public static ImVec2I ImFontAtlasTextureGetSizeEstimate(ImFontAtlasPtr atlas)
+		{
+			ImVec2I ret = ImGuiPNative.ImFontAtlasTextureGetSizeEstimate((ImFontAtlas*)atlas);
+			return ret;
+		}
+		public static ImVec2I ImFontAtlasTextureGetSizeEstimate(ref ImFontAtlas atlas)
+		{
+			fixed (ImFontAtlas* patlas = &atlas)
+			{
+				ImVec2I ret = ImGuiPNative.ImFontAtlasTextureGetSizeEstimate((ImFontAtlas*)patlas);
+				return ret;
+			}
+		}
+		public static void ImFontAtlasBuildSetupFontSpecialGlyphs(ImFontAtlasPtr atlas, ImFontPtr font, ImFontConfigPtr src)
+		{
+			ImGuiPNative.ImFontAtlasBuildSetupFontSpecialGlyphs((ImFontAtlas*)atlas, (ImFont*)font, (ImFontConfig*)src);
+		}
+		public static void ImFontAtlasBuildSetupFontSpecialGlyphs(ref ImFontAtlas atlas, ImFontPtr font, ImFontConfigPtr src)
+		{
+			fixed (ImFontAtlas* patlas = &atlas)
+			{
+				ImGuiPNative.ImFontAtlasBuildSetupFontSpecialGlyphs((ImFontAtlas*)patlas, (ImFont*)font, (ImFontConfig*)src);
+			}
+		}
+		public static void ImFontAtlasBuildSetupFontSpecialGlyphs(ImFontAtlasPtr atlas, ref ImFont font, ImFontConfigPtr src)
+		{
+			fixed (ImFont* pfont = &font)
+			{
+				ImGuiPNative.ImFontAtlasBuildSetupFontSpecialGlyphs((ImFontAtlas*)atlas, (ImFont*)pfont, (ImFontConfig*)src);
+			}
+		}
+		public static void ImFontAtlasBuildSetupFontSpecialGlyphs(ref ImFontAtlas atlas, ref ImFont font, ImFontConfigPtr src)
+		{
+			fixed (ImFontAtlas* patlas = &atlas)
+			{
+				fixed (ImFont* pfont = &font)
+				{
+					ImGuiPNative.ImFontAtlasBuildSetupFontSpecialGlyphs((ImFontAtlas*)patlas, (ImFont*)pfont, (ImFontConfig*)src);
+				}
+			}
+		}
+		public static void ImFontAtlasBuildSetupFontSpecialGlyphs(ImFontAtlasPtr atlas, ImFontPtr font, ref ImFontConfig src)
+		{
+			fixed (ImFontConfig* psrc = &src)
+			{
+				ImGuiPNative.ImFontAtlasBuildSetupFontSpecialGlyphs((ImFontAtlas*)atlas, (ImFont*)font, (ImFontConfig*)psrc);
+			}
+		}
+		public static void ImFontAtlasBuildSetupFontSpecialGlyphs(ref ImFontAtlas atlas, ImFontPtr font, ref ImFontConfig src)
+		{
+			fixed (ImFontAtlas* patlas = &atlas)
+			{
+				fixed (ImFontConfig* psrc = &src)
+				{
+					ImGuiPNative.ImFontAtlasBuildSetupFontSpecialGlyphs((ImFontAtlas*)patlas, (ImFont*)font, (ImFontConfig*)psrc);
+				}
+			}
+		}
+		public static void ImFontAtlasBuildSetupFontSpecialGlyphs(ImFontAtlasPtr atlas, ref ImFont font, ref ImFontConfig src)
+		{
+			fixed (ImFont* pfont = &font)
+			{
+				fixed (ImFontConfig* psrc = &src)
+				{
+					ImGuiPNative.ImFontAtlasBuildSetupFontSpecialGlyphs((ImFontAtlas*)atlas, (ImFont*)pfont, (ImFontConfig*)psrc);
+				}
+			}
+		}
+		public static void ImFontAtlasBuildSetupFontSpecialGlyphs(ref ImFontAtlas atlas, ref ImFont font, ref ImFontConfig src)
+		{
+			fixed (ImFontAtlas* patlas = &atlas)
+			{
+				fixed (ImFont* pfont = &font)
+				{
+					fixed (ImFontConfig* psrc = &src)
+					{
+						ImGuiPNative.ImFontAtlasBuildSetupFontSpecialGlyphs((ImFontAtlas*)patlas, (ImFont*)pfont, (ImFontConfig*)psrc);
+					}
+				}
+			}
+		}
+		public static void ImFontAtlasBuildLegacyPreloadAllGlyphRanges(ImFontAtlasPtr atlas)
+		{
+			ImGuiPNative.ImFontAtlasBuildLegacyPreloadAllGlyphRanges((ImFontAtlas*)atlas);
+		}
+		public static void ImFontAtlasBuildLegacyPreloadAllGlyphRanges(ref ImFontAtlas atlas)
+		{
+			fixed (ImFontAtlas* patlas = &atlas)
+			{
+				ImGuiPNative.ImFontAtlasBuildLegacyPreloadAllGlyphRanges((ImFontAtlas*)patlas);
+			}
+		}
+		public static void ImFontAtlasBuildGetOversampleFactors(ImFontConfigPtr src, ImFontBakedPtr baked, int* outOversampleH, int* outOversampleV)
+		{
+			ImGuiPNative.ImFontAtlasBuildGetOversampleFactors((ImFontConfig*)src, (ImFontBaked*)baked, outOversampleH, outOversampleV);
+		}
+		public static void ImFontAtlasBuildGetOversampleFactors(ref ImFontConfig src, ImFontBakedPtr baked, int* outOversampleH, int* outOversampleV)
+		{
+			fixed (ImFontConfig* psrc = &src)
+			{
+				ImGuiPNative.ImFontAtlasBuildGetOversampleFactors((ImFontConfig*)psrc, (ImFontBaked*)baked, outOversampleH, outOversampleV);
+			}
+		}
+		public static void ImFontAtlasBuildGetOversampleFactors(ImFontConfigPtr src, ref ImFontBaked baked, int* outOversampleH, int* outOversampleV)
+		{
+			fixed (ImFontBaked* pbaked = &baked)
+			{
+				ImGuiPNative.ImFontAtlasBuildGetOversampleFactors((ImFontConfig*)src, (ImFontBaked*)pbaked, outOversampleH, outOversampleV);
+			}
+		}
+		public static void ImFontAtlasBuildGetOversampleFactors(ref ImFontConfig src, ref ImFontBaked baked, int* outOversampleH, int* outOversampleV)
+		{
+			fixed (ImFontConfig* psrc = &src)
+			{
+				fixed (ImFontBaked* pbaked = &baked)
+				{
+					ImGuiPNative.ImFontAtlasBuildGetOversampleFactors((ImFontConfig*)psrc, (ImFontBaked*)pbaked, outOversampleH, outOversampleV);
+				}
+			}
+		}
+		public static void ImFontAtlasBuildGetOversampleFactors(ImFontConfigPtr src, ImFontBakedPtr baked, ref int outOversampleH, int* outOversampleV)
+		{
+			fixed (int* poutOversampleH = &outOversampleH)
+			{
+				ImGuiPNative.ImFontAtlasBuildGetOversampleFactors((ImFontConfig*)src, (ImFontBaked*)baked, (int*)poutOversampleH, outOversampleV);
+			}
+		}
+		public static void ImFontAtlasBuildGetOversampleFactors(ref ImFontConfig src, ImFontBakedPtr baked, ref int outOversampleH, int* outOversampleV)
+		{
+			fixed (ImFontConfig* psrc = &src)
+			{
+				fixed (int* poutOversampleH = &outOversampleH)
+				{
+					ImGuiPNative.ImFontAtlasBuildGetOversampleFactors((ImFontConfig*)psrc, (ImFontBaked*)baked, (int*)poutOversampleH, outOversampleV);
+				}
+			}
+		}
+		public static void ImFontAtlasBuildGetOversampleFactors(ImFontConfigPtr src, ref ImFontBaked baked, ref int outOversampleH, int* outOversampleV)
+		{
+			fixed (ImFontBaked* pbaked = &baked)
+			{
+				fixed (int* poutOversampleH = &outOversampleH)
+				{
+					ImGuiPNative.ImFontAtlasBuildGetOversampleFactors((ImFontConfig*)src, (ImFontBaked*)pbaked, (int*)poutOversampleH, outOversampleV);
+				}
+			}
+		}
+		public static void ImFontAtlasBuildGetOversampleFactors(ref ImFontConfig src, ref ImFontBaked baked, ref int outOversampleH, int* outOversampleV)
+		{
+			fixed (ImFontConfig* psrc = &src)
+			{
+				fixed (ImFontBaked* pbaked = &baked)
+				{
+					fixed (int* poutOversampleH = &outOversampleH)
+					{
+						ImGuiPNative.ImFontAtlasBuildGetOversampleFactors((ImFontConfig*)psrc, (ImFontBaked*)pbaked, (int*)poutOversampleH, outOversampleV);
+					}
+				}
+			}
+		}
+		public static void ImFontAtlasBuildGetOversampleFactors(ImFontConfigPtr src, ImFontBakedPtr baked, int* outOversampleH, ref int outOversampleV)
+		{
+			fixed (int* poutOversampleV = &outOversampleV)
+			{
+				ImGuiPNative.ImFontAtlasBuildGetOversampleFactors((ImFontConfig*)src, (ImFontBaked*)baked, outOversampleH, (int*)poutOversampleV);
+			}
+		}
+		public static void ImFontAtlasBuildGetOversampleFactors(ref ImFontConfig src, ImFontBakedPtr baked, int* outOversampleH, ref int outOversampleV)
+		{
+			fixed (ImFontConfig* psrc = &src)
+			{
+				fixed (int* poutOversampleV = &outOversampleV)
+				{
+					ImGuiPNative.ImFontAtlasBuildGetOversampleFactors((ImFontConfig*)psrc, (ImFontBaked*)baked, outOversampleH, (int*)poutOversampleV);
+				}
+			}
+		}
+		public static void ImFontAtlasBuildGetOversampleFactors(ImFontConfigPtr src, ref ImFontBaked baked, int* outOversampleH, ref int outOversampleV)
+		{
+			fixed (ImFontBaked* pbaked = &baked)
+			{
+				fixed (int* poutOversampleV = &outOversampleV)
+				{
+					ImGuiPNative.ImFontAtlasBuildGetOversampleFactors((ImFontConfig*)src, (ImFontBaked*)pbaked, outOversampleH, (int*)poutOversampleV);
+				}
+			}
+		}
+		public static void ImFontAtlasBuildGetOversampleFactors(ref ImFontConfig src, ref ImFontBaked baked, int* outOversampleH, ref int outOversampleV)
+		{
+			fixed (ImFontConfig* psrc = &src)
+			{
+				fixed (ImFontBaked* pbaked = &baked)
+				{
+					fixed (int* poutOversampleV = &outOversampleV)
+					{
+						ImGuiPNative.ImFontAtlasBuildGetOversampleFactors((ImFontConfig*)psrc, (ImFontBaked*)pbaked, outOversampleH, (int*)poutOversampleV);
+					}
+				}
+			}
+		}
+		public static void ImFontAtlasBuildGetOversampleFactors(ImFontConfigPtr src, ImFontBakedPtr baked, ref int outOversampleH, ref int outOversampleV)
+		{
+			fixed (int* poutOversampleH = &outOversampleH)
+			{
+				fixed (int* poutOversampleV = &outOversampleV)
+				{
+					ImGuiPNative.ImFontAtlasBuildGetOversampleFactors((ImFontConfig*)src, (ImFontBaked*)baked, (int*)poutOversampleH, (int*)poutOversampleV);
+				}
+			}
+		}
+		public static void ImFontAtlasBuildGetOversampleFactors(ref ImFontConfig src, ImFontBakedPtr baked, ref int outOversampleH, ref int outOversampleV)
+		{
+			fixed (ImFontConfig* psrc = &src)
+			{
+				fixed (int* poutOversampleH = &outOversampleH)
+				{
+					fixed (int* poutOversampleV = &outOversampleV)
+					{
+						ImGuiPNative.ImFontAtlasBuildGetOversampleFactors((ImFontConfig*)psrc, (ImFontBaked*)baked, (int*)poutOversampleH, (int*)poutOversampleV);
+					}
+				}
+			}
+		}
+		public static void ImFontAtlasBuildGetOversampleFactors(ImFontConfigPtr src, ref ImFontBaked baked, ref int outOversampleH, ref int outOversampleV)
+		{
+			fixed (ImFontBaked* pbaked = &baked)
+			{
+				fixed (int* poutOversampleH = &outOversampleH)
+				{
+					fixed (int* poutOversampleV = &outOversampleV)
+					{
+						ImGuiPNative.ImFontAtlasBuildGetOversampleFactors((ImFontConfig*)src, (ImFontBaked*)pbaked, (int*)poutOversampleH, (int*)poutOversampleV);
+					}
+				}
+			}
+		}
+		public static void ImFontAtlasBuildGetOversampleFactors(ref ImFontConfig src, ref ImFontBaked baked, ref int outOversampleH, ref int outOversampleV)
+		{
+			fixed (ImFontConfig* psrc = &src)
+			{
+				fixed (ImFontBaked* pbaked = &baked)
+				{
+					fixed (int* poutOversampleH = &outOversampleH)
+					{
+						fixed (int* poutOversampleV = &outOversampleV)
+						{
+							ImGuiPNative.ImFontAtlasBuildGetOversampleFactors((ImFontConfig*)psrc, (ImFontBaked*)pbaked, (int*)poutOversampleH, (int*)poutOversampleV);
+						}
+					}
+				}
+			}
+		}
+		public static void ImFontAtlasBuildDiscardBakes(ImFontAtlasPtr atlas, int unusedFrames)
+		{
+			ImGuiPNative.ImFontAtlasBuildDiscardBakes((ImFontAtlas*)atlas, unusedFrames);
+		}
+		public static void ImFontAtlasBuildDiscardBakes(ref ImFontAtlas atlas, int unusedFrames)
+		{
+			fixed (ImFontAtlas* patlas = &atlas)
+			{
+				ImGuiPNative.ImFontAtlasBuildDiscardBakes((ImFontAtlas*)patlas, unusedFrames);
+			}
+		}
+		public static bool ImFontAtlasFontSourceInit(ImFontAtlasPtr atlas, ImFontConfigPtr src)
+		{
+			byte ret = ImGuiPNative.ImFontAtlasFontSourceInit((ImFontAtlas*)atlas, (ImFontConfig*)src);
+			return ret != 0;
+		}
+		public static bool ImFontAtlasFontSourceInit(ref ImFontAtlas atlas, ImFontConfigPtr src)
+		{
+			fixed (ImFontAtlas* patlas = &atlas)
+			{
+				byte ret = ImGuiPNative.ImFontAtlasFontSourceInit((ImFontAtlas*)patlas, (ImFontConfig*)src);
+				return ret != 0;
+			}
+		}
+		public static bool ImFontAtlasFontSourceInit(ImFontAtlasPtr atlas, ref ImFontConfig src)
+		{
+			fixed (ImFontConfig* psrc = &src)
+			{
+				byte ret = ImGuiPNative.ImFontAtlasFontSourceInit((ImFontAtlas*)atlas, (ImFontConfig*)psrc);
+				return ret != 0;
+			}
+		}
+		public static bool ImFontAtlasFontSourceInit(ref ImFontAtlas atlas, ref ImFontConfig src)
+		{
+			fixed (ImFontAtlas* patlas = &atlas)
+			{
+				fixed (ImFontConfig* psrc = &src)
+				{
+					byte ret = ImGuiPNative.ImFontAtlasFontSourceInit((ImFontAtlas*)patlas, (ImFontConfig*)psrc);
+					return ret != 0;
+				}
+			}
+		}
+		public static void ImFontAtlasFontSourceAddToFont(ImFontAtlasPtr atlas, ImFontPtr font, ImFontConfigPtr src)
+		{
+			ImGuiPNative.ImFontAtlasFontSourceAddToFont((ImFontAtlas*)atlas, (ImFont*)font, (ImFontConfig*)src);
+		}
+		public static void ImFontAtlasFontSourceAddToFont(ref ImFontAtlas atlas, ImFontPtr font, ImFontConfigPtr src)
+		{
+			fixed (ImFontAtlas* patlas = &atlas)
+			{
+				ImGuiPNative.ImFontAtlasFontSourceAddToFont((ImFontAtlas*)patlas, (ImFont*)font, (ImFontConfig*)src);
+			}
+		}
+		public static void ImFontAtlasFontSourceAddToFont(ImFontAtlasPtr atlas, ref ImFont font, ImFontConfigPtr src)
+		{
+			fixed (ImFont* pfont = &font)
+			{
+				ImGuiPNative.ImFontAtlasFontSourceAddToFont((ImFontAtlas*)atlas, (ImFont*)pfont, (ImFontConfig*)src);
+			}
+		}
+		public static void ImFontAtlasFontSourceAddToFont(ref ImFontAtlas atlas, ref ImFont font, ImFontConfigPtr src)
+		{
+			fixed (ImFontAtlas* patlas = &atlas)
+			{
+				fixed (ImFont* pfont = &font)
+				{
+					ImGuiPNative.ImFontAtlasFontSourceAddToFont((ImFontAtlas*)patlas, (ImFont*)pfont, (ImFontConfig*)src);
+				}
+			}
+		}
+		public static void ImFontAtlasFontSourceAddToFont(ImFontAtlasPtr atlas, ImFontPtr font, ref ImFontConfig src)
+		{
+			fixed (ImFontConfig* psrc = &src)
+			{
+				ImGuiPNative.ImFontAtlasFontSourceAddToFont((ImFontAtlas*)atlas, (ImFont*)font, (ImFontConfig*)psrc);
+			}
+		}
+		public static void ImFontAtlasFontSourceAddToFont(ref ImFontAtlas atlas, ImFontPtr font, ref ImFontConfig src)
+		{
+			fixed (ImFontAtlas* patlas = &atlas)
+			{
+				fixed (ImFontConfig* psrc = &src)
+				{
+					ImGuiPNative.ImFontAtlasFontSourceAddToFont((ImFontAtlas*)patlas, (ImFont*)font, (ImFontConfig*)psrc);
+				}
+			}
+		}
+		public static void ImFontAtlasFontSourceAddToFont(ImFontAtlasPtr atlas, ref ImFont font, ref ImFontConfig src)
+		{
+			fixed (ImFont* pfont = &font)
+			{
+				fixed (ImFontConfig* psrc = &src)
+				{
+					ImGuiPNative.ImFontAtlasFontSourceAddToFont((ImFontAtlas*)atlas, (ImFont*)pfont, (ImFontConfig*)psrc);
+				}
+			}
+		}
+		public static void ImFontAtlasFontSourceAddToFont(ref ImFontAtlas atlas, ref ImFont font, ref ImFontConfig src)
+		{
+			fixed (ImFontAtlas* patlas = &atlas)
+			{
+				fixed (ImFont* pfont = &font)
+				{
+					fixed (ImFontConfig* psrc = &src)
+					{
+						ImGuiPNative.ImFontAtlasFontSourceAddToFont((ImFontAtlas*)patlas, (ImFont*)pfont, (ImFontConfig*)psrc);
+					}
+				}
+			}
+		}
+		public static void ImFontAtlasFontDestroySourceData(ImFontAtlasPtr atlas, ImFontConfigPtr src)
+		{
+			ImGuiPNative.ImFontAtlasFontDestroySourceData((ImFontAtlas*)atlas, (ImFontConfig*)src);
+		}
+		public static void ImFontAtlasFontDestroySourceData(ref ImFontAtlas atlas, ImFontConfigPtr src)
+		{
+			fixed (ImFontAtlas* patlas = &atlas)
+			{
+				ImGuiPNative.ImFontAtlasFontDestroySourceData((ImFontAtlas*)patlas, (ImFontConfig*)src);
+			}
+		}
+		public static void ImFontAtlasFontDestroySourceData(ImFontAtlasPtr atlas, ref ImFontConfig src)
+		{
+			fixed (ImFontConfig* psrc = &src)
+			{
+				ImGuiPNative.ImFontAtlasFontDestroySourceData((ImFontAtlas*)atlas, (ImFontConfig*)psrc);
+			}
+		}
+		public static void ImFontAtlasFontDestroySourceData(ref ImFontAtlas atlas, ref ImFontConfig src)
+		{
+			fixed (ImFontAtlas* patlas = &atlas)
+			{
+				fixed (ImFontConfig* psrc = &src)
+				{
+					ImGuiPNative.ImFontAtlasFontDestroySourceData((ImFontAtlas*)patlas, (ImFontConfig*)psrc);
+				}
+			}
+		}
+		public static bool ImFontAtlasFontInitOutput(ImFontAtlasPtr atlas, ImFontPtr font)
+		{
+			byte ret = ImGuiPNative.ImFontAtlasFontInitOutput((ImFontAtlas*)atlas, (ImFont*)font);
+			return ret != 0;
+		}
+		public static bool ImFontAtlasFontInitOutput(ref ImFontAtlas atlas, ImFontPtr font)
+		{
+			fixed (ImFontAtlas* patlas = &atlas)
+			{
+				byte ret = ImGuiPNative.ImFontAtlasFontInitOutput((ImFontAtlas*)patlas, (ImFont*)font);
+				return ret != 0;
+			}
+		}
+		public static bool ImFontAtlasFontInitOutput(ImFontAtlasPtr atlas, ref ImFont font)
+		{
+			fixed (ImFont* pfont = &font)
+			{
+				byte ret = ImGuiPNative.ImFontAtlasFontInitOutput((ImFontAtlas*)atlas, (ImFont*)pfont);
+				return ret != 0;
+			}
+		}
+		public static bool ImFontAtlasFontInitOutput(ref ImFontAtlas atlas, ref ImFont font)
+		{
+			fixed (ImFontAtlas* patlas = &atlas)
+			{
+				fixed (ImFont* pfont = &font)
+				{
+					byte ret = ImGuiPNative.ImFontAtlasFontInitOutput((ImFontAtlas*)patlas, (ImFont*)pfont);
+					return ret != 0;
+				}
+			}
+		}
+		public static void ImFontAtlasFontDestroyOutput(ImFontAtlasPtr atlas, ImFontPtr font)
+		{
+			ImGuiPNative.ImFontAtlasFontDestroyOutput((ImFontAtlas*)atlas, (ImFont*)font);
+		}
+		public static void ImFontAtlasFontDestroyOutput(ref ImFontAtlas atlas, ImFontPtr font)
+		{
+			fixed (ImFontAtlas* patlas = &atlas)
+			{
+				ImGuiPNative.ImFontAtlasFontDestroyOutput((ImFontAtlas*)patlas, (ImFont*)font);
+			}
+		}
+		public static void ImFontAtlasFontDestroyOutput(ImFontAtlasPtr atlas, ref ImFont font)
+		{
+			fixed (ImFont* pfont = &font)
+			{
+				ImGuiPNative.ImFontAtlasFontDestroyOutput((ImFontAtlas*)atlas, (ImFont*)pfont);
+			}
+		}
+		public static void ImFontAtlasFontDestroyOutput(ref ImFontAtlas atlas, ref ImFont font)
+		{
+			fixed (ImFontAtlas* patlas = &atlas)
+			{
+				fixed (ImFont* pfont = &font)
+				{
+					ImGuiPNative.ImFontAtlasFontDestroyOutput((ImFontAtlas*)patlas, (ImFont*)pfont);
+				}
+			}
+		}
+		public static void ImFontAtlasFontRebuildOutput(ImFontAtlasPtr atlas, ImFontPtr font)
+		{
+			ImGuiPNative.ImFontAtlasFontRebuildOutput((ImFontAtlas*)atlas, (ImFont*)font);
+		}
+		public static void ImFontAtlasFontRebuildOutput(ref ImFontAtlas atlas, ImFontPtr font)
+		{
+			fixed (ImFontAtlas* patlas = &atlas)
+			{
+				ImGuiPNative.ImFontAtlasFontRebuildOutput((ImFontAtlas*)patlas, (ImFont*)font);
+			}
+		}
+		public static void ImFontAtlasFontRebuildOutput(ImFontAtlasPtr atlas, ref ImFont font)
+		{
+			fixed (ImFont* pfont = &font)
+			{
+				ImGuiPNative.ImFontAtlasFontRebuildOutput((ImFontAtlas*)atlas, (ImFont*)pfont);
+			}
+		}
+		public static void ImFontAtlasFontRebuildOutput(ref ImFontAtlas atlas, ref ImFont font)
+		{
+			fixed (ImFontAtlas* patlas = &atlas)
+			{
+				fixed (ImFont* pfont = &font)
+				{
+					ImGuiPNative.ImFontAtlasFontRebuildOutput((ImFontAtlas*)patlas, (ImFont*)pfont);
+				}
+			}
+		}
+		public static void ImFontAtlasFontDiscardBakes(ImFontAtlasPtr atlas, ImFontPtr font, int unusedFrames)
+		{
+			ImGuiPNative.ImFontAtlasFontDiscardBakes((ImFontAtlas*)atlas, (ImFont*)font, unusedFrames);
+		}
+		public static void ImFontAtlasFontDiscardBakes(ref ImFontAtlas atlas, ImFontPtr font, int unusedFrames)
+		{
+			fixed (ImFontAtlas* patlas = &atlas)
+			{
+				ImGuiPNative.ImFontAtlasFontDiscardBakes((ImFontAtlas*)patlas, (ImFont*)font, unusedFrames);
+			}
+		}
+		public static void ImFontAtlasFontDiscardBakes(ImFontAtlasPtr atlas, ref ImFont font, int unusedFrames)
+		{
+			fixed (ImFont* pfont = &font)
+			{
+				ImGuiPNative.ImFontAtlasFontDiscardBakes((ImFontAtlas*)atlas, (ImFont*)pfont, unusedFrames);
+			}
+		}
+		public static void ImFontAtlasFontDiscardBakes(ref ImFontAtlas atlas, ref ImFont font, int unusedFrames)
+		{
+			fixed (ImFontAtlas* patlas = &atlas)
+			{
+				fixed (ImFont* pfont = &font)
+				{
+					ImGuiPNative.ImFontAtlasFontDiscardBakes((ImFontAtlas*)patlas, (ImFont*)pfont, unusedFrames);
+				}
+			}
+		}
+		public static uint ImFontAtlasBakedGetId(uint fontId, float bakedSize, float rasterizerDensity)
+		{
+			uint ret = ImGuiPNative.ImFontAtlasBakedGetId(fontId, bakedSize, rasterizerDensity);
+			return ret;
+		}
+		public static ImFontBakedPtr ImFontAtlasBakedGetOrAdd(ImFontAtlasPtr atlas, ImFontPtr font, float fontSize, float fontRasterizerDensity)
+		{
+			ImFontBakedPtr ret = ImGuiPNative.ImFontAtlasBakedGetOrAdd((ImFontAtlas*)atlas, (ImFont*)font, fontSize, fontRasterizerDensity);
+			return ret;
+		}
+		public static ImFontBakedPtr ImFontAtlasBakedGetOrAdd(ref ImFontAtlas atlas, ImFontPtr font, float fontSize, float fontRasterizerDensity)
+		{
+			fixed (ImFontAtlas* patlas = &atlas)
+			{
+				ImFontBakedPtr ret = ImGuiPNative.ImFontAtlasBakedGetOrAdd((ImFontAtlas*)patlas, (ImFont*)font, fontSize, fontRasterizerDensity);
+				return ret;
+			}
+		}
+		public static ImFontBakedPtr ImFontAtlasBakedGetOrAdd(ImFontAtlasPtr atlas, ref ImFont font, float fontSize, float fontRasterizerDensity)
+		{
+			fixed (ImFont* pfont = &font)
+			{
+				ImFontBakedPtr ret = ImGuiPNative.ImFontAtlasBakedGetOrAdd((ImFontAtlas*)atlas, (ImFont*)pfont, fontSize, fontRasterizerDensity);
+				return ret;
+			}
+		}
+		public static ImFontBakedPtr ImFontAtlasBakedGetOrAdd(ref ImFontAtlas atlas, ref ImFont font, float fontSize, float fontRasterizerDensity)
+		{
+			fixed (ImFontAtlas* patlas = &atlas)
+			{
+				fixed (ImFont* pfont = &font)
+				{
+					ImFontBakedPtr ret = ImGuiPNative.ImFontAtlasBakedGetOrAdd((ImFontAtlas*)patlas, (ImFont*)pfont, fontSize, fontRasterizerDensity);
+					return ret;
+				}
+			}
+		}
+		public static ImFontBakedPtr ImFontAtlasBakedGetClosestMatch(ImFontAtlasPtr atlas, ImFontPtr font, float fontSize, float fontRasterizerDensity)
+		{
+			ImFontBakedPtr ret = ImGuiPNative.ImFontAtlasBakedGetClosestMatch((ImFontAtlas*)atlas, (ImFont*)font, fontSize, fontRasterizerDensity);
+			return ret;
+		}
+		public static ImFontBakedPtr ImFontAtlasBakedGetClosestMatch(ref ImFontAtlas atlas, ImFontPtr font, float fontSize, float fontRasterizerDensity)
+		{
+			fixed (ImFontAtlas* patlas = &atlas)
+			{
+				ImFontBakedPtr ret = ImGuiPNative.ImFontAtlasBakedGetClosestMatch((ImFontAtlas*)patlas, (ImFont*)font, fontSize, fontRasterizerDensity);
+				return ret;
+			}
+		}
+		public static ImFontBakedPtr ImFontAtlasBakedGetClosestMatch(ImFontAtlasPtr atlas, ref ImFont font, float fontSize, float fontRasterizerDensity)
+		{
+			fixed (ImFont* pfont = &font)
+			{
+				ImFontBakedPtr ret = ImGuiPNative.ImFontAtlasBakedGetClosestMatch((ImFontAtlas*)atlas, (ImFont*)pfont, fontSize, fontRasterizerDensity);
+				return ret;
+			}
+		}
+		public static ImFontBakedPtr ImFontAtlasBakedGetClosestMatch(ref ImFontAtlas atlas, ref ImFont font, float fontSize, float fontRasterizerDensity)
+		{
+			fixed (ImFontAtlas* patlas = &atlas)
+			{
+				fixed (ImFont* pfont = &font)
+				{
+					ImFontBakedPtr ret = ImGuiPNative.ImFontAtlasBakedGetClosestMatch((ImFontAtlas*)patlas, (ImFont*)pfont, fontSize, fontRasterizerDensity);
+					return ret;
+				}
+			}
+		}
+		public static ImFontBakedPtr ImFontAtlasBakedAdd(ImFontAtlasPtr atlas, ImFontPtr font, float fontSize, float fontRasterizerDensity, uint bakedId)
+		{
+			ImFontBakedPtr ret = ImGuiPNative.ImFontAtlasBakedAdd((ImFontAtlas*)atlas, (ImFont*)font, fontSize, fontRasterizerDensity, bakedId);
+			return ret;
+		}
+		public static ImFontBakedPtr ImFontAtlasBakedAdd(ref ImFontAtlas atlas, ImFontPtr font, float fontSize, float fontRasterizerDensity, uint bakedId)
+		{
+			fixed (ImFontAtlas* patlas = &atlas)
+			{
+				ImFontBakedPtr ret = ImGuiPNative.ImFontAtlasBakedAdd((ImFontAtlas*)patlas, (ImFont*)font, fontSize, fontRasterizerDensity, bakedId);
+				return ret;
+			}
+		}
+		public static ImFontBakedPtr ImFontAtlasBakedAdd(ImFontAtlasPtr atlas, ref ImFont font, float fontSize, float fontRasterizerDensity, uint bakedId)
+		{
+			fixed (ImFont* pfont = &font)
+			{
+				ImFontBakedPtr ret = ImGuiPNative.ImFontAtlasBakedAdd((ImFontAtlas*)atlas, (ImFont*)pfont, fontSize, fontRasterizerDensity, bakedId);
+				return ret;
+			}
+		}
+		public static ImFontBakedPtr ImFontAtlasBakedAdd(ref ImFontAtlas atlas, ref ImFont font, float fontSize, float fontRasterizerDensity, uint bakedId)
+		{
+			fixed (ImFontAtlas* patlas = &atlas)
+			{
+				fixed (ImFont* pfont = &font)
+				{
+					ImFontBakedPtr ret = ImGuiPNative.ImFontAtlasBakedAdd((ImFontAtlas*)patlas, (ImFont*)pfont, fontSize, fontRasterizerDensity, bakedId);
+					return ret;
+				}
+			}
+		}
+		public static void ImFontAtlasBakedDiscard(ImFontAtlasPtr atlas, ImFontPtr font, ImFontBakedPtr baked)
+		{
+			ImGuiPNative.ImFontAtlasBakedDiscard((ImFontAtlas*)atlas, (ImFont*)font, (ImFontBaked*)baked);
+		}
+		public static void ImFontAtlasBakedDiscard(ref ImFontAtlas atlas, ImFontPtr font, ImFontBakedPtr baked)
+		{
+			fixed (ImFontAtlas* patlas = &atlas)
+			{
+				ImGuiPNative.ImFontAtlasBakedDiscard((ImFontAtlas*)patlas, (ImFont*)font, (ImFontBaked*)baked);
+			}
+		}
+		public static void ImFontAtlasBakedDiscard(ImFontAtlasPtr atlas, ref ImFont font, ImFontBakedPtr baked)
+		{
+			fixed (ImFont* pfont = &font)
+			{
+				ImGuiPNative.ImFontAtlasBakedDiscard((ImFontAtlas*)atlas, (ImFont*)pfont, (ImFontBaked*)baked);
+			}
+		}
+		public static void ImFontAtlasBakedDiscard(ref ImFontAtlas atlas, ref ImFont font, ImFontBakedPtr baked)
+		{
+			fixed (ImFontAtlas* patlas = &atlas)
+			{
+				fixed (ImFont* pfont = &font)
+				{
+					ImGuiPNative.ImFontAtlasBakedDiscard((ImFontAtlas*)patlas, (ImFont*)pfont, (ImFontBaked*)baked);
+				}
+			}
+		}
+		public static void ImFontAtlasBakedDiscard(ImFontAtlasPtr atlas, ImFontPtr font, ref ImFontBaked baked)
+		{
+			fixed (ImFontBaked* pbaked = &baked)
+			{
+				ImGuiPNative.ImFontAtlasBakedDiscard((ImFontAtlas*)atlas, (ImFont*)font, (ImFontBaked*)pbaked);
+			}
+		}
+		public static void ImFontAtlasBakedDiscard(ref ImFontAtlas atlas, ImFontPtr font, ref ImFontBaked baked)
+		{
+			fixed (ImFontAtlas* patlas = &atlas)
+			{
+				fixed (ImFontBaked* pbaked = &baked)
+				{
+					ImGuiPNative.ImFontAtlasBakedDiscard((ImFontAtlas*)patlas, (ImFont*)font, (ImFontBaked*)pbaked);
+				}
+			}
+		}
+		public static void ImFontAtlasBakedDiscard(ImFontAtlasPtr atlas, ref ImFont font, ref ImFontBaked baked)
+		{
+			fixed (ImFont* pfont = &font)
+			{
+				fixed (ImFontBaked* pbaked = &baked)
+				{
+					ImGuiPNative.ImFontAtlasBakedDiscard((ImFontAtlas*)atlas, (ImFont*)pfont, (ImFontBaked*)pbaked);
+				}
+			}
+		}
+		public static void ImFontAtlasBakedDiscard(ref ImFontAtlas atlas, ref ImFont font, ref ImFontBaked baked)
+		{
+			fixed (ImFontAtlas* patlas = &atlas)
+			{
+				fixed (ImFont* pfont = &font)
+				{
+					fixed (ImFontBaked* pbaked = &baked)
+					{
+						ImGuiPNative.ImFontAtlasBakedDiscard((ImFontAtlas*)patlas, (ImFont*)pfont, (ImFontBaked*)pbaked);
+					}
+				}
+			}
+		}
+		public static ImFontGlyphPtr ImFontAtlasBakedAddFontGlyph(ImFontAtlasPtr atlas, ImFontBakedPtr baked, ImFontConfigPtr src, ImFontGlyphPtr inGlyph)
+		{
+			ImFontGlyphPtr ret = ImGuiPNative.ImFontAtlasBakedAddFontGlyph((ImFontAtlas*)atlas, (ImFontBaked*)baked, (ImFontConfig*)src, (ImFontGlyph*)inGlyph);
+			return ret;
+		}
+		public static ImFontGlyphPtr ImFontAtlasBakedAddFontGlyph(ref ImFontAtlas atlas, ImFontBakedPtr baked, ImFontConfigPtr src, ImFontGlyphPtr inGlyph)
+		{
+			fixed (ImFontAtlas* patlas = &atlas)
+			{
+				ImFontGlyphPtr ret = ImGuiPNative.ImFontAtlasBakedAddFontGlyph((ImFontAtlas*)patlas, (ImFontBaked*)baked, (ImFontConfig*)src, (ImFontGlyph*)inGlyph);
+				return ret;
+			}
+		}
+		public static ImFontGlyphPtr ImFontAtlasBakedAddFontGlyph(ImFontAtlasPtr atlas, ref ImFontBaked baked, ImFontConfigPtr src, ImFontGlyphPtr inGlyph)
+		{
+			fixed (ImFontBaked* pbaked = &baked)
+			{
+				ImFontGlyphPtr ret = ImGuiPNative.ImFontAtlasBakedAddFontGlyph((ImFontAtlas*)atlas, (ImFontBaked*)pbaked, (ImFontConfig*)src, (ImFontGlyph*)inGlyph);
+				return ret;
+			}
+		}
+		public static ImFontGlyphPtr ImFontAtlasBakedAddFontGlyph(ref ImFontAtlas atlas, ref ImFontBaked baked, ImFontConfigPtr src, ImFontGlyphPtr inGlyph)
+		{
+			fixed (ImFontAtlas* patlas = &atlas)
+			{
+				fixed (ImFontBaked* pbaked = &baked)
+				{
+					ImFontGlyphPtr ret = ImGuiPNative.ImFontAtlasBakedAddFontGlyph((ImFontAtlas*)patlas, (ImFontBaked*)pbaked, (ImFontConfig*)src, (ImFontGlyph*)inGlyph);
+					return ret;
+				}
+			}
+		}
+		public static ImFontGlyphPtr ImFontAtlasBakedAddFontGlyph(ImFontAtlasPtr atlas, ImFontBakedPtr baked, ref ImFontConfig src, ImFontGlyphPtr inGlyph)
+		{
+			fixed (ImFontConfig* psrc = &src)
+			{
+				ImFontGlyphPtr ret = ImGuiPNative.ImFontAtlasBakedAddFontGlyph((ImFontAtlas*)atlas, (ImFontBaked*)baked, (ImFontConfig*)psrc, (ImFontGlyph*)inGlyph);
+				return ret;
+			}
+		}
+		public static ImFontGlyphPtr ImFontAtlasBakedAddFontGlyph(ref ImFontAtlas atlas, ImFontBakedPtr baked, ref ImFontConfig src, ImFontGlyphPtr inGlyph)
+		{
+			fixed (ImFontAtlas* patlas = &atlas)
+			{
+				fixed (ImFontConfig* psrc = &src)
+				{
+					ImFontGlyphPtr ret = ImGuiPNative.ImFontAtlasBakedAddFontGlyph((ImFontAtlas*)patlas, (ImFontBaked*)baked, (ImFontConfig*)psrc, (ImFontGlyph*)inGlyph);
+					return ret;
+				}
+			}
+		}
+		public static ImFontGlyphPtr ImFontAtlasBakedAddFontGlyph(ImFontAtlasPtr atlas, ref ImFontBaked baked, ref ImFontConfig src, ImFontGlyphPtr inGlyph)
+		{
+			fixed (ImFontBaked* pbaked = &baked)
+			{
+				fixed (ImFontConfig* psrc = &src)
+				{
+					ImFontGlyphPtr ret = ImGuiPNative.ImFontAtlasBakedAddFontGlyph((ImFontAtlas*)atlas, (ImFontBaked*)pbaked, (ImFontConfig*)psrc, (ImFontGlyph*)inGlyph);
+					return ret;
+				}
+			}
+		}
+		public static ImFontGlyphPtr ImFontAtlasBakedAddFontGlyph(ref ImFontAtlas atlas, ref ImFontBaked baked, ref ImFontConfig src, ImFontGlyphPtr inGlyph)
+		{
+			fixed (ImFontAtlas* patlas = &atlas)
+			{
+				fixed (ImFontBaked* pbaked = &baked)
+				{
+					fixed (ImFontConfig* psrc = &src)
+					{
+						ImFontGlyphPtr ret = ImGuiPNative.ImFontAtlasBakedAddFontGlyph((ImFontAtlas*)patlas, (ImFontBaked*)pbaked, (ImFontConfig*)psrc, (ImFontGlyph*)inGlyph);
+						return ret;
+					}
+				}
+			}
+		}
+		public static ImFontGlyphPtr ImFontAtlasBakedAddFontGlyph(ImFontAtlasPtr atlas, ImFontBakedPtr baked, ImFontConfigPtr src, in ImFontGlyph inGlyph)
+		{
+			fixed (ImFontGlyph* pinGlyph = &inGlyph)
+			{
+				ImFontGlyphPtr ret = ImGuiPNative.ImFontAtlasBakedAddFontGlyph((ImFontAtlas*)atlas, (ImFontBaked*)baked, (ImFontConfig*)src, (ImFontGlyph*)pinGlyph);
+				return ret;
+			}
+		}
+		public static ImFontGlyphPtr ImFontAtlasBakedAddFontGlyph(ref ImFontAtlas atlas, ImFontBakedPtr baked, ImFontConfigPtr src, in ImFontGlyph inGlyph)
+		{
+			fixed (ImFontAtlas* patlas = &atlas)
+			{
+				fixed (ImFontGlyph* pinGlyph = &inGlyph)
+				{
+					ImFontGlyphPtr ret = ImGuiPNative.ImFontAtlasBakedAddFontGlyph((ImFontAtlas*)patlas, (ImFontBaked*)baked, (ImFontConfig*)src, (ImFontGlyph*)pinGlyph);
+					return ret;
+				}
+			}
+		}
+		public static ImFontGlyphPtr ImFontAtlasBakedAddFontGlyph(ImFontAtlasPtr atlas, ref ImFontBaked baked, ImFontConfigPtr src, in ImFontGlyph inGlyph)
+		{
+			fixed (ImFontBaked* pbaked = &baked)
+			{
+				fixed (ImFontGlyph* pinGlyph = &inGlyph)
+				{
+					ImFontGlyphPtr ret = ImGuiPNative.ImFontAtlasBakedAddFontGlyph((ImFontAtlas*)atlas, (ImFontBaked*)pbaked, (ImFontConfig*)src, (ImFontGlyph*)pinGlyph);
+					return ret;
+				}
+			}
+		}
+		public static ImFontGlyphPtr ImFontAtlasBakedAddFontGlyph(ref ImFontAtlas atlas, ref ImFontBaked baked, ImFontConfigPtr src, in ImFontGlyph inGlyph)
+		{
+			fixed (ImFontAtlas* patlas = &atlas)
+			{
+				fixed (ImFontBaked* pbaked = &baked)
+				{
+					fixed (ImFontGlyph* pinGlyph = &inGlyph)
+					{
+						ImFontGlyphPtr ret = ImGuiPNative.ImFontAtlasBakedAddFontGlyph((ImFontAtlas*)patlas, (ImFontBaked*)pbaked, (ImFontConfig*)src, (ImFontGlyph*)pinGlyph);
+						return ret;
+					}
+				}
+			}
+		}
+		public static ImFontGlyphPtr ImFontAtlasBakedAddFontGlyph(ImFontAtlasPtr atlas, ImFontBakedPtr baked, ref ImFontConfig src, in ImFontGlyph inGlyph)
+		{
+			fixed (ImFontConfig* psrc = &src)
+			{
+				fixed (ImFontGlyph* pinGlyph = &inGlyph)
+				{
+					ImFontGlyphPtr ret = ImGuiPNative.ImFontAtlasBakedAddFontGlyph((ImFontAtlas*)atlas, (ImFontBaked*)baked, (ImFontConfig*)psrc, (ImFontGlyph*)pinGlyph);
+					return ret;
+				}
+			}
+		}
+		public static ImFontGlyphPtr ImFontAtlasBakedAddFontGlyph(ref ImFontAtlas atlas, ImFontBakedPtr baked, ref ImFontConfig src, in ImFontGlyph inGlyph)
+		{
+			fixed (ImFontAtlas* patlas = &atlas)
+			{
+				fixed (ImFontConfig* psrc = &src)
+				{
+					fixed (ImFontGlyph* pinGlyph = &inGlyph)
+					{
+						ImFontGlyphPtr ret = ImGuiPNative.ImFontAtlasBakedAddFontGlyph((ImFontAtlas*)patlas, (ImFontBaked*)baked, (ImFontConfig*)psrc, (ImFontGlyph*)pinGlyph);
+						return ret;
+					}
+				}
+			}
+		}
+		public static ImFontGlyphPtr ImFontAtlasBakedAddFontGlyph(ImFontAtlasPtr atlas, ref ImFontBaked baked, ref ImFontConfig src, in ImFontGlyph inGlyph)
+		{
+			fixed (ImFontBaked* pbaked = &baked)
+			{
+				fixed (ImFontConfig* psrc = &src)
+				{
+					fixed (ImFontGlyph* pinGlyph = &inGlyph)
+					{
+						ImFontGlyphPtr ret = ImGuiPNative.ImFontAtlasBakedAddFontGlyph((ImFontAtlas*)atlas, (ImFontBaked*)pbaked, (ImFontConfig*)psrc, (ImFontGlyph*)pinGlyph);
+						return ret;
+					}
+				}
+			}
+		}
+		public static ImFontGlyphPtr ImFontAtlasBakedAddFontGlyph(ref ImFontAtlas atlas, ref ImFontBaked baked, ref ImFontConfig src, in ImFontGlyph inGlyph)
+		{
+			fixed (ImFontAtlas* patlas = &atlas)
+			{
+				fixed (ImFontBaked* pbaked = &baked)
+				{
+					fixed (ImFontConfig* psrc = &src)
+					{
+						fixed (ImFontGlyph* pinGlyph = &inGlyph)
+						{
+							ImFontGlyphPtr ret = ImGuiPNative.ImFontAtlasBakedAddFontGlyph((ImFontAtlas*)patlas, (ImFontBaked*)pbaked, (ImFontConfig*)psrc, (ImFontGlyph*)pinGlyph);
+							return ret;
+						}
+					}
+				}
+			}
+		}
+		public static void ImFontAtlasBakedAddFontGlyphAdvancedX(ImFontAtlasPtr atlas, ImFontBakedPtr baked, ImFontConfigPtr src, ushort codepoint, float advanceX)
+		{
+			ImGuiPNative.ImFontAtlasBakedAddFontGlyphAdvancedX((ImFontAtlas*)atlas, (ImFontBaked*)baked, (ImFontConfig*)src, codepoint, advanceX);
+		}
+		public static void ImFontAtlasBakedAddFontGlyphAdvancedX(ref ImFontAtlas atlas, ImFontBakedPtr baked, ImFontConfigPtr src, ushort codepoint, float advanceX)
+		{
+			fixed (ImFontAtlas* patlas = &atlas)
+			{
+				ImGuiPNative.ImFontAtlasBakedAddFontGlyphAdvancedX((ImFontAtlas*)patlas, (ImFontBaked*)baked, (ImFontConfig*)src, codepoint, advanceX);
+			}
+		}
+		public static void ImFontAtlasBakedAddFontGlyphAdvancedX(ImFontAtlasPtr atlas, ref ImFontBaked baked, ImFontConfigPtr src, ushort codepoint, float advanceX)
+		{
+			fixed (ImFontBaked* pbaked = &baked)
+			{
+				ImGuiPNative.ImFontAtlasBakedAddFontGlyphAdvancedX((ImFontAtlas*)atlas, (ImFontBaked*)pbaked, (ImFontConfig*)src, codepoint, advanceX);
+			}
+		}
+		public static void ImFontAtlasBakedAddFontGlyphAdvancedX(ref ImFontAtlas atlas, ref ImFontBaked baked, ImFontConfigPtr src, ushort codepoint, float advanceX)
+		{
+			fixed (ImFontAtlas* patlas = &atlas)
+			{
+				fixed (ImFontBaked* pbaked = &baked)
+				{
+					ImGuiPNative.ImFontAtlasBakedAddFontGlyphAdvancedX((ImFontAtlas*)patlas, (ImFontBaked*)pbaked, (ImFontConfig*)src, codepoint, advanceX);
+				}
+			}
+		}
+		public static void ImFontAtlasBakedAddFontGlyphAdvancedX(ImFontAtlasPtr atlas, ImFontBakedPtr baked, ref ImFontConfig src, ushort codepoint, float advanceX)
+		{
+			fixed (ImFontConfig* psrc = &src)
+			{
+				ImGuiPNative.ImFontAtlasBakedAddFontGlyphAdvancedX((ImFontAtlas*)atlas, (ImFontBaked*)baked, (ImFontConfig*)psrc, codepoint, advanceX);
+			}
+		}
+		public static void ImFontAtlasBakedAddFontGlyphAdvancedX(ref ImFontAtlas atlas, ImFontBakedPtr baked, ref ImFontConfig src, ushort codepoint, float advanceX)
+		{
+			fixed (ImFontAtlas* patlas = &atlas)
+			{
+				fixed (ImFontConfig* psrc = &src)
+				{
+					ImGuiPNative.ImFontAtlasBakedAddFontGlyphAdvancedX((ImFontAtlas*)patlas, (ImFontBaked*)baked, (ImFontConfig*)psrc, codepoint, advanceX);
+				}
+			}
+		}
+		public static void ImFontAtlasBakedAddFontGlyphAdvancedX(ImFontAtlasPtr atlas, ref ImFontBaked baked, ref ImFontConfig src, ushort codepoint, float advanceX)
+		{
+			fixed (ImFontBaked* pbaked = &baked)
+			{
+				fixed (ImFontConfig* psrc = &src)
+				{
+					ImGuiPNative.ImFontAtlasBakedAddFontGlyphAdvancedX((ImFontAtlas*)atlas, (ImFontBaked*)pbaked, (ImFontConfig*)psrc, codepoint, advanceX);
+				}
+			}
+		}
+		public static void ImFontAtlasBakedAddFontGlyphAdvancedX(ref ImFontAtlas atlas, ref ImFontBaked baked, ref ImFontConfig src, ushort codepoint, float advanceX)
+		{
+			fixed (ImFontAtlas* patlas = &atlas)
+			{
+				fixed (ImFontBaked* pbaked = &baked)
+				{
+					fixed (ImFontConfig* psrc = &src)
+					{
+						ImGuiPNative.ImFontAtlasBakedAddFontGlyphAdvancedX((ImFontAtlas*)patlas, (ImFontBaked*)pbaked, (ImFontConfig*)psrc, codepoint, advanceX);
+					}
+				}
+			}
+		}
+		public static void ImFontAtlasBakedDiscardFontGlyph(ImFontAtlasPtr atlas, ImFontPtr font, ImFontBakedPtr baked, ImFontGlyphPtr glyph)
+		{
+			ImGuiPNative.ImFontAtlasBakedDiscardFontGlyph((ImFontAtlas*)atlas, (ImFont*)font, (ImFontBaked*)baked, (ImFontGlyph*)glyph);
+		}
+		public static void ImFontAtlasBakedDiscardFontGlyph(ref ImFontAtlas atlas, ImFontPtr font, ImFontBakedPtr baked, ImFontGlyphPtr glyph)
+		{
+			fixed (ImFontAtlas* patlas = &atlas)
+			{
+				ImGuiPNative.ImFontAtlasBakedDiscardFontGlyph((ImFontAtlas*)patlas, (ImFont*)font, (ImFontBaked*)baked, (ImFontGlyph*)glyph);
+			}
+		}
+		public static void ImFontAtlasBakedDiscardFontGlyph(ImFontAtlasPtr atlas, ref ImFont font, ImFontBakedPtr baked, ImFontGlyphPtr glyph)
+		{
+			fixed (ImFont* pfont = &font)
+			{
+				ImGuiPNative.ImFontAtlasBakedDiscardFontGlyph((ImFontAtlas*)atlas, (ImFont*)pfont, (ImFontBaked*)baked, (ImFontGlyph*)glyph);
+			}
+		}
+		public static void ImFontAtlasBakedDiscardFontGlyph(ref ImFontAtlas atlas, ref ImFont font, ImFontBakedPtr baked, ImFontGlyphPtr glyph)
+		{
+			fixed (ImFontAtlas* patlas = &atlas)
+			{
+				fixed (ImFont* pfont = &font)
+				{
+					ImGuiPNative.ImFontAtlasBakedDiscardFontGlyph((ImFontAtlas*)patlas, (ImFont*)pfont, (ImFontBaked*)baked, (ImFontGlyph*)glyph);
+				}
+			}
+		}
+		public static void ImFontAtlasBakedDiscardFontGlyph(ImFontAtlasPtr atlas, ImFontPtr font, ref ImFontBaked baked, ImFontGlyphPtr glyph)
+		{
+			fixed (ImFontBaked* pbaked = &baked)
+			{
+				ImGuiPNative.ImFontAtlasBakedDiscardFontGlyph((ImFontAtlas*)atlas, (ImFont*)font, (ImFontBaked*)pbaked, (ImFontGlyph*)glyph);
+			}
+		}
+		public static void ImFontAtlasBakedDiscardFontGlyph(ref ImFontAtlas atlas, ImFontPtr font, ref ImFontBaked baked, ImFontGlyphPtr glyph)
+		{
+			fixed (ImFontAtlas* patlas = &atlas)
+			{
+				fixed (ImFontBaked* pbaked = &baked)
+				{
+					ImGuiPNative.ImFontAtlasBakedDiscardFontGlyph((ImFontAtlas*)patlas, (ImFont*)font, (ImFontBaked*)pbaked, (ImFontGlyph*)glyph);
+				}
+			}
+		}
+		public static void ImFontAtlasBakedDiscardFontGlyph(ImFontAtlasPtr atlas, ref ImFont font, ref ImFontBaked baked, ImFontGlyphPtr glyph)
+		{
+			fixed (ImFont* pfont = &font)
+			{
+				fixed (ImFontBaked* pbaked = &baked)
+				{
+					ImGuiPNative.ImFontAtlasBakedDiscardFontGlyph((ImFontAtlas*)atlas, (ImFont*)pfont, (ImFontBaked*)pbaked, (ImFontGlyph*)glyph);
+				}
+			}
+		}
+		public static void ImFontAtlasBakedDiscardFontGlyph(ref ImFontAtlas atlas, ref ImFont font, ref ImFontBaked baked, ImFontGlyphPtr glyph)
+		{
+			fixed (ImFontAtlas* patlas = &atlas)
+			{
+				fixed (ImFont* pfont = &font)
+				{
+					fixed (ImFontBaked* pbaked = &baked)
+					{
+						ImGuiPNative.ImFontAtlasBakedDiscardFontGlyph((ImFontAtlas*)patlas, (ImFont*)pfont, (ImFontBaked*)pbaked, (ImFontGlyph*)glyph);
+					}
+				}
+			}
+		}
+		public static void ImFontAtlasBakedDiscardFontGlyph(ImFontAtlasPtr atlas, ImFontPtr font, ImFontBakedPtr baked, ref ImFontGlyph glyph)
+		{
+			fixed (ImFontGlyph* pglyph = &glyph)
+			{
+				ImGuiPNative.ImFontAtlasBakedDiscardFontGlyph((ImFontAtlas*)atlas, (ImFont*)font, (ImFontBaked*)baked, (ImFontGlyph*)pglyph);
+			}
+		}
+		public static void ImFontAtlasBakedDiscardFontGlyph(ref ImFontAtlas atlas, ImFontPtr font, ImFontBakedPtr baked, ref ImFontGlyph glyph)
+		{
+			fixed (ImFontAtlas* patlas = &atlas)
+			{
+				fixed (ImFontGlyph* pglyph = &glyph)
+				{
+					ImGuiPNative.ImFontAtlasBakedDiscardFontGlyph((ImFontAtlas*)patlas, (ImFont*)font, (ImFontBaked*)baked, (ImFontGlyph*)pglyph);
+				}
+			}
+		}
+		public static void ImFontAtlasBakedDiscardFontGlyph(ImFontAtlasPtr atlas, ref ImFont font, ImFontBakedPtr baked, ref ImFontGlyph glyph)
+		{
+			fixed (ImFont* pfont = &font)
+			{
+				fixed (ImFontGlyph* pglyph = &glyph)
+				{
+					ImGuiPNative.ImFontAtlasBakedDiscardFontGlyph((ImFontAtlas*)atlas, (ImFont*)pfont, (ImFontBaked*)baked, (ImFontGlyph*)pglyph);
+				}
+			}
+		}
+		public static void ImFontAtlasBakedDiscardFontGlyph(ref ImFontAtlas atlas, ref ImFont font, ImFontBakedPtr baked, ref ImFontGlyph glyph)
+		{
+			fixed (ImFontAtlas* patlas = &atlas)
+			{
+				fixed (ImFont* pfont = &font)
+				{
+					fixed (ImFontGlyph* pglyph = &glyph)
+					{
+						ImGuiPNative.ImFontAtlasBakedDiscardFontGlyph((ImFontAtlas*)patlas, (ImFont*)pfont, (ImFontBaked*)baked, (ImFontGlyph*)pglyph);
+					}
+				}
+			}
+		}
+		public static void ImFontAtlasBakedDiscardFontGlyph(ImFontAtlasPtr atlas, ImFontPtr font, ref ImFontBaked baked, ref ImFontGlyph glyph)
+		{
+			fixed (ImFontBaked* pbaked = &baked)
+			{
+				fixed (ImFontGlyph* pglyph = &glyph)
+				{
+					ImGuiPNative.ImFontAtlasBakedDiscardFontGlyph((ImFontAtlas*)atlas, (ImFont*)font, (ImFontBaked*)pbaked, (ImFontGlyph*)pglyph);
+				}
+			}
+		}
+		public static void ImFontAtlasBakedDiscardFontGlyph(ref ImFontAtlas atlas, ImFontPtr font, ref ImFontBaked baked, ref ImFontGlyph glyph)
+		{
+			fixed (ImFontAtlas* patlas = &atlas)
+			{
+				fixed (ImFontBaked* pbaked = &baked)
+				{
+					fixed (ImFontGlyph* pglyph = &glyph)
+					{
+						ImGuiPNative.ImFontAtlasBakedDiscardFontGlyph((ImFontAtlas*)patlas, (ImFont*)font, (ImFontBaked*)pbaked, (ImFontGlyph*)pglyph);
+					}
+				}
+			}
+		}
+		public static void ImFontAtlasBakedDiscardFontGlyph(ImFontAtlasPtr atlas, ref ImFont font, ref ImFontBaked baked, ref ImFontGlyph glyph)
+		{
+			fixed (ImFont* pfont = &font)
+			{
+				fixed (ImFontBaked* pbaked = &baked)
+				{
+					fixed (ImFontGlyph* pglyph = &glyph)
+					{
+						ImGuiPNative.ImFontAtlasBakedDiscardFontGlyph((ImFontAtlas*)atlas, (ImFont*)pfont, (ImFontBaked*)pbaked, (ImFontGlyph*)pglyph);
+					}
+				}
+			}
+		}
+		public static void ImFontAtlasBakedDiscardFontGlyph(ref ImFontAtlas atlas, ref ImFont font, ref ImFontBaked baked, ref ImFontGlyph glyph)
+		{
+			fixed (ImFontAtlas* patlas = &atlas)
+			{
+				fixed (ImFont* pfont = &font)
+				{
+					fixed (ImFontBaked* pbaked = &baked)
+					{
+						fixed (ImFontGlyph* pglyph = &glyph)
+						{
+							ImGuiPNative.ImFontAtlasBakedDiscardFontGlyph((ImFontAtlas*)patlas, (ImFont*)pfont, (ImFontBaked*)pbaked, (ImFontGlyph*)pglyph);
+						}
+					}
+				}
+			}
+		}
+		public static void ImFontAtlasBakedSetFontGlyphBitmap(ImFontAtlasPtr atlas, ImFontBakedPtr baked, ImFontConfigPtr src, ImFontGlyphPtr glyph, ImTextureRectPtr r, byte* srcPixels, ImTextureFormat srcFmt, int srcPitch)
+		{
+			ImGuiPNative.ImFontAtlasBakedSetFontGlyphBitmap((ImFontAtlas*)atlas, (ImFontBaked*)baked, (ImFontConfig*)src, (ImFontGlyph*)glyph, (ImTextureRect*)r, srcPixels, srcFmt, srcPitch);
+		}
+		public static void ImFontAtlasBakedSetFontGlyphBitmap(ref ImFontAtlas atlas, ImFontBakedPtr baked, ImFontConfigPtr src, ImFontGlyphPtr glyph, ImTextureRectPtr r, byte* srcPixels, ImTextureFormat srcFmt, int srcPitch)
+		{
+			fixed (ImFontAtlas* patlas = &atlas)
+			{
+				ImGuiPNative.ImFontAtlasBakedSetFontGlyphBitmap((ImFontAtlas*)patlas, (ImFontBaked*)baked, (ImFontConfig*)src, (ImFontGlyph*)glyph, (ImTextureRect*)r, srcPixels, srcFmt, srcPitch);
+			}
+		}
+		public static void ImFontAtlasBakedSetFontGlyphBitmap(ImFontAtlasPtr atlas, ref ImFontBaked baked, ImFontConfigPtr src, ImFontGlyphPtr glyph, ImTextureRectPtr r, byte* srcPixels, ImTextureFormat srcFmt, int srcPitch)
+		{
+			fixed (ImFontBaked* pbaked = &baked)
+			{
+				ImGuiPNative.ImFontAtlasBakedSetFontGlyphBitmap((ImFontAtlas*)atlas, (ImFontBaked*)pbaked, (ImFontConfig*)src, (ImFontGlyph*)glyph, (ImTextureRect*)r, srcPixels, srcFmt, srcPitch);
+			}
+		}
+		public static void ImFontAtlasBakedSetFontGlyphBitmap(ref ImFontAtlas atlas, ref ImFontBaked baked, ImFontConfigPtr src, ImFontGlyphPtr glyph, ImTextureRectPtr r, byte* srcPixels, ImTextureFormat srcFmt, int srcPitch)
+		{
+			fixed (ImFontAtlas* patlas = &atlas)
+			{
+				fixed (ImFontBaked* pbaked = &baked)
+				{
+					ImGuiPNative.ImFontAtlasBakedSetFontGlyphBitmap((ImFontAtlas*)patlas, (ImFontBaked*)pbaked, (ImFontConfig*)src, (ImFontGlyph*)glyph, (ImTextureRect*)r, srcPixels, srcFmt, srcPitch);
+				}
+			}
+		}
+		public static void ImFontAtlasBakedSetFontGlyphBitmap(ImFontAtlasPtr atlas, ImFontBakedPtr baked, ref ImFontConfig src, ImFontGlyphPtr glyph, ImTextureRectPtr r, byte* srcPixels, ImTextureFormat srcFmt, int srcPitch)
+		{
+			fixed (ImFontConfig* psrc = &src)
+			{
+				ImGuiPNative.ImFontAtlasBakedSetFontGlyphBitmap((ImFontAtlas*)atlas, (ImFontBaked*)baked, (ImFontConfig*)psrc, (ImFontGlyph*)glyph, (ImTextureRect*)r, srcPixels, srcFmt, srcPitch);
+			}
+		}
+		public static void ImFontAtlasBakedSetFontGlyphBitmap(ref ImFontAtlas atlas, ImFontBakedPtr baked, ref ImFontConfig src, ImFontGlyphPtr glyph, ImTextureRectPtr r, byte* srcPixels, ImTextureFormat srcFmt, int srcPitch)
+		{
+			fixed (ImFontAtlas* patlas = &atlas)
+			{
+				fixed (ImFontConfig* psrc = &src)
+				{
+					ImGuiPNative.ImFontAtlasBakedSetFontGlyphBitmap((ImFontAtlas*)patlas, (ImFontBaked*)baked, (ImFontConfig*)psrc, (ImFontGlyph*)glyph, (ImTextureRect*)r, srcPixels, srcFmt, srcPitch);
+				}
+			}
+		}
+		public static void ImFontAtlasBakedSetFontGlyphBitmap(ImFontAtlasPtr atlas, ref ImFontBaked baked, ref ImFontConfig src, ImFontGlyphPtr glyph, ImTextureRectPtr r, byte* srcPixels, ImTextureFormat srcFmt, int srcPitch)
+		{
+			fixed (ImFontBaked* pbaked = &baked)
+			{
+				fixed (ImFontConfig* psrc = &src)
+				{
+					ImGuiPNative.ImFontAtlasBakedSetFontGlyphBitmap((ImFontAtlas*)atlas, (ImFontBaked*)pbaked, (ImFontConfig*)psrc, (ImFontGlyph*)glyph, (ImTextureRect*)r, srcPixels, srcFmt, srcPitch);
+				}
+			}
+		}
+		public static void ImFontAtlasBakedSetFontGlyphBitmap(ref ImFontAtlas atlas, ref ImFontBaked baked, ref ImFontConfig src, ImFontGlyphPtr glyph, ImTextureRectPtr r, byte* srcPixels, ImTextureFormat srcFmt, int srcPitch)
+		{
+			fixed (ImFontAtlas* patlas = &atlas)
+			{
+				fixed (ImFontBaked* pbaked = &baked)
+				{
+					fixed (ImFontConfig* psrc = &src)
+					{
+						ImGuiPNative.ImFontAtlasBakedSetFontGlyphBitmap((ImFontAtlas*)patlas, (ImFontBaked*)pbaked, (ImFontConfig*)psrc, (ImFontGlyph*)glyph, (ImTextureRect*)r, srcPixels, srcFmt, srcPitch);
+					}
+				}
+			}
+		}
+		public static void ImFontAtlasBakedSetFontGlyphBitmap(ImFontAtlasPtr atlas, ImFontBakedPtr baked, ImFontConfigPtr src, ref ImFontGlyph glyph, ImTextureRectPtr r, byte* srcPixels, ImTextureFormat srcFmt, int srcPitch)
+		{
+			fixed (ImFontGlyph* pglyph = &glyph)
+			{
+				ImGuiPNative.ImFontAtlasBakedSetFontGlyphBitmap((ImFontAtlas*)atlas, (ImFontBaked*)baked, (ImFontConfig*)src, (ImFontGlyph*)pglyph, (ImTextureRect*)r, srcPixels, srcFmt, srcPitch);
+			}
+		}
+		public static void ImFontAtlasBakedSetFontGlyphBitmap(ref ImFontAtlas atlas, ImFontBakedPtr baked, ImFontConfigPtr src, ref ImFontGlyph glyph, ImTextureRectPtr r, byte* srcPixels, ImTextureFormat srcFmt, int srcPitch)
+		{
+			fixed (ImFontAtlas* patlas = &atlas)
+			{
+				fixed (ImFontGlyph* pglyph = &glyph)
+				{
+					ImGuiPNative.ImFontAtlasBakedSetFontGlyphBitmap((ImFontAtlas*)patlas, (ImFontBaked*)baked, (ImFontConfig*)src, (ImFontGlyph*)pglyph, (ImTextureRect*)r, srcPixels, srcFmt, srcPitch);
+				}
+			}
+		}
+		public static void ImFontAtlasBakedSetFontGlyphBitmap(ImFontAtlasPtr atlas, ref ImFontBaked baked, ImFontConfigPtr src, ref ImFontGlyph glyph, ImTextureRectPtr r, byte* srcPixels, ImTextureFormat srcFmt, int srcPitch)
+		{
+			fixed (ImFontBaked* pbaked = &baked)
+			{
+				fixed (ImFontGlyph* pglyph = &glyph)
+				{
+					ImGuiPNative.ImFontAtlasBakedSetFontGlyphBitmap((ImFontAtlas*)atlas, (ImFontBaked*)pbaked, (ImFontConfig*)src, (ImFontGlyph*)pglyph, (ImTextureRect*)r, srcPixels, srcFmt, srcPitch);
+				}
+			}
+		}
+		public static void ImFontAtlasBakedSetFontGlyphBitmap(ref ImFontAtlas atlas, ref ImFontBaked baked, ImFontConfigPtr src, ref ImFontGlyph glyph, ImTextureRectPtr r, byte* srcPixels, ImTextureFormat srcFmt, int srcPitch)
+		{
+			fixed (ImFontAtlas* patlas = &atlas)
+			{
+				fixed (ImFontBaked* pbaked = &baked)
+				{
+					fixed (ImFontGlyph* pglyph = &glyph)
+					{
+						ImGuiPNative.ImFontAtlasBakedSetFontGlyphBitmap((ImFontAtlas*)patlas, (ImFontBaked*)pbaked, (ImFontConfig*)src, (ImFontGlyph*)pglyph, (ImTextureRect*)r, srcPixels, srcFmt, srcPitch);
+					}
+				}
+			}
+		}
+		public static void ImFontAtlasBakedSetFontGlyphBitmap(ImFontAtlasPtr atlas, ImFontBakedPtr baked, ref ImFontConfig src, ref ImFontGlyph glyph, ImTextureRectPtr r, byte* srcPixels, ImTextureFormat srcFmt, int srcPitch)
+		{
+			fixed (ImFontConfig* psrc = &src)
+			{
+				fixed (ImFontGlyph* pglyph = &glyph)
+				{
+					ImGuiPNative.ImFontAtlasBakedSetFontGlyphBitmap((ImFontAtlas*)atlas, (ImFontBaked*)baked, (ImFontConfig*)psrc, (ImFontGlyph*)pglyph, (ImTextureRect*)r, srcPixels, srcFmt, srcPitch);
+				}
+			}
+		}
+		public static void ImFontAtlasBakedSetFontGlyphBitmap(ref ImFontAtlas atlas, ImFontBakedPtr baked, ref ImFontConfig src, ref ImFontGlyph glyph, ImTextureRectPtr r, byte* srcPixels, ImTextureFormat srcFmt, int srcPitch)
+		{
+			fixed (ImFontAtlas* patlas = &atlas)
+			{
+				fixed (ImFontConfig* psrc = &src)
+				{
+					fixed (ImFontGlyph* pglyph = &glyph)
+					{
+						ImGuiPNative.ImFontAtlasBakedSetFontGlyphBitmap((ImFontAtlas*)patlas, (ImFontBaked*)baked, (ImFontConfig*)psrc, (ImFontGlyph*)pglyph, (ImTextureRect*)r, srcPixels, srcFmt, srcPitch);
+					}
+				}
+			}
+		}
+		public static void ImFontAtlasBakedSetFontGlyphBitmap(ImFontAtlasPtr atlas, ref ImFontBaked baked, ref ImFontConfig src, ref ImFontGlyph glyph, ImTextureRectPtr r, byte* srcPixels, ImTextureFormat srcFmt, int srcPitch)
+		{
+			fixed (ImFontBaked* pbaked = &baked)
+			{
+				fixed (ImFontConfig* psrc = &src)
+				{
+					fixed (ImFontGlyph* pglyph = &glyph)
+					{
+						ImGuiPNative.ImFontAtlasBakedSetFontGlyphBitmap((ImFontAtlas*)atlas, (ImFontBaked*)pbaked, (ImFontConfig*)psrc, (ImFontGlyph*)pglyph, (ImTextureRect*)r, srcPixels, srcFmt, srcPitch);
+					}
+				}
+			}
+		}
+		public static void ImFontAtlasBakedSetFontGlyphBitmap(ref ImFontAtlas atlas, ref ImFontBaked baked, ref ImFontConfig src, ref ImFontGlyph glyph, ImTextureRectPtr r, byte* srcPixels, ImTextureFormat srcFmt, int srcPitch)
+		{
+			fixed (ImFontAtlas* patlas = &atlas)
+			{
+				fixed (ImFontBaked* pbaked = &baked)
+				{
+					fixed (ImFontConfig* psrc = &src)
+					{
+						fixed (ImFontGlyph* pglyph = &glyph)
+						{
+							ImGuiPNative.ImFontAtlasBakedSetFontGlyphBitmap((ImFontAtlas*)patlas, (ImFontBaked*)pbaked, (ImFontConfig*)psrc, (ImFontGlyph*)pglyph, (ImTextureRect*)r, srcPixels, srcFmt, srcPitch);
+						}
+					}
+				}
+			}
+		}
+		public static void ImFontAtlasBakedSetFontGlyphBitmap(ImFontAtlasPtr atlas, ImFontBakedPtr baked, ImFontConfigPtr src, ImFontGlyphPtr glyph, ref ImTextureRect r, byte* srcPixels, ImTextureFormat srcFmt, int srcPitch)
+		{
+			fixed (ImTextureRect* pr = &r)
+			{
+				ImGuiPNative.ImFontAtlasBakedSetFontGlyphBitmap((ImFontAtlas*)atlas, (ImFontBaked*)baked, (ImFontConfig*)src, (ImFontGlyph*)glyph, (ImTextureRect*)pr, srcPixels, srcFmt, srcPitch);
+			}
+		}
+		public static void ImFontAtlasBakedSetFontGlyphBitmap(ref ImFontAtlas atlas, ImFontBakedPtr baked, ImFontConfigPtr src, ImFontGlyphPtr glyph, ref ImTextureRect r, byte* srcPixels, ImTextureFormat srcFmt, int srcPitch)
+		{
+			fixed (ImFontAtlas* patlas = &atlas)
+			{
+				fixed (ImTextureRect* pr = &r)
+				{
+					ImGuiPNative.ImFontAtlasBakedSetFontGlyphBitmap((ImFontAtlas*)patlas, (ImFontBaked*)baked, (ImFontConfig*)src, (ImFontGlyph*)glyph, (ImTextureRect*)pr, srcPixels, srcFmt, srcPitch);
+				}
+			}
+		}
+		public static void ImFontAtlasBakedSetFontGlyphBitmap(ImFontAtlasPtr atlas, ref ImFontBaked baked, ImFontConfigPtr src, ImFontGlyphPtr glyph, ref ImTextureRect r, byte* srcPixels, ImTextureFormat srcFmt, int srcPitch)
+		{
+			fixed (ImFontBaked* pbaked = &baked)
+			{
+				fixed (ImTextureRect* pr = &r)
+				{
+					ImGuiPNative.ImFontAtlasBakedSetFontGlyphBitmap((ImFontAtlas*)atlas, (ImFontBaked*)pbaked, (ImFontConfig*)src, (ImFontGlyph*)glyph, (ImTextureRect*)pr, srcPixels, srcFmt, srcPitch);
+				}
+			}
+		}
+		public static void ImFontAtlasBakedSetFontGlyphBitmap(ref ImFontAtlas atlas, ref ImFontBaked baked, ImFontConfigPtr src, ImFontGlyphPtr glyph, ref ImTextureRect r, byte* srcPixels, ImTextureFormat srcFmt, int srcPitch)
+		{
+			fixed (ImFontAtlas* patlas = &atlas)
+			{
+				fixed (ImFontBaked* pbaked = &baked)
+				{
+					fixed (ImTextureRect* pr = &r)
+					{
+						ImGuiPNative.ImFontAtlasBakedSetFontGlyphBitmap((ImFontAtlas*)patlas, (ImFontBaked*)pbaked, (ImFontConfig*)src, (ImFontGlyph*)glyph, (ImTextureRect*)pr, srcPixels, srcFmt, srcPitch);
+					}
+				}
+			}
+		}
+		public static void ImFontAtlasBakedSetFontGlyphBitmap(ImFontAtlasPtr atlas, ImFontBakedPtr baked, ref ImFontConfig src, ImFontGlyphPtr glyph, ref ImTextureRect r, byte* srcPixels, ImTextureFormat srcFmt, int srcPitch)
+		{
+			fixed (ImFontConfig* psrc = &src)
+			{
+				fixed (ImTextureRect* pr = &r)
+				{
+					ImGuiPNative.ImFontAtlasBakedSetFontGlyphBitmap((ImFontAtlas*)atlas, (ImFontBaked*)baked, (ImFontConfig*)psrc, (ImFontGlyph*)glyph, (ImTextureRect*)pr, srcPixels, srcFmt, srcPitch);
+				}
+			}
+		}
+		public static void ImFontAtlasBakedSetFontGlyphBitmap(ref ImFontAtlas atlas, ImFontBakedPtr baked, ref ImFontConfig src, ImFontGlyphPtr glyph, ref ImTextureRect r, byte* srcPixels, ImTextureFormat srcFmt, int srcPitch)
+		{
+			fixed (ImFontAtlas* patlas = &atlas)
+			{
+				fixed (ImFontConfig* psrc = &src)
+				{
+					fixed (ImTextureRect* pr = &r)
+					{
+						ImGuiPNative.ImFontAtlasBakedSetFontGlyphBitmap((ImFontAtlas*)patlas, (ImFontBaked*)baked, (ImFontConfig*)psrc, (ImFontGlyph*)glyph, (ImTextureRect*)pr, srcPixels, srcFmt, srcPitch);
+					}
+				}
+			}
+		}
+		public static void ImFontAtlasBakedSetFontGlyphBitmap(ImFontAtlasPtr atlas, ref ImFontBaked baked, ref ImFontConfig src, ImFontGlyphPtr glyph, ref ImTextureRect r, byte* srcPixels, ImTextureFormat srcFmt, int srcPitch)
+		{
+			fixed (ImFontBaked* pbaked = &baked)
+			{
+				fixed (ImFontConfig* psrc = &src)
+				{
+					fixed (ImTextureRect* pr = &r)
+					{
+						ImGuiPNative.ImFontAtlasBakedSetFontGlyphBitmap((ImFontAtlas*)atlas, (ImFontBaked*)pbaked, (ImFontConfig*)psrc, (ImFontGlyph*)glyph, (ImTextureRect*)pr, srcPixels, srcFmt, srcPitch);
+					}
+				}
+			}
+		}
+		public static void ImFontAtlasBakedSetFontGlyphBitmap(ref ImFontAtlas atlas, ref ImFontBaked baked, ref ImFontConfig src, ImFontGlyphPtr glyph, ref ImTextureRect r, byte* srcPixels, ImTextureFormat srcFmt, int srcPitch)
+		{
+			fixed (ImFontAtlas* patlas = &atlas)
+			{
+				fixed (ImFontBaked* pbaked = &baked)
+				{
+					fixed (ImFontConfig* psrc = &src)
+					{
+						fixed (ImTextureRect* pr = &r)
+						{
+							ImGuiPNative.ImFontAtlasBakedSetFontGlyphBitmap((ImFontAtlas*)patlas, (ImFontBaked*)pbaked, (ImFontConfig*)psrc, (ImFontGlyph*)glyph, (ImTextureRect*)pr, srcPixels, srcFmt, srcPitch);
+						}
+					}
+				}
+			}
+		}
+		public static void ImFontAtlasBakedSetFontGlyphBitmap(ImFontAtlasPtr atlas, ImFontBakedPtr baked, ImFontConfigPtr src, ref ImFontGlyph glyph, ref ImTextureRect r, byte* srcPixels, ImTextureFormat srcFmt, int srcPitch)
+		{
+			fixed (ImFontGlyph* pglyph = &glyph)
+			{
+				fixed (ImTextureRect* pr = &r)
+				{
+					ImGuiPNative.ImFontAtlasBakedSetFontGlyphBitmap((ImFontAtlas*)atlas, (ImFontBaked*)baked, (ImFontConfig*)src, (ImFontGlyph*)pglyph, (ImTextureRect*)pr, srcPixels, srcFmt, srcPitch);
+				}
+			}
+		}
+		public static void ImFontAtlasBakedSetFontGlyphBitmap(ref ImFontAtlas atlas, ImFontBakedPtr baked, ImFontConfigPtr src, ref ImFontGlyph glyph, ref ImTextureRect r, byte* srcPixels, ImTextureFormat srcFmt, int srcPitch)
+		{
+			fixed (ImFontAtlas* patlas = &atlas)
+			{
+				fixed (ImFontGlyph* pglyph = &glyph)
+				{
+					fixed (ImTextureRect* pr = &r)
+					{
+						ImGuiPNative.ImFontAtlasBakedSetFontGlyphBitmap((ImFontAtlas*)patlas, (ImFontBaked*)baked, (ImFontConfig*)src, (ImFontGlyph*)pglyph, (ImTextureRect*)pr, srcPixels, srcFmt, srcPitch);
+					}
+				}
+			}
+		}
+		public static void ImFontAtlasBakedSetFontGlyphBitmap(ImFontAtlasPtr atlas, ref ImFontBaked baked, ImFontConfigPtr src, ref ImFontGlyph glyph, ref ImTextureRect r, byte* srcPixels, ImTextureFormat srcFmt, int srcPitch)
+		{
+			fixed (ImFontBaked* pbaked = &baked)
+			{
+				fixed (ImFontGlyph* pglyph = &glyph)
+				{
+					fixed (ImTextureRect* pr = &r)
+					{
+						ImGuiPNative.ImFontAtlasBakedSetFontGlyphBitmap((ImFontAtlas*)atlas, (ImFontBaked*)pbaked, (ImFontConfig*)src, (ImFontGlyph*)pglyph, (ImTextureRect*)pr, srcPixels, srcFmt, srcPitch);
+					}
+				}
+			}
+		}
+		public static void ImFontAtlasBakedSetFontGlyphBitmap(ref ImFontAtlas atlas, ref ImFontBaked baked, ImFontConfigPtr src, ref ImFontGlyph glyph, ref ImTextureRect r, byte* srcPixels, ImTextureFormat srcFmt, int srcPitch)
+		{
+			fixed (ImFontAtlas* patlas = &atlas)
+			{
+				fixed (ImFontBaked* pbaked = &baked)
+				{
+					fixed (ImFontGlyph* pglyph = &glyph)
+					{
+						fixed (ImTextureRect* pr = &r)
+						{
+							ImGuiPNative.ImFontAtlasBakedSetFontGlyphBitmap((ImFontAtlas*)patlas, (ImFontBaked*)pbaked, (ImFontConfig*)src, (ImFontGlyph*)pglyph, (ImTextureRect*)pr, srcPixels, srcFmt, srcPitch);
+						}
+					}
+				}
+			}
+		}
+		public static void ImFontAtlasBakedSetFontGlyphBitmap(ImFontAtlasPtr atlas, ImFontBakedPtr baked, ref ImFontConfig src, ref ImFontGlyph glyph, ref ImTextureRect r, byte* srcPixels, ImTextureFormat srcFmt, int srcPitch)
+		{
+			fixed (ImFontConfig* psrc = &src)
+			{
+				fixed (ImFontGlyph* pglyph = &glyph)
+				{
+					fixed (ImTextureRect* pr = &r)
+					{
+						ImGuiPNative.ImFontAtlasBakedSetFontGlyphBitmap((ImFontAtlas*)atlas, (ImFontBaked*)baked, (ImFontConfig*)psrc, (ImFontGlyph*)pglyph, (ImTextureRect*)pr, srcPixels, srcFmt, srcPitch);
+					}
+				}
+			}
+		}
+		public static void ImFontAtlasBakedSetFontGlyphBitmap(ref ImFontAtlas atlas, ImFontBakedPtr baked, ref ImFontConfig src, ref ImFontGlyph glyph, ref ImTextureRect r, byte* srcPixels, ImTextureFormat srcFmt, int srcPitch)
+		{
+			fixed (ImFontAtlas* patlas = &atlas)
+			{
+				fixed (ImFontConfig* psrc = &src)
+				{
+					fixed (ImFontGlyph* pglyph = &glyph)
+					{
+						fixed (ImTextureRect* pr = &r)
+						{
+							ImGuiPNative.ImFontAtlasBakedSetFontGlyphBitmap((ImFontAtlas*)patlas, (ImFontBaked*)baked, (ImFontConfig*)psrc, (ImFontGlyph*)pglyph, (ImTextureRect*)pr, srcPixels, srcFmt, srcPitch);
+						}
+					}
+				}
+			}
+		}
+		public static void ImFontAtlasBakedSetFontGlyphBitmap(ImFontAtlasPtr atlas, ref ImFontBaked baked, ref ImFontConfig src, ref ImFontGlyph glyph, ref ImTextureRect r, byte* srcPixels, ImTextureFormat srcFmt, int srcPitch)
+		{
+			fixed (ImFontBaked* pbaked = &baked)
+			{
+				fixed (ImFontConfig* psrc = &src)
+				{
+					fixed (ImFontGlyph* pglyph = &glyph)
+					{
+						fixed (ImTextureRect* pr = &r)
+						{
+							ImGuiPNative.ImFontAtlasBakedSetFontGlyphBitmap((ImFontAtlas*)atlas, (ImFontBaked*)pbaked, (ImFontConfig*)psrc, (ImFontGlyph*)pglyph, (ImTextureRect*)pr, srcPixels, srcFmt, srcPitch);
+						}
+					}
+				}
+			}
+		}
+		public static void ImFontAtlasBakedSetFontGlyphBitmap(ref ImFontAtlas atlas, ref ImFontBaked baked, ref ImFontConfig src, ref ImFontGlyph glyph, ref ImTextureRect r, byte* srcPixels, ImTextureFormat srcFmt, int srcPitch)
+		{
+			fixed (ImFontAtlas* patlas = &atlas)
+			{
+				fixed (ImFontBaked* pbaked = &baked)
+				{
+					fixed (ImFontConfig* psrc = &src)
+					{
+						fixed (ImFontGlyph* pglyph = &glyph)
+						{
+							fixed (ImTextureRect* pr = &r)
+							{
+								ImGuiPNative.ImFontAtlasBakedSetFontGlyphBitmap((ImFontAtlas*)patlas, (ImFontBaked*)pbaked, (ImFontConfig*)psrc, (ImFontGlyph*)pglyph, (ImTextureRect*)pr, srcPixels, srcFmt, srcPitch);
+							}
+						}
+					}
+				}
+			}
+		}
+		public static void ImFontAtlasBakedSetFontGlyphBitmap(ImFontAtlasPtr atlas, ImFontBakedPtr baked, ImFontConfigPtr src, ImFontGlyphPtr glyph, ImTextureRectPtr r, in byte srcPixels, ImTextureFormat srcFmt, int srcPitch)
+		{
+			fixed (byte* psrcPixels = &srcPixels)
+			{
+				ImGuiPNative.ImFontAtlasBakedSetFontGlyphBitmap((ImFontAtlas*)atlas, (ImFontBaked*)baked, (ImFontConfig*)src, (ImFontGlyph*)glyph, (ImTextureRect*)r, (byte*)psrcPixels, srcFmt, srcPitch);
+			}
+		}
+		public static void ImFontAtlasBakedSetFontGlyphBitmap(ref ImFontAtlas atlas, ImFontBakedPtr baked, ImFontConfigPtr src, ImFontGlyphPtr glyph, ImTextureRectPtr r, in byte srcPixels, ImTextureFormat srcFmt, int srcPitch)
+		{
+			fixed (ImFontAtlas* patlas = &atlas)
+			{
+				fixed (byte* psrcPixels = &srcPixels)
+				{
+					ImGuiPNative.ImFontAtlasBakedSetFontGlyphBitmap((ImFontAtlas*)patlas, (ImFontBaked*)baked, (ImFontConfig*)src, (ImFontGlyph*)glyph, (ImTextureRect*)r, (byte*)psrcPixels, srcFmt, srcPitch);
+				}
+			}
+		}
+		public static void ImFontAtlasBakedSetFontGlyphBitmap(ImFontAtlasPtr atlas, ref ImFontBaked baked, ImFontConfigPtr src, ImFontGlyphPtr glyph, ImTextureRectPtr r, in byte srcPixels, ImTextureFormat srcFmt, int srcPitch)
+		{
+			fixed (ImFontBaked* pbaked = &baked)
+			{
+				fixed (byte* psrcPixels = &srcPixels)
+				{
+					ImGuiPNative.ImFontAtlasBakedSetFontGlyphBitmap((ImFontAtlas*)atlas, (ImFontBaked*)pbaked, (ImFontConfig*)src, (ImFontGlyph*)glyph, (ImTextureRect*)r, (byte*)psrcPixels, srcFmt, srcPitch);
+				}
+			}
+		}
+		public static void ImFontAtlasBakedSetFontGlyphBitmap(ref ImFontAtlas atlas, ref ImFontBaked baked, ImFontConfigPtr src, ImFontGlyphPtr glyph, ImTextureRectPtr r, in byte srcPixels, ImTextureFormat srcFmt, int srcPitch)
+		{
+			fixed (ImFontAtlas* patlas = &atlas)
+			{
+				fixed (ImFontBaked* pbaked = &baked)
+				{
+					fixed (byte* psrcPixels = &srcPixels)
+					{
+						ImGuiPNative.ImFontAtlasBakedSetFontGlyphBitmap((ImFontAtlas*)patlas, (ImFontBaked*)pbaked, (ImFontConfig*)src, (ImFontGlyph*)glyph, (ImTextureRect*)r, (byte*)psrcPixels, srcFmt, srcPitch);
+					}
+				}
+			}
+		}
+		public static void ImFontAtlasBakedSetFontGlyphBitmap(ImFontAtlasPtr atlas, ImFontBakedPtr baked, ref ImFontConfig src, ImFontGlyphPtr glyph, ImTextureRectPtr r, in byte srcPixels, ImTextureFormat srcFmt, int srcPitch)
+		{
+			fixed (ImFontConfig* psrc = &src)
+			{
+				fixed (byte* psrcPixels = &srcPixels)
+				{
+					ImGuiPNative.ImFontAtlasBakedSetFontGlyphBitmap((ImFontAtlas*)atlas, (ImFontBaked*)baked, (ImFontConfig*)psrc, (ImFontGlyph*)glyph, (ImTextureRect*)r, (byte*)psrcPixels, srcFmt, srcPitch);
+				}
+			}
+		}
+		public static void ImFontAtlasBakedSetFontGlyphBitmap(ref ImFontAtlas atlas, ImFontBakedPtr baked, ref ImFontConfig src, ImFontGlyphPtr glyph, ImTextureRectPtr r, in byte srcPixels, ImTextureFormat srcFmt, int srcPitch)
+		{
+			fixed (ImFontAtlas* patlas = &atlas)
+			{
+				fixed (ImFontConfig* psrc = &src)
+				{
+					fixed (byte* psrcPixels = &srcPixels)
+					{
+						ImGuiPNative.ImFontAtlasBakedSetFontGlyphBitmap((ImFontAtlas*)patlas, (ImFontBaked*)baked, (ImFontConfig*)psrc, (ImFontGlyph*)glyph, (ImTextureRect*)r, (byte*)psrcPixels, srcFmt, srcPitch);
+					}
+				}
+			}
+		}
+		public static void ImFontAtlasBakedSetFontGlyphBitmap(ImFontAtlasPtr atlas, ref ImFontBaked baked, ref ImFontConfig src, ImFontGlyphPtr glyph, ImTextureRectPtr r, in byte srcPixels, ImTextureFormat srcFmt, int srcPitch)
+		{
+			fixed (ImFontBaked* pbaked = &baked)
+			{
+				fixed (ImFontConfig* psrc = &src)
+				{
+					fixed (byte* psrcPixels = &srcPixels)
+					{
+						ImGuiPNative.ImFontAtlasBakedSetFontGlyphBitmap((ImFontAtlas*)atlas, (ImFontBaked*)pbaked, (ImFontConfig*)psrc, (ImFontGlyph*)glyph, (ImTextureRect*)r, (byte*)psrcPixels, srcFmt, srcPitch);
+					}
+				}
+			}
+		}
+		public static void ImFontAtlasBakedSetFontGlyphBitmap(ref ImFontAtlas atlas, ref ImFontBaked baked, ref ImFontConfig src, ImFontGlyphPtr glyph, ImTextureRectPtr r, in byte srcPixels, ImTextureFormat srcFmt, int srcPitch)
+		{
+			fixed (ImFontAtlas* patlas = &atlas)
+			{
+				fixed (ImFontBaked* pbaked = &baked)
+				{
+					fixed (ImFontConfig* psrc = &src)
+					{
+						fixed (byte* psrcPixels = &srcPixels)
+						{
+							ImGuiPNative.ImFontAtlasBakedSetFontGlyphBitmap((ImFontAtlas*)patlas, (ImFontBaked*)pbaked, (ImFontConfig*)psrc, (ImFontGlyph*)glyph, (ImTextureRect*)r, (byte*)psrcPixels, srcFmt, srcPitch);
+						}
+					}
+				}
+			}
+		}
+		public static void ImFontAtlasBakedSetFontGlyphBitmap(ImFontAtlasPtr atlas, ImFontBakedPtr baked, ImFontConfigPtr src, ref ImFontGlyph glyph, ImTextureRectPtr r, in byte srcPixels, ImTextureFormat srcFmt, int srcPitch)
+		{
+			fixed (ImFontGlyph* pglyph = &glyph)
+			{
+				fixed (byte* psrcPixels = &srcPixels)
+				{
+					ImGuiPNative.ImFontAtlasBakedSetFontGlyphBitmap((ImFontAtlas*)atlas, (ImFontBaked*)baked, (ImFontConfig*)src, (ImFontGlyph*)pglyph, (ImTextureRect*)r, (byte*)psrcPixels, srcFmt, srcPitch);
+				}
+			}
+		}
+		public static void ImFontAtlasBakedSetFontGlyphBitmap(ref ImFontAtlas atlas, ImFontBakedPtr baked, ImFontConfigPtr src, ref ImFontGlyph glyph, ImTextureRectPtr r, in byte srcPixels, ImTextureFormat srcFmt, int srcPitch)
+		{
+			fixed (ImFontAtlas* patlas = &atlas)
+			{
+				fixed (ImFontGlyph* pglyph = &glyph)
+				{
+					fixed (byte* psrcPixels = &srcPixels)
+					{
+						ImGuiPNative.ImFontAtlasBakedSetFontGlyphBitmap((ImFontAtlas*)patlas, (ImFontBaked*)baked, (ImFontConfig*)src, (ImFontGlyph*)pglyph, (ImTextureRect*)r, (byte*)psrcPixels, srcFmt, srcPitch);
+					}
+				}
+			}
+		}
+		public static void ImFontAtlasBakedSetFontGlyphBitmap(ImFontAtlasPtr atlas, ref ImFontBaked baked, ImFontConfigPtr src, ref ImFontGlyph glyph, ImTextureRectPtr r, in byte srcPixels, ImTextureFormat srcFmt, int srcPitch)
+		{
+			fixed (ImFontBaked* pbaked = &baked)
+			{
+				fixed (ImFontGlyph* pglyph = &glyph)
+				{
+					fixed (byte* psrcPixels = &srcPixels)
+					{
+						ImGuiPNative.ImFontAtlasBakedSetFontGlyphBitmap((ImFontAtlas*)atlas, (ImFontBaked*)pbaked, (ImFontConfig*)src, (ImFontGlyph*)pglyph, (ImTextureRect*)r, (byte*)psrcPixels, srcFmt, srcPitch);
+					}
+				}
+			}
+		}
+		public static void ImFontAtlasBakedSetFontGlyphBitmap(ref ImFontAtlas atlas, ref ImFontBaked baked, ImFontConfigPtr src, ref ImFontGlyph glyph, ImTextureRectPtr r, in byte srcPixels, ImTextureFormat srcFmt, int srcPitch)
+		{
+			fixed (ImFontAtlas* patlas = &atlas)
+			{
+				fixed (ImFontBaked* pbaked = &baked)
+				{
+					fixed (ImFontGlyph* pglyph = &glyph)
+					{
+						fixed (byte* psrcPixels = &srcPixels)
+						{
+							ImGuiPNative.ImFontAtlasBakedSetFontGlyphBitmap((ImFontAtlas*)patlas, (ImFontBaked*)pbaked, (ImFontConfig*)src, (ImFontGlyph*)pglyph, (ImTextureRect*)r, (byte*)psrcPixels, srcFmt, srcPitch);
+						}
+					}
+				}
+			}
+		}
+		public static void ImFontAtlasBakedSetFontGlyphBitmap(ImFontAtlasPtr atlas, ImFontBakedPtr baked, ref ImFontConfig src, ref ImFontGlyph glyph, ImTextureRectPtr r, in byte srcPixels, ImTextureFormat srcFmt, int srcPitch)
+		{
+			fixed (ImFontConfig* psrc = &src)
+			{
+				fixed (ImFontGlyph* pglyph = &glyph)
+				{
+					fixed (byte* psrcPixels = &srcPixels)
+					{
+						ImGuiPNative.ImFontAtlasBakedSetFontGlyphBitmap((ImFontAtlas*)atlas, (ImFontBaked*)baked, (ImFontConfig*)psrc, (ImFontGlyph*)pglyph, (ImTextureRect*)r, (byte*)psrcPixels, srcFmt, srcPitch);
+					}
+				}
+			}
+		}
+		public static void ImFontAtlasBakedSetFontGlyphBitmap(ref ImFontAtlas atlas, ImFontBakedPtr baked, ref ImFontConfig src, ref ImFontGlyph glyph, ImTextureRectPtr r, in byte srcPixels, ImTextureFormat srcFmt, int srcPitch)
+		{
+			fixed (ImFontAtlas* patlas = &atlas)
+			{
+				fixed (ImFontConfig* psrc = &src)
+				{
+					fixed (ImFontGlyph* pglyph = &glyph)
+					{
+						fixed (byte* psrcPixels = &srcPixels)
+						{
+							ImGuiPNative.ImFontAtlasBakedSetFontGlyphBitmap((ImFontAtlas*)patlas, (ImFontBaked*)baked, (ImFontConfig*)psrc, (ImFontGlyph*)pglyph, (ImTextureRect*)r, (byte*)psrcPixels, srcFmt, srcPitch);
+						}
+					}
+				}
+			}
+		}
+		public static void ImFontAtlasBakedSetFontGlyphBitmap(ImFontAtlasPtr atlas, ref ImFontBaked baked, ref ImFontConfig src, ref ImFontGlyph glyph, ImTextureRectPtr r, in byte srcPixels, ImTextureFormat srcFmt, int srcPitch)
+		{
+			fixed (ImFontBaked* pbaked = &baked)
+			{
+				fixed (ImFontConfig* psrc = &src)
+				{
+					fixed (ImFontGlyph* pglyph = &glyph)
+					{
+						fixed (byte* psrcPixels = &srcPixels)
+						{
+							ImGuiPNative.ImFontAtlasBakedSetFontGlyphBitmap((ImFontAtlas*)atlas, (ImFontBaked*)pbaked, (ImFontConfig*)psrc, (ImFontGlyph*)pglyph, (ImTextureRect*)r, (byte*)psrcPixels, srcFmt, srcPitch);
+						}
+					}
+				}
+			}
+		}
+		public static void ImFontAtlasBakedSetFontGlyphBitmap(ref ImFontAtlas atlas, ref ImFontBaked baked, ref ImFontConfig src, ref ImFontGlyph glyph, ImTextureRectPtr r, in byte srcPixels, ImTextureFormat srcFmt, int srcPitch)
+		{
+			fixed (ImFontAtlas* patlas = &atlas)
+			{
+				fixed (ImFontBaked* pbaked = &baked)
+				{
+					fixed (ImFontConfig* psrc = &src)
+					{
+						fixed (ImFontGlyph* pglyph = &glyph)
+						{
+							fixed (byte* psrcPixels = &srcPixels)
+							{
+								ImGuiPNative.ImFontAtlasBakedSetFontGlyphBitmap((ImFontAtlas*)patlas, (ImFontBaked*)pbaked, (ImFontConfig*)psrc, (ImFontGlyph*)pglyph, (ImTextureRect*)r, (byte*)psrcPixels, srcFmt, srcPitch);
+							}
+						}
+					}
+				}
+			}
+		}
+		public static void ImFontAtlasBakedSetFontGlyphBitmap(ImFontAtlasPtr atlas, ImFontBakedPtr baked, ImFontConfigPtr src, ImFontGlyphPtr glyph, ref ImTextureRect r, in byte srcPixels, ImTextureFormat srcFmt, int srcPitch)
+		{
+			fixed (ImTextureRect* pr = &r)
+			{
+				fixed (byte* psrcPixels = &srcPixels)
+				{
+					ImGuiPNative.ImFontAtlasBakedSetFontGlyphBitmap((ImFontAtlas*)atlas, (ImFontBaked*)baked, (ImFontConfig*)src, (ImFontGlyph*)glyph, (ImTextureRect*)pr, (byte*)psrcPixels, srcFmt, srcPitch);
+				}
+			}
+		}
+		public static void ImFontAtlasBakedSetFontGlyphBitmap(ref ImFontAtlas atlas, ImFontBakedPtr baked, ImFontConfigPtr src, ImFontGlyphPtr glyph, ref ImTextureRect r, in byte srcPixels, ImTextureFormat srcFmt, int srcPitch)
+		{
+			fixed (ImFontAtlas* patlas = &atlas)
+			{
+				fixed (ImTextureRect* pr = &r)
+				{
+					fixed (byte* psrcPixels = &srcPixels)
+					{
+						ImGuiPNative.ImFontAtlasBakedSetFontGlyphBitmap((ImFontAtlas*)patlas, (ImFontBaked*)baked, (ImFontConfig*)src, (ImFontGlyph*)glyph, (ImTextureRect*)pr, (byte*)psrcPixels, srcFmt, srcPitch);
+					}
+				}
+			}
+		}
+		public static void ImFontAtlasBakedSetFontGlyphBitmap(ImFontAtlasPtr atlas, ref ImFontBaked baked, ImFontConfigPtr src, ImFontGlyphPtr glyph, ref ImTextureRect r, in byte srcPixels, ImTextureFormat srcFmt, int srcPitch)
+		{
+			fixed (ImFontBaked* pbaked = &baked)
+			{
+				fixed (ImTextureRect* pr = &r)
+				{
+					fixed (byte* psrcPixels = &srcPixels)
+					{
+						ImGuiPNative.ImFontAtlasBakedSetFontGlyphBitmap((ImFontAtlas*)atlas, (ImFontBaked*)pbaked, (ImFontConfig*)src, (ImFontGlyph*)glyph, (ImTextureRect*)pr, (byte*)psrcPixels, srcFmt, srcPitch);
+					}
+				}
+			}
+		}
+		public static void ImFontAtlasBakedSetFontGlyphBitmap(ref ImFontAtlas atlas, ref ImFontBaked baked, ImFontConfigPtr src, ImFontGlyphPtr glyph, ref ImTextureRect r, in byte srcPixels, ImTextureFormat srcFmt, int srcPitch)
+		{
+			fixed (ImFontAtlas* patlas = &atlas)
+			{
+				fixed (ImFontBaked* pbaked = &baked)
+				{
+					fixed (ImTextureRect* pr = &r)
+					{
+						fixed (byte* psrcPixels = &srcPixels)
+						{
+							ImGuiPNative.ImFontAtlasBakedSetFontGlyphBitmap((ImFontAtlas*)patlas, (ImFontBaked*)pbaked, (ImFontConfig*)src, (ImFontGlyph*)glyph, (ImTextureRect*)pr, (byte*)psrcPixels, srcFmt, srcPitch);
+						}
+					}
+				}
+			}
+		}
+		public static void ImFontAtlasBakedSetFontGlyphBitmap(ImFontAtlasPtr atlas, ImFontBakedPtr baked, ref ImFontConfig src, ImFontGlyphPtr glyph, ref ImTextureRect r, in byte srcPixels, ImTextureFormat srcFmt, int srcPitch)
+		{
+			fixed (ImFontConfig* psrc = &src)
+			{
+				fixed (ImTextureRect* pr = &r)
+				{
+					fixed (byte* psrcPixels = &srcPixels)
+					{
+						ImGuiPNative.ImFontAtlasBakedSetFontGlyphBitmap((ImFontAtlas*)atlas, (ImFontBaked*)baked, (ImFontConfig*)psrc, (ImFontGlyph*)glyph, (ImTextureRect*)pr, (byte*)psrcPixels, srcFmt, srcPitch);
+					}
+				}
+			}
+		}
+		public static void ImFontAtlasBakedSetFontGlyphBitmap(ref ImFontAtlas atlas, ImFontBakedPtr baked, ref ImFontConfig src, ImFontGlyphPtr glyph, ref ImTextureRect r, in byte srcPixels, ImTextureFormat srcFmt, int srcPitch)
+		{
+			fixed (ImFontAtlas* patlas = &atlas)
+			{
+				fixed (ImFontConfig* psrc = &src)
+				{
+					fixed (ImTextureRect* pr = &r)
+					{
+						fixed (byte* psrcPixels = &srcPixels)
+						{
+							ImGuiPNative.ImFontAtlasBakedSetFontGlyphBitmap((ImFontAtlas*)patlas, (ImFontBaked*)baked, (ImFontConfig*)psrc, (ImFontGlyph*)glyph, (ImTextureRect*)pr, (byte*)psrcPixels, srcFmt, srcPitch);
+						}
+					}
+				}
+			}
+		}
+		public static void ImFontAtlasBakedSetFontGlyphBitmap(ImFontAtlasPtr atlas, ref ImFontBaked baked, ref ImFontConfig src, ImFontGlyphPtr glyph, ref ImTextureRect r, in byte srcPixels, ImTextureFormat srcFmt, int srcPitch)
+		{
+			fixed (ImFontBaked* pbaked = &baked)
+			{
+				fixed (ImFontConfig* psrc = &src)
+				{
+					fixed (ImTextureRect* pr = &r)
+					{
+						fixed (byte* psrcPixels = &srcPixels)
+						{
+							ImGuiPNative.ImFontAtlasBakedSetFontGlyphBitmap((ImFontAtlas*)atlas, (ImFontBaked*)pbaked, (ImFontConfig*)psrc, (ImFontGlyph*)glyph, (ImTextureRect*)pr, (byte*)psrcPixels, srcFmt, srcPitch);
+						}
+					}
+				}
+			}
+		}
+		public static void ImFontAtlasBakedSetFontGlyphBitmap(ref ImFontAtlas atlas, ref ImFontBaked baked, ref ImFontConfig src, ImFontGlyphPtr glyph, ref ImTextureRect r, in byte srcPixels, ImTextureFormat srcFmt, int srcPitch)
+		{
+			fixed (ImFontAtlas* patlas = &atlas)
+			{
+				fixed (ImFontBaked* pbaked = &baked)
+				{
+					fixed (ImFontConfig* psrc = &src)
+					{
+						fixed (ImTextureRect* pr = &r)
+						{
+							fixed (byte* psrcPixels = &srcPixels)
+							{
+								ImGuiPNative.ImFontAtlasBakedSetFontGlyphBitmap((ImFontAtlas*)patlas, (ImFontBaked*)pbaked, (ImFontConfig*)psrc, (ImFontGlyph*)glyph, (ImTextureRect*)pr, (byte*)psrcPixels, srcFmt, srcPitch);
+							}
+						}
+					}
+				}
+			}
+		}
+		public static void ImFontAtlasBakedSetFontGlyphBitmap(ImFontAtlasPtr atlas, ImFontBakedPtr baked, ImFontConfigPtr src, ref ImFontGlyph glyph, ref ImTextureRect r, in byte srcPixels, ImTextureFormat srcFmt, int srcPitch)
+		{
+			fixed (ImFontGlyph* pglyph = &glyph)
+			{
+				fixed (ImTextureRect* pr = &r)
+				{
+					fixed (byte* psrcPixels = &srcPixels)
+					{
+						ImGuiPNative.ImFontAtlasBakedSetFontGlyphBitmap((ImFontAtlas*)atlas, (ImFontBaked*)baked, (ImFontConfig*)src, (ImFontGlyph*)pglyph, (ImTextureRect*)pr, (byte*)psrcPixels, srcFmt, srcPitch);
+					}
+				}
+			}
+		}
+		public static void ImFontAtlasBakedSetFontGlyphBitmap(ref ImFontAtlas atlas, ImFontBakedPtr baked, ImFontConfigPtr src, ref ImFontGlyph glyph, ref ImTextureRect r, in byte srcPixels, ImTextureFormat srcFmt, int srcPitch)
+		{
+			fixed (ImFontAtlas* patlas = &atlas)
+			{
+				fixed (ImFontGlyph* pglyph = &glyph)
+				{
+					fixed (ImTextureRect* pr = &r)
+					{
+						fixed (byte* psrcPixels = &srcPixels)
+						{
+							ImGuiPNative.ImFontAtlasBakedSetFontGlyphBitmap((ImFontAtlas*)patlas, (ImFontBaked*)baked, (ImFontConfig*)src, (ImFontGlyph*)pglyph, (ImTextureRect*)pr, (byte*)psrcPixels, srcFmt, srcPitch);
+						}
+					}
+				}
+			}
+		}
+		public static void ImFontAtlasBakedSetFontGlyphBitmap(ImFontAtlasPtr atlas, ref ImFontBaked baked, ImFontConfigPtr src, ref ImFontGlyph glyph, ref ImTextureRect r, in byte srcPixels, ImTextureFormat srcFmt, int srcPitch)
+		{
+			fixed (ImFontBaked* pbaked = &baked)
+			{
+				fixed (ImFontGlyph* pglyph = &glyph)
+				{
+					fixed (ImTextureRect* pr = &r)
+					{
+						fixed (byte* psrcPixels = &srcPixels)
+						{
+							ImGuiPNative.ImFontAtlasBakedSetFontGlyphBitmap((ImFontAtlas*)atlas, (ImFontBaked*)pbaked, (ImFontConfig*)src, (ImFontGlyph*)pglyph, (ImTextureRect*)pr, (byte*)psrcPixels, srcFmt, srcPitch);
+						}
+					}
+				}
+			}
+		}
+		public static void ImFontAtlasBakedSetFontGlyphBitmap(ref ImFontAtlas atlas, ref ImFontBaked baked, ImFontConfigPtr src, ref ImFontGlyph glyph, ref ImTextureRect r, in byte srcPixels, ImTextureFormat srcFmt, int srcPitch)
+		{
+			fixed (ImFontAtlas* patlas = &atlas)
+			{
+				fixed (ImFontBaked* pbaked = &baked)
+				{
+					fixed (ImFontGlyph* pglyph = &glyph)
+					{
+						fixed (ImTextureRect* pr = &r)
+						{
+							fixed (byte* psrcPixels = &srcPixels)
+							{
+								ImGuiPNative.ImFontAtlasBakedSetFontGlyphBitmap((ImFontAtlas*)patlas, (ImFontBaked*)pbaked, (ImFontConfig*)src, (ImFontGlyph*)pglyph, (ImTextureRect*)pr, (byte*)psrcPixels, srcFmt, srcPitch);
+							}
+						}
+					}
+				}
+			}
+		}
+		public static void ImFontAtlasBakedSetFontGlyphBitmap(ImFontAtlasPtr atlas, ImFontBakedPtr baked, ref ImFontConfig src, ref ImFontGlyph glyph, ref ImTextureRect r, in byte srcPixels, ImTextureFormat srcFmt, int srcPitch)
+		{
+			fixed (ImFontConfig* psrc = &src)
+			{
+				fixed (ImFontGlyph* pglyph = &glyph)
+				{
+					fixed (ImTextureRect* pr = &r)
+					{
+						fixed (byte* psrcPixels = &srcPixels)
+						{
+							ImGuiPNative.ImFontAtlasBakedSetFontGlyphBitmap((ImFontAtlas*)atlas, (ImFontBaked*)baked, (ImFontConfig*)psrc, (ImFontGlyph*)pglyph, (ImTextureRect*)pr, (byte*)psrcPixels, srcFmt, srcPitch);
+						}
+					}
+				}
+			}
+		}
+		public static void ImFontAtlasBakedSetFontGlyphBitmap(ref ImFontAtlas atlas, ImFontBakedPtr baked, ref ImFontConfig src, ref ImFontGlyph glyph, ref ImTextureRect r, in byte srcPixels, ImTextureFormat srcFmt, int srcPitch)
+		{
+			fixed (ImFontAtlas* patlas = &atlas)
+			{
+				fixed (ImFontConfig* psrc = &src)
+				{
+					fixed (ImFontGlyph* pglyph = &glyph)
+					{
+						fixed (ImTextureRect* pr = &r)
+						{
+							fixed (byte* psrcPixels = &srcPixels)
+							{
+								ImGuiPNative.ImFontAtlasBakedSetFontGlyphBitmap((ImFontAtlas*)patlas, (ImFontBaked*)baked, (ImFontConfig*)psrc, (ImFontGlyph*)pglyph, (ImTextureRect*)pr, (byte*)psrcPixels, srcFmt, srcPitch);
+							}
+						}
+					}
+				}
+			}
+		}
+		public static void ImFontAtlasBakedSetFontGlyphBitmap(ImFontAtlasPtr atlas, ref ImFontBaked baked, ref ImFontConfig src, ref ImFontGlyph glyph, ref ImTextureRect r, in byte srcPixels, ImTextureFormat srcFmt, int srcPitch)
+		{
+			fixed (ImFontBaked* pbaked = &baked)
+			{
+				fixed (ImFontConfig* psrc = &src)
+				{
+					fixed (ImFontGlyph* pglyph = &glyph)
+					{
+						fixed (ImTextureRect* pr = &r)
+						{
+							fixed (byte* psrcPixels = &srcPixels)
+							{
+								ImGuiPNative.ImFontAtlasBakedSetFontGlyphBitmap((ImFontAtlas*)atlas, (ImFontBaked*)pbaked, (ImFontConfig*)psrc, (ImFontGlyph*)pglyph, (ImTextureRect*)pr, (byte*)psrcPixels, srcFmt, srcPitch);
+							}
+						}
+					}
+				}
+			}
+		}
+		public static void ImFontAtlasBakedSetFontGlyphBitmap(ref ImFontAtlas atlas, ref ImFontBaked baked, ref ImFontConfig src, ref ImFontGlyph glyph, ref ImTextureRect r, in byte srcPixels, ImTextureFormat srcFmt, int srcPitch)
+		{
+			fixed (ImFontAtlas* patlas = &atlas)
+			{
+				fixed (ImFontBaked* pbaked = &baked)
+				{
+					fixed (ImFontConfig* psrc = &src)
+					{
+						fixed (ImFontGlyph* pglyph = &glyph)
+						{
+							fixed (ImTextureRect* pr = &r)
+							{
+								fixed (byte* psrcPixels = &srcPixels)
+								{
+									ImGuiPNative.ImFontAtlasBakedSetFontGlyphBitmap((ImFontAtlas*)patlas, (ImFontBaked*)pbaked, (ImFontConfig*)psrc, (ImFontGlyph*)pglyph, (ImTextureRect*)pr, (byte*)psrcPixels, srcFmt, srcPitch);
+								}
+							}
+						}
+					}
+				}
+			}
+		}
+		public static void ImFontAtlasPackInit(ImFontAtlasPtr atlas)
+		{
+			ImGuiPNative.ImFontAtlasPackInit((ImFontAtlas*)atlas);
+		}
+		public static void ImFontAtlasPackInit(ref ImFontAtlas atlas)
+		{
+			fixed (ImFontAtlas* patlas = &atlas)
+			{
+				ImGuiPNative.ImFontAtlasPackInit((ImFontAtlas*)patlas);
+			}
+		}
+		public static int ImFontAtlasPackAddRect(ImFontAtlasPtr atlas, int w, int h, ImFontAtlasRectEntryPtr overwriteEntry)
+		{
+			int ret = ImGuiPNative.ImFontAtlasPackAddRect((ImFontAtlas*)atlas, w, h, (ImFontAtlasRectEntry*)overwriteEntry);
+			return ret;
+		}
+		public static int ImFontAtlasPackAddRect(ImFontAtlasPtr atlas, int w, int h)
+		{
+			int ret = ImGuiPNative.ImFontAtlasPackAddRect((ImFontAtlas*)atlas, w, h, (ImFontAtlasRectEntry*)(default));
+			return ret;
+		}
+		public static int ImFontAtlasPackAddRect(ref ImFontAtlas atlas, int w, int h, ImFontAtlasRectEntryPtr overwriteEntry)
+		{
+			fixed (ImFontAtlas* patlas = &atlas)
+			{
+				int ret = ImGuiPNative.ImFontAtlasPackAddRect((ImFontAtlas*)patlas, w, h, (ImFontAtlasRectEntry*)overwriteEntry);
+				return ret;
+			}
+		}
+		public static int ImFontAtlasPackAddRect(ref ImFontAtlas atlas, int w, int h)
+		{
+			fixed (ImFontAtlas* patlas = &atlas)
+			{
+				int ret = ImGuiPNative.ImFontAtlasPackAddRect((ImFontAtlas*)patlas, w, h, (ImFontAtlasRectEntry*)(default));
+				return ret;
+			}
+		}
+		public static int ImFontAtlasPackAddRect(ImFontAtlasPtr atlas, int w, int h, ref ImFontAtlasRectEntry overwriteEntry)
+		{
+			fixed (ImFontAtlasRectEntry* poverwriteEntry = &overwriteEntry)
+			{
+				int ret = ImGuiPNative.ImFontAtlasPackAddRect((ImFontAtlas*)atlas, w, h, (ImFontAtlasRectEntry*)poverwriteEntry);
+				return ret;
+			}
+		}
+		public static int ImFontAtlasPackAddRect(ref ImFontAtlas atlas, int w, int h, ref ImFontAtlasRectEntry overwriteEntry)
+		{
+			fixed (ImFontAtlas* patlas = &atlas)
+			{
+				fixed (ImFontAtlasRectEntry* poverwriteEntry = &overwriteEntry)
+				{
+					int ret = ImGuiPNative.ImFontAtlasPackAddRect((ImFontAtlas*)patlas, w, h, (ImFontAtlasRectEntry*)poverwriteEntry);
+					return ret;
+				}
+			}
+		}
+		public static ImTextureRectPtr ImFontAtlasPackGetRect(ImFontAtlasPtr atlas, int id)
+		{
+			ImTextureRectPtr ret = ImGuiPNative.ImFontAtlasPackGetRect((ImFontAtlas*)atlas, id);
+			return ret;
+		}
+		public static ImTextureRectPtr ImFontAtlasPackGetRect(ref ImFontAtlas atlas, int id)
+		{
+			fixed (ImFontAtlas* patlas = &atlas)
+			{
+				ImTextureRectPtr ret = ImGuiPNative.ImFontAtlasPackGetRect((ImFontAtlas*)patlas, id);
+				return ret;
+			}
+		}
+		public static ImTextureRectPtr ImFontAtlasPackGetRectSafe(ImFontAtlasPtr atlas, int id)
+		{
+			ImTextureRectPtr ret = ImGuiPNative.ImFontAtlasPackGetRectSafe((ImFontAtlas*)atlas, id);
+			return ret;
+		}
+		public static ImTextureRectPtr ImFontAtlasPackGetRectSafe(ref ImFontAtlas atlas, int id)
+		{
+			fixed (ImFontAtlas* patlas = &atlas)
+			{
+				ImTextureRectPtr ret = ImGuiPNative.ImFontAtlasPackGetRectSafe((ImFontAtlas*)patlas, id);
+				return ret;
+			}
+		}
+		public static void ImFontAtlasPackDiscardRect(ImFontAtlasPtr atlas, int id)
+		{
+			ImGuiPNative.ImFontAtlasPackDiscardRect((ImFontAtlas*)atlas, id);
+		}
+		public static void ImFontAtlasPackDiscardRect(ref ImFontAtlas atlas, int id)
+		{
+			fixed (ImFontAtlas* patlas = &atlas)
+			{
+				ImGuiPNative.ImFontAtlasPackDiscardRect((ImFontAtlas*)patlas, id);
+			}
+		}
+		public static void ImFontAtlasUpdateNewFrame(ImFontAtlasPtr atlas, int frameCount, bool rendererHasTextures)
+		{
+			ImGuiPNative.ImFontAtlasUpdateNewFrame((ImFontAtlas*)atlas, frameCount, rendererHasTextures ? (byte)1 : (byte)0);
+		}
+		public static void ImFontAtlasUpdateNewFrame(ref ImFontAtlas atlas, int frameCount, bool rendererHasTextures)
+		{
+			fixed (ImFontAtlas* patlas = &atlas)
+			{
+				ImGuiPNative.ImFontAtlasUpdateNewFrame((ImFontAtlas*)patlas, frameCount, rendererHasTextures ? (byte)1 : (byte)0);
+			}
+		}
+		public static void ImFontAtlasAddDrawListSharedData(ImFontAtlasPtr atlas, ImDrawListSharedDataPtr data)
+		{
+			ImGuiPNative.ImFontAtlasAddDrawListSharedData((ImFontAtlas*)atlas, (ImDrawListSharedData*)data);
+		}
+		public static void ImFontAtlasAddDrawListSharedData(ref ImFontAtlas atlas, ImDrawListSharedDataPtr data)
+		{
+			fixed (ImFontAtlas* patlas = &atlas)
+			{
+				ImGuiPNative.ImFontAtlasAddDrawListSharedData((ImFontAtlas*)patlas, (ImDrawListSharedData*)data);
+			}
+		}
+		public static void ImFontAtlasAddDrawListSharedData(ImFontAtlasPtr atlas, ref ImDrawListSharedData data)
+		{
+			fixed (ImDrawListSharedData* pdata = &data)
+			{
+				ImGuiPNative.ImFontAtlasAddDrawListSharedData((ImFontAtlas*)atlas, (ImDrawListSharedData*)pdata);
+			}
+		}
+		public static void ImFontAtlasAddDrawListSharedData(ref ImFontAtlas atlas, ref ImDrawListSharedData data)
+		{
+			fixed (ImFontAtlas* patlas = &atlas)
+			{
+				fixed (ImDrawListSharedData* pdata = &data)
+				{
+					ImGuiPNative.ImFontAtlasAddDrawListSharedData((ImFontAtlas*)patlas, (ImDrawListSharedData*)pdata);
+				}
+			}
+		}
+		public static void ImFontAtlasRemoveDrawListSharedData(ImFontAtlasPtr atlas, ImDrawListSharedDataPtr data)
+		{
+			ImGuiPNative.ImFontAtlasRemoveDrawListSharedData((ImFontAtlas*)atlas, (ImDrawListSharedData*)data);
+		}
+		public static void ImFontAtlasRemoveDrawListSharedData(ref ImFontAtlas atlas, ImDrawListSharedDataPtr data)
+		{
+			fixed (ImFontAtlas* patlas = &atlas)
+			{
+				ImGuiPNative.ImFontAtlasRemoveDrawListSharedData((ImFontAtlas*)patlas, (ImDrawListSharedData*)data);
+			}
+		}
+		public static void ImFontAtlasRemoveDrawListSharedData(ImFontAtlasPtr atlas, ref ImDrawListSharedData data)
+		{
+			fixed (ImDrawListSharedData* pdata = &data)
+			{
+				ImGuiPNative.ImFontAtlasRemoveDrawListSharedData((ImFontAtlas*)atlas, (ImDrawListSharedData*)pdata);
+			}
+		}
+		public static void ImFontAtlasRemoveDrawListSharedData(ref ImFontAtlas atlas, ref ImDrawListSharedData data)
+		{
+			fixed (ImFontAtlas* patlas = &atlas)
+			{
+				fixed (ImDrawListSharedData* pdata = &data)
+				{
+					ImGuiPNative.ImFontAtlasRemoveDrawListSharedData((ImFontAtlas*)patlas, (ImDrawListSharedData*)pdata);
+				}
+			}
+		}
+		public static void ImFontAtlasUpdateDrawListsTextures(ImFontAtlasPtr atlas, ImTextureRef oldTex, ImTextureRef newTex)
+		{
+			ImGuiPNative.ImFontAtlasUpdateDrawListsTextures((ImFontAtlas*)atlas, oldTex, newTex);
+		}
+		public static void ImFontAtlasUpdateDrawListsTextures(ref ImFontAtlas atlas, ImTextureRef oldTex, ImTextureRef newTex)
+		{
+			fixed (ImFontAtlas* patlas = &atlas)
+			{
+				ImGuiPNative.ImFontAtlasUpdateDrawListsTextures((ImFontAtlas*)patlas, oldTex, newTex);
+			}
+		}
+		public static void ImFontAtlasUpdateDrawListsSharedData(ImFontAtlasPtr atlas)
+		{
+			ImGuiPNative.ImFontAtlasUpdateDrawListsSharedData((ImFontAtlas*)atlas);
+		}
+		public static void ImFontAtlasUpdateDrawListsSharedData(ref ImFontAtlas atlas)
+		{
+			fixed (ImFontAtlas* patlas = &atlas)
+			{
+				ImGuiPNative.ImFontAtlasUpdateDrawListsSharedData((ImFontAtlas*)patlas);
+			}
+		}
+		public static void ImFontAtlasTextureBlockConvert(byte* srcPixels, ImTextureFormat srcFmt, int srcPitch, byte* dstPixels, ImTextureFormat dstFmt, int dstPitch, int w, int h)
+		{
+			ImGuiPNative.ImFontAtlasTextureBlockConvert(srcPixels, srcFmt, srcPitch, dstPixels, dstFmt, dstPitch, w, h);
+		}
+		public static void ImFontAtlasTextureBlockConvert(in byte srcPixels, ImTextureFormat srcFmt, int srcPitch, byte* dstPixels, ImTextureFormat dstFmt, int dstPitch, int w, int h)
+		{
+			fixed (byte* psrcPixels = &srcPixels)
+			{
+				ImGuiPNative.ImFontAtlasTextureBlockConvert((byte*)psrcPixels, srcFmt, srcPitch, dstPixels, dstFmt, dstPitch, w, h);
+			}
+		}
+		public static void ImFontAtlasTextureBlockConvert(byte* srcPixels, ImTextureFormat srcFmt, int srcPitch, ref byte dstPixels, ImTextureFormat dstFmt, int dstPitch, int w, int h)
+		{
+			fixed (byte* pdstPixels = &dstPixels)
+			{
+				ImGuiPNative.ImFontAtlasTextureBlockConvert(srcPixels, srcFmt, srcPitch, (byte*)pdstPixels, dstFmt, dstPitch, w, h);
+			}
+		}
+		public static void ImFontAtlasTextureBlockConvert(in byte srcPixels, ImTextureFormat srcFmt, int srcPitch, ref byte dstPixels, ImTextureFormat dstFmt, int dstPitch, int w, int h)
+		{
+			fixed (byte* psrcPixels = &srcPixels)
+			{
+				fixed (byte* pdstPixels = &dstPixels)
+				{
+					ImGuiPNative.ImFontAtlasTextureBlockConvert((byte*)psrcPixels, srcFmt, srcPitch, (byte*)pdstPixels, dstFmt, dstPitch, w, h);
+				}
+			}
+		}
+		public static void ImFontAtlasTextureBlockPostProcess(ImFontAtlasPostProcessDataPtr data)
+		{
+			ImGuiPNative.ImFontAtlasTextureBlockPostProcess((ImFontAtlasPostProcessData*)data);
+		}
+		public static void ImFontAtlasTextureBlockPostProcess(ref ImFontAtlasPostProcessData data)
+		{
+			fixed (ImFontAtlasPostProcessData* pdata = &data)
+			{
+				ImGuiPNative.ImFontAtlasTextureBlockPostProcess((ImFontAtlasPostProcessData*)pdata);
+			}
+		}
+		public static void ImFontAtlasTextureBlockPostProcessMultiply(ImFontAtlasPostProcessDataPtr data, float multiplyFactor)
+		{
+			ImGuiPNative.ImFontAtlasTextureBlockPostProcessMultiply((ImFontAtlasPostProcessData*)data, multiplyFactor);
+		}
+		public static void ImFontAtlasTextureBlockPostProcessMultiply(ref ImFontAtlasPostProcessData data, float multiplyFactor)
+		{
+			fixed (ImFontAtlasPostProcessData* pdata = &data)
+			{
+				ImGuiPNative.ImFontAtlasTextureBlockPostProcessMultiply((ImFontAtlasPostProcessData*)pdata, multiplyFactor);
+			}
+		}
+		public static void ImFontAtlasTextureBlockFill(ImTextureDataPtr dstTex, int dstX, int dstY, int w, int h, uint col)
+		{
+			ImGuiPNative.ImFontAtlasTextureBlockFill((ImTextureData*)dstTex, dstX, dstY, w, h, col);
+		}
+		public static void ImFontAtlasTextureBlockFill(ref ImTextureData dstTex, int dstX, int dstY, int w, int h, uint col)
+		{
+			fixed (ImTextureData* pdstTex = &dstTex)
+			{
+				ImGuiPNative.ImFontAtlasTextureBlockFill((ImTextureData*)pdstTex, dstX, dstY, w, h, col);
+			}
+		}
+		public static void ImFontAtlasTextureBlockCopy(ImTextureDataPtr srcTex, int srcX, int srcY, ImTextureDataPtr dstTex, int dstX, int dstY, int w, int h)
+		{
+			ImGuiPNative.ImFontAtlasTextureBlockCopy((ImTextureData*)srcTex, srcX, srcY, (ImTextureData*)dstTex, dstX, dstY, w, h);
+		}
+		public static void ImFontAtlasTextureBlockCopy(ref ImTextureData srcTex, int srcX, int srcY, ImTextureDataPtr dstTex, int dstX, int dstY, int w, int h)
+		{
+			fixed (ImTextureData* psrcTex = &srcTex)
+			{
+				ImGuiPNative.ImFontAtlasTextureBlockCopy((ImTextureData*)psrcTex, srcX, srcY, (ImTextureData*)dstTex, dstX, dstY, w, h);
+			}
+		}
+		public static void ImFontAtlasTextureBlockCopy(ImTextureDataPtr srcTex, int srcX, int srcY, ref ImTextureData dstTex, int dstX, int dstY, int w, int h)
+		{
+			fixed (ImTextureData* pdstTex = &dstTex)
+			{
+				ImGuiPNative.ImFontAtlasTextureBlockCopy((ImTextureData*)srcTex, srcX, srcY, (ImTextureData*)pdstTex, dstX, dstY, w, h);
+			}
+		}
+		public static void ImFontAtlasTextureBlockCopy(ref ImTextureData srcTex, int srcX, int srcY, ref ImTextureData dstTex, int dstX, int dstY, int w, int h)
+		{
+			fixed (ImTextureData* psrcTex = &srcTex)
+			{
+				fixed (ImTextureData* pdstTex = &dstTex)
+				{
+					ImGuiPNative.ImFontAtlasTextureBlockCopy((ImTextureData*)psrcTex, srcX, srcY, (ImTextureData*)pdstTex, dstX, dstY, w, h);
+				}
+			}
+		}
+		public static void ImFontAtlasTextureBlockQueueUpload(ImFontAtlasPtr atlas, ImTextureDataPtr tex, int x, int y, int w, int h)
+		{
+			ImGuiPNative.ImFontAtlasTextureBlockQueueUpload((ImFontAtlas*)atlas, (ImTextureData*)tex, x, y, w, h);
+		}
+		public static void ImFontAtlasTextureBlockQueueUpload(ref ImFontAtlas atlas, ImTextureDataPtr tex, int x, int y, int w, int h)
+		{
+			fixed (ImFontAtlas* patlas = &atlas)
+			{
+				ImGuiPNative.ImFontAtlasTextureBlockQueueUpload((ImFontAtlas*)patlas, (ImTextureData*)tex, x, y, w, h);
+			}
+		}
+		public static void ImFontAtlasTextureBlockQueueUpload(ImFontAtlasPtr atlas, ref ImTextureData tex, int x, int y, int w, int h)
+		{
+			fixed (ImTextureData* ptex = &tex)
+			{
+				ImGuiPNative.ImFontAtlasTextureBlockQueueUpload((ImFontAtlas*)atlas, (ImTextureData*)ptex, x, y, w, h);
+			}
+		}
+		public static void ImFontAtlasTextureBlockQueueUpload(ref ImFontAtlas atlas, ref ImTextureData tex, int x, int y, int w, int h)
+		{
+			fixed (ImFontAtlas* patlas = &atlas)
+			{
+				fixed (ImTextureData* ptex = &tex)
+				{
+					ImGuiPNative.ImFontAtlasTextureBlockQueueUpload((ImFontAtlas*)patlas, (ImTextureData*)ptex, x, y, w, h);
+				}
+			}
+		}
+		public static bool ImTextureDataUpdateNewFrame(ImTextureDataPtr tex)
+		{
+			byte ret = ImGuiPNative.ImTextureDataUpdateNewFrame((ImTextureData*)tex);
+			return ret != 0;
+		}
+		public static bool ImTextureDataUpdateNewFrame(ref ImTextureData tex)
+		{
+			fixed (ImTextureData* ptex = &tex)
+			{
+				byte ret = ImGuiPNative.ImTextureDataUpdateNewFrame((ImTextureData*)ptex);
+				return ret != 0;
+			}
+		}
+		public static void ImTextureDataQueueUpload(ImTextureDataPtr tex, int x, int y, int w, int h)
+		{
+			ImGuiPNative.ImTextureDataQueueUpload((ImTextureData*)tex, x, y, w, h);
+		}
+		public static void ImTextureDataQueueUpload(ref ImTextureData tex, int x, int y, int w, int h)
+		{
+			fixed (ImTextureData* ptex = &tex)
+			{
+				ImGuiPNative.ImTextureDataQueueUpload((ImTextureData*)ptex, x, y, w, h);
+			}
+		}
+		public static int ImTextureDataGetFormatBytesPerPixel(ImTextureFormat format)
+		{
+			int ret = ImGuiPNative.ImTextureDataGetFormatBytesPerPixel(format);
+			return ret;
+		}
+		public static void ImFontAtlasDebugLogTextureRequests(ImFontAtlasPtr atlas)
+		{
+			ImGuiPNative.ImFontAtlasDebugLogTextureRequests((ImFontAtlas*)atlas);
+		}
+		public static void ImFontAtlasDebugLogTextureRequests(ref ImFontAtlas atlas)
+		{
+			fixed (ImFontAtlas* patlas = &atlas)
+			{
+				ImGuiPNative.ImFontAtlasDebugLogTextureRequests((ImFontAtlas*)patlas);
+			}
+		}
+		public static bool ImFontAtlasGetMouseCursorTexData(ImFontAtlasPtr atlas, ImGuiMouseCursor cursorType, Vector2* outOffset, Vector2* outSize, Vector2* outUvBorder, Vector2* outUvFill)
+		{
+			byte ret = ImGuiPNative.ImFontAtlasGetMouseCursorTexData((ImFontAtlas*)atlas, cursorType, outOffset, outSize, outUvBorder, outUvFill);
+			return ret != 0;
+		}
+		public static bool ImFontAtlasGetMouseCursorTexData(ref ImFontAtlas atlas, ImGuiMouseCursor cursorType, Vector2* outOffset, Vector2* outSize, Vector2* outUvBorder, Vector2* outUvFill)
+		{
+			fixed (ImFontAtlas* patlas = &atlas)
+			{
+				byte ret = ImGuiPNative.ImFontAtlasGetMouseCursorTexData((ImFontAtlas*)patlas, cursorType, outOffset, outSize, outUvBorder, outUvFill);
+				return ret != 0;
+			}
+		}
+		public static bool ImFontAtlasGetMouseCursorTexData(ImFontAtlasPtr atlas, ImGuiMouseCursor cursorType, ref Vector2 outOffset, Vector2* outSize, Vector2* outUvBorder, Vector2* outUvFill)
+		{
+			fixed (Vector2* poutOffset = &outOffset)
+			{
+				byte ret = ImGuiPNative.ImFontAtlasGetMouseCursorTexData((ImFontAtlas*)atlas, cursorType, (Vector2*)poutOffset, outSize, outUvBorder, outUvFill);
+				return ret != 0;
+			}
+		}
+		public static bool ImFontAtlasGetMouseCursorTexData(ref ImFontAtlas atlas, ImGuiMouseCursor cursorType, ref Vector2 outOffset, Vector2* outSize, Vector2* outUvBorder, Vector2* outUvFill)
+		{
+			fixed (ImFontAtlas* patlas = &atlas)
+			{
+				fixed (Vector2* poutOffset = &outOffset)
+				{
+					byte ret = ImGuiPNative.ImFontAtlasGetMouseCursorTexData((ImFontAtlas*)patlas, cursorType, (Vector2*)poutOffset, outSize, outUvBorder, outUvFill);
+					return ret != 0;
+				}
+			}
+		}
+		public static bool ImFontAtlasGetMouseCursorTexData(ImFontAtlasPtr atlas, ImGuiMouseCursor cursorType, Vector2* outOffset, ref Vector2 outSize, Vector2* outUvBorder, Vector2* outUvFill)
+		{
+			fixed (Vector2* poutSize = &outSize)
+			{
+				byte ret = ImGuiPNative.ImFontAtlasGetMouseCursorTexData((ImFontAtlas*)atlas, cursorType, outOffset, (Vector2*)poutSize, outUvBorder, outUvFill);
+				return ret != 0;
+			}
+		}
+		public static bool ImFontAtlasGetMouseCursorTexData(ref ImFontAtlas atlas, ImGuiMouseCursor cursorType, Vector2* outOffset, ref Vector2 outSize, Vector2* outUvBorder, Vector2* outUvFill)
+		{
+			fixed (ImFontAtlas* patlas = &atlas)
+			{
+				fixed (Vector2* poutSize = &outSize)
+				{
+					byte ret = ImGuiPNative.ImFontAtlasGetMouseCursorTexData((ImFontAtlas*)patlas, cursorType, outOffset, (Vector2*)poutSize, outUvBorder, outUvFill);
+					return ret != 0;
+				}
+			}
+		}
+		public static bool ImFontAtlasGetMouseCursorTexData(ImFontAtlasPtr atlas, ImGuiMouseCursor cursorType, ref Vector2 outOffset, ref Vector2 outSize, Vector2* outUvBorder, Vector2* outUvFill)
+		{
+			fixed (Vector2* poutOffset = &outOffset)
+			{
+				fixed (Vector2* poutSize = &outSize)
+				{
+					byte ret = ImGuiPNative.ImFontAtlasGetMouseCursorTexData((ImFontAtlas*)atlas, cursorType, (Vector2*)poutOffset, (Vector2*)poutSize, outUvBorder, outUvFill);
+					return ret != 0;
+				}
+			}
+		}
+		public static bool ImFontAtlasGetMouseCursorTexData(ref ImFontAtlas atlas, ImGuiMouseCursor cursorType, ref Vector2 outOffset, ref Vector2 outSize, Vector2* outUvBorder, Vector2* outUvFill)
+		{
+			fixed (ImFontAtlas* patlas = &atlas)
+			{
+				fixed (Vector2* poutOffset = &outOffset)
+				{
+					fixed (Vector2* poutSize = &outSize)
+					{
+						byte ret = ImGuiPNative.ImFontAtlasGetMouseCursorTexData((ImFontAtlas*)patlas, cursorType, (Vector2*)poutOffset, (Vector2*)poutSize, outUvBorder, outUvFill);
+						return ret != 0;
+					}
+				}
+			}
+		}
+		public static bool ImFontAtlasGetMouseCursorTexData(ImFontAtlasPtr atlas, ImGuiMouseCursor cursorType, Vector2* outOffset, Vector2* outSize, ref Vector2 outUvBorder, Vector2* outUvFill)
+		{
+			fixed (Vector2* poutUvBorder = &outUvBorder)
+			{
+				byte ret = ImGuiPNative.ImFontAtlasGetMouseCursorTexData((ImFontAtlas*)atlas, cursorType, outOffset, outSize, (Vector2*)poutUvBorder, outUvFill);
+				return ret != 0;
+			}
+		}
+		public static bool ImFontAtlasGetMouseCursorTexData(ImFontAtlasPtr atlas, ImGuiMouseCursor cursorType, Vector2* outOffset, Vector2* outSize, ReadOnlySpan<Vector2> outUvBorder, Vector2* outUvFill)
+		{
+			fixed (Vector2* poutUvBorder = outUvBorder)
+			{
+				byte ret = ImGuiPNative.ImFontAtlasGetMouseCursorTexData((ImFontAtlas*)atlas, cursorType, outOffset, outSize, (Vector2*)poutUvBorder, outUvFill);
+				return ret != 0;
+			}
+		}
+		public static bool ImFontAtlasGetMouseCursorTexData(ref ImFontAtlas atlas, ImGuiMouseCursor cursorType, Vector2* outOffset, Vector2* outSize, ref Vector2 outUvBorder, Vector2* outUvFill)
+		{
+			fixed (ImFontAtlas* patlas = &atlas)
+			{
+				fixed (Vector2* poutUvBorder = &outUvBorder)
+				{
+					byte ret = ImGuiPNative.ImFontAtlasGetMouseCursorTexData((ImFontAtlas*)patlas, cursorType, outOffset, outSize, (Vector2*)poutUvBorder, outUvFill);
+					return ret != 0;
+				}
+			}
+		}
+		public static bool ImFontAtlasGetMouseCursorTexData(ref ImFontAtlas atlas, ImGuiMouseCursor cursorType, Vector2* outOffset, Vector2* outSize, ReadOnlySpan<Vector2> outUvBorder, Vector2* outUvFill)
+		{
+			fixed (ImFontAtlas* patlas = &atlas)
+			{
+				fixed (Vector2* poutUvBorder = outUvBorder)
+				{
+					byte ret = ImGuiPNative.ImFontAtlasGetMouseCursorTexData((ImFontAtlas*)patlas, cursorType, outOffset, outSize, (Vector2*)poutUvBorder, outUvFill);
+					return ret != 0;
+				}
+			}
+		}
+		public static bool ImFontAtlasGetMouseCursorTexData(ImFontAtlasPtr atlas, ImGuiMouseCursor cursorType, ref Vector2 outOffset, Vector2* outSize, ref Vector2 outUvBorder, Vector2* outUvFill)
+		{
+			fixed (Vector2* poutOffset = &outOffset)
+			{
+				fixed (Vector2* poutUvBorder = &outUvBorder)
+				{
+					byte ret = ImGuiPNative.ImFontAtlasGetMouseCursorTexData((ImFontAtlas*)atlas, cursorType, (Vector2*)poutOffset, outSize, (Vector2*)poutUvBorder, outUvFill);
+					return ret != 0;
+				}
+			}
+		}
+		public static bool ImFontAtlasGetMouseCursorTexData(ImFontAtlasPtr atlas, ImGuiMouseCursor cursorType, ref Vector2 outOffset, Vector2* outSize, ReadOnlySpan<Vector2> outUvBorder, Vector2* outUvFill)
+		{
+			fixed (Vector2* poutOffset = &outOffset)
+			{
+				fixed (Vector2* poutUvBorder = outUvBorder)
+				{
+					byte ret = ImGuiPNative.ImFontAtlasGetMouseCursorTexData((ImFontAtlas*)atlas, cursorType, (Vector2*)poutOffset, outSize, (Vector2*)poutUvBorder, outUvFill);
+					return ret != 0;
+				}
+			}
+		}
+		public static bool ImFontAtlasGetMouseCursorTexData(ref ImFontAtlas atlas, ImGuiMouseCursor cursorType, ref Vector2 outOffset, Vector2* outSize, ref Vector2 outUvBorder, Vector2* outUvFill)
+		{
+			fixed (ImFontAtlas* patlas = &atlas)
+			{
+				fixed (Vector2* poutOffset = &outOffset)
+				{
+					fixed (Vector2* poutUvBorder = &outUvBorder)
+					{
+						byte ret = ImGuiPNative.ImFontAtlasGetMouseCursorTexData((ImFontAtlas*)patlas, cursorType, (Vector2*)poutOffset, outSize, (Vector2*)poutUvBorder, outUvFill);
+						return ret != 0;
+					}
+				}
+			}
+		}
+		public static bool ImFontAtlasGetMouseCursorTexData(ref ImFontAtlas atlas, ImGuiMouseCursor cursorType, ref Vector2 outOffset, Vector2* outSize, ReadOnlySpan<Vector2> outUvBorder, Vector2* outUvFill)
+		{
+			fixed (ImFontAtlas* patlas = &atlas)
+			{
+				fixed (Vector2* poutOffset = &outOffset)
+				{
+					fixed (Vector2* poutUvBorder = outUvBorder)
+					{
+						byte ret = ImGuiPNative.ImFontAtlasGetMouseCursorTexData((ImFontAtlas*)patlas, cursorType, (Vector2*)poutOffset, outSize, (Vector2*)poutUvBorder, outUvFill);
+						return ret != 0;
+					}
+				}
+			}
+		}
+		public static bool ImFontAtlasGetMouseCursorTexData(ImFontAtlasPtr atlas, ImGuiMouseCursor cursorType, Vector2* outOffset, ref Vector2 outSize, ref Vector2 outUvBorder, Vector2* outUvFill)
+		{
+			fixed (Vector2* poutSize = &outSize)
+			{
+				fixed (Vector2* poutUvBorder = &outUvBorder)
+				{
+					byte ret = ImGuiPNative.ImFontAtlasGetMouseCursorTexData((ImFontAtlas*)atlas, cursorType, outOffset, (Vector2*)poutSize, (Vector2*)poutUvBorder, outUvFill);
+					return ret != 0;
+				}
+			}
+		}
+		public static bool ImFontAtlasGetMouseCursorTexData(ImFontAtlasPtr atlas, ImGuiMouseCursor cursorType, Vector2* outOffset, ref Vector2 outSize, ReadOnlySpan<Vector2> outUvBorder, Vector2* outUvFill)
+		{
+			fixed (Vector2* poutSize = &outSize)
+			{
+				fixed (Vector2* poutUvBorder = outUvBorder)
+				{
+					byte ret = ImGuiPNative.ImFontAtlasGetMouseCursorTexData((ImFontAtlas*)atlas, cursorType, outOffset, (Vector2*)poutSize, (Vector2*)poutUvBorder, outUvFill);
+					return ret != 0;
+				}
+			}
+		}
+		public static bool ImFontAtlasGetMouseCursorTexData(ref ImFontAtlas atlas, ImGuiMouseCursor cursorType, Vector2* outOffset, ref Vector2 outSize, ref Vector2 outUvBorder, Vector2* outUvFill)
+		{
+			fixed (ImFontAtlas* patlas = &atlas)
+			{
+				fixed (Vector2* poutSize = &outSize)
+				{
+					fixed (Vector2* poutUvBorder = &outUvBorder)
+					{
+						byte ret = ImGuiPNative.ImFontAtlasGetMouseCursorTexData((ImFontAtlas*)patlas, cursorType, outOffset, (Vector2*)poutSize, (Vector2*)poutUvBorder, outUvFill);
+						return ret != 0;
+					}
+				}
+			}
+		}
+		public static bool ImFontAtlasGetMouseCursorTexData(ref ImFontAtlas atlas, ImGuiMouseCursor cursorType, Vector2* outOffset, ref Vector2 outSize, ReadOnlySpan<Vector2> outUvBorder, Vector2* outUvFill)
+		{
+			fixed (ImFontAtlas* patlas = &atlas)
+			{
+				fixed (Vector2* poutSize = &outSize)
+				{
+					fixed (Vector2* poutUvBorder = outUvBorder)
+					{
+						byte ret = ImGuiPNative.ImFontAtlasGetMouseCursorTexData((ImFontAtlas*)patlas, cursorType, outOffset, (Vector2*)poutSize, (Vector2*)poutUvBorder, outUvFill);
+						return ret != 0;
+					}
+				}
+			}
+		}
+		public static bool ImFontAtlasGetMouseCursorTexData(ImFontAtlasPtr atlas, ImGuiMouseCursor cursorType, ref Vector2 outOffset, ref Vector2 outSize, ref Vector2 outUvBorder, Vector2* outUvFill)
+		{
+			fixed (Vector2* poutOffset = &outOffset)
+			{
+				fixed (Vector2* poutSize = &outSize)
+				{
+					fixed (Vector2* poutUvBorder = &outUvBorder)
+					{
+						byte ret = ImGuiPNative.ImFontAtlasGetMouseCursorTexData((ImFontAtlas*)atlas, cursorType, (Vector2*)poutOffset, (Vector2*)poutSize, (Vector2*)poutUvBorder, outUvFill);
+						return ret != 0;
+					}
+				}
+			}
+		}
+		public static bool ImFontAtlasGetMouseCursorTexData(ImFontAtlasPtr atlas, ImGuiMouseCursor cursorType, ref Vector2 outOffset, ref Vector2 outSize, ReadOnlySpan<Vector2> outUvBorder, Vector2* outUvFill)
+		{
+			fixed (Vector2* poutOffset = &outOffset)
+			{
+				fixed (Vector2* poutSize = &outSize)
+				{
+					fixed (Vector2* poutUvBorder = outUvBorder)
+					{
+						byte ret = ImGuiPNative.ImFontAtlasGetMouseCursorTexData((ImFontAtlas*)atlas, cursorType, (Vector2*)poutOffset, (Vector2*)poutSize, (Vector2*)poutUvBorder, outUvFill);
+						return ret != 0;
+					}
+				}
+			}
+		}
+		public static bool ImFontAtlasGetMouseCursorTexData(ref ImFontAtlas atlas, ImGuiMouseCursor cursorType, ref Vector2 outOffset, ref Vector2 outSize, ref Vector2 outUvBorder, Vector2* outUvFill)
+		{
+			fixed (ImFontAtlas* patlas = &atlas)
+			{
+				fixed (Vector2* poutOffset = &outOffset)
+				{
+					fixed (Vector2* poutSize = &outSize)
+					{
+						fixed (Vector2* poutUvBorder = &outUvBorder)
+						{
+							byte ret = ImGuiPNative.ImFontAtlasGetMouseCursorTexData((ImFontAtlas*)patlas, cursorType, (Vector2*)poutOffset, (Vector2*)poutSize, (Vector2*)poutUvBorder, outUvFill);
+							return ret != 0;
+						}
+					}
+				}
+			}
+		}
+		public static bool ImFontAtlasGetMouseCursorTexData(ref ImFontAtlas atlas, ImGuiMouseCursor cursorType, ref Vector2 outOffset, ref Vector2 outSize, ReadOnlySpan<Vector2> outUvBorder, Vector2* outUvFill)
+		{
+			fixed (ImFontAtlas* patlas = &atlas)
+			{
+				fixed (Vector2* poutOffset = &outOffset)
+				{
+					fixed (Vector2* poutSize = &outSize)
+					{
+						fixed (Vector2* poutUvBorder = outUvBorder)
+						{
+							byte ret = ImGuiPNative.ImFontAtlasGetMouseCursorTexData((ImFontAtlas*)patlas, cursorType, (Vector2*)poutOffset, (Vector2*)poutSize, (Vector2*)poutUvBorder, outUvFill);
+							return ret != 0;
+						}
+					}
+				}
+			}
+		}
+		public static bool ImFontAtlasGetMouseCursorTexData(ImFontAtlasPtr atlas, ImGuiMouseCursor cursorType, Vector2* outOffset, Vector2* outSize, Vector2* outUvBorder, ref Vector2 outUvFill)
+		{
+			fixed (Vector2* poutUvFill = &outUvFill)
+			{
+				byte ret = ImGuiPNative.ImFontAtlasGetMouseCursorTexData((ImFontAtlas*)atlas, cursorType, outOffset, outSize, outUvBorder, (Vector2*)poutUvFill);
+				return ret != 0;
+			}
+		}
+		public static bool ImFontAtlasGetMouseCursorTexData(ImFontAtlasPtr atlas, ImGuiMouseCursor cursorType, Vector2* outOffset, Vector2* outSize, Vector2* outUvBorder, ReadOnlySpan<Vector2> outUvFill)
+		{
+			fixed (Vector2* poutUvFill = outUvFill)
+			{
+				byte ret = ImGuiPNative.ImFontAtlasGetMouseCursorTexData((ImFontAtlas*)atlas, cursorType, outOffset, outSize, outUvBorder, (Vector2*)poutUvFill);
+				return ret != 0;
+			}
+		}
+		public static bool ImFontAtlasGetMouseCursorTexData(ref ImFontAtlas atlas, ImGuiMouseCursor cursorType, Vector2* outOffset, Vector2* outSize, Vector2* outUvBorder, ref Vector2 outUvFill)
+		{
+			fixed (ImFontAtlas* patlas = &atlas)
+			{
+				fixed (Vector2* poutUvFill = &outUvFill)
+				{
+					byte ret = ImGuiPNative.ImFontAtlasGetMouseCursorTexData((ImFontAtlas*)patlas, cursorType, outOffset, outSize, outUvBorder, (Vector2*)poutUvFill);
+					return ret != 0;
+				}
+			}
+		}
+		public static bool ImFontAtlasGetMouseCursorTexData(ref ImFontAtlas atlas, ImGuiMouseCursor cursorType, Vector2* outOffset, Vector2* outSize, Vector2* outUvBorder, ReadOnlySpan<Vector2> outUvFill)
+		{
+			fixed (ImFontAtlas* patlas = &atlas)
+			{
+				fixed (Vector2* poutUvFill = outUvFill)
+				{
+					byte ret = ImGuiPNative.ImFontAtlasGetMouseCursorTexData((ImFontAtlas*)patlas, cursorType, outOffset, outSize, outUvBorder, (Vector2*)poutUvFill);
+					return ret != 0;
+				}
+			}
+		}
+		public static bool ImFontAtlasGetMouseCursorTexData(ImFontAtlasPtr atlas, ImGuiMouseCursor cursorType, ref Vector2 outOffset, Vector2* outSize, Vector2* outUvBorder, ref Vector2 outUvFill)
+		{
+			fixed (Vector2* poutOffset = &outOffset)
+			{
+				fixed (Vector2* poutUvFill = &outUvFill)
+				{
+					byte ret = ImGuiPNative.ImFontAtlasGetMouseCursorTexData((ImFontAtlas*)atlas, cursorType, (Vector2*)poutOffset, outSize, outUvBorder, (Vector2*)poutUvFill);
+					return ret != 0;
+				}
+			}
+		}
+		public static bool ImFontAtlasGetMouseCursorTexData(ImFontAtlasPtr atlas, ImGuiMouseCursor cursorType, ref Vector2 outOffset, Vector2* outSize, Vector2* outUvBorder, ReadOnlySpan<Vector2> outUvFill)
+		{
+			fixed (Vector2* poutOffset = &outOffset)
+			{
+				fixed (Vector2* poutUvFill = outUvFill)
+				{
+					byte ret = ImGuiPNative.ImFontAtlasGetMouseCursorTexData((ImFontAtlas*)atlas, cursorType, (Vector2*)poutOffset, outSize, outUvBorder, (Vector2*)poutUvFill);
+					return ret != 0;
+				}
+			}
+		}
+		public static bool ImFontAtlasGetMouseCursorTexData(ref ImFontAtlas atlas, ImGuiMouseCursor cursorType, ref Vector2 outOffset, Vector2* outSize, Vector2* outUvBorder, ref Vector2 outUvFill)
+		{
+			fixed (ImFontAtlas* patlas = &atlas)
+			{
+				fixed (Vector2* poutOffset = &outOffset)
+				{
+					fixed (Vector2* poutUvFill = &outUvFill)
+					{
+						byte ret = ImGuiPNative.ImFontAtlasGetMouseCursorTexData((ImFontAtlas*)patlas, cursorType, (Vector2*)poutOffset, outSize, outUvBorder, (Vector2*)poutUvFill);
+						return ret != 0;
+					}
+				}
+			}
+		}
+		public static bool ImFontAtlasGetMouseCursorTexData(ref ImFontAtlas atlas, ImGuiMouseCursor cursorType, ref Vector2 outOffset, Vector2* outSize, Vector2* outUvBorder, ReadOnlySpan<Vector2> outUvFill)
+		{
+			fixed (ImFontAtlas* patlas = &atlas)
+			{
+				fixed (Vector2* poutOffset = &outOffset)
+				{
+					fixed (Vector2* poutUvFill = outUvFill)
+					{
+						byte ret = ImGuiPNative.ImFontAtlasGetMouseCursorTexData((ImFontAtlas*)patlas, cursorType, (Vector2*)poutOffset, outSize, outUvBorder, (Vector2*)poutUvFill);
+						return ret != 0;
+					}
+				}
+			}
+		}
+		public static bool ImFontAtlasGetMouseCursorTexData(ImFontAtlasPtr atlas, ImGuiMouseCursor cursorType, Vector2* outOffset, ref Vector2 outSize, Vector2* outUvBorder, ref Vector2 outUvFill)
+		{
+			fixed (Vector2* poutSize = &outSize)
+			{
+				fixed (Vector2* poutUvFill = &outUvFill)
+				{
+					byte ret = ImGuiPNative.ImFontAtlasGetMouseCursorTexData((ImFontAtlas*)atlas, cursorType, outOffset, (Vector2*)poutSize, outUvBorder, (Vector2*)poutUvFill);
+					return ret != 0;
+				}
+			}
+		}
+		public static bool ImFontAtlasGetMouseCursorTexData(ImFontAtlasPtr atlas, ImGuiMouseCursor cursorType, Vector2* outOffset, ref Vector2 outSize, Vector2* outUvBorder, ReadOnlySpan<Vector2> outUvFill)
+		{
+			fixed (Vector2* poutSize = &outSize)
+			{
+				fixed (Vector2* poutUvFill = outUvFill)
+				{
+					byte ret = ImGuiPNative.ImFontAtlasGetMouseCursorTexData((ImFontAtlas*)atlas, cursorType, outOffset, (Vector2*)poutSize, outUvBorder, (Vector2*)poutUvFill);
+					return ret != 0;
+				}
+			}
+		}
+		public static bool ImFontAtlasGetMouseCursorTexData(ref ImFontAtlas atlas, ImGuiMouseCursor cursorType, Vector2* outOffset, ref Vector2 outSize, Vector2* outUvBorder, ref Vector2 outUvFill)
+		{
+			fixed (ImFontAtlas* patlas = &atlas)
+			{
+				fixed (Vector2* poutSize = &outSize)
+				{
+					fixed (Vector2* poutUvFill = &outUvFill)
+					{
+						byte ret = ImGuiPNative.ImFontAtlasGetMouseCursorTexData((ImFontAtlas*)patlas, cursorType, outOffset, (Vector2*)poutSize, outUvBorder, (Vector2*)poutUvFill);
+						return ret != 0;
+					}
+				}
+			}
+		}
+		public static bool ImFontAtlasGetMouseCursorTexData(ref ImFontAtlas atlas, ImGuiMouseCursor cursorType, Vector2* outOffset, ref Vector2 outSize, Vector2* outUvBorder, ReadOnlySpan<Vector2> outUvFill)
+		{
+			fixed (ImFontAtlas* patlas = &atlas)
+			{
+				fixed (Vector2* poutSize = &outSize)
+				{
+					fixed (Vector2* poutUvFill = outUvFill)
+					{
+						byte ret = ImGuiPNative.ImFontAtlasGetMouseCursorTexData((ImFontAtlas*)patlas, cursorType, outOffset, (Vector2*)poutSize, outUvBorder, (Vector2*)poutUvFill);
+						return ret != 0;
+					}
+				}
+			}
+		}
+		public static bool ImFontAtlasGetMouseCursorTexData(ImFontAtlasPtr atlas, ImGuiMouseCursor cursorType, ref Vector2 outOffset, ref Vector2 outSize, Vector2* outUvBorder, ref Vector2 outUvFill)
+		{
+			fixed (Vector2* poutOffset = &outOffset)
+			{
+				fixed (Vector2* poutSize = &outSize)
+				{
+					fixed (Vector2* poutUvFill = &outUvFill)
+					{
+						byte ret = ImGuiPNative.ImFontAtlasGetMouseCursorTexData((ImFontAtlas*)atlas, cursorType, (Vector2*)poutOffset, (Vector2*)poutSize, outUvBorder, (Vector2*)poutUvFill);
+						return ret != 0;
+					}
+				}
+			}
+		}
+		public static bool ImFontAtlasGetMouseCursorTexData(ImFontAtlasPtr atlas, ImGuiMouseCursor cursorType, ref Vector2 outOffset, ref Vector2 outSize, Vector2* outUvBorder, ReadOnlySpan<Vector2> outUvFill)
+		{
+			fixed (Vector2* poutOffset = &outOffset)
+			{
+				fixed (Vector2* poutSize = &outSize)
+				{
+					fixed (Vector2* poutUvFill = outUvFill)
+					{
+						byte ret = ImGuiPNative.ImFontAtlasGetMouseCursorTexData((ImFontAtlas*)atlas, cursorType, (Vector2*)poutOffset, (Vector2*)poutSize, outUvBorder, (Vector2*)poutUvFill);
+						return ret != 0;
+					}
+				}
+			}
+		}
+		public static bool ImFontAtlasGetMouseCursorTexData(ref ImFontAtlas atlas, ImGuiMouseCursor cursorType, ref Vector2 outOffset, ref Vector2 outSize, Vector2* outUvBorder, ref Vector2 outUvFill)
+		{
+			fixed (ImFontAtlas* patlas = &atlas)
+			{
+				fixed (Vector2* poutOffset = &outOffset)
+				{
+					fixed (Vector2* poutSize = &outSize)
+					{
+						fixed (Vector2* poutUvFill = &outUvFill)
+						{
+							byte ret = ImGuiPNative.ImFontAtlasGetMouseCursorTexData((ImFontAtlas*)patlas, cursorType, (Vector2*)poutOffset, (Vector2*)poutSize, outUvBorder, (Vector2*)poutUvFill);
+							return ret != 0;
+						}
+					}
+				}
+			}
+		}
+		public static bool ImFontAtlasGetMouseCursorTexData(ref ImFontAtlas atlas, ImGuiMouseCursor cursorType, ref Vector2 outOffset, ref Vector2 outSize, Vector2* outUvBorder, ReadOnlySpan<Vector2> outUvFill)
+		{
+			fixed (ImFontAtlas* patlas = &atlas)
+			{
+				fixed (Vector2* poutOffset = &outOffset)
+				{
+					fixed (Vector2* poutSize = &outSize)
+					{
+						fixed (Vector2* poutUvFill = outUvFill)
+						{
+							byte ret = ImGuiPNative.ImFontAtlasGetMouseCursorTexData((ImFontAtlas*)patlas, cursorType, (Vector2*)poutOffset, (Vector2*)poutSize, outUvBorder, (Vector2*)poutUvFill);
+							return ret != 0;
+						}
+					}
+				}
+			}
+		}
+		public static bool ImFontAtlasGetMouseCursorTexData(ImFontAtlasPtr atlas, ImGuiMouseCursor cursorType, Vector2* outOffset, Vector2* outSize, ref Vector2 outUvBorder, ref Vector2 outUvFill)
+		{
+			fixed (Vector2* poutUvBorder = &outUvBorder)
+			{
+				fixed (Vector2* poutUvFill = &outUvFill)
+				{
+					byte ret = ImGuiPNative.ImFontAtlasGetMouseCursorTexData((ImFontAtlas*)atlas, cursorType, outOffset, outSize, (Vector2*)poutUvBorder, (Vector2*)poutUvFill);
+					return ret != 0;
+				}
+			}
+		}
+		public static bool ImFontAtlasGetMouseCursorTexData(ImFontAtlasPtr atlas, ImGuiMouseCursor cursorType, Vector2* outOffset, Vector2* outSize, ReadOnlySpan<Vector2> outUvBorder, ReadOnlySpan<Vector2> outUvFill)
+		{
+			fixed (Vector2* poutUvBorder = outUvBorder)
+			{
+				fixed (Vector2* poutUvFill = outUvFill)
+				{
+					byte ret = ImGuiPNative.ImFontAtlasGetMouseCursorTexData((ImFontAtlas*)atlas, cursorType, outOffset, outSize, (Vector2*)poutUvBorder, (Vector2*)poutUvFill);
+					return ret != 0;
+				}
+			}
+		}
+		public static bool ImFontAtlasGetMouseCursorTexData(ref ImFontAtlas atlas, ImGuiMouseCursor cursorType, Vector2* outOffset, Vector2* outSize, ref Vector2 outUvBorder, ref Vector2 outUvFill)
+		{
+			fixed (ImFontAtlas* patlas = &atlas)
+			{
+				fixed (Vector2* poutUvBorder = &outUvBorder)
+				{
+					fixed (Vector2* poutUvFill = &outUvFill)
+					{
+						byte ret = ImGuiPNative.ImFontAtlasGetMouseCursorTexData((ImFontAtlas*)patlas, cursorType, outOffset, outSize, (Vector2*)poutUvBorder, (Vector2*)poutUvFill);
+						return ret != 0;
+					}
+				}
+			}
+		}
+		public static bool ImFontAtlasGetMouseCursorTexData(ref ImFontAtlas atlas, ImGuiMouseCursor cursorType, Vector2* outOffset, Vector2* outSize, ReadOnlySpan<Vector2> outUvBorder, ReadOnlySpan<Vector2> outUvFill)
+		{
+			fixed (ImFontAtlas* patlas = &atlas)
+			{
+				fixed (Vector2* poutUvBorder = outUvBorder)
+				{
+					fixed (Vector2* poutUvFill = outUvFill)
+					{
+						byte ret = ImGuiPNative.ImFontAtlasGetMouseCursorTexData((ImFontAtlas*)patlas, cursorType, outOffset, outSize, (Vector2*)poutUvBorder, (Vector2*)poutUvFill);
+						return ret != 0;
+					}
+				}
+			}
+		}
+		public static bool ImFontAtlasGetMouseCursorTexData(ImFontAtlasPtr atlas, ImGuiMouseCursor cursorType, ref Vector2 outOffset, Vector2* outSize, ref Vector2 outUvBorder, ref Vector2 outUvFill)
+		{
+			fixed (Vector2* poutOffset = &outOffset)
+			{
+				fixed (Vector2* poutUvBorder = &outUvBorder)
+				{
+					fixed (Vector2* poutUvFill = &outUvFill)
+					{
+						byte ret = ImGuiPNative.ImFontAtlasGetMouseCursorTexData((ImFontAtlas*)atlas, cursorType, (Vector2*)poutOffset, outSize, (Vector2*)poutUvBorder, (Vector2*)poutUvFill);
+						return ret != 0;
+					}
+				}
+			}
+		}
+		public static bool ImFontAtlasGetMouseCursorTexData(ImFontAtlasPtr atlas, ImGuiMouseCursor cursorType, ref Vector2 outOffset, Vector2* outSize, ReadOnlySpan<Vector2> outUvBorder, ReadOnlySpan<Vector2> outUvFill)
+		{
+			fixed (Vector2* poutOffset = &outOffset)
+			{
+				fixed (Vector2* poutUvBorder = outUvBorder)
+				{
+					fixed (Vector2* poutUvFill = outUvFill)
+					{
+						byte ret = ImGuiPNative.ImFontAtlasGetMouseCursorTexData((ImFontAtlas*)atlas, cursorType, (Vector2*)poutOffset, outSize, (Vector2*)poutUvBorder, (Vector2*)poutUvFill);
+						return ret != 0;
+					}
+				}
+			}
+		}
+		public static bool ImFontAtlasGetMouseCursorTexData(ref ImFontAtlas atlas, ImGuiMouseCursor cursorType, ref Vector2 outOffset, Vector2* outSize, ref Vector2 outUvBorder, ref Vector2 outUvFill)
+		{
+			fixed (ImFontAtlas* patlas = &atlas)
+			{
+				fixed (Vector2* poutOffset = &outOffset)
+				{
+					fixed (Vector2* poutUvBorder = &outUvBorder)
+					{
+						fixed (Vector2* poutUvFill = &outUvFill)
+						{
+							byte ret = ImGuiPNative.ImFontAtlasGetMouseCursorTexData((ImFontAtlas*)patlas, cursorType, (Vector2*)poutOffset, outSize, (Vector2*)poutUvBorder, (Vector2*)poutUvFill);
+							return ret != 0;
+						}
+					}
+				}
+			}
+		}
+		public static bool ImFontAtlasGetMouseCursorTexData(ref ImFontAtlas atlas, ImGuiMouseCursor cursorType, ref Vector2 outOffset, Vector2* outSize, ReadOnlySpan<Vector2> outUvBorder, ReadOnlySpan<Vector2> outUvFill)
+		{
+			fixed (ImFontAtlas* patlas = &atlas)
+			{
+				fixed (Vector2* poutOffset = &outOffset)
+				{
+					fixed (Vector2* poutUvBorder = outUvBorder)
+					{
+						fixed (Vector2* poutUvFill = outUvFill)
+						{
+							byte ret = ImGuiPNative.ImFontAtlasGetMouseCursorTexData((ImFontAtlas*)patlas, cursorType, (Vector2*)poutOffset, outSize, (Vector2*)poutUvBorder, (Vector2*)poutUvFill);
+							return ret != 0;
+						}
+					}
+				}
+			}
+		}
+		public static bool ImFontAtlasGetMouseCursorTexData(ImFontAtlasPtr atlas, ImGuiMouseCursor cursorType, Vector2* outOffset, ref Vector2 outSize, ref Vector2 outUvBorder, ref Vector2 outUvFill)
+		{
+			fixed (Vector2* poutSize = &outSize)
+			{
+				fixed (Vector2* poutUvBorder = &outUvBorder)
+				{
+					fixed (Vector2* poutUvFill = &outUvFill)
+					{
+						byte ret = ImGuiPNative.ImFontAtlasGetMouseCursorTexData((ImFontAtlas*)atlas, cursorType, outOffset, (Vector2*)poutSize, (Vector2*)poutUvBorder, (Vector2*)poutUvFill);
+						return ret != 0;
+					}
+				}
+			}
+		}
+		public static bool ImFontAtlasGetMouseCursorTexData(ImFontAtlasPtr atlas, ImGuiMouseCursor cursorType, Vector2* outOffset, ref Vector2 outSize, ReadOnlySpan<Vector2> outUvBorder, ReadOnlySpan<Vector2> outUvFill)
+		{
+			fixed (Vector2* poutSize = &outSize)
+			{
+				fixed (Vector2* poutUvBorder = outUvBorder)
+				{
+					fixed (Vector2* poutUvFill = outUvFill)
+					{
+						byte ret = ImGuiPNative.ImFontAtlasGetMouseCursorTexData((ImFontAtlas*)atlas, cursorType, outOffset, (Vector2*)poutSize, (Vector2*)poutUvBorder, (Vector2*)poutUvFill);
+						return ret != 0;
+					}
+				}
+			}
+		}
+		public static bool ImFontAtlasGetMouseCursorTexData(ref ImFontAtlas atlas, ImGuiMouseCursor cursorType, Vector2* outOffset, ref Vector2 outSize, ref Vector2 outUvBorder, ref Vector2 outUvFill)
+		{
+			fixed (ImFontAtlas* patlas = &atlas)
+			{
+				fixed (Vector2* poutSize = &outSize)
+				{
+					fixed (Vector2* poutUvBorder = &outUvBorder)
+					{
+						fixed (Vector2* poutUvFill = &outUvFill)
+						{
+							byte ret = ImGuiPNative.ImFontAtlasGetMouseCursorTexData((ImFontAtlas*)patlas, cursorType, outOffset, (Vector2*)poutSize, (Vector2*)poutUvBorder, (Vector2*)poutUvFill);
+							return ret != 0;
+						}
+					}
+				}
+			}
+		}
+		public static bool ImFontAtlasGetMouseCursorTexData(ref ImFontAtlas atlas, ImGuiMouseCursor cursorType, Vector2* outOffset, ref Vector2 outSize, ReadOnlySpan<Vector2> outUvBorder, ReadOnlySpan<Vector2> outUvFill)
+		{
+			fixed (ImFontAtlas* patlas = &atlas)
+			{
+				fixed (Vector2* poutSize = &outSize)
+				{
+					fixed (Vector2* poutUvBorder = outUvBorder)
+					{
+						fixed (Vector2* poutUvFill = outUvFill)
+						{
+							byte ret = ImGuiPNative.ImFontAtlasGetMouseCursorTexData((ImFontAtlas*)patlas, cursorType, outOffset, (Vector2*)poutSize, (Vector2*)poutUvBorder, (Vector2*)poutUvFill);
+							return ret != 0;
+						}
+					}
+				}
+			}
+		}
+		public static bool ImFontAtlasGetMouseCursorTexData(ImFontAtlasPtr atlas, ImGuiMouseCursor cursorType, ref Vector2 outOffset, ref Vector2 outSize, ref Vector2 outUvBorder, ref Vector2 outUvFill)
+		{
+			fixed (Vector2* poutOffset = &outOffset)
+			{
+				fixed (Vector2* poutSize = &outSize)
+				{
+					fixed (Vector2* poutUvBorder = &outUvBorder)
+					{
+						fixed (Vector2* poutUvFill = &outUvFill)
+						{
+							byte ret = ImGuiPNative.ImFontAtlasGetMouseCursorTexData((ImFontAtlas*)atlas, cursorType, (Vector2*)poutOffset, (Vector2*)poutSize, (Vector2*)poutUvBorder, (Vector2*)poutUvFill);
+							return ret != 0;
+						}
+					}
+				}
+			}
+		}
+		public static bool ImFontAtlasGetMouseCursorTexData(ImFontAtlasPtr atlas, ImGuiMouseCursor cursorType, ref Vector2 outOffset, ref Vector2 outSize, ReadOnlySpan<Vector2> outUvBorder, ReadOnlySpan<Vector2> outUvFill)
+		{
+			fixed (Vector2* poutOffset = &outOffset)
+			{
+				fixed (Vector2* poutSize = &outSize)
+				{
+					fixed (Vector2* poutUvBorder = outUvBorder)
+					{
+						fixed (Vector2* poutUvFill = outUvFill)
+						{
+							byte ret = ImGuiPNative.ImFontAtlasGetMouseCursorTexData((ImFontAtlas*)atlas, cursorType, (Vector2*)poutOffset, (Vector2*)poutSize, (Vector2*)poutUvBorder, (Vector2*)poutUvFill);
+							return ret != 0;
+						}
+					}
+				}
+			}
+		}
+		public static bool ImFontAtlasGetMouseCursorTexData(ref ImFontAtlas atlas, ImGuiMouseCursor cursorType, ref Vector2 outOffset, ref Vector2 outSize, ref Vector2 outUvBorder, ref Vector2 outUvFill)
+		{
+			fixed (ImFontAtlas* patlas = &atlas)
+			{
+				fixed (Vector2* poutOffset = &outOffset)
+				{
+					fixed (Vector2* poutSize = &outSize)
+					{
+						fixed (Vector2* poutUvBorder = &outUvBorder)
+						{
+							fixed (Vector2* poutUvFill = &outUvFill)
+							{
+								byte ret = ImGuiPNative.ImFontAtlasGetMouseCursorTexData((ImFontAtlas*)patlas, cursorType, (Vector2*)poutOffset, (Vector2*)poutSize, (Vector2*)poutUvBorder, (Vector2*)poutUvFill);
+								return ret != 0;
+							}
+						}
+					}
+				}
+			}
+		}
+		public static bool ImFontAtlasGetMouseCursorTexData(ref ImFontAtlas atlas, ImGuiMouseCursor cursorType, ref Vector2 outOffset, ref Vector2 outSize, ReadOnlySpan<Vector2> outUvBorder, ReadOnlySpan<Vector2> outUvFill)
+		{
+			fixed (ImFontAtlas* patlas = &atlas)
+			{
+				fixed (Vector2* poutOffset = &outOffset)
+				{
+					fixed (Vector2* poutSize = &outSize)
+					{
+						fixed (Vector2* poutUvBorder = outUvBorder)
+						{
+							fixed (Vector2* poutUvFill = outUvFill)
+							{
+								byte ret = ImGuiPNative.ImFontAtlasGetMouseCursorTexData((ImFontAtlas*)patlas, cursorType, (Vector2*)poutOffset, (Vector2*)poutSize, (Vector2*)poutUvBorder, (Vector2*)poutUvFill);
+								return ret != 0;
+							}
+						}
+					}
+				}
 			}
 		}
 }
+// DISCARDED: internal static void appendNative(ImGuiTextIndex* self, byte* baseValue, int oldSize, int newSize)
 // DISCARDED: internal static byte ArrowButtonExNative(byte* strId, ImGuiDir dir, Vector2 sizeArg, ImGuiButtonFlags flags)
-// DISCARDED: internal static byte BeginChildExNative(byte* name, uint id, Vector2 sizeArg, byte border, ImGuiWindowFlags flags)
+// DISCARDED: internal static byte BeginChildExNative(byte* name, uint id, Vector2 sizeArg, ImGuiChildFlags childFlags, ImGuiWindowFlags windowFlags)
 // DISCARDED: internal static void BeginColumnsNative(byte* strId, int count, ImGuiOldColumnFlags flags)
 // DISCARDED: internal static byte BeginMenuExNative(byte* label, byte* icon, byte enabled)
+// DISCARDED: internal static byte BeginPopupMenuExNative(uint id, byte* label, ImGuiWindowFlags extraWindowFlags)
 // DISCARDED: internal static byte BeginTableExNative(byte* name, uint id, int columnsCount, ImGuiTableFlags flags, Vector2 outerSize, float innerWidth)
 // DISCARDED: internal static byte BeginViewportSideBarNative(byte* name, ImGuiViewport* viewport, ImGuiDir dir, float size, ImGuiWindowFlags windowFlags)
 // DISCARDED: internal static byte ButtonExNative(byte* label, Vector2 sizeArg, ImGuiButtonFlags flags)
 // DISCARDED: internal static byte CheckboxFlagsNative(byte* label, long* flags, long flagsValue)
 // DISCARDED: internal static byte CheckboxFlagsNative(byte* label, ulong* flags, ulong flagsValue)
+// DISCARDED: internal static void ClearWindowSettingsNative(byte* name)
 // DISCARDED: internal static void ColorEditOptionsPopupNative(float* col, ImGuiColorEditFlags flags)
 // DISCARDED: internal static void ColorPickerOptionsPopupNative(float* refCol, ImGuiColorEditFlags flags)
 // DISCARDED: internal static void ColorTooltipNative(byte* text, float* col, ImGuiColorEditFlags flags)
 // DISCARDED: internal static ImGuiWindowSettings* CreateNewWindowSettingsNative(byte* name)
-// DISCARDED: internal static void Custom_StbTextMakeUndoReplaceNative(ImGuiInputTextState* str, int where, int oldLength, int newLength)
-// DISCARDED: internal static void Custom_StbTextUndoNative(ImGuiInputTextState* str)
-// DISCARDED: internal static byte DataTypeApplyFromTextNative(byte* buf, ImGuiDataType dataType, void* pData, byte* format)
-// DISCARDED: internal static void DebugLogNative(byte* fmt)
-// DISCARDED: internal static void DebugLogVNative(byte* fmt, nuint args)
+// DISCARDED: internal static byte DataTypeApplyFromTextNative(byte* buf, ImGuiDataType dataType, void* pData, byte* format, void* pDataWhenEmpty)
+// DISCARDED: internal static byte DebugBreakButtonNative(byte* label, byte* descriptionOfLocation)
+// DISCARDED: internal static void DebugBreakButtonTooltipNative(byte keyboardOnly, byte* descriptionOfLocation)
 // DISCARDED: internal static void DebugNodeDockNodeNative(ImGuiDockNode* node, byte* label)
 // DISCARDED: internal static void DebugNodeDrawListNative(ImGuiWindow* window, ImGuiViewportP* viewport, ImDrawList* drawList, byte* label)
+// DISCARDED: internal static void DebugNodePlatformMonitorNative(ImGuiPlatformMonitor* monitor, byte* label, int idx)
 // DISCARDED: internal static void DebugNodeStorageNative(ImGuiStorage* storage, byte* label)
 // DISCARDED: internal static void DebugNodeTabBarNative(ImGuiTabBar* tabBar, byte* label)
 // DISCARDED: internal static void DebugNodeWindowNative(ImGuiWindow* window, byte* label)
 // DISCARDED: internal static void DebugNodeWindowsListNative(ImVector<ImGuiWindowPtr>* windows, byte* label)
+// DISCARDED: internal static void DebugTextUnformattedWithLocateItemNative(byte* lineBegin, byte* lineEnd)
+// DISCARDED: internal static void DemoMarkerNative(byte* file, int line, byte* section)
 // DISCARDED: internal static void DockBuilderCopyWindowSettingsNative(byte* srcName, byte* dstName)
 // DISCARDED: internal static void DockBuilderDockWindowNative(byte* windowName, uint nodeId)
 // DISCARDED: internal static byte DragBehaviorNative(uint id, ImGuiDataType dataType, void* pV, float vSpeed, void* pMin, void* pMax, byte* format, ImGuiSliderFlags flags)
-// DISCARDED: internal static ImGuiWindowSettings* FindOrCreateWindowSettingsNative(byte* name)
+// DISCARDED: internal static byte ErrorLogNative(byte* msg)
 // DISCARDED: internal static byte* FindRenderedTextEndNative(byte* text, byte* textEnd)
 // DISCARDED: FindRenderedTextEndS
 // DISCARDED: internal static ImGuiSettingsHandler* FindSettingsHandlerNative(byte* typeName)
 // DISCARDED: internal static ImGuiWindow* FindWindowByNameNative(byte* name)
+// DISCARDED: internal static byte* get_line_beginNative(ImGuiTextIndex* self, byte* baseValue, int n)
+// DISCARDED: get_line_beginS
+// DISCARDED: internal static byte* get_line_endNative(ImGuiTextIndex* self, byte* baseValue, int n)
+// DISCARDED: get_line_endS
 // DISCARDED: internal static uint GetColumnsIDNative(byte* strId, int count)
 // DISCARDED: internal static uint GetIDNative(ImGuiWindow* self, byte* str, byte* strEnd)
 // DISCARDED: internal static uint GetIDNative(ImGuiWindow* self, void* ptr)
 // DISCARDED: internal static uint GetIDNative(ImGuiWindow* self, int n)
 // DISCARDED: internal static uint GetIDWithSeedNative(byte* strIdBegin, byte* strIdEnd, uint seed)
+// DISCARDED: internal static uint GetIDWithSeedNative(int n, uint seed)
 // DISCARDED: internal static byte* GetNameNative(ImGuiWindowSettings* self)
 // DISCARDED: GetNameS
-// DISCARDED: internal static byte* GetNavInputNameNative(ImGuiNavInput n)
-// DISCARDED: GetNavInputNameS
-// DISCARDED: internal static byte* GetTabNameNative(ImGuiTabBar* self, ImGuiTabItem* tab)
-// DISCARDED: GetTabNameS
+// DISCARDED: internal static byte* GetTextNative(ImGuiInputTextState* self)
+// DISCARDED: GetTextS
 // DISCARDED: internal static void* ImFileLoadToMemoryNative(byte* filename, byte* mode, nuint* outFileSize, int paddingBytes)
 // DISCARDED: internal static ImFileHandle ImFileOpenNative(byte* filename, byte* mode)
-// DISCARDED: internal static void ImFontAtlasBuildMultiplyRectAlpha8Native(byte* table, byte* pixels, int x, int y, int w, int h, int stride)
-// DISCARDED: internal static void ImFontAtlasBuildRender32bppRectFromStringNative(ImFontAtlas* atlas, int textureIndex, int x, int y, int w, int h, byte* inStr, byte inMarkerChar, uint inMarkerPixelValue)
-// DISCARDED: internal static void ImFontAtlasBuildRender8bppRectFromStringNative(ImFontAtlas* atlas, int textureIndex, int x, int y, int w, int h, byte* inStr, byte inMarkerChar, byte inMarkerPixelValue)
+// DISCARDED: internal static void ImFontAtlasBuildRenderBitmapFromStringNative(ImFontAtlas* atlas, int x, int y, int w, int h, byte* inStr, byte inMarkerChar)
+// DISCARDED: internal static Vector2 ImFontCalcTextSizeExNative(ImFont* font, float size, float maxWidth, float wrapWidth, byte* textBegin, byte* textEndDisplay, byte* textEnd, byte** outRemaining, Vector2* outOffset, ImDrawTextFlags flags)
+// DISCARDED: internal static byte* ImFontCalcWordWrapPositionExNative(ImFont* font, float size, byte* text, byte* textEnd, float wrapWidth, ImDrawTextFlags flags)
+// DISCARDED: ImFontCalcWordWrapPositionExS
+// DISCARDED: internal static int ImFormatStringNative(byte* buf, nuint bufSize, byte* fmt)
 // DISCARDED: internal static void ImFormatStringToTempBufferNative(byte** outBuf, byte** outBufEnd, byte* fmt)
 // DISCARDED: internal static void ImFormatStringToTempBufferVNative(byte** outBuf, byte** outBufEnd, byte* fmt, nuint args)
 // DISCARDED: internal static ImGuiWindow* ImGuiWindowNative(ImGuiContext* context, byte* name)
 // DISCARDED: internal static uint ImHashDataNative(void* data, nuint dataSize, uint seed)
+// DISCARDED: internal static byte* ImHashSkipUncontributingPrefixNative(byte* label)
+// DISCARDED: ImHashSkipUncontributingPrefixS
 // DISCARDED: internal static uint ImHashStrNative(byte* data, nuint dataSize, uint seed)
 // DISCARDED: internal static byte* ImParseFormatFindEndNative(byte* format)
 // DISCARDED: ImParseFormatFindEndS
@@ -6553,6 +11623,8 @@ public unsafe partial class ImGuiP
 // DISCARDED: internal static void ImParseFormatSanitizeForPrintingNative(byte* fmtIn, byte* fmtOut, nuint fmtOutSize)
 // DISCARDED: internal static byte* ImParseFormatSanitizeForScanningNative(byte* fmtIn, byte* fmtOut, nuint fmtOutSize)
 // DISCARDED: ImParseFormatSanitizeForScanningS
+// DISCARDED: internal static byte* ImStrbolNative(byte* bufMidLine, byte* bufBegin)
+// DISCARDED: ImStrbolS
 // DISCARDED: internal static byte* ImStrchrRangeNative(byte* strBegin, byte* strEnd, byte c)
 // DISCARDED: ImStrchrRangeS
 // DISCARDED: internal static byte* ImStrdupNative(byte* str)
@@ -6570,27 +11642,49 @@ public unsafe partial class ImGuiP
 // DISCARDED: internal static byte* ImStrSkipBlankNative(byte* str)
 // DISCARDED: ImStrSkipBlankS
 // DISCARDED: internal static void ImStrTrimBlanksNative(byte* str)
+// DISCARDED: internal static byte* ImTextCalcWordWrapNextLineStartNative(byte* text, byte* textEnd, ImDrawTextFlags flags)
+// DISCARDED: ImTextCalcWordWrapNextLineStartS
 // DISCARDED: internal static int ImTextCharFromUtf8Native(uint* outChar, byte* inText, byte* inTextEnd)
-// DISCARDED: internal static byte* ImTextCharToUtf8Native(byte* outBuf, uint c)
-// DISCARDED: ImTextCharToUtf8S
+// DISCARDED: internal static void ImTextClassifierSetCharClassFromStrNative(uint* bits, uint codepointMin, uint codepointEnd, ImWcharClass charClass, byte* s)
 // DISCARDED: internal static int ImTextCountCharsFromUtf8Native(byte* inText, byte* inTextEnd)
+// DISCARDED: internal static int ImTextCountLinesNative(byte* inText, byte* inTextEnd)
 // DISCARDED: internal static int ImTextCountUtf8BytesFromCharNative(byte* inText, byte* inTextEnd)
+// DISCARDED: internal static byte* ImTextFindPreviousUtf8CodepointNative(byte* inTextStart, byte* inP)
+// DISCARDED: ImTextFindPreviousUtf8CodepointS
+// DISCARDED: internal static byte* ImTextFindValidUtf8CodepointEndNative(byte* inTextStart, byte* inTextEnd, byte* inP)
+// DISCARDED: ImTextFindValidUtf8CodepointEndS
+// DISCARDED: internal static byte* ImTextureDataGetFormatNameNative(ImTextureFormat format)
+// DISCARDED: ImTextureDataGetFormatNameS
+// DISCARDED: internal static byte* ImTextureDataGetStatusNameNative(ImTextureStatus status)
+// DISCARDED: ImTextureDataGetStatusNameS
+// DISCARDED: internal static byte* LocalizeGetMsgNative(ImGuiLocKey key)
+// DISCARDED: LocalizeGetMsgS
 // DISCARDED: internal static void LogRenderedTextNative(Vector2* refPos, byte* text, byte* textEnd)
 // DISCARDED: internal static void LogSetNextTextDecorationNative(byte* prefix, byte* suffix)
 // DISCARDED: internal static byte MenuItemExNative(byte* label, byte* icon, byte* shortcut, byte selected, byte enabled)
-// DISCARDED: internal static int PlotExNative(ImGuiPlotType plotType, byte* label, delegate*<ImGuiPlotType, byte*, delegate*<void*, int, float>, void*, int, int, byte*, float, float, Vector2, float> valuesGetter, void* data, int valuesCount, int valuesOffset, byte* overlayText, float scaleMin, float scaleMax, Vector2 frameSize)
+// DISCARDED: internal static int PlotExNative(ImGuiPlotType plotType, byte* label, delegate*<void*, int, float> valuesGetter, void* data, int valuesCount, int valuesOffset, byte* overlayText, float scaleMin, float scaleMax, Vector2 sizeArg)
 // DISCARDED: internal static void RemoveSettingsHandlerNative(byte* typeName)
 // DISCARDED: internal static void RenderTextNative(Vector2 pos, byte* text, byte* textEnd, byte hideTextAfterHash)
 // DISCARDED: internal static void RenderTextClippedNative(Vector2 posMin, Vector2 posMax, byte* text, byte* textEnd, Vector2* textSizeIfKnown, Vector2 align, ImRect* clipRect)
 // DISCARDED: internal static void RenderTextClippedExNative(ImDrawList* drawList, Vector2 posMin, Vector2 posMax, byte* text, byte* textEnd, Vector2* textSizeIfKnown, Vector2 align, ImRect* clipRect)
-// DISCARDED: internal static void RenderTextEllipsisNative(ImDrawList* drawList, Vector2 posMin, Vector2 posMax, float clipMaxX, float ellipsisMaxX, byte* text, byte* textEnd, Vector2* textSizeIfKnown)
+// DISCARDED: internal static void RenderTextEllipsisNative(ImDrawList* drawList, Vector2 posMin, Vector2 posMax, float ellipsisMaxX, byte* text, byte* textEnd, Vector2* textSizeIfKnown)
 // DISCARDED: internal static void RenderTextWrappedNative(Vector2 pos, byte* text, byte* textEnd, float wrapWidth)
+// DISCARDED: internal static void SeparatorTextExNative(uint id, byte* label, byte* labelEnd, float extraWidth)
+// DISCARDED: internal static void SetContextNameNative(ImGuiContext* ctx, byte* name)
 // DISCARDED: internal static byte SliderBehaviorNative(ImRect bb, uint id, ImGuiDataType dataType, void* pV, void* pMin, void* pMax, byte* format, ImGuiSliderFlags flags, ImRect* outGrabBb)
-// DISCARDED: internal static void TabItemCalcSizeNative(Vector2* pOut, byte* label, byte hasCloseButton)
+// DISCARDED: internal static byte* TabBarGetTabNameNative(ImGuiTabBar* tabBar, ImGuiTabItem* tab)
+// DISCARDED: TabBarGetTabNameS
+// DISCARDED: internal static void TabBarQueueFocusNative(ImGuiTabBar* tabBar, ImGuiTabItem* tab)
+// DISCARDED: internal static void TabBarQueueFocusNative(ImGuiTabBar* tabBar, byte* tabName)
+// DISCARDED: internal static Vector2 TabItemCalcSizeNative(byte* label, byte hasCloseButtonOrUnsavedMarker)
+// DISCARDED: internal static Vector2 TabItemCalcSizeNative(ImGuiWindow* window)
 // DISCARDED: internal static byte TabItemExNative(ImGuiTabBar* tabBar, byte* label, bool* pOpen, ImGuiTabItemFlags flags, ImGuiWindow* dockedWindow)
 // DISCARDED: internal static void TabItemLabelAndCloseButtonNative(ImDrawList* drawList, ImRect bb, ImGuiTabItemFlags flags, Vector2 framePadding, byte* label, uint tabId, uint closeButtonId, byte isContentsVisible, bool* outJustClosed, bool* outTextClipped)
+// DISCARDED: internal static void TabItemSpacingNative(byte* strId, ImGuiTabItemFlags flags, float width)
 // DISCARDED: internal static byte* TableGetColumnNameNative(ImGuiTable* table, int columnN)
 // DISCARDED: TableGetColumnNameS
 // DISCARDED: internal static byte TempInputScalarNative(ImRect bb, uint id, byte* label, ImGuiDataType dataType, void* pData, byte* format, void* pClampMin, void* pClampMax)
+// DISCARDED: internal static void TextAlignedNative(float alignX, float sizeX, byte* fmt)
+// DISCARDED: internal static void TextAlignedVNative(float alignX, float sizeX, byte* fmt, nuint args)
 // DISCARDED: internal static void TextExNative(byte* text, byte* textEnd, ImGuiTextFlags flags)
 // DISCARDED: internal static byte TreeNodeBehaviorNative(uint id, ImGuiTreeNodeFlags flags, byte* label, byte* labelEnd)

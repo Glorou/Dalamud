@@ -80,17 +80,6 @@ namespace Dalamud.Bindings.ImPlot
 		}
 
 
-		/// <summary>
-		/// To be documented.
-		/// </summary>
-		public unsafe void Destroy()
-		{
-			fixed (ImPlotTick* @this = &this)
-			{
-				ImPlot.DestroyNative(@this);
-			}
-		}
-
 	}
 
 	/// <summary>
@@ -166,14 +155,6 @@ namespace Dalamud.Bindings.ImPlot
 		/// To be documented.
 		/// </summary>
 		public ref int Idx => ref Unsafe.AsRef<int>(&Handle->Idx);
-		/// <summary>
-		/// To be documented.
-		/// </summary>
-		public unsafe void Destroy()
-		{
-			ImPlot.DestroyNative(Handle);
-		}
-
 	}
 
 }

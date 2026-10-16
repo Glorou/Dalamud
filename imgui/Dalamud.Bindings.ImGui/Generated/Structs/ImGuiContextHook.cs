@@ -50,26 +50,15 @@ namespace Dalamud.Bindings.ImGui
 		/// <summary>
 		/// To be documented.
 		/// </summary>
-		public unsafe ImGuiContextHook(uint hookId = default, ImGuiContextHookType type = default, uint owner = default, ImGuiContextHookCallback callback = default, void* userData = default)
+		public unsafe ImGuiContextHook(uint hookId = default, ImGuiContextHookType type = default, uint owner = default, delegate*<ImGuiContext*, ImGuiContextHook*, void> callback = default, void* userData = default)
 		{
 			HookId = hookId;
 			Type = type;
 			Owner = owner;
-			Callback = (void*)Marshal.GetFunctionPointerForDelegate(callback);
+			Callback = (delegate*<ImGuiContext*, ImGuiContextHook*, void>)callback;
 			UserData = userData;
 		}
 
-
-		/// <summary>
-		/// To be documented.
-		/// </summary>
-		public unsafe void Destroy()
-		{
-			fixed (ImGuiContextHook* @this = &this)
-			{
-				ImGui.DestroyNative(@this);
-			}
-		}
 
 	}
 
@@ -134,14 +123,6 @@ namespace Dalamud.Bindings.ImGui
 		/// To be documented.
 		/// </summary>
 		public void* UserData { get => Handle->UserData; set => Handle->UserData = value; }
-		/// <summary>
-		/// To be documented.
-		/// </summary>
-		public unsafe void Destroy()
-		{
-			ImGui.DestroyNative(Handle);
-		}
-
 	}
 
 }

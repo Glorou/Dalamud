@@ -334,3 +334,4 @@ ASALocalRun/
 
 # HexaGen generated files
 #imgui/**/Generated/**/*
+/lib/Hexa.NET.ImGui/.idea/.idea.Hexa.NET.ImGui/.idea/indexLayout.xml

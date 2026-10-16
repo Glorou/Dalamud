@@ -25,6 +25,78 @@ namespace Dalamud.Bindings.ImGui
 		/// <summary>
 		/// To be documented.
 		/// </summary>
+		public unsafe void* PlatformGetClipboardTextFn;
+
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		public unsafe void* PlatformSetClipboardTextFn;
+
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		public unsafe void* PlatformClipboardUserData;
+
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		public unsafe void* PlatformOpenInShellFn;
+
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		public unsafe void* PlatformOpenInShellUserData;
+
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		public unsafe void* PlatformSetImeDataFn;
+
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		public unsafe void* PlatformImeUserData;
+
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		public ushort PlatformLocaleDecimalPoint;
+
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		public int PlatformSessionDate;
+
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		public int RendererTextureMaxWidth;
+
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		public int RendererTextureMaxHeight;
+
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		public unsafe void* RendererRenderState;
+
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		public unsafe void* DrawCallbackResetRenderState;
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		public unsafe void* DrawCallbackSetSamplerLinear;
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		public unsafe void* DrawCallbackSetSamplerNearest;
+		/// <summary>
+		/// To be documented.
+		/// </summary>
 		public unsafe void* PlatformCreateWindow;
 
 		/// <summary>
@@ -56,6 +128,11 @@ namespace Dalamud.Bindings.ImGui
 		/// To be documented.
 		/// </summary>
 		public unsafe void* PlatformGetWindowSize;
+
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		public unsafe void* PlatformGetWindowFramebufferScale;
 
 		/// <summary>
 		/// To be documented.
@@ -110,6 +187,11 @@ namespace Dalamud.Bindings.ImGui
 		/// <summary>
 		/// To be documented.
 		/// </summary>
+		public unsafe void* PlatformGetWindowWorkAreaInsets;
+
+		/// <summary>
+		/// To be documented.
+		/// </summary>
 		public unsafe void* PlatformCreateVkSurface;
 
 		/// <summary>
@@ -145,41 +227,86 @@ namespace Dalamud.Bindings.ImGui
 		/// <summary>
 		/// To be documented.
 		/// </summary>
+		public ImVector<ImTextureDataPtr> Textures;
+
+		/// <summary>
+		/// To be documented.
+		/// </summary>
 		public ImVector<ImGuiViewportPtr> Viewports;
 
 
 		/// <summary>
 		/// To be documented.
 		/// </summary>
-		public unsafe ImGuiPlatformIO(delegate*<ImGuiViewport*, void> platformCreatewindow = default, delegate*<ImGuiViewport*, void> platformDestroywindow = default, delegate*<ImGuiViewport*, void> platformShowwindow = default, delegate*<ImGuiViewport*, Vector2, void> platformSetwindowpos = default, delegate*<ImGuiViewport*, Vector2> platformGetwindowpos = default, delegate*<ImGuiViewport*, Vector2, void> platformSetwindowsize = default, delegate*<ImGuiViewport*, Vector2> platformGetwindowsize = default, delegate*<ImGuiViewport*, void> platformSetwindowfocus = default, delegate*<ImGuiViewport*, bool> platformGetwindowfocus = default, delegate*<ImGuiViewport*, bool> platformGetwindowminimized = default, delegate*<ImGuiViewport*, byte*, void> platformSetwindowtitle = default, delegate*<ImGuiViewport*, float, void> platformSetwindowalpha = default, delegate*<ImGuiViewport*, void> platformUpdatewindow = default, delegate*<ImGuiViewport*, void*, void> platformRenderwindow = default, delegate*<ImGuiViewport*, void*, void> platformSwapbuffers = default, delegate*<ImGuiViewport*, float> platformGetwindowdpiscale = default, delegate*<ImGuiViewport*, void> platformOnchangedviewport = default, delegate*<ImGuiViewport*, ulong, void*, ulong*, int> platformCreatevksurface = default, delegate*<ImGuiViewport*, void> rendererCreatewindow = default, delegate*<ImGuiViewport*, void> rendererDestroywindow = default, delegate*<ImGuiViewport*, Vector2, void> rendererSetwindowsize = default, delegate*<ImGuiViewport*, void*, void> rendererRenderwindow = default, delegate*<ImGuiViewport*, void*, void> rendererSwapbuffers = default, ImVector<ImGuiPlatformMonitor> monitors = default, ImVector<ImGuiViewportPtr> viewports = default)
+		public unsafe ImGuiPlatformIO(delegate*<ImGuiContext*, byte*> platformGetclipboardtextfn = default, delegate*<ImGuiContext*, byte*, void> platformSetclipboardtextfn = default, void* platformClipboarduserdata = default, delegate*<ImGuiContext*, byte*, bool> platformOpeninshellfn = default, void* platformOpeninshelluserdata = default, delegate*<ImGuiContext*, ImGuiViewport*, ImGuiPlatformImeData*, void> platformSetimedatafn = default, void* platformImeuserdata = default, ushort platformLocaledecimalpoint = default, int platformSessiondate = default, int rendererTexturemaxwidth = default, int rendererTexturemaxheight = default, void* rendererRenderstate = default, delegate*<ImDrawList*, ImDrawCmd*, void> drawcallbackResetrenderstate = default, delegate*<ImDrawList*, ImDrawCmd*, void> drawcallbackSetsamplerlinear = default, delegate*<ImDrawList*, ImDrawCmd*, void> drawcallbackSetsamplernearest = default, delegate*<ImGuiViewport*, void> platformCreatewindow = default, delegate*<ImGuiViewport*, void> platformDestroywindow = default, delegate*<ImGuiViewport*, void> platformShowwindow = default, delegate*<ImGuiViewport*, Vector2, void> platformSetwindowpos = default, delegate*<ImGuiViewport*, Vector2> platformGetwindowpos = default, delegate*<ImGuiViewport*, Vector2, void> platformSetwindowsize = default, delegate*<ImGuiViewport*, Vector2> platformGetwindowsize = default, delegate*<ImGuiViewport*, Vector2> platformGetwindowframebufferscale = default, delegate*<ImGuiViewport*, void> platformSetwindowfocus = default, delegate*<ImGuiViewport*, bool> platformGetwindowfocus = default, delegate*<ImGuiViewport*, bool> platformGetwindowminimized = default, delegate*<ImGuiViewport*, byte*, void> platformSetwindowtitle = default, delegate*<ImGuiViewport*, float, void> platformSetwindowalpha = default, delegate*<ImGuiViewport*, void> platformUpdatewindow = default, delegate*<ImGuiViewport*, void*, void> platformRenderwindow = default, delegate*<ImGuiViewport*, void*, void> platformSwapbuffers = default, delegate*<ImGuiViewport*, float> platformGetwindowdpiscale = default, delegate*<ImGuiViewport*, void> platformOnchangedviewport = default, delegate*<ImGuiViewport*, Vector4> platformGetwindowworkareainsets = default, delegate*<ImGuiViewport*, ulong, void*, ulong*, int> platformCreatevksurface = default, delegate*<ImGuiViewport*, void> rendererCreatewindow = default, delegate*<ImGuiViewport*, void> rendererDestroywindow = default, delegate*<ImGuiViewport*, Vector2, void> rendererSetwindowsize = default, delegate*<ImGuiViewport*, void*, void> rendererRenderwindow = default, delegate*<ImGuiViewport*, void*, void> rendererSwapbuffers = default, ImVector<ImGuiPlatformMonitor> monitors = default, ImVector<ImTextureDataPtr> textures = default, ImVector<ImGuiViewportPtr> viewports = default)
 		{
-			PlatformCreateWindow = (void*)platformCreatewindow;
-			PlatformDestroyWindow = (void*)platformDestroywindow;
-			PlatformShowWindow = (void*)platformShowwindow;
-			PlatformSetWindowPos = (void*)platformSetwindowpos;
-			PlatformGetWindowPos = (void*)platformGetwindowpos;
-			PlatformSetWindowSize = (void*)platformSetwindowsize;
-			PlatformGetWindowSize = (void*)platformGetwindowsize;
-			PlatformSetWindowFocus = (void*)platformSetwindowfocus;
-			PlatformGetWindowFocus = (void*)platformGetwindowfocus;
-			PlatformGetWindowMinimized = (void*)platformGetwindowminimized;
-			PlatformSetWindowTitle = (void*)platformSetwindowtitle;
-			PlatformSetWindowAlpha = (void*)platformSetwindowalpha;
-			PlatformUpdateWindow = (void*)platformUpdatewindow;
-			PlatformRenderWindow = (void*)platformRenderwindow;
-			PlatformSwapBuffers = (void*)platformSwapbuffers;
-			PlatformGetWindowDpiScale = (void*)platformGetwindowdpiscale;
-			PlatformOnChangedViewport = (void*)platformOnchangedviewport;
-			PlatformCreateVkSurface = (void*)platformCreatevksurface;
-			RendererCreateWindow = (void*)rendererCreatewindow;
-			RendererDestroyWindow = (void*)rendererDestroywindow;
-			RendererSetWindowSize = (void*)rendererSetwindowsize;
-			RendererRenderWindow = (void*)rendererRenderwindow;
-			RendererSwapBuffers = (void*)rendererSwapbuffers;
+			PlatformGetClipboardTextFn = (delegate*<ImGuiContext*, byte*>*)platformGetclipboardtextfn;
+			PlatformSetClipboardTextFn = (delegate*<ImGuiContext*, byte*, void>*)platformSetclipboardtextfn;
+			PlatformClipboardUserData = platformClipboarduserdata;
+			PlatformOpenInShellFn = (delegate*<ImGuiContext*, byte*, bool>*)platformOpeninshellfn;
+			PlatformOpenInShellUserData = platformOpeninshelluserdata;
+			PlatformSetImeDataFn = (delegate*<ImGuiContext*, ImGuiViewport*, ImGuiPlatformImeData*, void>*)platformSetimedatafn;
+			PlatformImeUserData = platformImeuserdata;
+			PlatformLocaleDecimalPoint = platformLocaledecimalpoint;
+			PlatformSessionDate = platformSessiondate;
+			RendererTextureMaxWidth = rendererTexturemaxwidth;
+			RendererTextureMaxHeight = rendererTexturemaxheight;
+			RendererRenderState = rendererRenderstate;
+			DrawCallbackResetRenderState = (delegate*<ImDrawList*, ImDrawCmd*, void>)drawcallbackResetrenderstate;
+			DrawCallbackSetSamplerLinear = (delegate*<ImDrawList*, ImDrawCmd*, void>)drawcallbackSetsamplerlinear;
+			DrawCallbackSetSamplerNearest = (delegate*<ImDrawList*, ImDrawCmd*, void>)drawcallbackSetsamplernearest;
+			PlatformCreateWindow = (delegate*<ImGuiViewport*, void>*)platformCreatewindow;
+			PlatformDestroyWindow = (delegate*<ImGuiViewport*, void>*)platformDestroywindow;
+			PlatformShowWindow = (delegate*<ImGuiViewport*, void>*)platformShowwindow;
+			PlatformSetWindowPos = (delegate*<ImGuiViewport*, Vector2, void>*)platformSetwindowpos;
+			PlatformGetWindowPos = (delegate*<ImGuiViewport*, Vector2>*)platformGetwindowpos;
+			PlatformSetWindowSize = (delegate*<ImGuiViewport*, Vector2, void>*)platformSetwindowsize;
+			PlatformGetWindowSize = (delegate*<ImGuiViewport*, Vector2>*)platformGetwindowsize;
+			PlatformGetWindowFramebufferScale = (delegate*<ImGuiViewport*, Vector2>*)platformGetwindowframebufferscale;
+			PlatformSetWindowFocus = (delegate*<ImGuiViewport*, void>*)platformSetwindowfocus;
+			PlatformGetWindowFocus = (delegate*<ImGuiViewport*, bool>*)platformGetwindowfocus;
+			PlatformGetWindowMinimized = (delegate*<ImGuiViewport*, bool>*)platformGetwindowminimized;
+			PlatformSetWindowTitle = (delegate*<ImGuiViewport*, byte*, void>*)platformSetwindowtitle;
+			PlatformSetWindowAlpha = (delegate*<ImGuiViewport*, float, void>*)platformSetwindowalpha;
+			PlatformUpdateWindow = (delegate*<ImGuiViewport*, void>*)platformUpdatewindow;
+			PlatformRenderWindow = (delegate*<ImGuiViewport*, void*, void>*)platformRenderwindow;
+			PlatformSwapBuffers = (delegate*<ImGuiViewport*, void*, void>*)platformSwapbuffers;
+			PlatformGetWindowDpiScale = (delegate*<ImGuiViewport*, float>*)platformGetwindowdpiscale;
+			PlatformOnChangedViewport = (delegate*<ImGuiViewport*, void>*)platformOnchangedviewport;
+			PlatformGetWindowWorkAreaInsets = (delegate*<ImGuiViewport*, Vector4>*)platformGetwindowworkareainsets;
+			PlatformCreateVkSurface = (delegate*<ImGuiViewport*, ulong, void*, ulong*, int>*)platformCreatevksurface;
+			RendererCreateWindow = (delegate*<ImGuiViewport*, void>*)rendererCreatewindow;
+			RendererDestroyWindow = (delegate*<ImGuiViewport*, void>*)rendererDestroywindow;
+			RendererSetWindowSize = (delegate*<ImGuiViewport*, Vector2, void>*)rendererSetwindowsize;
+			RendererRenderWindow = (delegate*<ImGuiViewport*, void*, void>*)rendererRenderwindow;
+			RendererSwapBuffers = (delegate*<ImGuiViewport*, void*, void>*)rendererSwapbuffers;
 			Monitors = monitors;
+			Textures = textures;
 			Viewports = viewports;
 		}
 
+
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		public unsafe void ClearPlatformHandlers()
+		{
+			fixed (ImGuiPlatformIO* @this = &this)
+			{
+				ImGui.ClearPlatformHandlersNative(@this);
+			}
+		}
+
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		public unsafe void ClearRendererHandlers()
+		{
+			fixed (ImGuiPlatformIO* @this = &this)
+			{
+				ImGui.ClearRendererHandlersNative(@this);
+			}
+		}
 
 		/// <summary>
 		/// To be documented.
@@ -238,6 +365,66 @@ namespace Dalamud.Bindings.ImGui
 		/// <summary>
 		/// To be documented.
 		/// </summary>
+		public void* PlatformGetClipboardTextFn { get => Handle->PlatformGetClipboardTextFn; set => Handle->PlatformGetClipboardTextFn = value; }
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		public void* PlatformSetClipboardTextFn { get => Handle->PlatformSetClipboardTextFn; set => Handle->PlatformSetClipboardTextFn = value; }
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		public void* PlatformClipboardUserData { get => Handle->PlatformClipboardUserData; set => Handle->PlatformClipboardUserData = value; }
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		public void* PlatformOpenInShellFn { get => Handle->PlatformOpenInShellFn; set => Handle->PlatformOpenInShellFn = value; }
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		public void* PlatformOpenInShellUserData { get => Handle->PlatformOpenInShellUserData; set => Handle->PlatformOpenInShellUserData = value; }
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		public void* PlatformSetImeDataFn { get => Handle->PlatformSetImeDataFn; set => Handle->PlatformSetImeDataFn = value; }
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		public void* PlatformImeUserData { get => Handle->PlatformImeUserData; set => Handle->PlatformImeUserData = value; }
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		public ref ushort PlatformLocaleDecimalPoint => ref Unsafe.AsRef<ushort>(&Handle->PlatformLocaleDecimalPoint);
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		public ref int PlatformSessionDate => ref Unsafe.AsRef<int>(&Handle->PlatformSessionDate);
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		public ref int RendererTextureMaxWidth => ref Unsafe.AsRef<int>(&Handle->RendererTextureMaxWidth);
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		public ref int RendererTextureMaxHeight => ref Unsafe.AsRef<int>(&Handle->RendererTextureMaxHeight);
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		public void* RendererRenderState { get => Handle->RendererRenderState; set => Handle->RendererRenderState = value; }
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		public void* DrawCallbackResetRenderState { get => Handle->DrawCallbackResetRenderState; set => Handle->DrawCallbackResetRenderState = value; }
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		public void* DrawCallbackSetSamplerLinear { get => Handle->DrawCallbackSetSamplerLinear; set => Handle->DrawCallbackSetSamplerLinear = value; }
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		public void* DrawCallbackSetSamplerNearest { get => Handle->DrawCallbackSetSamplerNearest; set => Handle->DrawCallbackSetSamplerNearest = value; }
+		/// <summary>
+		/// To be documented.
+		/// </summary>
 		public void* PlatformCreateWindow { get => Handle->PlatformCreateWindow; set => Handle->PlatformCreateWindow = value; }
 		/// <summary>
 		/// To be documented.
@@ -263,6 +450,10 @@ namespace Dalamud.Bindings.ImGui
 		/// To be documented.
 		/// </summary>
 		public void* PlatformGetWindowSize { get => Handle->PlatformGetWindowSize; set => Handle->PlatformGetWindowSize = value; }
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		public void* PlatformGetWindowFramebufferScale { get => Handle->PlatformGetWindowFramebufferScale; set => Handle->PlatformGetWindowFramebufferScale = value; }
 		/// <summary>
 		/// To be documented.
 		/// </summary>
@@ -306,6 +497,10 @@ namespace Dalamud.Bindings.ImGui
 		/// <summary>
 		/// To be documented.
 		/// </summary>
+		public void* PlatformGetWindowWorkAreaInsets { get => Handle->PlatformGetWindowWorkAreaInsets; set => Handle->PlatformGetWindowWorkAreaInsets = value; }
+		/// <summary>
+		/// To be documented.
+		/// </summary>
 		public void* PlatformCreateVkSurface { get => Handle->PlatformCreateVkSurface; set => Handle->PlatformCreateVkSurface = value; }
 		/// <summary>
 		/// To be documented.
@@ -334,7 +529,27 @@ namespace Dalamud.Bindings.ImGui
 		/// <summary>
 		/// To be documented.
 		/// </summary>
+		public ref ImVector<ImTextureDataPtr> Textures => ref Unsafe.AsRef<ImVector<ImTextureDataPtr>>(&Handle->Textures);
+		/// <summary>
+		/// To be documented.
+		/// </summary>
 		public ref ImVector<ImGuiViewportPtr> Viewports => ref Unsafe.AsRef<ImVector<ImGuiViewportPtr>>(&Handle->Viewports);
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		public unsafe void ClearPlatformHandlers()
+		{
+			ImGui.ClearPlatformHandlersNative(Handle);
+		}
+
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		public unsafe void ClearRendererHandlers()
+		{
+			ImGui.ClearRendererHandlersNative(Handle);
+		}
+
 		/// <summary>
 		/// To be documented.
 		/// </summary>

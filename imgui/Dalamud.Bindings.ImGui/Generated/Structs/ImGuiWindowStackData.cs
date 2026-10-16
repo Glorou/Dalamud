@@ -35,17 +35,29 @@ namespace Dalamud.Bindings.ImGui
 		/// <summary>
 		/// To be documented.
 		/// </summary>
-		public ImGuiStackSizes StackSizesOnBegin;
+		public ImGuiErrorRecoveryState StackSizesInBegin;
+
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		public byte DisabledOverrideReenable;
+
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		public float DisabledOverrideReenableAlphaBackup;
 
 
 		/// <summary>
 		/// To be documented.
 		/// </summary>
-		public unsafe ImGuiWindowStackData(ImGuiWindowPtr window = default, ImGuiLastItemData parentLastItemDataBackup = default, ImGuiStackSizes stackSizesOnBegin = default)
+		public unsafe ImGuiWindowStackData(ImGuiWindowPtr window = default, ImGuiLastItemData parentLastItemDataBackup = default, ImGuiErrorRecoveryState stackSizesInBegin = default, bool disabledOverrideReenable = default, float disabledOverrideReenableAlphaBackup = default)
 		{
 			Window = window;
 			ParentLastItemDataBackup = parentLastItemDataBackup;
-			StackSizesOnBegin = stackSizesOnBegin;
+			StackSizesInBegin = stackSizesInBegin;
+			DisabledOverrideReenable = disabledOverrideReenable ? (byte)1 : (byte)0;
+			DisabledOverrideReenableAlphaBackup = disabledOverrideReenableAlphaBackup;
 		}
 
 
@@ -103,7 +115,15 @@ namespace Dalamud.Bindings.ImGui
 		/// <summary>
 		/// To be documented.
 		/// </summary>
-		public ref ImGuiStackSizes StackSizesOnBegin => ref Unsafe.AsRef<ImGuiStackSizes>(&Handle->StackSizesOnBegin);
+		public ref ImGuiErrorRecoveryState StackSizesInBegin => ref Unsafe.AsRef<ImGuiErrorRecoveryState>(&Handle->StackSizesInBegin);
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		public ref bool DisabledOverrideReenable => ref Unsafe.AsRef<bool>(&Handle->DisabledOverrideReenable);
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		public ref float DisabledOverrideReenableAlphaBackup => ref Unsafe.AsRef<float>(&Handle->DisabledOverrideReenableAlphaBackup);
 	}
 
 }

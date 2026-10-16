@@ -16,7 +16,6 @@ namespace Dalamud.Bindings.ImGui
 	/// <summary>
 	/// To be documented.
 	/// </summary>
-	[Flags]
 	public enum ImGuiTableBgTarget : int
 	{
 		/// <summary>

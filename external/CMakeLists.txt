@@ -37,10 +37,10 @@ add_cimgui_module(cimguizmo
     SOURCES
         "${LIB_DIR}/cimguizmo/cimguizmo.cpp"
         "${LIB_DIR}/cimguizmo/cimguizmo_impl.cpp"
-        "${LIB_DIR}/cimguizmo/ImGuizmo/GraphEditor.cpp"
-        "${LIB_DIR}/cimguizmo/ImGuizmo/ImCurveEdit.cpp"
-        "${LIB_DIR}/cimguizmo/ImGuizmo/ImGradient.cpp"
-        "${LIB_DIR}/cimguizmo/ImGuizmo/ImGuizmo.cpp"
-        "${LIB_DIR}/cimguizmo/ImGuizmo/ImSequencer.cpp"
-    INCLUDES "${LIB_DIR}/cimguizmo/ImGuizmo"
+        "${LIB_DIR}/cimguizmo/ImGuizmo/src/GraphEditor.cpp"
+        "${LIB_DIR}/cimguizmo/ImGuizmo/src/ImCurveEdit.cpp"
+        "${LIB_DIR}/cimguizmo/ImGuizmo/src/ImGradient.cpp"
+        "${LIB_DIR}/cimguizmo/ImGuizmo/src/ImGuizmo.cpp"
+        "${LIB_DIR}/cimguizmo/ImGuizmo/src/ImSequencer.cpp"
+    INCLUDES "${LIB_DIR}/cimguizmo/ImGuizmo/src/"
     DEFINES CIMGUIZMO_EXPORTS)

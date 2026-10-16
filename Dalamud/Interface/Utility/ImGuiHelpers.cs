@@ -343,7 +343,7 @@ public static partial class ImGuiHelpers
         ReadOnlySpan<byte> sss,
         scoped in SeStringDrawParams style = default,
         ImGuiId imGuiId = default,
-        ImGuiButtonFlags buttonFlags = ImGuiButtonFlags.MouseButtonDefault) =>
+        ImGuiButtonFlags buttonFlags = ImGuiButtonFlags.MouseButtonLeft) =>
         Service<SeStringRenderer>.Get().Draw(sss, style, imGuiId, buttonFlags);
 
     /// <summary>Creates and caches a SeString from a text macro representation, and then draws it.</summary>
@@ -357,7 +357,7 @@ public static partial class ImGuiHelpers
         string text,
         scoped in SeStringDrawParams style = default,
         ImGuiId imGuiId = default,
-        ImGuiButtonFlags buttonFlags = ImGuiButtonFlags.MouseButtonDefault) =>
+        ImGuiButtonFlags buttonFlags = ImGuiButtonFlags.MouseButtonLeft) =>
         Service<SeStringRenderer>.Get().CompileAndDrawWrapped(text, style, imGuiId, buttonFlags);
 
     /// <summary>

@@ -55,7 +55,7 @@ public static unsafe partial class ImGui
 #pragma warning restore CS8500 // This takes the address of, gets the size of, or declares a pointer to a managed type
             ImGuiNative.PlotHistogram(
                 labelPtr,
-                (delegate*<byte*, delegate*<void*, int, float>, void*, int, int, byte*, float, float, Vector2, float>)
+                (delegate*<void*, int, float>)
                 (nint)(delegate* unmanaged<void*, int, float>)&GetFloatRefContextStatic,
                 dataBuffer,
                 valuesCount,
@@ -86,7 +86,7 @@ public static unsafe partial class ImGui
 #pragma warning restore CS8500 // This takes the address of, gets the size of, or declares a pointer to a managed type
             ImGuiNative.PlotHistogram(
                 labelPtr,
-                (delegate*<byte*, delegate*<void*, int, float>, void*, int, int, byte*, float, float, Vector2, float>)
+                (delegate*<void*, int, float>)
                 (nint)(delegate* unmanaged<void*, int, float>)&GetFloatInContextStatic,
                 dataBuffer,
                 valuesCount,
@@ -115,7 +115,7 @@ public static unsafe partial class ImGui
 #pragma warning restore CS8500 // This takes the address of, gets the size of, or declares a pointer to a managed type
             ImGuiNative.PlotHistogram(
                 labelPtr,
-                (delegate*<byte*, delegate*<void*, int, float>, void*, int, int, byte*, float, float, Vector2, float>)
+                (delegate*<void*, int, float>)
                 (nint)(delegate* unmanaged<void*, int, float>)&GetFloatStatic,
                 dataBuffer,
                 valuesCount,
@@ -171,7 +171,7 @@ public static unsafe partial class ImGui
 #pragma warning restore CS8500 // This takes the address of, gets the size of, or declares a pointer to a managed type
             ImGuiNative.PlotLines(
                 labelPtr,
-                (delegate*<byte*, delegate*<void*, int, float>, void*, int, int, byte*, float, float, Vector2, float>)
+                (delegate*<void*, int, float>)
                 (nint)(delegate* unmanaged<void*, int, float>)&GetFloatInContextStatic,
                 dataBuffer,
                 valuesCount,
@@ -203,7 +203,7 @@ public static unsafe partial class ImGui
 #pragma warning restore CS8500 // This takes the address of, gets the size of, or declares a pointer to a managed type
             ImGuiNative.PlotLines(
                 labelPtr,
-                (delegate*<byte*, delegate*<void*, int, float>, void*, int, int, byte*, float, float, Vector2, float>)
+                (delegate*<void*, int, float>)
                 (nint)(delegate* unmanaged<void*, int, float>)&GetFloatRefContextStatic,
                 dataBuffer,
                 valuesCount,
@@ -232,7 +232,7 @@ public static unsafe partial class ImGui
 #pragma warning restore CS8500 // This takes the address of, gets the size of, or declares a pointer to a managed type
             ImGuiNative.PlotLines(
                 labelPtr,
-                (delegate*<byte*, delegate*<void*, int, float>, void*, int, int, byte*, float, float, Vector2, float>)
+                (delegate*<void*, int, float>)
                 (nint)(delegate* unmanaged<void*, int, float>)&GetFloatStatic,
                 dataBuffer,
                 valuesCount,

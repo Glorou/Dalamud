@@ -11,39 +11,4 @@ namespace Dalamud.Bindings.ImGui;
 
 public unsafe partial struct ImColor
 {
-		public unsafe void Destroy()
-		{
-			fixed (ImColor* @this = &this)
-			{
-				ImGuiNative.Destroy(@this);
-			}
-		}
-		public unsafe void HSV(float h, float s, float v, float a)
-		{
-			fixed (ImColor* @this = &this)
-			{
-				ImGuiNative.HSV(@this, h, s, v, a);
-			}
-		}
-		public unsafe void HSV(float h, float s, float v)
-		{
-			fixed (ImColor* @this = &this)
-			{
-				ImGuiNative.HSV(@this, h, s, v, (float)(1.0f));
-			}
-		}
-		public unsafe void SetHSV(float h, float s, float v, float a)
-		{
-			fixed (ImColor* @this = &this)
-			{
-				ImGuiNative.SetHSV(@this, h, s, v, a);
-			}
-		}
-		public unsafe void SetHSV(float h, float s, float v)
-		{
-			fixed (ImColor* @this = &this)
-			{
-				ImGuiNative.SetHSV(@this, h, s, v, (float)(1.0f));
-			}
-		}
 }

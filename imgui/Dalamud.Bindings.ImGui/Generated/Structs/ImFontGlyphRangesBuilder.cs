@@ -62,6 +62,20 @@ namespace Dalamud.Bindings.ImGui
 		/// <summary>
 		/// To be documented.
 		/// </summary>
+		public unsafe void AddRanges(in ushort ranges)
+		{
+			fixed (ImFontGlyphRangesBuilder* @this = &this)
+			{
+				fixed (ushort* pranges = &ranges)
+				{
+					ImGui.AddRangesNative(@this, (ushort*)pranges);
+				}
+			}
+		}
+
+		/// <summary>
+		/// To be documented.
+		/// </summary>
 		public unsafe void AddText(byte* text, byte* textEnd)
 		{
 			fixed (ImFontGlyphRangesBuilder* @this = &this)
@@ -84,7 +98,7 @@ namespace Dalamud.Bindings.ImGui
 		/// <summary>
 		/// To be documented.
 		/// </summary>
-		public unsafe void AddText(ref byte text, byte* textEnd)
+		public unsafe void AddText(in byte text, byte* textEnd)
 		{
 			fixed (ImFontGlyphRangesBuilder* @this = &this)
 			{
@@ -98,7 +112,7 @@ namespace Dalamud.Bindings.ImGui
 		/// <summary>
 		/// To be documented.
 		/// </summary>
-		public unsafe void AddText(ref byte text)
+		public unsafe void AddText(in byte text)
 		{
 			fixed (ImFontGlyphRangesBuilder* @this = &this)
 			{
@@ -204,7 +218,7 @@ namespace Dalamud.Bindings.ImGui
 		/// <summary>
 		/// To be documented.
 		/// </summary>
-		public unsafe void AddText(byte* text, ref byte textEnd)
+		public unsafe void AddText(byte* text, in byte textEnd)
 		{
 			fixed (ImFontGlyphRangesBuilder* @this = &this)
 			{
@@ -264,7 +278,7 @@ namespace Dalamud.Bindings.ImGui
 		/// <summary>
 		/// To be documented.
 		/// </summary>
-		public unsafe void AddText(ref byte text, ref byte textEnd)
+		public unsafe void AddText(in byte text, in byte textEnd)
 		{
 			fixed (ImFontGlyphRangesBuilder* @this = &this)
 			{
@@ -351,7 +365,7 @@ namespace Dalamud.Bindings.ImGui
 		/// <summary>
 		/// To be documented.
 		/// </summary>
-		public unsafe void AddText(ref byte text, ReadOnlySpan<byte> textEnd)
+		public unsafe void AddText(in byte text, ReadOnlySpan<byte> textEnd)
 		{
 			fixed (ImFontGlyphRangesBuilder* @this = &this)
 			{
@@ -368,7 +382,7 @@ namespace Dalamud.Bindings.ImGui
 		/// <summary>
 		/// To be documented.
 		/// </summary>
-		public unsafe void AddText(ref byte text, string textEnd)
+		public unsafe void AddText(in byte text, string textEnd)
 		{
 			fixed (ImFontGlyphRangesBuilder* @this = &this)
 			{
@@ -403,7 +417,7 @@ namespace Dalamud.Bindings.ImGui
 		/// <summary>
 		/// To be documented.
 		/// </summary>
-		public unsafe void AddText(ReadOnlySpan<byte> text, ref byte textEnd)
+		public unsafe void AddText(ReadOnlySpan<byte> text, in byte textEnd)
 		{
 			fixed (ImFontGlyphRangesBuilder* @this = &this)
 			{
@@ -455,7 +469,7 @@ namespace Dalamud.Bindings.ImGui
 		/// <summary>
 		/// To be documented.
 		/// </summary>
-		public unsafe void AddText(string text, ref byte textEnd)
+		public unsafe void AddText(string text, in byte textEnd)
 		{
 			fixed (ImFontGlyphRangesBuilder* @this = &this)
 			{
@@ -658,6 +672,17 @@ namespace Dalamud.Bindings.ImGui
 		/// <summary>
 		/// To be documented.
 		/// </summary>
+		public unsafe void AddRanges(in ushort ranges)
+		{
+			fixed (ushort* pranges = &ranges)
+			{
+				ImGui.AddRangesNative(Handle, (ushort*)pranges);
+			}
+		}
+
+		/// <summary>
+		/// To be documented.
+		/// </summary>
 		public unsafe void AddText(byte* text, byte* textEnd)
 		{
 			ImGui.AddTextNative(Handle, text, textEnd);
@@ -674,7 +699,7 @@ namespace Dalamud.Bindings.ImGui
 		/// <summary>
 		/// To be documented.
 		/// </summary>
-		public unsafe void AddText(ref byte text, byte* textEnd)
+		public unsafe void AddText(in byte text, byte* textEnd)
 		{
 			fixed (byte* ptext = &text)
 			{
@@ -685,7 +710,7 @@ namespace Dalamud.Bindings.ImGui
 		/// <summary>
 		/// To be documented.
 		/// </summary>
-		public unsafe void AddText(ref byte text)
+		public unsafe void AddText(in byte text)
 		{
 			fixed (byte* ptext = &text)
 			{
@@ -776,7 +801,7 @@ namespace Dalamud.Bindings.ImGui
 		/// <summary>
 		/// To be documented.
 		/// </summary>
-		public unsafe void AddText(byte* text, ref byte textEnd)
+		public unsafe void AddText(byte* text, in byte textEnd)
 		{
 			fixed (byte* ptextEnd = &textEnd)
 			{
@@ -827,7 +852,7 @@ namespace Dalamud.Bindings.ImGui
 		/// <summary>
 		/// To be documented.
 		/// </summary>
-		public unsafe void AddText(ref byte text, ref byte textEnd)
+		public unsafe void AddText(in byte text, in byte textEnd)
 		{
 			fixed (byte* ptext = &text)
 			{
@@ -905,7 +930,7 @@ namespace Dalamud.Bindings.ImGui
 		/// <summary>
 		/// To be documented.
 		/// </summary>
-		public unsafe void AddText(ref byte text, ReadOnlySpan<byte> textEnd)
+		public unsafe void AddText(in byte text, ReadOnlySpan<byte> textEnd)
 		{
 			fixed (byte* ptext = &text)
 			{
@@ -919,7 +944,7 @@ namespace Dalamud.Bindings.ImGui
 		/// <summary>
 		/// To be documented.
 		/// </summary>
-		public unsafe void AddText(ref byte text, string textEnd)
+		public unsafe void AddText(in byte text, string textEnd)
 		{
 			fixed (byte* ptext = &text)
 			{
@@ -951,7 +976,7 @@ namespace Dalamud.Bindings.ImGui
 		/// <summary>
 		/// To be documented.
 		/// </summary>
-		public unsafe void AddText(ReadOnlySpan<byte> text, ref byte textEnd)
+		public unsafe void AddText(ReadOnlySpan<byte> text, in byte textEnd)
 		{
 			fixed (byte* ptext = text)
 			{
@@ -997,7 +1022,7 @@ namespace Dalamud.Bindings.ImGui
 		/// <summary>
 		/// To be documented.
 		/// </summary>
-		public unsafe void AddText(string text, ref byte textEnd)
+		public unsafe void AddText(string text, in byte textEnd)
 		{
 			byte* pStr0 = null;
 			int pStrSize0 = 0;

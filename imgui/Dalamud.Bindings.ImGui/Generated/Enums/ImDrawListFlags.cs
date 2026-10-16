@@ -43,5 +43,10 @@ namespace Dalamud.Bindings.ImGui
 		/// To be documented.
 		/// </summary>
 		AllowVtxOffset = unchecked(8),
+
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		TextNoPixelSnap = unchecked(16),
 	}
 }

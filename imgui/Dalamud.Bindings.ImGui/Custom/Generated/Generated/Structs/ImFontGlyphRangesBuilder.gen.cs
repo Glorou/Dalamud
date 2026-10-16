@@ -25,6 +25,16 @@ public unsafe partial struct ImFontGlyphRangesBuilder
 				ImGuiNative.AddRanges(@this, ranges);
 			}
 		}
+		public unsafe void AddRanges(in ushort ranges)
+		{
+			fixed (ImFontGlyphRangesBuilder* @this = &this)
+			{
+				fixed (ushort* pranges = &ranges)
+				{
+					ImGuiNative.AddRanges(@this, (ushort*)pranges);
+				}
+			}
+		}
 		public unsafe void BuildRanges(ImVector<ushort>* outRanges)
 		{
 			fixed (ImFontGlyphRangesBuilder* @this = &this)

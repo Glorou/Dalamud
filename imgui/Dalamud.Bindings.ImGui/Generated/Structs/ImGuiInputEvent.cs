@@ -26,7 +26,7 @@ namespace Dalamud.Bindings.ImGui
 		/// To be documented.
 		/// </summary>
 		[StructLayout(LayoutKind.Explicit)]
-		public partial struct ImGuiInputEventUnion
+		public partial struct ImGuiInputEventAnonymous
 		{
 			/// <summary>
 			/// To be documented.
@@ -74,7 +74,7 @@ namespace Dalamud.Bindings.ImGui
 			/// <summary>
 			/// To be documented.
 			/// </summary>
-			public unsafe ImGuiInputEventUnion(ImGuiInputEventMousePos mousePos = default, ImGuiInputEventMouseWheel mouseWheel = default, ImGuiInputEventMouseButton mouseButton = default, ImGuiInputEventMouseViewport mouseViewport = default, ImGuiInputEventKey key = default, ImGuiInputEventText text = default, ImGuiInputEventAppFocused appFocused = default)
+			public unsafe ImGuiInputEventAnonymous(ImGuiInputEventMousePos mousePos = default, ImGuiInputEventMouseWheel mouseWheel = default, ImGuiInputEventMouseButton mouseButton = default, ImGuiInputEventMouseViewport mouseViewport = default, ImGuiInputEventKey key = default, ImGuiInputEventText text = default, ImGuiInputEventAppFocused appFocused = default)
 			{
 				MousePos = mousePos;
 				MouseWheel = mouseWheel;
@@ -101,7 +101,12 @@ namespace Dalamud.Bindings.ImGui
 		/// <summary>
 		/// To be documented.
 		/// </summary>
-		public ImGuiInputEventUnion Union;
+		public uint EventId;
+
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		public ImGuiInputEventAnonymous Union;
 
 		/// <summary>
 		/// To be documented.
@@ -112,25 +117,15 @@ namespace Dalamud.Bindings.ImGui
 		/// <summary>
 		/// To be documented.
 		/// </summary>
-		public unsafe ImGuiInputEvent(ImGuiInputEventType type = default, ImGuiInputSource source = default, ImGuiInputEventUnion union = default, bool addedByTestEngine = default)
+		public unsafe ImGuiInputEvent(ImGuiInputEventType type = default, ImGuiInputSource source = default, uint eventId = default, ImGuiInputEventAnonymous union = default, bool addedByTestEngine = default)
 		{
 			Type = type;
 			Source = source;
+			EventId = eventId;
 			Union = union;
 			AddedByTestEngine = addedByTestEngine ? (byte)1 : (byte)0;
 		}
 
-
-		/// <summary>
-		/// To be documented.
-		/// </summary>
-		public unsafe void Destroy()
-		{
-			fixed (ImGuiInputEvent* @this = &this)
-			{
-				ImGui.DestroyNative(@this);
-			}
-		}
 
 	}
 
@@ -186,19 +181,15 @@ namespace Dalamud.Bindings.ImGui
 		/// <summary>
 		/// To be documented.
 		/// </summary>
-		public ref ImGuiInputEvent.ImGuiInputEventUnion Union => ref Unsafe.AsRef<ImGuiInputEvent.ImGuiInputEventUnion>(&Handle->Union);
+		public ref uint EventId => ref Unsafe.AsRef<uint>(&Handle->EventId);
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		public ref ImGuiInputEvent.ImGuiInputEventAnonymous Union => ref Unsafe.AsRef<ImGuiInputEvent.ImGuiInputEventAnonymous>(&Handle->Union);
 		/// <summary>
 		/// To be documented.
 		/// </summary>
 		public ref bool AddedByTestEngine => ref Unsafe.AsRef<bool>(&Handle->AddedByTestEngine);
-		/// <summary>
-		/// To be documented.
-		/// </summary>
-		public unsafe void Destroy()
-		{
-			ImGui.DestroyNative(Handle);
-		}
-
 	}
 
 }

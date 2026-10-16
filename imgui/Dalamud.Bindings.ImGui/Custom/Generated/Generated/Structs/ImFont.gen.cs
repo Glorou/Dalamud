@@ -11,49 +11,11 @@ namespace Dalamud.Bindings.ImGui;
 
 public unsafe partial struct ImFont
 {
-		public unsafe void AddGlyph(ImFontConfig* srcCfg, ushort c, int textureIndex, float x0, float y0, float x1, float y1, float u0, float v0, float u1, float v1, float advanceX)
+		public unsafe void AddRemapChar(ushort fromCodepoint, ushort toCodepoint)
 		{
 			fixed (ImFont* @this = &this)
 			{
-				ImGuiNative.AddGlyph(@this, srcCfg, c, textureIndex, x0, y0, x1, y1, u0, v0, u1, v1, advanceX);
-			}
-		}
-		public unsafe void AddGlyph(ref ImFontConfig srcCfg, ushort c, int textureIndex, float x0, float y0, float x1, float y1, float u0, float v0, float u1, float v1, float advanceX)
-		{
-			fixed (ImFont* @this = &this)
-			{
-				fixed (ImFontConfig* psrcCfg = &srcCfg)
-				{
-					ImGuiNative.AddGlyph(@this, (ImFontConfig*)psrcCfg, c, textureIndex, x0, y0, x1, y1, u0, v0, u1, v1, advanceX);
-				}
-			}
-		}
-		public unsafe void AddKerningPair(ushort leftC, ushort rightC, float distanceAdjustment)
-		{
-			fixed (ImFont* @this = &this)
-			{
-				ImGuiNative.AddKerningPair(@this, leftC, rightC, distanceAdjustment);
-			}
-		}
-		public unsafe void AddRemapChar(ushort dst, ushort src, bool overwriteDst)
-		{
-			fixed (ImFont* @this = &this)
-			{
-				ImGuiNative.AddRemapChar(@this, dst, src, overwriteDst ? (byte)1 : (byte)0);
-			}
-		}
-		public unsafe void AddRemapChar(ushort dst, ushort src)
-		{
-			fixed (ImFont* @this = &this)
-			{
-				ImGuiNative.AddRemapChar(@this, dst, src, (byte)(1));
-			}
-		}
-		public unsafe void BuildLookupTable()
-		{
-			fixed (ImFont* @this = &this)
-			{
-				ImGuiNative.BuildLookupTable(@this);
+				ImGuiNative.AddRemapChar(@this, fromCodepoint, toCodepoint);
 			}
 		}
 		public unsafe void ClearOutputData()
@@ -70,62 +32,28 @@ public unsafe partial struct ImFont
 				ImGuiNative.Destroy(@this);
 			}
 		}
-		public unsafe ImFontGlyph* FindGlyph(ushort c)
+		public unsafe ImFontBaked* GetFontBaked(float fontSize, float density)
 		{
 			fixed (ImFont* @this = &this)
 			{
-				ImFontGlyph* ret = ImGuiNative.FindGlyph(@this, c);
+				ImFontBaked* ret = ImGuiNative.GetFontBaked(@this, fontSize, density);
 				return ret;
 			}
 		}
-		public unsafe ImFontGlyph* FindGlyphNoFallback(ushort c)
+		public unsafe ImFontBaked* GetFontBaked(float fontSize)
 		{
 			fixed (ImFont* @this = &this)
 			{
-				ImFontGlyph* ret = ImGuiNative.FindGlyphNoFallback(@this, c);
+				ImFontBaked* ret = ImGuiNative.GetFontBaked(@this, fontSize, (float)(-1.0f));
 				return ret;
 			}
 		}
-		public unsafe float GetCharAdvance(ushort c)
+		public unsafe bool IsGlyphInFont(ushort c)
 		{
 			fixed (ImFont* @this = &this)
 			{
-				float ret = ImGuiNative.GetCharAdvance(@this, c);
-				return ret;
-			}
-		}
-		public unsafe float GetDistanceAdjustmentForPair(ushort leftC, ushort rightC)
-		{
-			fixed (ImFont* @this = &this)
-			{
-				float ret = ImGuiNative.GetDistanceAdjustmentForPair(@this, leftC, rightC);
-				return ret;
-			}
-		}
-		public unsafe float GetDistanceAdjustmentForPairFromHotData(ushort leftC, ImFontGlyphHotData* rightCInfo)
-		{
-			fixed (ImFont* @this = &this)
-			{
-				float ret = ImGuiNative.GetDistanceAdjustmentForPairFromHotData(@this, leftC, rightCInfo);
-				return ret;
-			}
-		}
-		public unsafe float GetDistanceAdjustmentForPairFromHotData(ushort leftC, ref ImFontGlyphHotData rightCInfo)
-		{
-			fixed (ImFont* @this = &this)
-			{
-				fixed (ImFontGlyphHotData* prightCInfo = &rightCInfo)
-				{
-					float ret = ImGuiNative.GetDistanceAdjustmentForPairFromHotData(@this, leftC, (ImFontGlyphHotData*)prightCInfo);
-					return ret;
-				}
-			}
-		}
-		public unsafe void GrowIndex(int newSize)
-		{
-			fixed (ImFont* @this = &this)
-			{
-				ImGuiNative.GrowIndex(@this, newSize);
+				byte ret = ImGuiNative.IsGlyphInFont(@this, c);
+				return ret != 0;
 			}
 		}
 		public unsafe bool IsGlyphRangeUnused(uint cBegin, uint cLast)
@@ -144,11 +72,28 @@ public unsafe partial struct ImFont
 				return ret != 0;
 			}
 		}
+		public unsafe void RenderChar(ImDrawListPtr drawList, float size, Vector2 pos, uint col, ushort c, Vector4* cpuFineClip)
+		{
+			fixed (ImFont* @this = &this)
+			{
+				ImGuiNative.RenderChar(@this, (ImDrawList*)drawList, size, pos, col, c, cpuFineClip);
+			}
+		}
 		public unsafe void RenderChar(ImDrawListPtr drawList, float size, Vector2 pos, uint col, ushort c)
 		{
 			fixed (ImFont* @this = &this)
 			{
-				ImGuiNative.RenderChar(@this, drawList, size, pos, col, c);
+				ImGuiNative.RenderChar(@this, (ImDrawList*)drawList, size, pos, col, c, (Vector4*)(default));
+			}
+		}
+		public unsafe void RenderChar(ref ImDrawList drawList, float size, Vector2 pos, uint col, ushort c, Vector4* cpuFineClip)
+		{
+			fixed (ImFont* @this = &this)
+			{
+				fixed (ImDrawList* pdrawList = &drawList)
+				{
+					ImGuiNative.RenderChar(@this, (ImDrawList*)pdrawList, size, pos, col, c, cpuFineClip);
+				}
 			}
 		}
 		public unsafe void RenderChar(ref ImDrawList drawList, float size, Vector2 pos, uint col, ushort c)
@@ -157,20 +102,37 @@ public unsafe partial struct ImFont
 			{
 				fixed (ImDrawList* pdrawList = &drawList)
 				{
-					ImGuiNative.RenderChar(@this, (ImDrawList*)pdrawList, size, pos, col, c);
+					ImGuiNative.RenderChar(@this, (ImDrawList*)pdrawList, size, pos, col, c, (Vector4*)(default));
 				}
 			}
 		}
-		public unsafe void SetGlyphVisible(ushort c, bool visible)
+		public unsafe void RenderChar(ImDrawListPtr drawList, float size, Vector2 pos, uint col, ushort c, in Vector4 cpuFineClip)
 		{
 			fixed (ImFont* @this = &this)
 			{
-				ImGuiNative.SetGlyphVisible(@this, c, visible ? (byte)1 : (byte)0);
+				fixed (Vector4* pcpuFineClip = &cpuFineClip)
+				{
+					ImGuiNative.RenderChar(@this, (ImDrawList*)drawList, size, pos, col, c, (Vector4*)pcpuFineClip);
+				}
+			}
+		}
+		public unsafe void RenderChar(ref ImDrawList drawList, float size, Vector2 pos, uint col, ushort c, in Vector4 cpuFineClip)
+		{
+			fixed (ImFont* @this = &this)
+			{
+				fixed (ImDrawList* pdrawList = &drawList)
+				{
+					fixed (Vector4* pcpuFineClip = &cpuFineClip)
+					{
+						ImGuiNative.RenderChar(@this, (ImDrawList*)pdrawList, size, pos, col, c, (Vector4*)pcpuFineClip);
+					}
+				}
 			}
 		}
 }
-// DISCARDED: CalcWordWrapPositionA
-// DISCARDED: CalcWordWrapPositionAS
+// DISCARDED: CalcTextSizeA
+// DISCARDED: CalcWordWrapPosition
+// DISCARDED: CalcWordWrapPositionS
 // DISCARDED: GetDebugName
 // DISCARDED: GetDebugNameS
 // DISCARDED: RenderText

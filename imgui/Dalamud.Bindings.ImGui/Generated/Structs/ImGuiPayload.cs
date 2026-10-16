@@ -233,7 +233,7 @@ namespace Dalamud.Bindings.ImGui
 		/// <summary>
 		/// To be documented.
 		/// </summary>
-		public unsafe bool IsDataType(ref byte type)
+		public unsafe bool IsDataType(in byte type)
 		{
 			fixed (ImGuiPayload* @this = &this)
 			{
@@ -427,7 +427,7 @@ namespace Dalamud.Bindings.ImGui
 		/// <summary>
 		/// To be documented.
 		/// </summary>
-		public unsafe bool IsDataType(ref byte type)
+		public unsafe bool IsDataType(in byte type)
 		{
 			fixed (byte* ptype = &type)
 			{

@@ -16,18 +16,12 @@ namespace Dalamud.Bindings.ImGui
 	/// <summary>
 	/// To be documented.
 	/// </summary>
-	[Flags]
 	public enum ImGuiDataTypePrivate : int
 	{
 		/// <summary>
 		/// To be documented.
 		/// </summary>
-		String = unchecked(11),
-
-		/// <summary>
-		/// To be documented.
-		/// </summary>
-		Pointer = unchecked(12),
+		Pointer = unchecked((int)ImGuiDataType.Count),
 
 		/// <summary>
 		/// To be documented.

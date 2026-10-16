@@ -75,26 +75,15 @@ namespace Dalamud.Bindings.ImGui
 		{
 			TypeName = typeName;
 			TypeHash = typeHash;
-			ClearAllFn = (void*)clearAllFn;
-			ReadInitFn = (void*)readInitFn;
-			ReadOpenFn = (void*)readOpenFn;
-			ReadLineFn = (void*)readLineFn;
-			ApplyAllFn = (void*)applyAllFn;
-			WriteAllFn = (void*)writeAllFn;
+			ClearAllFn = (delegate*<ImGuiContext*, ImGuiSettingsHandler*, void>*)clearAllFn;
+			ReadInitFn = (delegate*<ImGuiContext*, ImGuiSettingsHandler*, void>*)readInitFn;
+			ReadOpenFn = (delegate*<ImGuiContext*, ImGuiSettingsHandler*, byte*, void*>*)readOpenFn;
+			ReadLineFn = (delegate*<ImGuiContext*, ImGuiSettingsHandler*, void*, byte*, void>*)readLineFn;
+			ApplyAllFn = (delegate*<ImGuiContext*, ImGuiSettingsHandler*, void>*)applyAllFn;
+			WriteAllFn = (delegate*<ImGuiContext*, ImGuiSettingsHandler*, ImGuiTextBuffer*, void>*)writeAllFn;
 			UserData = userData;
 		}
 
-
-		/// <summary>
-		/// To be documented.
-		/// </summary>
-		public unsafe void Destroy()
-		{
-			fixed (ImGuiSettingsHandler* @this = &this)
-			{
-				ImGui.DestroyNative(@this);
-			}
-		}
 
 	}
 
@@ -175,14 +164,6 @@ namespace Dalamud.Bindings.ImGui
 		/// To be documented.
 		/// </summary>
 		public void* UserData { get => Handle->UserData; set => Handle->UserData = value; }
-		/// <summary>
-		/// To be documented.
-		/// </summary>
-		public unsafe void Destroy()
-		{
-			ImGui.DestroyNative(Handle);
-		}
-
 	}
 
 }

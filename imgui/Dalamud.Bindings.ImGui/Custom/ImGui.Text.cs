@@ -86,8 +86,7 @@ public static unsafe partial class ImGui
     {
         var @out = Vector2.Zero;
         fixed (byte* textPtr = text)
-            ImGuiNative.CalcTextSize(
-                &@out,
+            @out = ImGuiNative.CalcTextSize(
                 textPtr,
                 textPtr + text.Length,
                 hideTextAfterDoubleHash ? (byte)1 : (byte)0,
@@ -103,8 +102,7 @@ public static unsafe partial class ImGui
         fixed (byte* textPtr = text)
         {
             byte* remainingPtr = null;
-            ImGuiNative.CalcTextSizeA(
-                &@out,
+            @out = ImGuiNative.CalcTextSizeA(
                 self.Handle,
                 size,
                 maxWidth,
@@ -125,7 +123,7 @@ public static unsafe partial class ImGui
         fixed (byte* ptr = text)
         {
             var r =
-                (int)(ImGuiNative.CalcWordWrapPositionA(font.Handle, scale, ptr, ptr + text.Length, wrapWidth) - ptr);
+                (int)(ImGuiNative.CalcWordWrapPosition(font.Handle, scale, ptr, ptr + text.Length, wrapWidth) - ptr);
             text.Recycle();
             return r;
         }
@@ -229,13 +227,13 @@ public static unsafe partial class ImGui
                 textPtr,
                 textPtr + text.Length,
                 wrapWidth,
-                cpuFineClip ? (byte)1 : (byte)0);
+                cpuFineClip ? (ImDrawTextFlags)1 : (ImDrawTextFlags)0);
         text.Recycle();
     }
 
     public static void SetTooltip(ImU8String text)
     {
-        ImGuiP.BeginTooltipEx(ImGuiTooltipFlags.OverridePreviousTooltip, ImGuiWindowFlags.None);
+        ImGuiP.BeginTooltipEx(ImGuiTooltipFlags.OverridePrevious, ImGuiWindowFlags.None);
         Text(text.Span);
         EndTooltip();
         text.Recycle();

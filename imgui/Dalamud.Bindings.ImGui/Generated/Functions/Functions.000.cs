@@ -173,12 +173,122 @@ namespace Dalamud.Bindings.ImGui
 		/// To be documented.
 		/// </summary>
 		[MethodImpl(MethodImplOptions.AggressiveInlining)]
+		internal static ImTextureRef* ImTextureRefNative()
+		{
+			#if NET5_0_OR_GREATER
+			return ((delegate* unmanaged[Cdecl]<ImTextureRef*>)funcTable[6])();
+			#else
+			return (ImTextureRef*)((delegate* unmanaged[Cdecl]<nint>)funcTable[6])();
+			#endif
+		}
+
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		public static ImTextureRefPtr ImTextureRef()
+		{
+			ImTextureRefPtr ret = ImTextureRefNative();
+			return ret;
+		}
+
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		[MethodImpl(MethodImplOptions.AggressiveInlining)]
+		internal static void DestroyNative(ImTextureRef* self)
+		{
+			#if NET5_0_OR_GREATER
+			((delegate* unmanaged[Cdecl]<ImTextureRef*, void>)funcTable[7])(self);
+			#else
+			((delegate* unmanaged[Cdecl]<nint, void>)funcTable[7])((nint)self);
+			#endif
+		}
+
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		public static void Destroy(ImTextureRefPtr self)
+		{
+			DestroyNative((ImTextureRef*)self);
+		}
+
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		public static void Destroy(ref ImTextureRef self)
+		{
+			fixed (ImTextureRef* pself = &self)
+			{
+				DestroyNative((ImTextureRef*)pself);
+			}
+		}
+
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		[MethodImpl(MethodImplOptions.AggressiveInlining)]
+		internal static ImTextureRef* ImTextureRefNative(ImTextureID texId)
+		{
+			#if NET5_0_OR_GREATER
+			return ((delegate* unmanaged[Cdecl]<ImTextureID, ImTextureRef*>)funcTable[8])(texId);
+			#else
+			return (ImTextureRef*)((delegate* unmanaged[Cdecl]<ImTextureID, nint>)funcTable[8])(texId);
+			#endif
+		}
+
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		public static ImTextureRefPtr ImTextureRef(ImTextureID texId)
+		{
+			ImTextureRefPtr ret = ImTextureRefNative(texId);
+			return ret;
+		}
+
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		[MethodImpl(MethodImplOptions.AggressiveInlining)]
+		internal static ImTextureID GetTexIDNative(ImTextureRef* self)
+		{
+			#if NET5_0_OR_GREATER
+			return ((delegate* unmanaged[Cdecl]<ImTextureRef*, ImTextureID>)funcTable[9])(self);
+			#else
+			return (ImTextureID)((delegate* unmanaged[Cdecl]<nint, ImTextureID>)funcTable[9])((nint)self);
+			#endif
+		}
+
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		public static ImTextureID GetTexID(ImTextureRefPtr self)
+		{
+			ImTextureID ret = GetTexIDNative((ImTextureRef*)self);
+			return ret;
+		}
+
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		public static ImTextureID GetTexID(ref ImTextureRef self)
+		{
+			fixed (ImTextureRef* pself = &self)
+			{
+				ImTextureID ret = GetTexIDNative((ImTextureRef*)pself);
+				return ret;
+			}
+		}
+
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		[MethodImpl(MethodImplOptions.AggressiveInlining)]
 		internal static ImGuiContext* CreateContextNative(ImFontAtlas* sharedFontAtlas)
 		{
 			#if NET5_0_OR_GREATER
-			return ((delegate* unmanaged[Cdecl]<ImFontAtlas*, ImGuiContext*>)funcTable[6])(sharedFontAtlas);
+			return ((delegate* unmanaged[Cdecl]<ImFontAtlas*, ImGuiContext*>)funcTable[10])(sharedFontAtlas);
 			#else
-			return (ImGuiContext*)((delegate* unmanaged[Cdecl]<nint, nint>)funcTable[6])((nint)sharedFontAtlas);
+			return (ImGuiContext*)((delegate* unmanaged[Cdecl]<nint, nint>)funcTable[10])((nint)sharedFontAtlas);
 			#endif
 		}
 
@@ -187,7 +297,7 @@ namespace Dalamud.Bindings.ImGui
 		/// </summary>
 		public static ImGuiContextPtr CreateContext(ImFontAtlasPtr sharedFontAtlas)
 		{
-			ImGuiContextPtr ret = CreateContextNative(sharedFontAtlas);
+			ImGuiContextPtr ret = CreateContextNative((ImFontAtlas*)sharedFontAtlas);
 			return ret;
 		}
 
@@ -219,9 +329,9 @@ namespace Dalamud.Bindings.ImGui
 		internal static void DestroyContextNative(ImGuiContext* ctx)
 		{
 			#if NET5_0_OR_GREATER
-			((delegate* unmanaged[Cdecl]<ImGuiContext*, void>)funcTable[7])(ctx);
+			((delegate* unmanaged[Cdecl]<ImGuiContext*, void>)funcTable[11])(ctx);
 			#else
-			((delegate* unmanaged[Cdecl]<nint, void>)funcTable[7])((nint)ctx);
+			((delegate* unmanaged[Cdecl]<nint, void>)funcTable[11])((nint)ctx);
 			#endif
 		}
 
@@ -230,7 +340,7 @@ namespace Dalamud.Bindings.ImGui
 		/// </summary>
 		public static void DestroyContext(ImGuiContextPtr ctx)
 		{
-			DestroyContextNative(ctx);
+			DestroyContextNative((ImGuiContext*)ctx);
 		}
 
 		/// <summary>
@@ -259,9 +369,9 @@ namespace Dalamud.Bindings.ImGui
 		internal static ImGuiContext* GetCurrentContextNative()
 		{
 			#if NET5_0_OR_GREATER
-			return ((delegate* unmanaged[Cdecl]<ImGuiContext*>)funcTable[8])();
+			return ((delegate* unmanaged[Cdecl]<ImGuiContext*>)funcTable[12])();
 			#else
-			return (ImGuiContext*)((delegate* unmanaged[Cdecl]<nint>)funcTable[8])();
+			return (ImGuiContext*)((delegate* unmanaged[Cdecl]<nint>)funcTable[12])();
 			#endif
 		}
 
@@ -281,9 +391,9 @@ namespace Dalamud.Bindings.ImGui
 		internal static void SetCurrentContextNative(ImGuiContext* ctx)
 		{
 			#if NET5_0_OR_GREATER
-			((delegate* unmanaged[Cdecl]<ImGuiContext*, void>)funcTable[9])(ctx);
+			((delegate* unmanaged[Cdecl]<ImGuiContext*, void>)funcTable[13])(ctx);
 			#else
-			((delegate* unmanaged[Cdecl]<nint, void>)funcTable[9])((nint)ctx);
+			((delegate* unmanaged[Cdecl]<nint, void>)funcTable[13])((nint)ctx);
 			#endif
 		}
 
@@ -292,7 +402,7 @@ namespace Dalamud.Bindings.ImGui
 		/// </summary>
 		public static void SetCurrentContext(ImGuiContextPtr ctx)
 		{
-			SetCurrentContextNative(ctx);
+			SetCurrentContextNative((ImGuiContext*)ctx);
 		}
 
 		/// <summary>
@@ -313,9 +423,9 @@ namespace Dalamud.Bindings.ImGui
 		internal static ImGuiIO* GetIONative()
 		{
 			#if NET5_0_OR_GREATER
-			return ((delegate* unmanaged[Cdecl]<ImGuiIO*>)funcTable[10])();
+			return ((delegate* unmanaged[Cdecl]<ImGuiIO*>)funcTable[14])();
 			#else
-			return (ImGuiIO*)((delegate* unmanaged[Cdecl]<nint>)funcTable[10])();
+			return (ImGuiIO*)((delegate* unmanaged[Cdecl]<nint>)funcTable[14])();
 			#endif
 		}
 
@@ -332,12 +442,34 @@ namespace Dalamud.Bindings.ImGui
 		/// To be documented.
 		/// </summary>
 		[MethodImpl(MethodImplOptions.AggressiveInlining)]
+		internal static ImGuiPlatformIO* GetPlatformIONative()
+		{
+			#if NET5_0_OR_GREATER
+			return ((delegate* unmanaged[Cdecl]<ImGuiPlatformIO*>)funcTable[15])();
+			#else
+			return (ImGuiPlatformIO*)((delegate* unmanaged[Cdecl]<nint>)funcTable[15])();
+			#endif
+		}
+
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		public static ImGuiPlatformIOPtr GetPlatformIO()
+		{
+			ImGuiPlatformIOPtr ret = GetPlatformIONative();
+			return ret;
+		}
+
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		[MethodImpl(MethodImplOptions.AggressiveInlining)]
 		internal static ImGuiStyle* GetStyleNative()
 		{
 			#if NET5_0_OR_GREATER
-			return ((delegate* unmanaged[Cdecl]<ImGuiStyle*>)funcTable[11])();
+			return ((delegate* unmanaged[Cdecl]<ImGuiStyle*>)funcTable[16])();
 			#else
-			return (ImGuiStyle*)((delegate* unmanaged[Cdecl]<nint>)funcTable[11])();
+			return (ImGuiStyle*)((delegate* unmanaged[Cdecl]<nint>)funcTable[16])();
 			#endif
 		}
 
@@ -357,9 +489,9 @@ namespace Dalamud.Bindings.ImGui
 		internal static void NewFrameNative()
 		{
 			#if NET5_0_OR_GREATER
-			((delegate* unmanaged[Cdecl]<void>)funcTable[12])();
+			((delegate* unmanaged[Cdecl]<void>)funcTable[17])();
 			#else
-			((delegate* unmanaged[Cdecl]<void>)funcTable[12])();
+			((delegate* unmanaged[Cdecl]<void>)funcTable[17])();
 			#endif
 		}
 
@@ -378,9 +510,9 @@ namespace Dalamud.Bindings.ImGui
 		internal static void EndFrameNative()
 		{
 			#if NET5_0_OR_GREATER
-			((delegate* unmanaged[Cdecl]<void>)funcTable[13])();
+			((delegate* unmanaged[Cdecl]<void>)funcTable[18])();
 			#else
-			((delegate* unmanaged[Cdecl]<void>)funcTable[13])();
+			((delegate* unmanaged[Cdecl]<void>)funcTable[18])();
 			#endif
 		}
 
@@ -399,9 +531,9 @@ namespace Dalamud.Bindings.ImGui
 		internal static void RenderNative()
 		{
 			#if NET5_0_OR_GREATER
-			((delegate* unmanaged[Cdecl]<void>)funcTable[14])();
+			((delegate* unmanaged[Cdecl]<void>)funcTable[19])();
 			#else
-			((delegate* unmanaged[Cdecl]<void>)funcTable[14])();
+			((delegate* unmanaged[Cdecl]<void>)funcTable[19])();
 			#endif
 		}
 
@@ -420,9 +552,9 @@ namespace Dalamud.Bindings.ImGui
 		internal static ImDrawData* GetDrawDataNative()
 		{
 			#if NET5_0_OR_GREATER
-			return ((delegate* unmanaged[Cdecl]<ImDrawData*>)funcTable[15])();
+			return ((delegate* unmanaged[Cdecl]<ImDrawData*>)funcTable[20])();
 			#else
-			return (ImDrawData*)((delegate* unmanaged[Cdecl]<nint>)funcTable[15])();
+			return (ImDrawData*)((delegate* unmanaged[Cdecl]<nint>)funcTable[20])();
 			#endif
 		}
 
@@ -442,9 +574,9 @@ namespace Dalamud.Bindings.ImGui
 		internal static void ShowDemoWindowNative(bool* pOpen)
 		{
 			#if NET5_0_OR_GREATER
-			((delegate* unmanaged[Cdecl]<bool*, void>)funcTable[16])(pOpen);
+			((delegate* unmanaged[Cdecl]<bool*, void>)funcTable[21])(pOpen);
 			#else
-			((delegate* unmanaged[Cdecl]<nint, void>)funcTable[16])((nint)pOpen);
+			((delegate* unmanaged[Cdecl]<nint, void>)funcTable[21])((nint)pOpen);
 			#endif
 		}
 
@@ -482,9 +614,9 @@ namespace Dalamud.Bindings.ImGui
 		internal static void ShowMetricsWindowNative(bool* pOpen)
 		{
 			#if NET5_0_OR_GREATER
-			((delegate* unmanaged[Cdecl]<bool*, void>)funcTable[17])(pOpen);
+			((delegate* unmanaged[Cdecl]<bool*, void>)funcTable[22])(pOpen);
 			#else
-			((delegate* unmanaged[Cdecl]<nint, void>)funcTable[17])((nint)pOpen);
+			((delegate* unmanaged[Cdecl]<nint, void>)funcTable[22])((nint)pOpen);
 			#endif
 		}
 
@@ -522,9 +654,9 @@ namespace Dalamud.Bindings.ImGui
 		internal static void ShowDebugLogWindowNative(bool* pOpen)
 		{
 			#if NET5_0_OR_GREATER
-			((delegate* unmanaged[Cdecl]<bool*, void>)funcTable[18])(pOpen);
+			((delegate* unmanaged[Cdecl]<bool*, void>)funcTable[23])(pOpen);
 			#else
-			((delegate* unmanaged[Cdecl]<nint, void>)funcTable[18])((nint)pOpen);
+			((delegate* unmanaged[Cdecl]<nint, void>)funcTable[23])((nint)pOpen);
 			#endif
 		}
 
@@ -559,39 +691,39 @@ namespace Dalamud.Bindings.ImGui
 		/// To be documented.
 		/// </summary>
 		[MethodImpl(MethodImplOptions.AggressiveInlining)]
-		internal static void ShowStackToolWindowNative(bool* pOpen)
+		internal static void ShowIDStackToolWindowNative(bool* pOpen)
 		{
 			#if NET5_0_OR_GREATER
-			((delegate* unmanaged[Cdecl]<bool*, void>)funcTable[19])(pOpen);
+			((delegate* unmanaged[Cdecl]<bool*, void>)funcTable[24])(pOpen);
 			#else
-			((delegate* unmanaged[Cdecl]<nint, void>)funcTable[19])((nint)pOpen);
+			((delegate* unmanaged[Cdecl]<nint, void>)funcTable[24])((nint)pOpen);
 			#endif
 		}
 
 		/// <summary>
 		/// To be documented.
 		/// </summary>
-		public static void ShowStackToolWindow(bool* pOpen)
+		public static void ShowIDStackToolWindow(bool* pOpen)
 		{
-			ShowStackToolWindowNative(pOpen);
+			ShowIDStackToolWindowNative(pOpen);
 		}
 
 		/// <summary>
 		/// To be documented.
 		/// </summary>
-		public static void ShowStackToolWindow()
+		public static void ShowIDStackToolWindow()
 		{
-			ShowStackToolWindowNative((bool*)(default));
+			ShowIDStackToolWindowNative((bool*)(default));
 		}
 
 		/// <summary>
 		/// To be documented.
 		/// </summary>
-		public static void ShowStackToolWindow(ref bool pOpen)
+		public static void ShowIDStackToolWindow(ref bool pOpen)
 		{
 			fixed (bool* ppOpen = &pOpen)
 			{
-				ShowStackToolWindowNative((bool*)ppOpen);
+				ShowIDStackToolWindowNative((bool*)ppOpen);
 			}
 		}
 
@@ -602,9 +734,9 @@ namespace Dalamud.Bindings.ImGui
 		internal static void ShowAboutWindowNative(bool* pOpen)
 		{
 			#if NET5_0_OR_GREATER
-			((delegate* unmanaged[Cdecl]<bool*, void>)funcTable[20])(pOpen);
+			((delegate* unmanaged[Cdecl]<bool*, void>)funcTable[25])(pOpen);
 			#else
-			((delegate* unmanaged[Cdecl]<nint, void>)funcTable[20])((nint)pOpen);
+			((delegate* unmanaged[Cdecl]<nint, void>)funcTable[25])((nint)pOpen);
 			#endif
 		}
 
@@ -642,9 +774,9 @@ namespace Dalamud.Bindings.ImGui
 		internal static void ShowStyleEditorNative(ImGuiStyle* reference)
 		{
 			#if NET5_0_OR_GREATER
-			((delegate* unmanaged[Cdecl]<ImGuiStyle*, void>)funcTable[21])(reference);
+			((delegate* unmanaged[Cdecl]<ImGuiStyle*, void>)funcTable[26])(reference);
 			#else
-			((delegate* unmanaged[Cdecl]<nint, void>)funcTable[21])((nint)reference);
+			((delegate* unmanaged[Cdecl]<nint, void>)funcTable[26])((nint)reference);
 			#endif
 		}
 
@@ -653,7 +785,7 @@ namespace Dalamud.Bindings.ImGui
 		/// </summary>
 		public static void ShowStyleEditor(ImGuiStylePtr reference)
 		{
-			ShowStyleEditorNative(reference);
+			ShowStyleEditorNative((ImGuiStyle*)reference);
 		}
 
 		/// <summary>
@@ -682,9 +814,9 @@ namespace Dalamud.Bindings.ImGui
 		internal static byte ShowStyleSelectorNative(byte* label)
 		{
 			#if NET5_0_OR_GREATER
-			return ((delegate* unmanaged[Cdecl]<byte*, byte>)funcTable[22])(label);
+			return ((delegate* unmanaged[Cdecl]<byte*, byte>)funcTable[27])(label);
 			#else
-			return (byte)((delegate* unmanaged[Cdecl]<nint, byte>)funcTable[22])((nint)label);
+			return (byte)((delegate* unmanaged[Cdecl]<nint, byte>)funcTable[27])((nint)label);
 			#endif
 		}
 
@@ -700,7 +832,7 @@ namespace Dalamud.Bindings.ImGui
 		/// <summary>
 		/// To be documented.
 		/// </summary>
-		public static bool ShowStyleSelector(ref byte label)
+		public static bool ShowStyleSelector(in byte label)
 		{
 			fixed (byte* plabel = &label)
 			{
@@ -758,9 +890,9 @@ namespace Dalamud.Bindings.ImGui
 		internal static void ShowFontSelectorNative(byte* label)
 		{
 			#if NET5_0_OR_GREATER
-			((delegate* unmanaged[Cdecl]<byte*, void>)funcTable[23])(label);
+			((delegate* unmanaged[Cdecl]<byte*, void>)funcTable[28])(label);
 			#else
-			((delegate* unmanaged[Cdecl]<nint, void>)funcTable[23])((nint)label);
+			((delegate* unmanaged[Cdecl]<nint, void>)funcTable[28])((nint)label);
 			#endif
 		}
 
@@ -775,7 +907,7 @@ namespace Dalamud.Bindings.ImGui
 		/// <summary>
 		/// To be documented.
 		/// </summary>
-		public static void ShowFontSelector(ref byte label)
+		public static void ShowFontSelector(in byte label)
 		{
 			fixed (byte* plabel = &label)
 			{
@@ -830,9 +962,9 @@ namespace Dalamud.Bindings.ImGui
 		internal static void ShowUserGuideNative()
 		{
 			#if NET5_0_OR_GREATER
-			((delegate* unmanaged[Cdecl]<void>)funcTable[24])();
+			((delegate* unmanaged[Cdecl]<void>)funcTable[29])();
 			#else
-			((delegate* unmanaged[Cdecl]<void>)funcTable[24])();
+			((delegate* unmanaged[Cdecl]<void>)funcTable[29])();
 			#endif
 		}
 
@@ -851,9 +983,9 @@ namespace Dalamud.Bindings.ImGui
 		internal static byte* GetVersionNative()
 		{
 			#if NET5_0_OR_GREATER
-			return ((delegate* unmanaged[Cdecl]<byte*>)funcTable[25])();
+			return ((delegate* unmanaged[Cdecl]<byte*>)funcTable[30])();
 			#else
-			return (byte*)((delegate* unmanaged[Cdecl]<nint>)funcTable[25])();
+			return (byte*)((delegate* unmanaged[Cdecl]<nint>)funcTable[30])();
 			#endif
 		}
 
@@ -882,9 +1014,9 @@ namespace Dalamud.Bindings.ImGui
 		internal static void StyleColorsDarkNative(ImGuiStyle* dst)
 		{
 			#if NET5_0_OR_GREATER
-			((delegate* unmanaged[Cdecl]<ImGuiStyle*, void>)funcTable[26])(dst);
+			((delegate* unmanaged[Cdecl]<ImGuiStyle*, void>)funcTable[31])(dst);
 			#else
-			((delegate* unmanaged[Cdecl]<nint, void>)funcTable[26])((nint)dst);
+			((delegate* unmanaged[Cdecl]<nint, void>)funcTable[31])((nint)dst);
 			#endif
 		}
 
@@ -893,7 +1025,7 @@ namespace Dalamud.Bindings.ImGui
 		/// </summary>
 		public static void StyleColorsDark(ImGuiStylePtr dst)
 		{
-			StyleColorsDarkNative(dst);
+			StyleColorsDarkNative((ImGuiStyle*)dst);
 		}
 
 		/// <summary>
@@ -922,9 +1054,9 @@ namespace Dalamud.Bindings.ImGui
 		internal static void StyleColorsLightNative(ImGuiStyle* dst)
 		{
 			#if NET5_0_OR_GREATER
-			((delegate* unmanaged[Cdecl]<ImGuiStyle*, void>)funcTable[27])(dst);
+			((delegate* unmanaged[Cdecl]<ImGuiStyle*, void>)funcTable[32])(dst);
 			#else
-			((delegate* unmanaged[Cdecl]<nint, void>)funcTable[27])((nint)dst);
+			((delegate* unmanaged[Cdecl]<nint, void>)funcTable[32])((nint)dst);
 			#endif
 		}
 
@@ -933,7 +1065,7 @@ namespace Dalamud.Bindings.ImGui
 		/// </summary>
 		public static void StyleColorsLight(ImGuiStylePtr dst)
 		{
-			StyleColorsLightNative(dst);
+			StyleColorsLightNative((ImGuiStyle*)dst);
 		}
 
 		/// <summary>
@@ -962,9 +1094,9 @@ namespace Dalamud.Bindings.ImGui
 		internal static void StyleColorsClassicNative(ImGuiStyle* dst)
 		{
 			#if NET5_0_OR_GREATER
-			((delegate* unmanaged[Cdecl]<ImGuiStyle*, void>)funcTable[28])(dst);
+			((delegate* unmanaged[Cdecl]<ImGuiStyle*, void>)funcTable[33])(dst);
 			#else
-			((delegate* unmanaged[Cdecl]<nint, void>)funcTable[28])((nint)dst);
+			((delegate* unmanaged[Cdecl]<nint, void>)funcTable[33])((nint)dst);
 			#endif
 		}
 
@@ -973,7 +1105,7 @@ namespace Dalamud.Bindings.ImGui
 		/// </summary>
 		public static void StyleColorsClassic(ImGuiStylePtr dst)
 		{
-			StyleColorsClassicNative(dst);
+			StyleColorsClassicNative((ImGuiStyle*)dst);
 		}
 
 		/// <summary>
@@ -1002,9 +1134,9 @@ namespace Dalamud.Bindings.ImGui
 		internal static byte BeginNative(byte* name, bool* pOpen, ImGuiWindowFlags flags)
 		{
 			#if NET5_0_OR_GREATER
-			return ((delegate* unmanaged[Cdecl]<byte*, bool*, ImGuiWindowFlags, byte>)funcTable[29])(name, pOpen, flags);
+			return ((delegate* unmanaged[Cdecl]<byte*, bool*, ImGuiWindowFlags, byte>)funcTable[34])(name, pOpen, flags);
 			#else
-			return (byte)((delegate* unmanaged[Cdecl]<nint, nint, ImGuiWindowFlags, byte>)funcTable[29])((nint)name, (nint)pOpen, flags);
+			return (byte)((delegate* unmanaged[Cdecl]<nint, nint, ImGuiWindowFlags, byte>)funcTable[34])((nint)name, (nint)pOpen, flags);
 			#endif
 		}
 
@@ -1047,7 +1179,7 @@ namespace Dalamud.Bindings.ImGui
 		/// <summary>
 		/// To be documented.
 		/// </summary>
-		public static bool Begin(ref byte name, bool* pOpen, ImGuiWindowFlags flags)
+		public static bool Begin(in byte name, bool* pOpen, ImGuiWindowFlags flags)
 		{
 			fixed (byte* pname = &name)
 			{
@@ -1059,7 +1191,7 @@ namespace Dalamud.Bindings.ImGui
 		/// <summary>
 		/// To be documented.
 		/// </summary>
-		public static bool Begin(ref byte name, bool* pOpen)
+		public static bool Begin(in byte name, bool* pOpen)
 		{
 			fixed (byte* pname = &name)
 			{
@@ -1071,7 +1203,7 @@ namespace Dalamud.Bindings.ImGui
 		/// <summary>
 		/// To be documented.
 		/// </summary>
-		public static bool Begin(ref byte name)
+		public static bool Begin(in byte name)
 		{
 			fixed (byte* pname = &name)
 			{
@@ -1083,7 +1215,7 @@ namespace Dalamud.Bindings.ImGui
 		/// <summary>
 		/// To be documented.
 		/// </summary>
-		public static bool Begin(ref byte name, ImGuiWindowFlags flags)
+		public static bool Begin(in byte name, ImGuiWindowFlags flags)
 		{
 			fixed (byte* pname = &name)
 			{
@@ -1287,7 +1419,7 @@ namespace Dalamud.Bindings.ImGui
 		/// <summary>
 		/// To be documented.
 		/// </summary>
-		public static bool Begin(ref byte name, ref bool pOpen, ImGuiWindowFlags flags)
+		public static bool Begin(in byte name, ref bool pOpen, ImGuiWindowFlags flags)
 		{
 			fixed (byte* pname = &name)
 			{
@@ -1302,7 +1434,7 @@ namespace Dalamud.Bindings.ImGui
 		/// <summary>
 		/// To be documented.
 		/// </summary>
-		public static bool Begin(ref byte name, ref bool pOpen)
+		public static bool Begin(in byte name, ref bool pOpen)
 		{
 			fixed (byte* pname = &name)
 			{
@@ -1417,9 +1549,9 @@ namespace Dalamud.Bindings.ImGui
 		internal static void EndNative()
 		{
 			#if NET5_0_OR_GREATER
-			((delegate* unmanaged[Cdecl]<void>)funcTable[30])();
+			((delegate* unmanaged[Cdecl]<void>)funcTable[35])();
 			#else
-			((delegate* unmanaged[Cdecl]<void>)funcTable[30])();
+			((delegate* unmanaged[Cdecl]<void>)funcTable[35])();
 			#endif
 		}
 
@@ -1435,30 +1567,30 @@ namespace Dalamud.Bindings.ImGui
 		/// To be documented.
 		/// </summary>
 		[MethodImpl(MethodImplOptions.AggressiveInlining)]
-		internal static byte BeginChildNative(byte* strId, Vector2 size, byte border, ImGuiWindowFlags flags)
+		internal static byte BeginChildNative(byte* strId, Vector2 size, ImGuiChildFlags childFlags, ImGuiWindowFlags windowFlags)
 		{
 			#if NET5_0_OR_GREATER
-			return ((delegate* unmanaged[Cdecl]<byte*, Vector2, byte, ImGuiWindowFlags, byte>)funcTable[31])(strId, size, border, flags);
+			return ((delegate* unmanaged[Cdecl]<byte*, Vector2, ImGuiChildFlags, ImGuiWindowFlags, byte>)funcTable[36])(strId, size, childFlags, windowFlags);
 			#else
-			return (byte)((delegate* unmanaged[Cdecl]<nint, Vector2, byte, ImGuiWindowFlags, byte>)funcTable[31])((nint)strId, size, border, flags);
+			return (byte)((delegate* unmanaged[Cdecl]<nint, Vector2, ImGuiChildFlags, ImGuiWindowFlags, byte>)funcTable[36])((nint)strId, size, childFlags, windowFlags);
 			#endif
 		}
 
 		/// <summary>
 		/// To be documented.
 		/// </summary>
-		public static bool BeginChild(byte* strId, Vector2 size, bool border, ImGuiWindowFlags flags)
+		public static bool BeginChild(byte* strId, Vector2 size, ImGuiChildFlags childFlags, ImGuiWindowFlags windowFlags)
 		{
-			byte ret = BeginChildNative(strId, size, border ? (byte)1 : (byte)0, flags);
+			byte ret = BeginChildNative(strId, size, childFlags, windowFlags);
 			return ret != 0;
 		}
 
 		/// <summary>
 		/// To be documented.
 		/// </summary>
-		public static bool BeginChild(byte* strId, Vector2 size, bool border)
+		public static bool BeginChild(byte* strId, Vector2 size, ImGuiChildFlags childFlags)
 		{
-			byte ret = BeginChildNative(strId, size, border ? (byte)1 : (byte)0, (ImGuiWindowFlags)(0));
+			byte ret = BeginChildNative(strId, size, childFlags, (ImGuiWindowFlags)(0));
 			return ret != 0;
 		}
 
@@ -1467,7 +1599,7 @@ namespace Dalamud.Bindings.ImGui
 		/// </summary>
 		public static bool BeginChild(byte* strId, Vector2 size)
 		{
-			byte ret = BeginChildNative(strId, size, (byte)(0), (ImGuiWindowFlags)(0));
+			byte ret = BeginChildNative(strId, size, (ImGuiChildFlags)(0), (ImGuiWindowFlags)(0));
 			return ret != 0;
 		}
 
@@ -1476,54 +1608,54 @@ namespace Dalamud.Bindings.ImGui
 		/// </summary>
 		public static bool BeginChild(byte* strId)
 		{
-			byte ret = BeginChildNative(strId, (Vector2)(new Vector2(0,0)), (byte)(0), (ImGuiWindowFlags)(0));
+			byte ret = BeginChildNative(strId, (Vector2)(new Vector2(0,0)), (ImGuiChildFlags)(0), (ImGuiWindowFlags)(0));
 			return ret != 0;
 		}
 
 		/// <summary>
 		/// To be documented.
 		/// </summary>
-		public static bool BeginChild(byte* strId, bool border)
+		public static bool BeginChild(byte* strId, ImGuiChildFlags childFlags)
 		{
-			byte ret = BeginChildNative(strId, (Vector2)(new Vector2(0,0)), border ? (byte)1 : (byte)0, (ImGuiWindowFlags)(0));
+			byte ret = BeginChildNative(strId, (Vector2)(new Vector2(0,0)), childFlags, (ImGuiWindowFlags)(0));
 			return ret != 0;
 		}
 
 		/// <summary>
 		/// To be documented.
 		/// </summary>
-		public static bool BeginChild(byte* strId, Vector2 size, ImGuiWindowFlags flags)
+		public static bool BeginChild(byte* strId, Vector2 size, ImGuiWindowFlags windowFlags)
 		{
-			byte ret = BeginChildNative(strId, size, (byte)(0), flags);
+			byte ret = BeginChildNative(strId, size, (ImGuiChildFlags)(0), windowFlags);
 			return ret != 0;
 		}
 
 		/// <summary>
 		/// To be documented.
 		/// </summary>
-		public static bool BeginChild(byte* strId, ImGuiWindowFlags flags)
+		public static bool BeginChild(byte* strId, ImGuiWindowFlags windowFlags)
 		{
-			byte ret = BeginChildNative(strId, (Vector2)(new Vector2(0,0)), (byte)(0), flags);
+			byte ret = BeginChildNative(strId, (Vector2)(new Vector2(0,0)), (ImGuiChildFlags)(0), windowFlags);
 			return ret != 0;
 		}
 
 		/// <summary>
 		/// To be documented.
 		/// </summary>
-		public static bool BeginChild(byte* strId, bool border, ImGuiWindowFlags flags)
+		public static bool BeginChild(byte* strId, ImGuiChildFlags childFlags, ImGuiWindowFlags windowFlags)
 		{
-			byte ret = BeginChildNative(strId, (Vector2)(new Vector2(0,0)), border ? (byte)1 : (byte)0, flags);
+			byte ret = BeginChildNative(strId, (Vector2)(new Vector2(0,0)), childFlags, windowFlags);
 			return ret != 0;
 		}
 
 		/// <summary>
 		/// To be documented.
 		/// </summary>
-		public static bool BeginChild(ref byte strId, Vector2 size, bool border, ImGuiWindowFlags flags)
+		public static bool BeginChild(in byte strId, Vector2 size, ImGuiChildFlags childFlags, ImGuiWindowFlags windowFlags)
 		{
 			fixed (byte* pstrId = &strId)
 			{
-				byte ret = BeginChildNative((byte*)pstrId, size, border ? (byte)1 : (byte)0, flags);
+				byte ret = BeginChildNative((byte*)pstrId, size, childFlags, windowFlags);
 				return ret != 0;
 			}
 		}
@@ -1531,11 +1663,11 @@ namespace Dalamud.Bindings.ImGui
 		/// <summary>
 		/// To be documented.
 		/// </summary>
-		public static bool BeginChild(ref byte strId, Vector2 size, bool border)
+		public static bool BeginChild(in byte strId, Vector2 size, ImGuiChildFlags childFlags)
 		{
 			fixed (byte* pstrId = &strId)
 			{
-				byte ret = BeginChildNative((byte*)pstrId, size, border ? (byte)1 : (byte)0, (ImGuiWindowFlags)(0));
+				byte ret = BeginChildNative((byte*)pstrId, size, childFlags, (ImGuiWindowFlags)(0));
 				return ret != 0;
 			}
 		}
@@ -1543,11 +1675,11 @@ namespace Dalamud.Bindings.ImGui
 		/// <summary>
 		/// To be documented.
 		/// </summary>
-		public static bool BeginChild(ref byte strId, Vector2 size)
+		public static bool BeginChild(in byte strId, Vector2 size)
 		{
 			fixed (byte* pstrId = &strId)
 			{
-				byte ret = BeginChildNative((byte*)pstrId, size, (byte)(0), (ImGuiWindowFlags)(0));
+				byte ret = BeginChildNative((byte*)pstrId, size, (ImGuiChildFlags)(0), (ImGuiWindowFlags)(0));
 				return ret != 0;
 			}
 		}
@@ -1555,11 +1687,11 @@ namespace Dalamud.Bindings.ImGui
 		/// <summary>
 		/// To be documented.
 		/// </summary>
-		public static bool BeginChild(ref byte strId)
+		public static bool BeginChild(in byte strId)
 		{
 			fixed (byte* pstrId = &strId)
 			{
-				byte ret = BeginChildNative((byte*)pstrId, (Vector2)(new Vector2(0,0)), (byte)(0), (ImGuiWindowFlags)(0));
+				byte ret = BeginChildNative((byte*)pstrId, (Vector2)(new Vector2(0,0)), (ImGuiChildFlags)(0), (ImGuiWindowFlags)(0));
 				return ret != 0;
 			}
 		}
@@ -1567,11 +1699,11 @@ namespace Dalamud.Bindings.ImGui
 		/// <summary>
 		/// To be documented.
 		/// </summary>
-		public static bool BeginChild(ref byte strId, bool border)
+		public static bool BeginChild(in byte strId, ImGuiChildFlags childFlags)
 		{
 			fixed (byte* pstrId = &strId)
 			{
-				byte ret = BeginChildNative((byte*)pstrId, (Vector2)(new Vector2(0,0)), border ? (byte)1 : (byte)0, (ImGuiWindowFlags)(0));
+				byte ret = BeginChildNative((byte*)pstrId, (Vector2)(new Vector2(0,0)), childFlags, (ImGuiWindowFlags)(0));
 				return ret != 0;
 			}
 		}
@@ -1579,11 +1711,11 @@ namespace Dalamud.Bindings.ImGui
 		/// <summary>
 		/// To be documented.
 		/// </summary>
-		public static bool BeginChild(ref byte strId, Vector2 size, ImGuiWindowFlags flags)
+		public static bool BeginChild(in byte strId, Vector2 size, ImGuiWindowFlags windowFlags)
 		{
 			fixed (byte* pstrId = &strId)
 			{
-				byte ret = BeginChildNative((byte*)pstrId, size, (byte)(0), flags);
+				byte ret = BeginChildNative((byte*)pstrId, size, (ImGuiChildFlags)(0), windowFlags);
 				return ret != 0;
 			}
 		}
@@ -1591,11 +1723,11 @@ namespace Dalamud.Bindings.ImGui
 		/// <summary>
 		/// To be documented.
 		/// </summary>
-		public static bool BeginChild(ref byte strId, ImGuiWindowFlags flags)
+		public static bool BeginChild(in byte strId, ImGuiWindowFlags windowFlags)
 		{
 			fixed (byte* pstrId = &strId)
 			{
-				byte ret = BeginChildNative((byte*)pstrId, (Vector2)(new Vector2(0,0)), (byte)(0), flags);
+				byte ret = BeginChildNative((byte*)pstrId, (Vector2)(new Vector2(0,0)), (ImGuiChildFlags)(0), windowFlags);
 				return ret != 0;
 			}
 		}
@@ -1603,11 +1735,11 @@ namespace Dalamud.Bindings.ImGui
 		/// <summary>
 		/// To be documented.
 		/// </summary>
-		public static bool BeginChild(ref byte strId, bool border, ImGuiWindowFlags flags)
+		public static bool BeginChild(in byte strId, ImGuiChildFlags childFlags, ImGuiWindowFlags windowFlags)
 		{
 			fixed (byte* pstrId = &strId)
 			{
-				byte ret = BeginChildNative((byte*)pstrId, (Vector2)(new Vector2(0,0)), border ? (byte)1 : (byte)0, flags);
+				byte ret = BeginChildNative((byte*)pstrId, (Vector2)(new Vector2(0,0)), childFlags, windowFlags);
 				return ret != 0;
 			}
 		}
@@ -1615,11 +1747,11 @@ namespace Dalamud.Bindings.ImGui
 		/// <summary>
 		/// To be documented.
 		/// </summary>
-		public static bool BeginChild(ReadOnlySpan<byte> strId, Vector2 size, bool border, ImGuiWindowFlags flags)
+		public static bool BeginChild(ReadOnlySpan<byte> strId, Vector2 size, ImGuiChildFlags childFlags, ImGuiWindowFlags windowFlags)
 		{
 			fixed (byte* pstrId = strId)
 			{
-				byte ret = BeginChildNative((byte*)pstrId, size, border ? (byte)1 : (byte)0, flags);
+				byte ret = BeginChildNative((byte*)pstrId, size, childFlags, windowFlags);
 				return ret != 0;
 			}
 		}
@@ -1627,11 +1759,11 @@ namespace Dalamud.Bindings.ImGui
 		/// <summary>
 		/// To be documented.
 		/// </summary>
-		public static bool BeginChild(ReadOnlySpan<byte> strId, Vector2 size, bool border)
+		public static bool BeginChild(ReadOnlySpan<byte> strId, Vector2 size, ImGuiChildFlags childFlags)
 		{
 			fixed (byte* pstrId = strId)
 			{
-				byte ret = BeginChildNative((byte*)pstrId, size, border ? (byte)1 : (byte)0, (ImGuiWindowFlags)(0));
+				byte ret = BeginChildNative((byte*)pstrId, size, childFlags, (ImGuiWindowFlags)(0));
 				return ret != 0;
 			}
 		}
@@ -1643,7 +1775,7 @@ namespace Dalamud.Bindings.ImGui
 		{
 			fixed (byte* pstrId = strId)
 			{
-				byte ret = BeginChildNative((byte*)pstrId, size, (byte)(0), (ImGuiWindowFlags)(0));
+				byte ret = BeginChildNative((byte*)pstrId, size, (ImGuiChildFlags)(0), (ImGuiWindowFlags)(0));
 				return ret != 0;
 			}
 		}
@@ -1655,7 +1787,7 @@ namespace Dalamud.Bindings.ImGui
 		{
 			fixed (byte* pstrId = strId)
 			{
-				byte ret = BeginChildNative((byte*)pstrId, (Vector2)(new Vector2(0,0)), (byte)(0), (ImGuiWindowFlags)(0));
+				byte ret = BeginChildNative((byte*)pstrId, (Vector2)(new Vector2(0,0)), (ImGuiChildFlags)(0), (ImGuiWindowFlags)(0));
 				return ret != 0;
 			}
 		}
@@ -1663,11 +1795,11 @@ namespace Dalamud.Bindings.ImGui
 		/// <summary>
 		/// To be documented.
 		/// </summary>
-		public static bool BeginChild(ReadOnlySpan<byte> strId, bool border)
+		public static bool BeginChild(ReadOnlySpan<byte> strId, ImGuiChildFlags childFlags)
 		{
 			fixed (byte* pstrId = strId)
 			{
-				byte ret = BeginChildNative((byte*)pstrId, (Vector2)(new Vector2(0,0)), border ? (byte)1 : (byte)0, (ImGuiWindowFlags)(0));
+				byte ret = BeginChildNative((byte*)pstrId, (Vector2)(new Vector2(0,0)), childFlags, (ImGuiWindowFlags)(0));
 				return ret != 0;
 			}
 		}
@@ -1675,11 +1807,11 @@ namespace Dalamud.Bindings.ImGui
 		/// <summary>
 		/// To be documented.
 		/// </summary>
-		public static bool BeginChild(ReadOnlySpan<byte> strId, Vector2 size, ImGuiWindowFlags flags)
+		public static bool BeginChild(ReadOnlySpan<byte> strId, Vector2 size, ImGuiWindowFlags windowFlags)
 		{
 			fixed (byte* pstrId = strId)
 			{
-				byte ret = BeginChildNative((byte*)pstrId, size, (byte)(0), flags);
+				byte ret = BeginChildNative((byte*)pstrId, size, (ImGuiChildFlags)(0), windowFlags);
 				return ret != 0;
 			}
 		}
@@ -1687,11 +1819,11 @@ namespace Dalamud.Bindings.ImGui
 		/// <summary>
 		/// To be documented.
 		/// </summary>
-		public static bool BeginChild(ReadOnlySpan<byte> strId, ImGuiWindowFlags flags)
+		public static bool BeginChild(ReadOnlySpan<byte> strId, ImGuiWindowFlags windowFlags)
 		{
 			fixed (byte* pstrId = strId)
 			{
-				byte ret = BeginChildNative((byte*)pstrId, (Vector2)(new Vector2(0,0)), (byte)(0), flags);
+				byte ret = BeginChildNative((byte*)pstrId, (Vector2)(new Vector2(0,0)), (ImGuiChildFlags)(0), windowFlags);
 				return ret != 0;
 			}
 		}
@@ -1699,11 +1831,11 @@ namespace Dalamud.Bindings.ImGui
 		/// <summary>
 		/// To be documented.
 		/// </summary>
-		public static bool BeginChild(ReadOnlySpan<byte> strId, bool border, ImGuiWindowFlags flags)
+		public static bool BeginChild(ReadOnlySpan<byte> strId, ImGuiChildFlags childFlags, ImGuiWindowFlags windowFlags)
 		{
 			fixed (byte* pstrId = strId)
 			{
-				byte ret = BeginChildNative((byte*)pstrId, (Vector2)(new Vector2(0,0)), border ? (byte)1 : (byte)0, flags);
+				byte ret = BeginChildNative((byte*)pstrId, (Vector2)(new Vector2(0,0)), childFlags, windowFlags);
 				return ret != 0;
 			}
 		}
@@ -1711,7 +1843,7 @@ namespace Dalamud.Bindings.ImGui
 		/// <summary>
 		/// To be documented.
 		/// </summary>
-		public static bool BeginChild(string strId, Vector2 size, bool border, ImGuiWindowFlags flags)
+		public static bool BeginChild(string strId, Vector2 size, ImGuiChildFlags childFlags, ImGuiWindowFlags windowFlags)
 		{
 			byte* pStr0 = null;
 			int pStrSize0 = 0;
@@ -1730,7 +1862,7 @@ namespace Dalamud.Bindings.ImGui
 				int pStrOffset0 = Utils.EncodeStringUTF8(strId, pStr0, pStrSize0);
 				pStr0[pStrOffset0] = 0;
 			}
-			byte ret = BeginChildNative(pStr0, size, border ? (byte)1 : (byte)0, flags);
+			byte ret = BeginChildNative(pStr0, size, childFlags, windowFlags);
 			if (pStrSize0 >= Utils.MaxStackallocSize)
 			{
 				Utils.Free(pStr0);
@@ -1741,7 +1873,7 @@ namespace Dalamud.Bindings.ImGui
 		/// <summary>
 		/// To be documented.
 		/// </summary>
-		public static bool BeginChild(string strId, Vector2 size, bool border)
+		public static bool BeginChild(string strId, Vector2 size, ImGuiChildFlags childFlags)
 		{
 			byte* pStr0 = null;
 			int pStrSize0 = 0;
@@ -1760,7 +1892,7 @@ namespace Dalamud.Bindings.ImGui
 				int pStrOffset0 = Utils.EncodeStringUTF8(strId, pStr0, pStrSize0);
 				pStr0[pStrOffset0] = 0;
 			}
-			byte ret = BeginChildNative(pStr0, size, border ? (byte)1 : (byte)0, (ImGuiWindowFlags)(0));
+			byte ret = BeginChildNative(pStr0, size, childFlags, (ImGuiWindowFlags)(0));
 			if (pStrSize0 >= Utils.MaxStackallocSize)
 			{
 				Utils.Free(pStr0);
@@ -1790,7 +1922,7 @@ namespace Dalamud.Bindings.ImGui
 				int pStrOffset0 = Utils.EncodeStringUTF8(strId, pStr0, pStrSize0);
 				pStr0[pStrOffset0] = 0;
 			}
-			byte ret = BeginChildNative(pStr0, size, (byte)(0), (ImGuiWindowFlags)(0));
+			byte ret = BeginChildNative(pStr0, size, (ImGuiChildFlags)(0), (ImGuiWindowFlags)(0));
 			if (pStrSize0 >= Utils.MaxStackallocSize)
 			{
 				Utils.Free(pStr0);
@@ -1820,7 +1952,7 @@ namespace Dalamud.Bindings.ImGui
 				int pStrOffset0 = Utils.EncodeStringUTF8(strId, pStr0, pStrSize0);
 				pStr0[pStrOffset0] = 0;
 			}
-			byte ret = BeginChildNative(pStr0, (Vector2)(new Vector2(0,0)), (byte)(0), (ImGuiWindowFlags)(0));
+			byte ret = BeginChildNative(pStr0, (Vector2)(new Vector2(0,0)), (ImGuiChildFlags)(0), (ImGuiWindowFlags)(0));
 			if (pStrSize0 >= Utils.MaxStackallocSize)
 			{
 				Utils.Free(pStr0);
@@ -1831,7 +1963,7 @@ namespace Dalamud.Bindings.ImGui
 		/// <summary>
 		/// To be documented.
 		/// </summary>
-		public static bool BeginChild(string strId, bool border)
+		public static bool BeginChild(string strId, ImGuiChildFlags childFlags)
 		{
 			byte* pStr0 = null;
 			int pStrSize0 = 0;
@@ -1850,7 +1982,7 @@ namespace Dalamud.Bindings.ImGui
 				int pStrOffset0 = Utils.EncodeStringUTF8(strId, pStr0, pStrSize0);
 				pStr0[pStrOffset0] = 0;
 			}
-			byte ret = BeginChildNative(pStr0, (Vector2)(new Vector2(0,0)), border ? (byte)1 : (byte)0, (ImGuiWindowFlags)(0));
+			byte ret = BeginChildNative(pStr0, (Vector2)(new Vector2(0,0)), childFlags, (ImGuiWindowFlags)(0));
 			if (pStrSize0 >= Utils.MaxStackallocSize)
 			{
 				Utils.Free(pStr0);
@@ -1861,7 +1993,7 @@ namespace Dalamud.Bindings.ImGui
 		/// <summary>
 		/// To be documented.
 		/// </summary>
-		public static bool BeginChild(string strId, Vector2 size, ImGuiWindowFlags flags)
+		public static bool BeginChild(string strId, Vector2 size, ImGuiWindowFlags windowFlags)
 		{
 			byte* pStr0 = null;
 			int pStrSize0 = 0;
@@ -1880,7 +2012,7 @@ namespace Dalamud.Bindings.ImGui
 				int pStrOffset0 = Utils.EncodeStringUTF8(strId, pStr0, pStrSize0);
 				pStr0[pStrOffset0] = 0;
 			}
-			byte ret = BeginChildNative(pStr0, size, (byte)(0), flags);
+			byte ret = BeginChildNative(pStr0, size, (ImGuiChildFlags)(0), windowFlags);
 			if (pStrSize0 >= Utils.MaxStackallocSize)
 			{
 				Utils.Free(pStr0);
@@ -1891,7 +2023,7 @@ namespace Dalamud.Bindings.ImGui
 		/// <summary>
 		/// To be documented.
 		/// </summary>
-		public static bool BeginChild(string strId, ImGuiWindowFlags flags)
+		public static bool BeginChild(string strId, ImGuiWindowFlags windowFlags)
 		{
 			byte* pStr0 = null;
 			int pStrSize0 = 0;
@@ -1910,7 +2042,7 @@ namespace Dalamud.Bindings.ImGui
 				int pStrOffset0 = Utils.EncodeStringUTF8(strId, pStr0, pStrSize0);
 				pStr0[pStrOffset0] = 0;
 			}
-			byte ret = BeginChildNative(pStr0, (Vector2)(new Vector2(0,0)), (byte)(0), flags);
+			byte ret = BeginChildNative(pStr0, (Vector2)(new Vector2(0,0)), (ImGuiChildFlags)(0), windowFlags);
 			if (pStrSize0 >= Utils.MaxStackallocSize)
 			{
 				Utils.Free(pStr0);
@@ -1921,7 +2053,7 @@ namespace Dalamud.Bindings.ImGui
 		/// <summary>
 		/// To be documented.
 		/// </summary>
-		public static bool BeginChild(string strId, bool border, ImGuiWindowFlags flags)
+		public static bool BeginChild(string strId, ImGuiChildFlags childFlags, ImGuiWindowFlags windowFlags)
 		{
 			byte* pStr0 = null;
 			int pStrSize0 = 0;
@@ -1940,7 +2072,7 @@ namespace Dalamud.Bindings.ImGui
 				int pStrOffset0 = Utils.EncodeStringUTF8(strId, pStr0, pStrSize0);
 				pStr0[pStrOffset0] = 0;
 			}
-			byte ret = BeginChildNative(pStr0, (Vector2)(new Vector2(0,0)), border ? (byte)1 : (byte)0, flags);
+			byte ret = BeginChildNative(pStr0, (Vector2)(new Vector2(0,0)), childFlags, windowFlags);
 			if (pStrSize0 >= Utils.MaxStackallocSize)
 			{
 				Utils.Free(pStr0);
@@ -1952,30 +2084,30 @@ namespace Dalamud.Bindings.ImGui
 		/// To be documented.
 		/// </summary>
 		[MethodImpl(MethodImplOptions.AggressiveInlining)]
-		internal static byte BeginChildNative(uint id, Vector2 size, byte border, ImGuiWindowFlags flags)
+		internal static byte BeginChildNative(uint id, Vector2 size, ImGuiChildFlags childFlags, ImGuiWindowFlags windowFlags)
 		{
 			#if NET5_0_OR_GREATER
-			return ((delegate* unmanaged[Cdecl]<uint, Vector2, byte, ImGuiWindowFlags, byte>)funcTable[32])(id, size, border, flags);
+			return ((delegate* unmanaged[Cdecl]<uint, Vector2, ImGuiChildFlags, ImGuiWindowFlags, byte>)funcTable[37])(id, size, childFlags, windowFlags);
 			#else
-			return (byte)((delegate* unmanaged[Cdecl]<uint, Vector2, byte, ImGuiWindowFlags, byte>)funcTable[32])(id, size, border, flags);
+			return (byte)((delegate* unmanaged[Cdecl]<uint, Vector2, ImGuiChildFlags, ImGuiWindowFlags, byte>)funcTable[37])(id, size, childFlags, windowFlags);
 			#endif
 		}
 
 		/// <summary>
 		/// To be documented.
 		/// </summary>
-		public static bool BeginChild(uint id, Vector2 size, bool border, ImGuiWindowFlags flags)
+		public static bool BeginChild(uint id, Vector2 size, ImGuiChildFlags childFlags, ImGuiWindowFlags windowFlags)
 		{
-			byte ret = BeginChildNative(id, size, border ? (byte)1 : (byte)0, flags);
+			byte ret = BeginChildNative(id, size, childFlags, windowFlags);
 			return ret != 0;
 		}
 
 		/// <summary>
 		/// To be documented.
 		/// </summary>
-		public static bool BeginChild(uint id, Vector2 size, bool border)
+		public static bool BeginChild(uint id, Vector2 size, ImGuiChildFlags childFlags)
 		{
-			byte ret = BeginChildNative(id, size, border ? (byte)1 : (byte)0, (ImGuiWindowFlags)(0));
+			byte ret = BeginChildNative(id, size, childFlags, (ImGuiWindowFlags)(0));
 			return ret != 0;
 		}
 
@@ -1984,7 +2116,7 @@ namespace Dalamud.Bindings.ImGui
 		/// </summary>
 		public static bool BeginChild(uint id, Vector2 size)
 		{
-			byte ret = BeginChildNative(id, size, (byte)(0), (ImGuiWindowFlags)(0));
+			byte ret = BeginChildNative(id, size, (ImGuiChildFlags)(0), (ImGuiWindowFlags)(0));
 			return ret != 0;
 		}
 
@@ -1993,43 +2125,43 @@ namespace Dalamud.Bindings.ImGui
 		/// </summary>
 		public static bool BeginChild(uint id)
 		{
-			byte ret = BeginChildNative(id, (Vector2)(new Vector2(0,0)), (byte)(0), (ImGuiWindowFlags)(0));
+			byte ret = BeginChildNative(id, (Vector2)(new Vector2(0,0)), (ImGuiChildFlags)(0), (ImGuiWindowFlags)(0));
 			return ret != 0;
 		}
 
 		/// <summary>
 		/// To be documented.
 		/// </summary>
-		public static bool BeginChild(uint id, bool border)
+		public static bool BeginChild(uint id, ImGuiChildFlags childFlags)
 		{
-			byte ret = BeginChildNative(id, (Vector2)(new Vector2(0,0)), border ? (byte)1 : (byte)0, (ImGuiWindowFlags)(0));
+			byte ret = BeginChildNative(id, (Vector2)(new Vector2(0,0)), childFlags, (ImGuiWindowFlags)(0));
 			return ret != 0;
 		}
 
 		/// <summary>
 		/// To be documented.
 		/// </summary>
-		public static bool BeginChild(uint id, Vector2 size, ImGuiWindowFlags flags)
+		public static bool BeginChild(uint id, Vector2 size, ImGuiWindowFlags windowFlags)
 		{
-			byte ret = BeginChildNative(id, size, (byte)(0), flags);
+			byte ret = BeginChildNative(id, size, (ImGuiChildFlags)(0), windowFlags);
 			return ret != 0;
 		}
 
 		/// <summary>
 		/// To be documented.
 		/// </summary>
-		public static bool BeginChild(uint id, ImGuiWindowFlags flags)
+		public static bool BeginChild(uint id, ImGuiWindowFlags windowFlags)
 		{
-			byte ret = BeginChildNative(id, (Vector2)(new Vector2(0,0)), (byte)(0), flags);
+			byte ret = BeginChildNative(id, (Vector2)(new Vector2(0,0)), (ImGuiChildFlags)(0), windowFlags);
 			return ret != 0;
 		}
 
 		/// <summary>
 		/// To be documented.
 		/// </summary>
-		public static bool BeginChild(uint id, bool border, ImGuiWindowFlags flags)
+		public static bool BeginChild(uint id, ImGuiChildFlags childFlags, ImGuiWindowFlags windowFlags)
 		{
-			byte ret = BeginChildNative(id, (Vector2)(new Vector2(0,0)), border ? (byte)1 : (byte)0, flags);
+			byte ret = BeginChildNative(id, (Vector2)(new Vector2(0,0)), childFlags, windowFlags);
 			return ret != 0;
 		}
 
@@ -2040,9 +2172,9 @@ namespace Dalamud.Bindings.ImGui
 		internal static void EndChildNative()
 		{
 			#if NET5_0_OR_GREATER
-			((delegate* unmanaged[Cdecl]<void>)funcTable[33])();
+			((delegate* unmanaged[Cdecl]<void>)funcTable[38])();
 			#else
-			((delegate* unmanaged[Cdecl]<void>)funcTable[33])();
+			((delegate* unmanaged[Cdecl]<void>)funcTable[38])();
 			#endif
 		}
 
@@ -2061,9 +2193,9 @@ namespace Dalamud.Bindings.ImGui
 		internal static byte IsWindowAppearingNative()
 		{
 			#if NET5_0_OR_GREATER
-			return ((delegate* unmanaged[Cdecl]<byte>)funcTable[34])();
+			return ((delegate* unmanaged[Cdecl]<byte>)funcTable[39])();
 			#else
-			return (byte)((delegate* unmanaged[Cdecl]<byte>)funcTable[34])();
+			return (byte)((delegate* unmanaged[Cdecl]<byte>)funcTable[39])();
 			#endif
 		}
 
@@ -2083,9 +2215,9 @@ namespace Dalamud.Bindings.ImGui
 		internal static byte IsWindowCollapsedNative()
 		{
 			#if NET5_0_OR_GREATER
-			return ((delegate* unmanaged[Cdecl]<byte>)funcTable[35])();
+			return ((delegate* unmanaged[Cdecl]<byte>)funcTable[40])();
 			#else
-			return (byte)((delegate* unmanaged[Cdecl]<byte>)funcTable[35])();
+			return (byte)((delegate* unmanaged[Cdecl]<byte>)funcTable[40])();
 			#endif
 		}
 
@@ -2105,9 +2237,9 @@ namespace Dalamud.Bindings.ImGui
 		internal static byte IsWindowFocusedNative(ImGuiFocusedFlags flags)
 		{
 			#if NET5_0_OR_GREATER
-			return ((delegate* unmanaged[Cdecl]<ImGuiFocusedFlags, byte>)funcTable[36])(flags);
+			return ((delegate* unmanaged[Cdecl]<ImGuiFocusedFlags, byte>)funcTable[41])(flags);
 			#else
-			return (byte)((delegate* unmanaged[Cdecl]<ImGuiFocusedFlags, byte>)funcTable[36])(flags);
+			return (byte)((delegate* unmanaged[Cdecl]<ImGuiFocusedFlags, byte>)funcTable[41])(flags);
 			#endif
 		}
 
@@ -2136,9 +2268,9 @@ namespace Dalamud.Bindings.ImGui
 		internal static byte IsWindowHoveredNative(ImGuiHoveredFlags flags)
 		{
 			#if NET5_0_OR_GREATER
-			return ((delegate* unmanaged[Cdecl]<ImGuiHoveredFlags, byte>)funcTable[37])(flags);
+			return ((delegate* unmanaged[Cdecl]<ImGuiHoveredFlags, byte>)funcTable[42])(flags);
 			#else
-			return (byte)((delegate* unmanaged[Cdecl]<ImGuiHoveredFlags, byte>)funcTable[37])(flags);
+			return (byte)((delegate* unmanaged[Cdecl]<ImGuiHoveredFlags, byte>)funcTable[42])(flags);
 			#endif
 		}
 
@@ -2167,9 +2299,9 @@ namespace Dalamud.Bindings.ImGui
 		internal static ImDrawList* GetWindowDrawListNative()
 		{
 			#if NET5_0_OR_GREATER
-			return ((delegate* unmanaged[Cdecl]<ImDrawList*>)funcTable[38])();
+			return ((delegate* unmanaged[Cdecl]<ImDrawList*>)funcTable[43])();
 			#else
-			return (ImDrawList*)((delegate* unmanaged[Cdecl]<nint>)funcTable[38])();
+			return (ImDrawList*)((delegate* unmanaged[Cdecl]<nint>)funcTable[43])();
 			#endif
 		}
 
@@ -2189,9 +2321,9 @@ namespace Dalamud.Bindings.ImGui
 		internal static float GetWindowDpiScaleNative()
 		{
 			#if NET5_0_OR_GREATER
-			return ((delegate* unmanaged[Cdecl]<float>)funcTable[39])();
+			return ((delegate* unmanaged[Cdecl]<float>)funcTable[44])();
 			#else
-			return (float)((delegate* unmanaged[Cdecl]<float>)funcTable[39])();
+			return (float)((delegate* unmanaged[Cdecl]<float>)funcTable[44])();
 			#endif
 		}
 
@@ -2208,12 +2340,12 @@ namespace Dalamud.Bindings.ImGui
 		/// To be documented.
 		/// </summary>
 		[MethodImpl(MethodImplOptions.AggressiveInlining)]
-		internal static void GetWindowPosNative(Vector2* pOut)
+		internal static Vector2 GetWindowPosNative()
 		{
 			#if NET5_0_OR_GREATER
-			((delegate* unmanaged[Cdecl]<Vector2*, void>)funcTable[40])(pOut);
+			return ((delegate* unmanaged[Cdecl]<Vector2>)funcTable[45])();
 			#else
-			((delegate* unmanaged[Cdecl]<nint, void>)funcTable[40])((nint)pOut);
+			return (Vector2)((delegate* unmanaged[Cdecl]<Vector2>)funcTable[45])();
 			#endif
 		}
 
@@ -2222,40 +2354,20 @@ namespace Dalamud.Bindings.ImGui
 		/// </summary>
 		public static Vector2 GetWindowPos()
 		{
-			Vector2 ret;
-			GetWindowPosNative(&ret);
+			Vector2 ret = GetWindowPosNative();
 			return ret;
 		}
 
 		/// <summary>
 		/// To be documented.
 		/// </summary>
-		public static void GetWindowPos(Vector2* pOut)
-		{
-			GetWindowPosNative(pOut);
-		}
-
-		/// <summary>
-		/// To be documented.
-		/// </summary>
-		public static void GetWindowPos(ref Vector2 pOut)
-		{
-			fixed (Vector2* ppOut = &pOut)
-			{
-				GetWindowPosNative((Vector2*)ppOut);
-			}
-		}
-
-		/// <summary>
-		/// To be documented.
-		/// </summary>
 		[MethodImpl(MethodImplOptions.AggressiveInlining)]
-		internal static void GetWindowSizeNative(Vector2* pOut)
+		internal static Vector2 GetWindowSizeNative()
 		{
 			#if NET5_0_OR_GREATER
-			((delegate* unmanaged[Cdecl]<Vector2*, void>)funcTable[41])(pOut);
+			return ((delegate* unmanaged[Cdecl]<Vector2>)funcTable[46])();
 			#else
-			((delegate* unmanaged[Cdecl]<nint, void>)funcTable[41])((nint)pOut);
+			return (Vector2)((delegate* unmanaged[Cdecl]<Vector2>)funcTable[46])();
 			#endif
 		}
 
@@ -2264,28 +2376,8 @@ namespace Dalamud.Bindings.ImGui
 		/// </summary>
 		public static Vector2 GetWindowSize()
 		{
-			Vector2 ret;
-			GetWindowSizeNative(&ret);
+			Vector2 ret = GetWindowSizeNative();
 			return ret;
-		}
-
-		/// <summary>
-		/// To be documented.
-		/// </summary>
-		public static void GetWindowSize(Vector2* pOut)
-		{
-			GetWindowSizeNative(pOut);
-		}
-
-		/// <summary>
-		/// To be documented.
-		/// </summary>
-		public static void GetWindowSize(ref Vector2 pOut)
-		{
-			fixed (Vector2* ppOut = &pOut)
-			{
-				GetWindowSizeNative((Vector2*)ppOut);
-			}
 		}
 
 		/// <summary>
@@ -2295,9 +2387,9 @@ namespace Dalamud.Bindings.ImGui
 		internal static float GetWindowWidthNative()
 		{
 			#if NET5_0_OR_GREATER
-			return ((delegate* unmanaged[Cdecl]<float>)funcTable[42])();
+			return ((delegate* unmanaged[Cdecl]<float>)funcTable[47])();
 			#else
-			return (float)((delegate* unmanaged[Cdecl]<float>)funcTable[42])();
+			return (float)((delegate* unmanaged[Cdecl]<float>)funcTable[47])();
 			#endif
 		}
 
@@ -2317,9 +2409,9 @@ namespace Dalamud.Bindings.ImGui
 		internal static float GetWindowHeightNative()
 		{
 			#if NET5_0_OR_GREATER
-			return ((delegate* unmanaged[Cdecl]<float>)funcTable[43])();
+			return ((delegate* unmanaged[Cdecl]<float>)funcTable[48])();
 			#else
-			return (float)((delegate* unmanaged[Cdecl]<float>)funcTable[43])();
+			return (float)((delegate* unmanaged[Cdecl]<float>)funcTable[48])();
 			#endif
 		}
 
@@ -2339,9 +2431,9 @@ namespace Dalamud.Bindings.ImGui
 		internal static ImGuiViewport* GetWindowViewportNative()
 		{
 			#if NET5_0_OR_GREATER
-			return ((delegate* unmanaged[Cdecl]<ImGuiViewport*>)funcTable[44])();
+			return ((delegate* unmanaged[Cdecl]<ImGuiViewport*>)funcTable[49])();
 			#else
-			return (ImGuiViewport*)((delegate* unmanaged[Cdecl]<nint>)funcTable[44])();
+			return (ImGuiViewport*)((delegate* unmanaged[Cdecl]<nint>)funcTable[49])();
 			#endif
 		}
 
@@ -2361,9 +2453,9 @@ namespace Dalamud.Bindings.ImGui
 		internal static void SetNextWindowPosNative(Vector2 pos, ImGuiCond cond, Vector2 pivot)
 		{
 			#if NET5_0_OR_GREATER
-			((delegate* unmanaged[Cdecl]<Vector2, ImGuiCond, Vector2, void>)funcTable[45])(pos, cond, pivot);
+			((delegate* unmanaged[Cdecl]<Vector2, ImGuiCond, Vector2, void>)funcTable[50])(pos, cond, pivot);
 			#else
-			((delegate* unmanaged[Cdecl]<Vector2, ImGuiCond, Vector2, void>)funcTable[45])(pos, cond, pivot);
+			((delegate* unmanaged[Cdecl]<Vector2, ImGuiCond, Vector2, void>)funcTable[50])(pos, cond, pivot);
 			#endif
 		}
 
@@ -2406,9 +2498,9 @@ namespace Dalamud.Bindings.ImGui
 		internal static void SetNextWindowSizeNative(Vector2 size, ImGuiCond cond)
 		{
 			#if NET5_0_OR_GREATER
-			((delegate* unmanaged[Cdecl]<Vector2, ImGuiCond, void>)funcTable[46])(size, cond);
+			((delegate* unmanaged[Cdecl]<Vector2, ImGuiCond, void>)funcTable[51])(size, cond);
 			#else
-			((delegate* unmanaged[Cdecl]<Vector2, ImGuiCond, void>)funcTable[46])(size, cond);
+			((delegate* unmanaged[Cdecl]<Vector2, ImGuiCond, void>)funcTable[51])(size, cond);
 			#endif
 		}
 
@@ -2432,19 +2524,19 @@ namespace Dalamud.Bindings.ImGui
 		/// To be documented.
 		/// </summary>
 		[MethodImpl(MethodImplOptions.AggressiveInlining)]
-		internal static void SetNextWindowSizeConstraintsNative(Vector2 sizeMin, Vector2 sizeMax, ImGuiSizeCallback customCallback, void* customCallbackData)
+		internal static void SetNextWindowSizeConstraintsNative(Vector2 sizeMin, Vector2 sizeMax, delegate*<ImGuiSizeCallbackData*, void> customCallback, void* customCallbackData)
 		{
 			#if NET5_0_OR_GREATER
-			((delegate* unmanaged[Cdecl]<Vector2, Vector2, delegate*<ImGuiSizeCallbackData*, void>, void*, void>)funcTable[47])(sizeMin, sizeMax, (delegate*<ImGuiSizeCallbackData*, void>)Utils.GetFunctionPointerForDelegate(customCallback), customCallbackData);
+			((delegate* unmanaged[Cdecl]<Vector2, Vector2, delegate*<ImGuiSizeCallbackData*, void>, void*, void>)funcTable[52])(sizeMin, sizeMax, customCallback, customCallbackData);
 			#else
-			((delegate* unmanaged[Cdecl]<Vector2, Vector2, nint, nint, void>)funcTable[47])(sizeMin, sizeMax, (nint)Utils.GetFunctionPointerForDelegate(customCallback), (nint)customCallbackData);
+			((delegate* unmanaged[Cdecl]<Vector2, Vector2, nint, nint, void>)funcTable[52])(sizeMin, sizeMax, (nint)customCallback, (nint)customCallbackData);
 			#endif
 		}
 
 		/// <summary>
 		/// To be documented.
 		/// </summary>
-		public static void SetNextWindowSizeConstraints(Vector2 sizeMin, Vector2 sizeMax, ImGuiSizeCallback customCallback, void* customCallbackData)
+		public static void SetNextWindowSizeConstraints(Vector2 sizeMin, Vector2 sizeMax, delegate*<ImGuiSizeCallbackData*, void> customCallback, void* customCallbackData)
 		{
 			SetNextWindowSizeConstraintsNative(sizeMin, sizeMax, customCallback, customCallbackData);
 		}
@@ -2452,7 +2544,7 @@ namespace Dalamud.Bindings.ImGui
 		/// <summary>
 		/// To be documented.
 		/// </summary>
-		public static void SetNextWindowSizeConstraints(Vector2 sizeMin, Vector2 sizeMax, ImGuiSizeCallback customCallback)
+		public static void SetNextWindowSizeConstraints(Vector2 sizeMin, Vector2 sizeMax, delegate*<ImGuiSizeCallbackData*, void> customCallback)
 		{
 			SetNextWindowSizeConstraintsNative(sizeMin, sizeMax, customCallback, (void*)(default));
 		}
@@ -2462,7 +2554,7 @@ namespace Dalamud.Bindings.ImGui
 		/// </summary>
 		public static void SetNextWindowSizeConstraints(Vector2 sizeMin, Vector2 sizeMax)
 		{
-			SetNextWindowSizeConstraintsNative(sizeMin, sizeMax, (ImGuiSizeCallback)(default), (void*)(default));
+			SetNextWindowSizeConstraintsNative(sizeMin, sizeMax, (delegate*<ImGuiSizeCallbackData*, void>)(default), (void*)(default));
 		}
 
 		/// <summary>
@@ -2470,7 +2562,47 @@ namespace Dalamud.Bindings.ImGui
 		/// </summary>
 		public static void SetNextWindowSizeConstraints(Vector2 sizeMin, Vector2 sizeMax, void* customCallbackData)
 		{
-			SetNextWindowSizeConstraintsNative(sizeMin, sizeMax, (ImGuiSizeCallback)(default), customCallbackData);
+			SetNextWindowSizeConstraintsNative(sizeMin, sizeMax, (delegate*<ImGuiSizeCallbackData*, void>)(default), customCallbackData);
+		}
+
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		public static void SetNextWindowSizeConstraints(Vector2 sizeMin, Vector2 sizeMax, ImGuiSizeCallback customCallback, void* customCallbackData)
+		{
+			SetNextWindowSizeConstraintsNative(sizeMin, sizeMax, (delegate*<ImGuiSizeCallbackData*, void>)Utils.GetFunctionPointerForDelegate(customCallback), customCallbackData);
+		}
+
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		public static void SetNextWindowSizeConstraints(Vector2 sizeMin, Vector2 sizeMax, ImGuiSizeCallback customCallback)
+		{
+			SetNextWindowSizeConstraintsNative(sizeMin, sizeMax, (delegate*<ImGuiSizeCallbackData*, void>)Utils.GetFunctionPointerForDelegate(customCallback), (void*)(default));
+		}
+
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		public static void SetNextWindowSizeConstraints(Vector2 sizeMin, Vector2 sizeMax, delegate*<ImGuiSizeCallbackData*, void> customCallback, nint customCallbackData)
+		{
+			SetNextWindowSizeConstraintsNative(sizeMin, sizeMax, customCallback, (void*)customCallbackData);
+		}
+
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		public static void SetNextWindowSizeConstraints(Vector2 sizeMin, Vector2 sizeMax, nint customCallbackData)
+		{
+			SetNextWindowSizeConstraintsNative(sizeMin, sizeMax, (delegate*<ImGuiSizeCallbackData*, void>)(default), (void*)customCallbackData);
+		}
+
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		public static void SetNextWindowSizeConstraints(Vector2 sizeMin, Vector2 sizeMax, ImGuiSizeCallback customCallback, nint customCallbackData)
+		{
+			SetNextWindowSizeConstraintsNative(sizeMin, sizeMax, (delegate*<ImGuiSizeCallbackData*, void>)Utils.GetFunctionPointerForDelegate(customCallback), (void*)customCallbackData);
 		}
 
 		/// <summary>
@@ -2480,9 +2612,9 @@ namespace Dalamud.Bindings.ImGui
 		internal static void SetNextWindowContentSizeNative(Vector2 size)
 		{
 			#if NET5_0_OR_GREATER
-			((delegate* unmanaged[Cdecl]<Vector2, void>)funcTable[48])(size);
+			((delegate* unmanaged[Cdecl]<Vector2, void>)funcTable[53])(size);
 			#else
-			((delegate* unmanaged[Cdecl]<Vector2, void>)funcTable[48])(size);
+			((delegate* unmanaged[Cdecl]<Vector2, void>)funcTable[53])(size);
 			#endif
 		}
 
@@ -2501,9 +2633,9 @@ namespace Dalamud.Bindings.ImGui
 		internal static void SetNextWindowCollapsedNative(byte collapsed, ImGuiCond cond)
 		{
 			#if NET5_0_OR_GREATER
-			((delegate* unmanaged[Cdecl]<byte, ImGuiCond, void>)funcTable[49])(collapsed, cond);
+			((delegate* unmanaged[Cdecl]<byte, ImGuiCond, void>)funcTable[54])(collapsed, cond);
 			#else
-			((delegate* unmanaged[Cdecl]<byte, ImGuiCond, void>)funcTable[49])(collapsed, cond);
+			((delegate* unmanaged[Cdecl]<byte, ImGuiCond, void>)funcTable[54])(collapsed, cond);
 			#endif
 		}
 
@@ -2530,9 +2662,9 @@ namespace Dalamud.Bindings.ImGui
 		internal static void SetNextWindowFocusNative()
 		{
 			#if NET5_0_OR_GREATER
-			((delegate* unmanaged[Cdecl]<void>)funcTable[50])();
+			((delegate* unmanaged[Cdecl]<void>)funcTable[55])();
 			#else
-			((delegate* unmanaged[Cdecl]<void>)funcTable[50])();
+			((delegate* unmanaged[Cdecl]<void>)funcTable[55])();
 			#endif
 		}
 
@@ -2548,12 +2680,33 @@ namespace Dalamud.Bindings.ImGui
 		/// To be documented.
 		/// </summary>
 		[MethodImpl(MethodImplOptions.AggressiveInlining)]
+		internal static void SetNextWindowScrollNative(Vector2 scroll)
+		{
+			#if NET5_0_OR_GREATER
+			((delegate* unmanaged[Cdecl]<Vector2, void>)funcTable[56])(scroll);
+			#else
+			((delegate* unmanaged[Cdecl]<Vector2, void>)funcTable[56])(scroll);
+			#endif
+		}
+
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		public static void SetNextWindowScroll(Vector2 scroll)
+		{
+			SetNextWindowScrollNative(scroll);
+		}
+
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		[MethodImpl(MethodImplOptions.AggressiveInlining)]
 		internal static void SetNextWindowBgAlphaNative(float alpha)
 		{
 			#if NET5_0_OR_GREATER
-			((delegate* unmanaged[Cdecl]<float, void>)funcTable[51])(alpha);
+			((delegate* unmanaged[Cdecl]<float, void>)funcTable[57])(alpha);
 			#else
-			((delegate* unmanaged[Cdecl]<float, void>)funcTable[51])(alpha);
+			((delegate* unmanaged[Cdecl]<float, void>)funcTable[57])(alpha);
 			#endif
 		}
 
@@ -2572,9 +2725,9 @@ namespace Dalamud.Bindings.ImGui
 		internal static void SetNextWindowViewportNative(uint viewportId)
 		{
 			#if NET5_0_OR_GREATER
-			((delegate* unmanaged[Cdecl]<uint, void>)funcTable[52])(viewportId);
+			((delegate* unmanaged[Cdecl]<uint, void>)funcTable[58])(viewportId);
 			#else
-			((delegate* unmanaged[Cdecl]<uint, void>)funcTable[52])(viewportId);
+			((delegate* unmanaged[Cdecl]<uint, void>)funcTable[58])(viewportId);
 			#endif
 		}
 
@@ -2593,9 +2746,9 @@ namespace Dalamud.Bindings.ImGui
 		internal static void SetWindowPosNative(Vector2 pos, ImGuiCond cond)
 		{
 			#if NET5_0_OR_GREATER
-			((delegate* unmanaged[Cdecl]<Vector2, ImGuiCond, void>)funcTable[53])(pos, cond);
+			((delegate* unmanaged[Cdecl]<Vector2, ImGuiCond, void>)funcTable[59])(pos, cond);
 			#else
-			((delegate* unmanaged[Cdecl]<Vector2, ImGuiCond, void>)funcTable[53])(pos, cond);
+			((delegate* unmanaged[Cdecl]<Vector2, ImGuiCond, void>)funcTable[59])(pos, cond);
 			#endif
 		}
 
@@ -2622,9 +2775,9 @@ namespace Dalamud.Bindings.ImGui
 		internal static void SetWindowSizeNative(Vector2 size, ImGuiCond cond)
 		{
 			#if NET5_0_OR_GREATER
-			((delegate* unmanaged[Cdecl]<Vector2, ImGuiCond, void>)funcTable[54])(size, cond);
+			((delegate* unmanaged[Cdecl]<Vector2, ImGuiCond, void>)funcTable[60])(size, cond);
 			#else
-			((delegate* unmanaged[Cdecl]<Vector2, ImGuiCond, void>)funcTable[54])(size, cond);
+			((delegate* unmanaged[Cdecl]<Vector2, ImGuiCond, void>)funcTable[60])(size, cond);
 			#endif
 		}
 
@@ -2651,9 +2804,9 @@ namespace Dalamud.Bindings.ImGui
 		internal static void SetWindowCollapsedNative(byte collapsed, ImGuiCond cond)
 		{
 			#if NET5_0_OR_GREATER
-			((delegate* unmanaged[Cdecl]<byte, ImGuiCond, void>)funcTable[55])(collapsed, cond);
+			((delegate* unmanaged[Cdecl]<byte, ImGuiCond, void>)funcTable[61])(collapsed, cond);
 			#else
-			((delegate* unmanaged[Cdecl]<byte, ImGuiCond, void>)funcTable[55])(collapsed, cond);
+			((delegate* unmanaged[Cdecl]<byte, ImGuiCond, void>)funcTable[61])(collapsed, cond);
 			#endif
 		}
 
@@ -2680,9 +2833,9 @@ namespace Dalamud.Bindings.ImGui
 		internal static void SetWindowFocusNative()
 		{
 			#if NET5_0_OR_GREATER
-			((delegate* unmanaged[Cdecl]<void>)funcTable[56])();
+			((delegate* unmanaged[Cdecl]<void>)funcTable[62])();
 			#else
-			((delegate* unmanaged[Cdecl]<void>)funcTable[56])();
+			((delegate* unmanaged[Cdecl]<void>)funcTable[62])();
 			#endif
 		}
 
@@ -2698,33 +2851,12 @@ namespace Dalamud.Bindings.ImGui
 		/// To be documented.
 		/// </summary>
 		[MethodImpl(MethodImplOptions.AggressiveInlining)]
-		internal static void SetWindowFontScaleNative(float scale)
-		{
-			#if NET5_0_OR_GREATER
-			((delegate* unmanaged[Cdecl]<float, void>)funcTable[57])(scale);
-			#else
-			((delegate* unmanaged[Cdecl]<float, void>)funcTable[57])(scale);
-			#endif
-		}
-
-		/// <summary>
-		/// To be documented.
-		/// </summary>
-		public static void SetWindowFontScale(float scale)
-		{
-			SetWindowFontScaleNative(scale);
-		}
-
-		/// <summary>
-		/// To be documented.
-		/// </summary>
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
 		internal static void SetWindowPosNative(byte* name, Vector2 pos, ImGuiCond cond)
 		{
 			#if NET5_0_OR_GREATER
-			((delegate* unmanaged[Cdecl]<byte*, Vector2, ImGuiCond, void>)funcTable[58])(name, pos, cond);
+			((delegate* unmanaged[Cdecl]<byte*, Vector2, ImGuiCond, void>)funcTable[63])(name, pos, cond);
 			#else
-			((delegate* unmanaged[Cdecl]<nint, Vector2, ImGuiCond, void>)funcTable[58])((nint)name, pos, cond);
+			((delegate* unmanaged[Cdecl]<nint, Vector2, ImGuiCond, void>)funcTable[63])((nint)name, pos, cond);
 			#endif
 		}
 
@@ -2747,7 +2879,7 @@ namespace Dalamud.Bindings.ImGui
 		/// <summary>
 		/// To be documented.
 		/// </summary>
-		public static void SetWindowPos(ref byte name, Vector2 pos, ImGuiCond cond)
+		public static void SetWindowPos(in byte name, Vector2 pos, ImGuiCond cond)
 		{
 			fixed (byte* pname = &name)
 			{
@@ -2758,7 +2890,7 @@ namespace Dalamud.Bindings.ImGui
 		/// <summary>
 		/// To be documented.
 		/// </summary>
-		public static void SetWindowPos(ref byte name, Vector2 pos)
+		public static void SetWindowPos(in byte name, Vector2 pos)
 		{
 			fixed (byte* pname = &name)
 			{
@@ -2853,9 +2985,9 @@ namespace Dalamud.Bindings.ImGui
 		internal static void SetWindowSizeNative(byte* name, Vector2 size, ImGuiCond cond)
 		{
 			#if NET5_0_OR_GREATER
-			((delegate* unmanaged[Cdecl]<byte*, Vector2, ImGuiCond, void>)funcTable[59])(name, size, cond);
+			((delegate* unmanaged[Cdecl]<byte*, Vector2, ImGuiCond, void>)funcTable[64])(name, size, cond);
 			#else
-			((delegate* unmanaged[Cdecl]<nint, Vector2, ImGuiCond, void>)funcTable[59])((nint)name, size, cond);
+			((delegate* unmanaged[Cdecl]<nint, Vector2, ImGuiCond, void>)funcTable[64])((nint)name, size, cond);
 			#endif
 		}
 
@@ -2878,7 +3010,7 @@ namespace Dalamud.Bindings.ImGui
 		/// <summary>
 		/// To be documented.
 		/// </summary>
-		public static void SetWindowSize(ref byte name, Vector2 size, ImGuiCond cond)
+		public static void SetWindowSize(in byte name, Vector2 size, ImGuiCond cond)
 		{
 			fixed (byte* pname = &name)
 			{
@@ -2889,7 +3021,7 @@ namespace Dalamud.Bindings.ImGui
 		/// <summary>
 		/// To be documented.
 		/// </summary>
-		public static void SetWindowSize(ref byte name, Vector2 size)
+		public static void SetWindowSize(in byte name, Vector2 size)
 		{
 			fixed (byte* pname = &name)
 			{
@@ -2984,9 +3116,9 @@ namespace Dalamud.Bindings.ImGui
 		internal static void SetWindowCollapsedNative(byte* name, byte collapsed, ImGuiCond cond)
 		{
 			#if NET5_0_OR_GREATER
-			((delegate* unmanaged[Cdecl]<byte*, byte, ImGuiCond, void>)funcTable[60])(name, collapsed, cond);
+			((delegate* unmanaged[Cdecl]<byte*, byte, ImGuiCond, void>)funcTable[65])(name, collapsed, cond);
 			#else
-			((delegate* unmanaged[Cdecl]<nint, byte, ImGuiCond, void>)funcTable[60])((nint)name, collapsed, cond);
+			((delegate* unmanaged[Cdecl]<nint, byte, ImGuiCond, void>)funcTable[65])((nint)name, collapsed, cond);
 			#endif
 		}
 
@@ -3009,7 +3141,7 @@ namespace Dalamud.Bindings.ImGui
 		/// <summary>
 		/// To be documented.
 		/// </summary>
-		public static void SetWindowCollapsed(ref byte name, bool collapsed, ImGuiCond cond)
+		public static void SetWindowCollapsed(in byte name, bool collapsed, ImGuiCond cond)
 		{
 			fixed (byte* pname = &name)
 			{
@@ -3020,7 +3152,7 @@ namespace Dalamud.Bindings.ImGui
 		/// <summary>
 		/// To be documented.
 		/// </summary>
-		public static void SetWindowCollapsed(ref byte name, bool collapsed)
+		public static void SetWindowCollapsed(in byte name, bool collapsed)
 		{
 			fixed (byte* pname = &name)
 			{
@@ -3115,9 +3247,9 @@ namespace Dalamud.Bindings.ImGui
 		internal static void SetWindowFocusNative(byte* name)
 		{
 			#if NET5_0_OR_GREATER
-			((delegate* unmanaged[Cdecl]<byte*, void>)funcTable[61])(name);
+			((delegate* unmanaged[Cdecl]<byte*, void>)funcTable[66])(name);
 			#else
-			((delegate* unmanaged[Cdecl]<nint, void>)funcTable[61])((nint)name);
+			((delegate* unmanaged[Cdecl]<nint, void>)funcTable[66])((nint)name);
 			#endif
 		}
 
@@ -3132,7 +3264,7 @@ namespace Dalamud.Bindings.ImGui
 		/// <summary>
 		/// To be documented.
 		/// </summary>
-		public static void SetWindowFocus(ref byte name)
+		public static void SetWindowFocus(in byte name)
 		{
 			fixed (byte* pname = &name)
 			{
@@ -3184,180 +3316,12 @@ namespace Dalamud.Bindings.ImGui
 		/// To be documented.
 		/// </summary>
 		[MethodImpl(MethodImplOptions.AggressiveInlining)]
-		internal static void GetContentRegionAvailNative(Vector2* pOut)
-		{
-			#if NET5_0_OR_GREATER
-			((delegate* unmanaged[Cdecl]<Vector2*, void>)funcTable[62])(pOut);
-			#else
-			((delegate* unmanaged[Cdecl]<nint, void>)funcTable[62])((nint)pOut);
-			#endif
-		}
-
-		/// <summary>
-		/// To be documented.
-		/// </summary>
-		public static Vector2 GetContentRegionAvail()
-		{
-			Vector2 ret;
-			GetContentRegionAvailNative(&ret);
-			return ret;
-		}
-
-		/// <summary>
-		/// To be documented.
-		/// </summary>
-		public static void GetContentRegionAvail(Vector2* pOut)
-		{
-			GetContentRegionAvailNative(pOut);
-		}
-
-		/// <summary>
-		/// To be documented.
-		/// </summary>
-		public static void GetContentRegionAvail(ref Vector2 pOut)
-		{
-			fixed (Vector2* ppOut = &pOut)
-			{
-				GetContentRegionAvailNative((Vector2*)ppOut);
-			}
-		}
-
-		/// <summary>
-		/// To be documented.
-		/// </summary>
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
-		internal static void GetContentRegionMaxNative(Vector2* pOut)
-		{
-			#if NET5_0_OR_GREATER
-			((delegate* unmanaged[Cdecl]<Vector2*, void>)funcTable[63])(pOut);
-			#else
-			((delegate* unmanaged[Cdecl]<nint, void>)funcTable[63])((nint)pOut);
-			#endif
-		}
-
-		/// <summary>
-		/// To be documented.
-		/// </summary>
-		public static Vector2 GetContentRegionMax()
-		{
-			Vector2 ret;
-			GetContentRegionMaxNative(&ret);
-			return ret;
-		}
-
-		/// <summary>
-		/// To be documented.
-		/// </summary>
-		public static void GetContentRegionMax(Vector2* pOut)
-		{
-			GetContentRegionMaxNative(pOut);
-		}
-
-		/// <summary>
-		/// To be documented.
-		/// </summary>
-		public static void GetContentRegionMax(ref Vector2 pOut)
-		{
-			fixed (Vector2* ppOut = &pOut)
-			{
-				GetContentRegionMaxNative((Vector2*)ppOut);
-			}
-		}
-
-		/// <summary>
-		/// To be documented.
-		/// </summary>
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
-		internal static void GetWindowContentRegionMinNative(Vector2* pOut)
-		{
-			#if NET5_0_OR_GREATER
-			((delegate* unmanaged[Cdecl]<Vector2*, void>)funcTable[64])(pOut);
-			#else
-			((delegate* unmanaged[Cdecl]<nint, void>)funcTable[64])((nint)pOut);
-			#endif
-		}
-
-		/// <summary>
-		/// To be documented.
-		/// </summary>
-		public static Vector2 GetWindowContentRegionMin()
-		{
-			Vector2 ret;
-			GetWindowContentRegionMinNative(&ret);
-			return ret;
-		}
-
-		/// <summary>
-		/// To be documented.
-		/// </summary>
-		public static void GetWindowContentRegionMin(Vector2* pOut)
-		{
-			GetWindowContentRegionMinNative(pOut);
-		}
-
-		/// <summary>
-		/// To be documented.
-		/// </summary>
-		public static void GetWindowContentRegionMin(ref Vector2 pOut)
-		{
-			fixed (Vector2* ppOut = &pOut)
-			{
-				GetWindowContentRegionMinNative((Vector2*)ppOut);
-			}
-		}
-
-		/// <summary>
-		/// To be documented.
-		/// </summary>
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
-		internal static void GetWindowContentRegionMaxNative(Vector2* pOut)
-		{
-			#if NET5_0_OR_GREATER
-			((delegate* unmanaged[Cdecl]<Vector2*, void>)funcTable[65])(pOut);
-			#else
-			((delegate* unmanaged[Cdecl]<nint, void>)funcTable[65])((nint)pOut);
-			#endif
-		}
-
-		/// <summary>
-		/// To be documented.
-		/// </summary>
-		public static Vector2 GetWindowContentRegionMax()
-		{
-			Vector2 ret;
-			GetWindowContentRegionMaxNative(&ret);
-			return ret;
-		}
-
-		/// <summary>
-		/// To be documented.
-		/// </summary>
-		public static void GetWindowContentRegionMax(Vector2* pOut)
-		{
-			GetWindowContentRegionMaxNative(pOut);
-		}
-
-		/// <summary>
-		/// To be documented.
-		/// </summary>
-		public static void GetWindowContentRegionMax(ref Vector2 pOut)
-		{
-			fixed (Vector2* ppOut = &pOut)
-			{
-				GetWindowContentRegionMaxNative((Vector2*)ppOut);
-			}
-		}
-
-		/// <summary>
-		/// To be documented.
-		/// </summary>
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
 		internal static float GetScrollXNative()
 		{
 			#if NET5_0_OR_GREATER
-			return ((delegate* unmanaged[Cdecl]<float>)funcTable[66])();
+			return ((delegate* unmanaged[Cdecl]<float>)funcTable[67])();
 			#else
-			return (float)((delegate* unmanaged[Cdecl]<float>)funcTable[66])();
+			return (float)((delegate* unmanaged[Cdecl]<float>)funcTable[67])();
 			#endif
 		}
 
@@ -3377,9 +3341,9 @@ namespace Dalamud.Bindings.ImGui
 		internal static float GetScrollYNative()
 		{
 			#if NET5_0_OR_GREATER
-			return ((delegate* unmanaged[Cdecl]<float>)funcTable[67])();
+			return ((delegate* unmanaged[Cdecl]<float>)funcTable[68])();
 			#else
-			return (float)((delegate* unmanaged[Cdecl]<float>)funcTable[67])();
+			return (float)((delegate* unmanaged[Cdecl]<float>)funcTable[68])();
 			#endif
 		}
 
@@ -3399,9 +3363,9 @@ namespace Dalamud.Bindings.ImGui
 		internal static void SetScrollXNative(float scrollX)
 		{
 			#if NET5_0_OR_GREATER
-			((delegate* unmanaged[Cdecl]<float, void>)funcTable[68])(scrollX);
+			((delegate* unmanaged[Cdecl]<float, void>)funcTable[69])(scrollX);
 			#else
-			((delegate* unmanaged[Cdecl]<float, void>)funcTable[68])(scrollX);
+			((delegate* unmanaged[Cdecl]<float, void>)funcTable[69])(scrollX);
 			#endif
 		}
 
@@ -3420,9 +3384,9 @@ namespace Dalamud.Bindings.ImGui
 		internal static void SetScrollYNative(float scrollY)
 		{
 			#if NET5_0_OR_GREATER
-			((delegate* unmanaged[Cdecl]<float, void>)funcTable[69])(scrollY);
+			((delegate* unmanaged[Cdecl]<float, void>)funcTable[70])(scrollY);
 			#else
-			((delegate* unmanaged[Cdecl]<float, void>)funcTable[69])(scrollY);
+			((delegate* unmanaged[Cdecl]<float, void>)funcTable[70])(scrollY);
 			#endif
 		}
 
@@ -3441,9 +3405,9 @@ namespace Dalamud.Bindings.ImGui
 		internal static float GetScrollMaxXNative()
 		{
 			#if NET5_0_OR_GREATER
-			return ((delegate* unmanaged[Cdecl]<float>)funcTable[70])();
+			return ((delegate* unmanaged[Cdecl]<float>)funcTable[71])();
 			#else
-			return (float)((delegate* unmanaged[Cdecl]<float>)funcTable[70])();
+			return (float)((delegate* unmanaged[Cdecl]<float>)funcTable[71])();
 			#endif
 		}
 
@@ -3463,9 +3427,9 @@ namespace Dalamud.Bindings.ImGui
 		internal static float GetScrollMaxYNative()
 		{
 			#if NET5_0_OR_GREATER
-			return ((delegate* unmanaged[Cdecl]<float>)funcTable[71])();
+			return ((delegate* unmanaged[Cdecl]<float>)funcTable[72])();
 			#else
-			return (float)((delegate* unmanaged[Cdecl]<float>)funcTable[71])();
+			return (float)((delegate* unmanaged[Cdecl]<float>)funcTable[72])();
 			#endif
 		}
 
@@ -3485,9 +3449,9 @@ namespace Dalamud.Bindings.ImGui
 		internal static void SetScrollHereXNative(float centerXRatio)
 		{
 			#if NET5_0_OR_GREATER
-			((delegate* unmanaged[Cdecl]<float, void>)funcTable[72])(centerXRatio);
+			((delegate* unmanaged[Cdecl]<float, void>)funcTable[73])(centerXRatio);
 			#else
-			((delegate* unmanaged[Cdecl]<float, void>)funcTable[72])(centerXRatio);
+			((delegate* unmanaged[Cdecl]<float, void>)funcTable[73])(centerXRatio);
 			#endif
 		}
 
@@ -3514,9 +3478,9 @@ namespace Dalamud.Bindings.ImGui
 		internal static void SetScrollHereYNative(float centerYRatio)
 		{
 			#if NET5_0_OR_GREATER
-			((delegate* unmanaged[Cdecl]<float, void>)funcTable[73])(centerYRatio);
+			((delegate* unmanaged[Cdecl]<float, void>)funcTable[74])(centerYRatio);
 			#else
-			((delegate* unmanaged[Cdecl]<float, void>)funcTable[73])(centerYRatio);
+			((delegate* unmanaged[Cdecl]<float, void>)funcTable[74])(centerYRatio);
 			#endif
 		}
 
@@ -3543,9 +3507,9 @@ namespace Dalamud.Bindings.ImGui
 		internal static void SetScrollFromPosXNative(float localX, float centerXRatio)
 		{
 			#if NET5_0_OR_GREATER
-			((delegate* unmanaged[Cdecl]<float, float, void>)funcTable[74])(localX, centerXRatio);
+			((delegate* unmanaged[Cdecl]<float, float, void>)funcTable[75])(localX, centerXRatio);
 			#else
-			((delegate* unmanaged[Cdecl]<float, float, void>)funcTable[74])(localX, centerXRatio);
+			((delegate* unmanaged[Cdecl]<float, float, void>)funcTable[75])(localX, centerXRatio);
 			#endif
 		}
 
@@ -3572,9 +3536,9 @@ namespace Dalamud.Bindings.ImGui
 		internal static void SetScrollFromPosYNative(float localY, float centerYRatio)
 		{
 			#if NET5_0_OR_GREATER
-			((delegate* unmanaged[Cdecl]<float, float, void>)funcTable[75])(localY, centerYRatio);
+			((delegate* unmanaged[Cdecl]<float, float, void>)funcTable[76])(localY, centerYRatio);
 			#else
-			((delegate* unmanaged[Cdecl]<float, float, void>)funcTable[75])(localY, centerYRatio);
+			((delegate* unmanaged[Cdecl]<float, float, void>)funcTable[76])(localY, centerYRatio);
 			#endif
 		}
 
@@ -3598,31 +3562,31 @@ namespace Dalamud.Bindings.ImGui
 		/// To be documented.
 		/// </summary>
 		[MethodImpl(MethodImplOptions.AggressiveInlining)]
-		internal static void PushFontNative(ImFont* font)
+		internal static void PushFontNative(ImFont* font, float fontSizeBaseUnscaled)
 		{
 			#if NET5_0_OR_GREATER
-			((delegate* unmanaged[Cdecl]<ImFont*, void>)funcTable[76])(font);
+			((delegate* unmanaged[Cdecl]<ImFont*, float, void>)funcTable[77])(font, fontSizeBaseUnscaled);
 			#else
-			((delegate* unmanaged[Cdecl]<nint, void>)funcTable[76])((nint)font);
+			((delegate* unmanaged[Cdecl]<nint, float, void>)funcTable[77])((nint)font, fontSizeBaseUnscaled);
 			#endif
 		}
 
 		/// <summary>
 		/// To be documented.
 		/// </summary>
-		public static void PushFont(ImFontPtr font)
+		public static void PushFont(ImFontPtr font, float fontSizeBaseUnscaled)
 		{
-			PushFontNative(font);
+			PushFontNative((ImFont*)font, fontSizeBaseUnscaled);
 		}
 
 		/// <summary>
 		/// To be documented.
 		/// </summary>
-		public static void PushFont(ref ImFont font)
+		public static void PushFont(ref ImFont font, float fontSizeBaseUnscaled)
 		{
 			fixed (ImFont* pfont = &font)
 			{
-				PushFontNative((ImFont*)pfont);
+				PushFontNative((ImFont*)pfont, fontSizeBaseUnscaled);
 			}
 		}
 
@@ -3633,9 +3597,9 @@ namespace Dalamud.Bindings.ImGui
 		internal static void PopFontNative()
 		{
 			#if NET5_0_OR_GREATER
-			((delegate* unmanaged[Cdecl]<void>)funcTable[77])();
+			((delegate* unmanaged[Cdecl]<void>)funcTable[78])();
 			#else
-			((delegate* unmanaged[Cdecl]<void>)funcTable[77])();
+			((delegate* unmanaged[Cdecl]<void>)funcTable[78])();
 			#endif
 		}
 
@@ -3651,12 +3615,78 @@ namespace Dalamud.Bindings.ImGui
 		/// To be documented.
 		/// </summary>
 		[MethodImpl(MethodImplOptions.AggressiveInlining)]
+		internal static ImFont* GetFontNative()
+		{
+			#if NET5_0_OR_GREATER
+			return ((delegate* unmanaged[Cdecl]<ImFont*>)funcTable[79])();
+			#else
+			return (ImFont*)((delegate* unmanaged[Cdecl]<nint>)funcTable[79])();
+			#endif
+		}
+
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		public static ImFontPtr GetFont()
+		{
+			ImFontPtr ret = GetFontNative();
+			return ret;
+		}
+
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		[MethodImpl(MethodImplOptions.AggressiveInlining)]
+		internal static float GetFontSizeNative()
+		{
+			#if NET5_0_OR_GREATER
+			return ((delegate* unmanaged[Cdecl]<float>)funcTable[80])();
+			#else
+			return (float)((delegate* unmanaged[Cdecl]<float>)funcTable[80])();
+			#endif
+		}
+
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		public static float GetFontSize()
+		{
+			float ret = GetFontSizeNative();
+			return ret;
+		}
+
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		[MethodImpl(MethodImplOptions.AggressiveInlining)]
+		internal static ImFontBaked* GetFontBakedNative()
+		{
+			#if NET5_0_OR_GREATER
+			return ((delegate* unmanaged[Cdecl]<ImFontBaked*>)funcTable[81])();
+			#else
+			return (ImFontBaked*)((delegate* unmanaged[Cdecl]<nint>)funcTable[81])();
+			#endif
+		}
+
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		public static ImFontBakedPtr GetFontBaked()
+		{
+			ImFontBakedPtr ret = GetFontBakedNative();
+			return ret;
+		}
+
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		[MethodImpl(MethodImplOptions.AggressiveInlining)]
 		internal static void PushStyleColorNative(ImGuiCol idx, uint col)
 		{
 			#if NET5_0_OR_GREATER
-			((delegate* unmanaged[Cdecl]<ImGuiCol, uint, void>)funcTable[78])(idx, col);
+			((delegate* unmanaged[Cdecl]<ImGuiCol, uint, void>)funcTable[82])(idx, col);
 			#else
-			((delegate* unmanaged[Cdecl]<ImGuiCol, uint, void>)funcTable[78])(idx, col);
+			((delegate* unmanaged[Cdecl]<ImGuiCol, uint, void>)funcTable[82])(idx, col);
 			#endif
 		}
 
@@ -3675,9 +3705,9 @@ namespace Dalamud.Bindings.ImGui
 		internal static void PushStyleColorNative(ImGuiCol idx, Vector4 col)
 		{
 			#if NET5_0_OR_GREATER
-			((delegate* unmanaged[Cdecl]<ImGuiCol, Vector4, void>)funcTable[79])(idx, col);
+			((delegate* unmanaged[Cdecl]<ImGuiCol, Vector4, void>)funcTable[83])(idx, col);
 			#else
-			((delegate* unmanaged[Cdecl]<ImGuiCol, Vector4, void>)funcTable[79])(idx, col);
+			((delegate* unmanaged[Cdecl]<ImGuiCol, Vector4, void>)funcTable[83])(idx, col);
 			#endif
 		}
 
@@ -3696,9 +3726,9 @@ namespace Dalamud.Bindings.ImGui
 		internal static void PopStyleColorNative(int count)
 		{
 			#if NET5_0_OR_GREATER
-			((delegate* unmanaged[Cdecl]<int, void>)funcTable[80])(count);
+			((delegate* unmanaged[Cdecl]<int, void>)funcTable[84])(count);
 			#else
-			((delegate* unmanaged[Cdecl]<int, void>)funcTable[80])(count);
+			((delegate* unmanaged[Cdecl]<int, void>)funcTable[84])(count);
 			#endif
 		}
 
@@ -3725,9 +3755,9 @@ namespace Dalamud.Bindings.ImGui
 		internal static void PushStyleVarNative(ImGuiStyleVar idx, float val)
 		{
 			#if NET5_0_OR_GREATER
-			((delegate* unmanaged[Cdecl]<ImGuiStyleVar, float, void>)funcTable[81])(idx, val);
+			((delegate* unmanaged[Cdecl]<ImGuiStyleVar, float, void>)funcTable[85])(idx, val);
 			#else
-			((delegate* unmanaged[Cdecl]<ImGuiStyleVar, float, void>)funcTable[81])(idx, val);
+			((delegate* unmanaged[Cdecl]<ImGuiStyleVar, float, void>)funcTable[85])(idx, val);
 			#endif
 		}
 
@@ -3746,9 +3776,9 @@ namespace Dalamud.Bindings.ImGui
 		internal static void PushStyleVarNative(ImGuiStyleVar idx, Vector2 val)
 		{
 			#if NET5_0_OR_GREATER
-			((delegate* unmanaged[Cdecl]<ImGuiStyleVar, Vector2, void>)funcTable[82])(idx, val);
+			((delegate* unmanaged[Cdecl]<ImGuiStyleVar, Vector2, void>)funcTable[86])(idx, val);
 			#else
-			((delegate* unmanaged[Cdecl]<ImGuiStyleVar, Vector2, void>)funcTable[82])(idx, val);
+			((delegate* unmanaged[Cdecl]<ImGuiStyleVar, Vector2, void>)funcTable[86])(idx, val);
 			#endif
 		}
 
@@ -3764,12 +3794,54 @@ namespace Dalamud.Bindings.ImGui
 		/// To be documented.
 		/// </summary>
 		[MethodImpl(MethodImplOptions.AggressiveInlining)]
+		internal static void PushStyleVarXNative(ImGuiStyleVar idx, float valX)
+		{
+			#if NET5_0_OR_GREATER
+			((delegate* unmanaged[Cdecl]<ImGuiStyleVar, float, void>)funcTable[87])(idx, valX);
+			#else
+			((delegate* unmanaged[Cdecl]<ImGuiStyleVar, float, void>)funcTable[87])(idx, valX);
+			#endif
+		}
+
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		public static void PushStyleVarX(ImGuiStyleVar idx, float valX)
+		{
+			PushStyleVarXNative(idx, valX);
+		}
+
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		[MethodImpl(MethodImplOptions.AggressiveInlining)]
+		internal static void PushStyleVarYNative(ImGuiStyleVar idx, float valY)
+		{
+			#if NET5_0_OR_GREATER
+			((delegate* unmanaged[Cdecl]<ImGuiStyleVar, float, void>)funcTable[88])(idx, valY);
+			#else
+			((delegate* unmanaged[Cdecl]<ImGuiStyleVar, float, void>)funcTable[88])(idx, valY);
+			#endif
+		}
+
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		public static void PushStyleVarY(ImGuiStyleVar idx, float valY)
+		{
+			PushStyleVarYNative(idx, valY);
+		}
+
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		[MethodImpl(MethodImplOptions.AggressiveInlining)]
 		internal static void PopStyleVarNative(int count)
 		{
 			#if NET5_0_OR_GREATER
-			((delegate* unmanaged[Cdecl]<int, void>)funcTable[83])(count);
+			((delegate* unmanaged[Cdecl]<int, void>)funcTable[89])(count);
 			#else
-			((delegate* unmanaged[Cdecl]<int, void>)funcTable[83])(count);
+			((delegate* unmanaged[Cdecl]<int, void>)funcTable[89])(count);
 			#endif
 		}
 
@@ -3793,84 +3865,42 @@ namespace Dalamud.Bindings.ImGui
 		/// To be documented.
 		/// </summary>
 		[MethodImpl(MethodImplOptions.AggressiveInlining)]
-		internal static void PushAllowKeyboardFocusNative(byte allowKeyboardFocus)
+		internal static void PushItemFlagNative(ImGuiItemFlags option, byte enabled)
 		{
 			#if NET5_0_OR_GREATER
-			((delegate* unmanaged[Cdecl]<byte, void>)funcTable[84])(allowKeyboardFocus);
+			((delegate* unmanaged[Cdecl]<ImGuiItemFlags, byte, void>)funcTable[90])(option, enabled);
 			#else
-			((delegate* unmanaged[Cdecl]<byte, void>)funcTable[84])(allowKeyboardFocus);
+			((delegate* unmanaged[Cdecl]<ImGuiItemFlags, byte, void>)funcTable[90])(option, enabled);
 			#endif
 		}
 
 		/// <summary>
 		/// To be documented.
 		/// </summary>
-		public static void PushAllowKeyboardFocus(bool allowKeyboardFocus)
+		public static void PushItemFlag(ImGuiItemFlags option, bool enabled)
 		{
-			PushAllowKeyboardFocusNative(allowKeyboardFocus ? (byte)1 : (byte)0);
+			PushItemFlagNative(option, enabled ? (byte)1 : (byte)0);
 		}
 
 		/// <summary>
 		/// To be documented.
 		/// </summary>
 		[MethodImpl(MethodImplOptions.AggressiveInlining)]
-		internal static void PopAllowKeyboardFocusNative()
+		internal static void PopItemFlagNative()
 		{
 			#if NET5_0_OR_GREATER
-			((delegate* unmanaged[Cdecl]<void>)funcTable[85])();
+			((delegate* unmanaged[Cdecl]<void>)funcTable[91])();
 			#else
-			((delegate* unmanaged[Cdecl]<void>)funcTable[85])();
+			((delegate* unmanaged[Cdecl]<void>)funcTable[91])();
 			#endif
 		}
 
 		/// <summary>
 		/// To be documented.
 		/// </summary>
-		public static void PopAllowKeyboardFocus()
+		public static void PopItemFlag()
 		{
-			PopAllowKeyboardFocusNative();
-		}
-
-		/// <summary>
-		/// To be documented.
-		/// </summary>
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
-		internal static void PushButtonRepeatNative(byte repeat)
-		{
-			#if NET5_0_OR_GREATER
-			((delegate* unmanaged[Cdecl]<byte, void>)funcTable[86])(repeat);
-			#else
-			((delegate* unmanaged[Cdecl]<byte, void>)funcTable[86])(repeat);
-			#endif
-		}
-
-		/// <summary>
-		/// To be documented.
-		/// </summary>
-		public static void PushButtonRepeat(bool repeat)
-		{
-			PushButtonRepeatNative(repeat ? (byte)1 : (byte)0);
-		}
-
-		/// <summary>
-		/// To be documented.
-		/// </summary>
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
-		internal static void PopButtonRepeatNative()
-		{
-			#if NET5_0_OR_GREATER
-			((delegate* unmanaged[Cdecl]<void>)funcTable[87])();
-			#else
-			((delegate* unmanaged[Cdecl]<void>)funcTable[87])();
-			#endif
-		}
-
-		/// <summary>
-		/// To be documented.
-		/// </summary>
-		public static void PopButtonRepeat()
-		{
-			PopButtonRepeatNative();
+			PopItemFlagNative();
 		}
 
 		/// <summary>
@@ -3880,9 +3910,9 @@ namespace Dalamud.Bindings.ImGui
 		internal static void PushItemWidthNative(float itemWidth)
 		{
 			#if NET5_0_OR_GREATER
-			((delegate* unmanaged[Cdecl]<float, void>)funcTable[88])(itemWidth);
+			((delegate* unmanaged[Cdecl]<float, void>)funcTable[92])(itemWidth);
 			#else
-			((delegate* unmanaged[Cdecl]<float, void>)funcTable[88])(itemWidth);
+			((delegate* unmanaged[Cdecl]<float, void>)funcTable[92])(itemWidth);
 			#endif
 		}
 
@@ -3901,9 +3931,9 @@ namespace Dalamud.Bindings.ImGui
 		internal static void PopItemWidthNative()
 		{
 			#if NET5_0_OR_GREATER
-			((delegate* unmanaged[Cdecl]<void>)funcTable[89])();
+			((delegate* unmanaged[Cdecl]<void>)funcTable[93])();
 			#else
-			((delegate* unmanaged[Cdecl]<void>)funcTable[89])();
+			((delegate* unmanaged[Cdecl]<void>)funcTable[93])();
 			#endif
 		}
 
@@ -3922,9 +3952,9 @@ namespace Dalamud.Bindings.ImGui
 		internal static void SetNextItemWidthNative(float itemWidth)
 		{
 			#if NET5_0_OR_GREATER
-			((delegate* unmanaged[Cdecl]<float, void>)funcTable[90])(itemWidth);
+			((delegate* unmanaged[Cdecl]<float, void>)funcTable[94])(itemWidth);
 			#else
-			((delegate* unmanaged[Cdecl]<float, void>)funcTable[90])(itemWidth);
+			((delegate* unmanaged[Cdecl]<float, void>)funcTable[94])(itemWidth);
 			#endif
 		}
 
@@ -3943,9 +3973,9 @@ namespace Dalamud.Bindings.ImGui
 		internal static float CalcItemWidthNative()
 		{
 			#if NET5_0_OR_GREATER
-			return ((delegate* unmanaged[Cdecl]<float>)funcTable[91])();
+			return ((delegate* unmanaged[Cdecl]<float>)funcTable[95])();
 			#else
-			return (float)((delegate* unmanaged[Cdecl]<float>)funcTable[91])();
+			return (float)((delegate* unmanaged[Cdecl]<float>)funcTable[95])();
 			#endif
 		}
 
@@ -3965,9 +3995,9 @@ namespace Dalamud.Bindings.ImGui
 		internal static void PushTextWrapPosNative(float wrapLocalPosX)
 		{
 			#if NET5_0_OR_GREATER
-			((delegate* unmanaged[Cdecl]<float, void>)funcTable[92])(wrapLocalPosX);
+			((delegate* unmanaged[Cdecl]<float, void>)funcTable[96])(wrapLocalPosX);
 			#else
-			((delegate* unmanaged[Cdecl]<float, void>)funcTable[92])(wrapLocalPosX);
+			((delegate* unmanaged[Cdecl]<float, void>)funcTable[96])(wrapLocalPosX);
 			#endif
 		}
 
@@ -3994,9 +4024,9 @@ namespace Dalamud.Bindings.ImGui
 		internal static void PopTextWrapPosNative()
 		{
 			#if NET5_0_OR_GREATER
-			((delegate* unmanaged[Cdecl]<void>)funcTable[93])();
+			((delegate* unmanaged[Cdecl]<void>)funcTable[97])();
 			#else
-			((delegate* unmanaged[Cdecl]<void>)funcTable[93])();
+			((delegate* unmanaged[Cdecl]<void>)funcTable[97])();
 			#endif
 		}
 
@@ -4012,78 +4042,12 @@ namespace Dalamud.Bindings.ImGui
 		/// To be documented.
 		/// </summary>
 		[MethodImpl(MethodImplOptions.AggressiveInlining)]
-		internal static ImFont* GetFontNative()
+		internal static Vector2 GetFontTexUvWhitePixelNative()
 		{
 			#if NET5_0_OR_GREATER
-			return ((delegate* unmanaged[Cdecl]<ImFont*>)funcTable[94])();
+			return ((delegate* unmanaged[Cdecl]<Vector2>)funcTable[98])();
 			#else
-			return (ImFont*)((delegate* unmanaged[Cdecl]<nint>)funcTable[94])();
-			#endif
-		}
-
-		/// <summary>
-		/// To be documented.
-		/// </summary>
-		public static ImFontPtr GetFont()
-		{
-			ImFontPtr ret = GetFontNative();
-			return ret;
-		}
-
-		/// <summary>
-		/// To be documented.
-		/// </summary>
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
-		internal static float GetFontSizeNative()
-		{
-			#if NET5_0_OR_GREATER
-			return ((delegate* unmanaged[Cdecl]<float>)funcTable[95])();
-			#else
-			return (float)((delegate* unmanaged[Cdecl]<float>)funcTable[95])();
-			#endif
-		}
-
-		/// <summary>
-		/// To be documented.
-		/// </summary>
-		public static float GetFontSize()
-		{
-			float ret = GetFontSizeNative();
-			return ret;
-		}
-
-		/// <summary>
-		/// To be documented.
-		/// </summary>
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
-		internal static ImTextureID GetFontTexIdWhitePixelNative()
-		{
-			#if NET5_0_OR_GREATER
-			return ((delegate* unmanaged[Cdecl]<ImTextureID>)funcTable[96])();
-			#else
-			return (ImTextureID)((delegate* unmanaged[Cdecl]<ImTextureID>)funcTable[96])();
-			#endif
-		}
-
-		/// <summary>
-		/// To be documented.
-		/// </summary>
-		public static ImTextureID GetFontTexIdWhitePixel()
-		{
-			ImTextureID ret = GetFontTexIdWhitePixelNative();
-			return ret;
-		}
-
-		/// <summary>
-		/// To be documented.
-		/// </summary>
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
-		internal static void GetFontTexUvWhitePixelNative(Vector2* pOut)
-		{
-			#if NET5_0_OR_GREATER
-			((delegate* unmanaged[Cdecl]<Vector2*, void>)funcTable[97])(pOut);
-			#else
-			((delegate* unmanaged[Cdecl]<nint, void>)funcTable[97])((nint)pOut);
+			return (Vector2)((delegate* unmanaged[Cdecl]<Vector2>)funcTable[98])();
 			#endif
 		}
 
@@ -4092,28 +4056,8 @@ namespace Dalamud.Bindings.ImGui
 		/// </summary>
 		public static Vector2 GetFontTexUvWhitePixel()
 		{
-			Vector2 ret;
-			GetFontTexUvWhitePixelNative(&ret);
+			Vector2 ret = GetFontTexUvWhitePixelNative();
 			return ret;
-		}
-
-		/// <summary>
-		/// To be documented.
-		/// </summary>
-		public static void GetFontTexUvWhitePixel(Vector2* pOut)
-		{
-			GetFontTexUvWhitePixelNative(pOut);
-		}
-
-		/// <summary>
-		/// To be documented.
-		/// </summary>
-		public static void GetFontTexUvWhitePixel(ref Vector2 pOut)
-		{
-			fixed (Vector2* ppOut = &pOut)
-			{
-				GetFontTexUvWhitePixelNative((Vector2*)ppOut);
-			}
 		}
 
 		/// <summary>
@@ -4123,9 +4067,9 @@ namespace Dalamud.Bindings.ImGui
 		internal static uint GetColorU32Native(ImGuiCol idx, float alphaMul)
 		{
 			#if NET5_0_OR_GREATER
-			return ((delegate* unmanaged[Cdecl]<ImGuiCol, float, uint>)funcTable[98])(idx, alphaMul);
+			return ((delegate* unmanaged[Cdecl]<ImGuiCol, float, uint>)funcTable[99])(idx, alphaMul);
 			#else
-			return (uint)((delegate* unmanaged[Cdecl]<ImGuiCol, float, uint>)funcTable[98])(idx, alphaMul);
+			return (uint)((delegate* unmanaged[Cdecl]<ImGuiCol, float, uint>)funcTable[99])(idx, alphaMul);
 			#endif
 		}
 
@@ -4154,9 +4098,9 @@ namespace Dalamud.Bindings.ImGui
 		internal static uint GetColorU32Native(Vector4 col)
 		{
 			#if NET5_0_OR_GREATER
-			return ((delegate* unmanaged[Cdecl]<Vector4, uint>)funcTable[99])(col);
+			return ((delegate* unmanaged[Cdecl]<Vector4, uint>)funcTable[100])(col);
 			#else
-			return (uint)((delegate* unmanaged[Cdecl]<Vector4, uint>)funcTable[99])(col);
+			return (uint)((delegate* unmanaged[Cdecl]<Vector4, uint>)funcTable[100])(col);
 			#endif
 		}
 
@@ -4173,13 +4117,22 @@ namespace Dalamud.Bindings.ImGui
 		/// To be documented.
 		/// </summary>
 		[MethodImpl(MethodImplOptions.AggressiveInlining)]
-		internal static uint GetColorU32Native(uint col)
+		internal static uint GetColorU32Native(uint col, float alphaMul)
 		{
 			#if NET5_0_OR_GREATER
-			return ((delegate* unmanaged[Cdecl]<uint, uint>)funcTable[100])(col);
+			return ((delegate* unmanaged[Cdecl]<uint, float, uint>)funcTable[101])(col, alphaMul);
 			#else
-			return (uint)((delegate* unmanaged[Cdecl]<uint, uint>)funcTable[100])(col);
+			return (uint)((delegate* unmanaged[Cdecl]<uint, float, uint>)funcTable[101])(col, alphaMul);
 			#endif
+		}
+
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		public static uint GetColorU32(uint col, float alphaMul)
+		{
+			uint ret = GetColorU32Native(col, alphaMul);
+			return ret;
 		}
 
 		/// <summary>
@@ -4187,7 +4140,7 @@ namespace Dalamud.Bindings.ImGui
 		/// </summary>
 		public static uint GetColorU32(uint col)
 		{
-			uint ret = GetColorU32Native(col);
+			uint ret = GetColorU32Native(col, (float)(1.0f));
 			return ret;
 		}
 
@@ -4198,9 +4151,9 @@ namespace Dalamud.Bindings.ImGui
 		internal static Vector4* GetStyleColorVec4Native(ImGuiCol idx)
 		{
 			#if NET5_0_OR_GREATER
-			return ((delegate* unmanaged[Cdecl]<ImGuiCol, Vector4*>)funcTable[101])(idx);
+			return ((delegate* unmanaged[Cdecl]<ImGuiCol, Vector4*>)funcTable[102])(idx);
 			#else
-			return (Vector4*)((delegate* unmanaged[Cdecl]<ImGuiCol, nint>)funcTable[101])(idx);
+			return (Vector4*)((delegate* unmanaged[Cdecl]<ImGuiCol, nint>)funcTable[102])(idx);
 			#endif
 		}
 
@@ -4217,12 +4170,228 @@ namespace Dalamud.Bindings.ImGui
 		/// To be documented.
 		/// </summary>
 		[MethodImpl(MethodImplOptions.AggressiveInlining)]
+		internal static Vector2 GetCursorScreenPosNative()
+		{
+			#if NET5_0_OR_GREATER
+			return ((delegate* unmanaged[Cdecl]<Vector2>)funcTable[103])();
+			#else
+			return (Vector2)((delegate* unmanaged[Cdecl]<Vector2>)funcTable[103])();
+			#endif
+		}
+
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		public static Vector2 GetCursorScreenPos()
+		{
+			Vector2 ret = GetCursorScreenPosNative();
+			return ret;
+		}
+
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		[MethodImpl(MethodImplOptions.AggressiveInlining)]
+		internal static void SetCursorScreenPosNative(Vector2 pos)
+		{
+			#if NET5_0_OR_GREATER
+			((delegate* unmanaged[Cdecl]<Vector2, void>)funcTable[104])(pos);
+			#else
+			((delegate* unmanaged[Cdecl]<Vector2, void>)funcTable[104])(pos);
+			#endif
+		}
+
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		public static void SetCursorScreenPos(Vector2 pos)
+		{
+			SetCursorScreenPosNative(pos);
+		}
+
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		[MethodImpl(MethodImplOptions.AggressiveInlining)]
+		internal static Vector2 GetContentRegionAvailNative()
+		{
+			#if NET5_0_OR_GREATER
+			return ((delegate* unmanaged[Cdecl]<Vector2>)funcTable[105])();
+			#else
+			return (Vector2)((delegate* unmanaged[Cdecl]<Vector2>)funcTable[105])();
+			#endif
+		}
+
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		public static Vector2 GetContentRegionAvail()
+		{
+			Vector2 ret = GetContentRegionAvailNative();
+			return ret;
+		}
+
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		[MethodImpl(MethodImplOptions.AggressiveInlining)]
+		internal static Vector2 GetCursorPosNative()
+		{
+			#if NET5_0_OR_GREATER
+			return ((delegate* unmanaged[Cdecl]<Vector2>)funcTable[106])();
+			#else
+			return (Vector2)((delegate* unmanaged[Cdecl]<Vector2>)funcTable[106])();
+			#endif
+		}
+
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		public static Vector2 GetCursorPos()
+		{
+			Vector2 ret = GetCursorPosNative();
+			return ret;
+		}
+
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		[MethodImpl(MethodImplOptions.AggressiveInlining)]
+		internal static float GetCursorPosXNative()
+		{
+			#if NET5_0_OR_GREATER
+			return ((delegate* unmanaged[Cdecl]<float>)funcTable[107])();
+			#else
+			return (float)((delegate* unmanaged[Cdecl]<float>)funcTable[107])();
+			#endif
+		}
+
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		public static float GetCursorPosX()
+		{
+			float ret = GetCursorPosXNative();
+			return ret;
+		}
+
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		[MethodImpl(MethodImplOptions.AggressiveInlining)]
+		internal static float GetCursorPosYNative()
+		{
+			#if NET5_0_OR_GREATER
+			return ((delegate* unmanaged[Cdecl]<float>)funcTable[108])();
+			#else
+			return (float)((delegate* unmanaged[Cdecl]<float>)funcTable[108])();
+			#endif
+		}
+
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		public static float GetCursorPosY()
+		{
+			float ret = GetCursorPosYNative();
+			return ret;
+		}
+
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		[MethodImpl(MethodImplOptions.AggressiveInlining)]
+		internal static void SetCursorPosNative(Vector2 localPos)
+		{
+			#if NET5_0_OR_GREATER
+			((delegate* unmanaged[Cdecl]<Vector2, void>)funcTable[109])(localPos);
+			#else
+			((delegate* unmanaged[Cdecl]<Vector2, void>)funcTable[109])(localPos);
+			#endif
+		}
+
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		public static void SetCursorPos(Vector2 localPos)
+		{
+			SetCursorPosNative(localPos);
+		}
+
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		[MethodImpl(MethodImplOptions.AggressiveInlining)]
+		internal static void SetCursorPosXNative(float localX)
+		{
+			#if NET5_0_OR_GREATER
+			((delegate* unmanaged[Cdecl]<float, void>)funcTable[110])(localX);
+			#else
+			((delegate* unmanaged[Cdecl]<float, void>)funcTable[110])(localX);
+			#endif
+		}
+
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		public static void SetCursorPosX(float localX)
+		{
+			SetCursorPosXNative(localX);
+		}
+
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		[MethodImpl(MethodImplOptions.AggressiveInlining)]
+		internal static void SetCursorPosYNative(float localY)
+		{
+			#if NET5_0_OR_GREATER
+			((delegate* unmanaged[Cdecl]<float, void>)funcTable[111])(localY);
+			#else
+			((delegate* unmanaged[Cdecl]<float, void>)funcTable[111])(localY);
+			#endif
+		}
+
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		public static void SetCursorPosY(float localY)
+		{
+			SetCursorPosYNative(localY);
+		}
+
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		[MethodImpl(MethodImplOptions.AggressiveInlining)]
+		internal static Vector2 GetCursorStartPosNative()
+		{
+			#if NET5_0_OR_GREATER
+			return ((delegate* unmanaged[Cdecl]<Vector2>)funcTable[112])();
+			#else
+			return (Vector2)((delegate* unmanaged[Cdecl]<Vector2>)funcTable[112])();
+			#endif
+		}
+
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		public static Vector2 GetCursorStartPos()
+		{
+			Vector2 ret = GetCursorStartPosNative();
+			return ret;
+		}
+
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		[MethodImpl(MethodImplOptions.AggressiveInlining)]
 		internal static void SeparatorNative()
 		{
 			#if NET5_0_OR_GREATER
-			((delegate* unmanaged[Cdecl]<void>)funcTable[102])();
+			((delegate* unmanaged[Cdecl]<void>)funcTable[113])();
 			#else
-			((delegate* unmanaged[Cdecl]<void>)funcTable[102])();
+			((delegate* unmanaged[Cdecl]<void>)funcTable[113])();
 			#endif
 		}
 
@@ -4241,9 +4410,9 @@ namespace Dalamud.Bindings.ImGui
 		internal static void SameLineNative(float offsetFromStartX, float spacing)
 		{
 			#if NET5_0_OR_GREATER
-			((delegate* unmanaged[Cdecl]<float, float, void>)funcTable[103])(offsetFromStartX, spacing);
+			((delegate* unmanaged[Cdecl]<float, float, void>)funcTable[114])(offsetFromStartX, spacing);
 			#else
-			((delegate* unmanaged[Cdecl]<float, float, void>)funcTable[103])(offsetFromStartX, spacing);
+			((delegate* unmanaged[Cdecl]<float, float, void>)funcTable[114])(offsetFromStartX, spacing);
 			#endif
 		}
 
@@ -4278,9 +4447,9 @@ namespace Dalamud.Bindings.ImGui
 		internal static void NewLineNative()
 		{
 			#if NET5_0_OR_GREATER
-			((delegate* unmanaged[Cdecl]<void>)funcTable[104])();
+			((delegate* unmanaged[Cdecl]<void>)funcTable[115])();
 			#else
-			((delegate* unmanaged[Cdecl]<void>)funcTable[104])();
+			((delegate* unmanaged[Cdecl]<void>)funcTable[115])();
 			#endif
 		}
 
@@ -4299,9 +4468,9 @@ namespace Dalamud.Bindings.ImGui
 		internal static void SpacingNative()
 		{
 			#if NET5_0_OR_GREATER
-			((delegate* unmanaged[Cdecl]<void>)funcTable[105])();
+			((delegate* unmanaged[Cdecl]<void>)funcTable[116])();
 			#else
-			((delegate* unmanaged[Cdecl]<void>)funcTable[105])();
+			((delegate* unmanaged[Cdecl]<void>)funcTable[116])();
 			#endif
 		}
 
@@ -4320,9 +4489,9 @@ namespace Dalamud.Bindings.ImGui
 		internal static void DummyNative(Vector2 size)
 		{
 			#if NET5_0_OR_GREATER
-			((delegate* unmanaged[Cdecl]<Vector2, void>)funcTable[106])(size);
+			((delegate* unmanaged[Cdecl]<Vector2, void>)funcTable[117])(size);
 			#else
-			((delegate* unmanaged[Cdecl]<Vector2, void>)funcTable[106])(size);
+			((delegate* unmanaged[Cdecl]<Vector2, void>)funcTable[117])(size);
 			#endif
 		}
 
@@ -4341,9 +4510,9 @@ namespace Dalamud.Bindings.ImGui
 		internal static void IndentNative(float indentW)
 		{
 			#if NET5_0_OR_GREATER
-			((delegate* unmanaged[Cdecl]<float, void>)funcTable[107])(indentW);
+			((delegate* unmanaged[Cdecl]<float, void>)funcTable[118])(indentW);
 			#else
-			((delegate* unmanaged[Cdecl]<float, void>)funcTable[107])(indentW);
+			((delegate* unmanaged[Cdecl]<float, void>)funcTable[118])(indentW);
 			#endif
 		}
 
@@ -4370,9 +4539,9 @@ namespace Dalamud.Bindings.ImGui
 		internal static void UnindentNative(float indentW)
 		{
 			#if NET5_0_OR_GREATER
-			((delegate* unmanaged[Cdecl]<float, void>)funcTable[108])(indentW);
+			((delegate* unmanaged[Cdecl]<float, void>)funcTable[119])(indentW);
 			#else
-			((delegate* unmanaged[Cdecl]<float, void>)funcTable[108])(indentW);
+			((delegate* unmanaged[Cdecl]<float, void>)funcTable[119])(indentW);
 			#endif
 		}
 
@@ -4399,9 +4568,9 @@ namespace Dalamud.Bindings.ImGui
 		internal static void BeginGroupNative()
 		{
 			#if NET5_0_OR_GREATER
-			((delegate* unmanaged[Cdecl]<void>)funcTable[109])();
+			((delegate* unmanaged[Cdecl]<void>)funcTable[120])();
 			#else
-			((delegate* unmanaged[Cdecl]<void>)funcTable[109])();
+			((delegate* unmanaged[Cdecl]<void>)funcTable[120])();
 			#endif
 		}
 
@@ -4420,9 +4589,9 @@ namespace Dalamud.Bindings.ImGui
 		internal static void EndGroupNative()
 		{
 			#if NET5_0_OR_GREATER
-			((delegate* unmanaged[Cdecl]<void>)funcTable[110])();
+			((delegate* unmanaged[Cdecl]<void>)funcTable[121])();
 			#else
-			((delegate* unmanaged[Cdecl]<void>)funcTable[110])();
+			((delegate* unmanaged[Cdecl]<void>)funcTable[121])();
 			#endif
 		}
 
@@ -4438,266 +4607,12 @@ namespace Dalamud.Bindings.ImGui
 		/// To be documented.
 		/// </summary>
 		[MethodImpl(MethodImplOptions.AggressiveInlining)]
-		internal static void GetCursorPosNative(Vector2* pOut)
-		{
-			#if NET5_0_OR_GREATER
-			((delegate* unmanaged[Cdecl]<Vector2*, void>)funcTable[111])(pOut);
-			#else
-			((delegate* unmanaged[Cdecl]<nint, void>)funcTable[111])((nint)pOut);
-			#endif
-		}
-
-		/// <summary>
-		/// To be documented.
-		/// </summary>
-		public static Vector2 GetCursorPos()
-		{
-			Vector2 ret;
-			GetCursorPosNative(&ret);
-			return ret;
-		}
-
-		/// <summary>
-		/// To be documented.
-		/// </summary>
-		public static void GetCursorPos(Vector2* pOut)
-		{
-			GetCursorPosNative(pOut);
-		}
-
-		/// <summary>
-		/// To be documented.
-		/// </summary>
-		public static void GetCursorPos(ref Vector2 pOut)
-		{
-			fixed (Vector2* ppOut = &pOut)
-			{
-				GetCursorPosNative((Vector2*)ppOut);
-			}
-		}
-
-		/// <summary>
-		/// To be documented.
-		/// </summary>
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
-		internal static float GetCursorPosXNative()
-		{
-			#if NET5_0_OR_GREATER
-			return ((delegate* unmanaged[Cdecl]<float>)funcTable[112])();
-			#else
-			return (float)((delegate* unmanaged[Cdecl]<float>)funcTable[112])();
-			#endif
-		}
-
-		/// <summary>
-		/// To be documented.
-		/// </summary>
-		public static float GetCursorPosX()
-		{
-			float ret = GetCursorPosXNative();
-			return ret;
-		}
-
-		/// <summary>
-		/// To be documented.
-		/// </summary>
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
-		internal static float GetCursorPosYNative()
-		{
-			#if NET5_0_OR_GREATER
-			return ((delegate* unmanaged[Cdecl]<float>)funcTable[113])();
-			#else
-			return (float)((delegate* unmanaged[Cdecl]<float>)funcTable[113])();
-			#endif
-		}
-
-		/// <summary>
-		/// To be documented.
-		/// </summary>
-		public static float GetCursorPosY()
-		{
-			float ret = GetCursorPosYNative();
-			return ret;
-		}
-
-		/// <summary>
-		/// To be documented.
-		/// </summary>
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
-		internal static void SetCursorPosNative(Vector2 localPos)
-		{
-			#if NET5_0_OR_GREATER
-			((delegate* unmanaged[Cdecl]<Vector2, void>)funcTable[114])(localPos);
-			#else
-			((delegate* unmanaged[Cdecl]<Vector2, void>)funcTable[114])(localPos);
-			#endif
-		}
-
-		/// <summary>
-		/// To be documented.
-		/// </summary>
-		public static void SetCursorPos(Vector2 localPos)
-		{
-			SetCursorPosNative(localPos);
-		}
-
-		/// <summary>
-		/// To be documented.
-		/// </summary>
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
-		internal static void SetCursorPosXNative(float localX)
-		{
-			#if NET5_0_OR_GREATER
-			((delegate* unmanaged[Cdecl]<float, void>)funcTable[115])(localX);
-			#else
-			((delegate* unmanaged[Cdecl]<float, void>)funcTable[115])(localX);
-			#endif
-		}
-
-		/// <summary>
-		/// To be documented.
-		/// </summary>
-		public static void SetCursorPosX(float localX)
-		{
-			SetCursorPosXNative(localX);
-		}
-
-		/// <summary>
-		/// To be documented.
-		/// </summary>
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
-		internal static void SetCursorPosYNative(float localY)
-		{
-			#if NET5_0_OR_GREATER
-			((delegate* unmanaged[Cdecl]<float, void>)funcTable[116])(localY);
-			#else
-			((delegate* unmanaged[Cdecl]<float, void>)funcTable[116])(localY);
-			#endif
-		}
-
-		/// <summary>
-		/// To be documented.
-		/// </summary>
-		public static void SetCursorPosY(float localY)
-		{
-			SetCursorPosYNative(localY);
-		}
-
-		/// <summary>
-		/// To be documented.
-		/// </summary>
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
-		internal static void GetCursorStartPosNative(Vector2* pOut)
-		{
-			#if NET5_0_OR_GREATER
-			((delegate* unmanaged[Cdecl]<Vector2*, void>)funcTable[117])(pOut);
-			#else
-			((delegate* unmanaged[Cdecl]<nint, void>)funcTable[117])((nint)pOut);
-			#endif
-		}
-
-		/// <summary>
-		/// To be documented.
-		/// </summary>
-		public static Vector2 GetCursorStartPos()
-		{
-			Vector2 ret;
-			GetCursorStartPosNative(&ret);
-			return ret;
-		}
-
-		/// <summary>
-		/// To be documented.
-		/// </summary>
-		public static void GetCursorStartPos(Vector2* pOut)
-		{
-			GetCursorStartPosNative(pOut);
-		}
-
-		/// <summary>
-		/// To be documented.
-		/// </summary>
-		public static void GetCursorStartPos(ref Vector2 pOut)
-		{
-			fixed (Vector2* ppOut = &pOut)
-			{
-				GetCursorStartPosNative((Vector2*)ppOut);
-			}
-		}
-
-		/// <summary>
-		/// To be documented.
-		/// </summary>
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
-		internal static void GetCursorScreenPosNative(Vector2* pOut)
-		{
-			#if NET5_0_OR_GREATER
-			((delegate* unmanaged[Cdecl]<Vector2*, void>)funcTable[118])(pOut);
-			#else
-			((delegate* unmanaged[Cdecl]<nint, void>)funcTable[118])((nint)pOut);
-			#endif
-		}
-
-		/// <summary>
-		/// To be documented.
-		/// </summary>
-		public static Vector2 GetCursorScreenPos()
-		{
-			Vector2 ret;
-			GetCursorScreenPosNative(&ret);
-			return ret;
-		}
-
-		/// <summary>
-		/// To be documented.
-		/// </summary>
-		public static void GetCursorScreenPos(Vector2* pOut)
-		{
-			GetCursorScreenPosNative(pOut);
-		}
-
-		/// <summary>
-		/// To be documented.
-		/// </summary>
-		public static void GetCursorScreenPos(ref Vector2 pOut)
-		{
-			fixed (Vector2* ppOut = &pOut)
-			{
-				GetCursorScreenPosNative((Vector2*)ppOut);
-			}
-		}
-
-		/// <summary>
-		/// To be documented.
-		/// </summary>
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
-		internal static void SetCursorScreenPosNative(Vector2 pos)
-		{
-			#if NET5_0_OR_GREATER
-			((delegate* unmanaged[Cdecl]<Vector2, void>)funcTable[119])(pos);
-			#else
-			((delegate* unmanaged[Cdecl]<Vector2, void>)funcTable[119])(pos);
-			#endif
-		}
-
-		/// <summary>
-		/// To be documented.
-		/// </summary>
-		public static void SetCursorScreenPos(Vector2 pos)
-		{
-			SetCursorScreenPosNative(pos);
-		}
-
-		/// <summary>
-		/// To be documented.
-		/// </summary>
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
 		internal static void AlignTextToFramePaddingNative()
 		{
 			#if NET5_0_OR_GREATER
-			((delegate* unmanaged[Cdecl]<void>)funcTable[120])();
+			((delegate* unmanaged[Cdecl]<void>)funcTable[122])();
 			#else
-			((delegate* unmanaged[Cdecl]<void>)funcTable[120])();
+			((delegate* unmanaged[Cdecl]<void>)funcTable[122])();
 			#endif
 		}
 
@@ -4716,9 +4631,9 @@ namespace Dalamud.Bindings.ImGui
 		internal static float GetTextLineHeightNative()
 		{
 			#if NET5_0_OR_GREATER
-			return ((delegate* unmanaged[Cdecl]<float>)funcTable[121])();
+			return ((delegate* unmanaged[Cdecl]<float>)funcTable[123])();
 			#else
-			return (float)((delegate* unmanaged[Cdecl]<float>)funcTable[121])();
+			return (float)((delegate* unmanaged[Cdecl]<float>)funcTable[123])();
 			#endif
 		}
 
@@ -4738,9 +4653,9 @@ namespace Dalamud.Bindings.ImGui
 		internal static float GetTextLineHeightWithSpacingNative()
 		{
 			#if NET5_0_OR_GREATER
-			return ((delegate* unmanaged[Cdecl]<float>)funcTable[122])();
+			return ((delegate* unmanaged[Cdecl]<float>)funcTable[124])();
 			#else
-			return (float)((delegate* unmanaged[Cdecl]<float>)funcTable[122])();
+			return (float)((delegate* unmanaged[Cdecl]<float>)funcTable[124])();
 			#endif
 		}
 
@@ -4760,9 +4675,9 @@ namespace Dalamud.Bindings.ImGui
 		internal static float GetFrameHeightNative()
 		{
 			#if NET5_0_OR_GREATER
-			return ((delegate* unmanaged[Cdecl]<float>)funcTable[123])();
+			return ((delegate* unmanaged[Cdecl]<float>)funcTable[125])();
 			#else
-			return (float)((delegate* unmanaged[Cdecl]<float>)funcTable[123])();
+			return (float)((delegate* unmanaged[Cdecl]<float>)funcTable[125])();
 			#endif
 		}
 
@@ -4782,9 +4697,9 @@ namespace Dalamud.Bindings.ImGui
 		internal static float GetFrameHeightWithSpacingNative()
 		{
 			#if NET5_0_OR_GREATER
-			return ((delegate* unmanaged[Cdecl]<float>)funcTable[124])();
+			return ((delegate* unmanaged[Cdecl]<float>)funcTable[126])();
 			#else
-			return (float)((delegate* unmanaged[Cdecl]<float>)funcTable[124])();
+			return (float)((delegate* unmanaged[Cdecl]<float>)funcTable[126])();
 			#endif
 		}
 
@@ -4804,9 +4719,9 @@ namespace Dalamud.Bindings.ImGui
 		internal static void PushIDNative(byte* strId)
 		{
 			#if NET5_0_OR_GREATER
-			((delegate* unmanaged[Cdecl]<byte*, void>)funcTable[125])(strId);
+			((delegate* unmanaged[Cdecl]<byte*, void>)funcTable[127])(strId);
 			#else
-			((delegate* unmanaged[Cdecl]<nint, void>)funcTable[125])((nint)strId);
+			((delegate* unmanaged[Cdecl]<nint, void>)funcTable[127])((nint)strId);
 			#endif
 		}
 
@@ -4821,7 +4736,7 @@ namespace Dalamud.Bindings.ImGui
 		/// <summary>
 		/// To be documented.
 		/// </summary>
-		public static void PushID(ref byte strId)
+		public static void PushID(in byte strId)
 		{
 			fixed (byte* pstrId = &strId)
 			{
@@ -4876,9 +4791,9 @@ namespace Dalamud.Bindings.ImGui
 		internal static void PushIDNative(byte* strIdBegin, byte* strIdEnd)
 		{
 			#if NET5_0_OR_GREATER
-			((delegate* unmanaged[Cdecl]<byte*, byte*, void>)funcTable[126])(strIdBegin, strIdEnd);
+			((delegate* unmanaged[Cdecl]<byte*, byte*, void>)funcTable[128])(strIdBegin, strIdEnd);
 			#else
-			((delegate* unmanaged[Cdecl]<nint, nint, void>)funcTable[126])((nint)strIdBegin, (nint)strIdEnd);
+			((delegate* unmanaged[Cdecl]<nint, nint, void>)funcTable[128])((nint)strIdBegin, (nint)strIdEnd);
 			#endif
 		}
 
@@ -4893,7 +4808,7 @@ namespace Dalamud.Bindings.ImGui
 		/// <summary>
 		/// To be documented.
 		/// </summary>
-		public static void PushID(ref byte strIdBegin, byte* strIdEnd)
+		public static void PushID(in byte strIdBegin, byte* strIdEnd)
 		{
 			fixed (byte* pstrIdBegin = &strIdBegin)
 			{
@@ -4944,7 +4859,7 @@ namespace Dalamud.Bindings.ImGui
 		/// <summary>
 		/// To be documented.
 		/// </summary>
-		public static void PushID(byte* strIdBegin, ref byte strIdEnd)
+		public static void PushID(byte* strIdBegin, in byte strIdEnd)
 		{
 			fixed (byte* pstrIdEnd = &strIdEnd)
 			{
@@ -4995,7 +4910,7 @@ namespace Dalamud.Bindings.ImGui
 		/// <summary>
 		/// To be documented.
 		/// </summary>
-		public static void PushID(ref byte strIdBegin, ref byte strIdEnd)
+		public static void PushID(in byte strIdBegin, in byte strIdEnd)
 		{
 			fixed (byte* pstrIdBegin = &strIdBegin)
 			{
@@ -5016,6 +4931,102 @@ namespace Dalamud.Bindings.ImGui
 				fixed (byte* pstrIdEnd = strIdEnd)
 				{
 					PushIDNative((byte*)pstrIdBegin, (byte*)pstrIdEnd);
+				}
+			}
+		}
+
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		public static void PushID(string strIdBegin, string strIdEnd)
+		{
+			byte* pStr0 = null;
+			int pStrSize0 = 0;
+			if (strIdBegin != null)
+			{
+				pStrSize0 = Utils.GetByteCountUTF8(strIdBegin);
+				if (pStrSize0 >= Utils.MaxStackallocSize)
+				{
+					pStr0 = Utils.Alloc<byte>(pStrSize0 + 1);
+				}
+				else
+				{
+					byte* pStrStack0 = stackalloc byte[pStrSize0 + 1];
+					pStr0 = pStrStack0;
+				}
+				int pStrOffset0 = Utils.EncodeStringUTF8(strIdBegin, pStr0, pStrSize0);
+				pStr0[pStrOffset0] = 0;
+			}
+			byte* pStr1 = null;
+			int pStrSize1 = 0;
+			if (strIdEnd != null)
+			{
+				pStrSize1 = Utils.GetByteCountUTF8(strIdEnd);
+				if (pStrSize1 >= Utils.MaxStackallocSize)
+				{
+					pStr1 = Utils.Alloc<byte>(pStrSize1 + 1);
+				}
+				else
+				{
+					byte* pStrStack1 = stackalloc byte[pStrSize1 + 1];
+					pStr1 = pStrStack1;
+				}
+				int pStrOffset1 = Utils.EncodeStringUTF8(strIdEnd, pStr1, pStrSize1);
+				pStr1[pStrOffset1] = 0;
+			}
+			PushIDNative(pStr0, pStr1);
+			if (pStrSize1 >= Utils.MaxStackallocSize)
+			{
+				Utils.Free(pStr1);
+			}
+			if (pStrSize0 >= Utils.MaxStackallocSize)
+			{
+				Utils.Free(pStr0);
+			}
+		}
+
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		public static void PushID(in byte strIdBegin, ReadOnlySpan<byte> strIdEnd)
+		{
+			fixed (byte* pstrIdBegin = &strIdBegin)
+			{
+				fixed (byte* pstrIdEnd = strIdEnd)
+				{
+					PushIDNative((byte*)pstrIdBegin, (byte*)pstrIdEnd);
+				}
+			}
+		}
+
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		public static void PushID(in byte strIdBegin, string strIdEnd)
+		{
+			fixed (byte* pstrIdBegin = &strIdBegin)
+			{
+				byte* pStr0 = null;
+				int pStrSize0 = 0;
+				if (strIdEnd != null)
+				{
+					pStrSize0 = Utils.GetByteCountUTF8(strIdEnd);
+					if (pStrSize0 >= Utils.MaxStackallocSize)
+					{
+						pStr0 = Utils.Alloc<byte>(pStrSize0 + 1);
+					}
+					else
+					{
+						byte* pStrStack0 = stackalloc byte[pStrSize0 + 1];
+						pStr0 = pStrStack0;
+					}
+					int pStrOffset0 = Utils.EncodeStringUTF8(strIdEnd, pStr0, pStrSize0);
+					pStr0[pStrOffset0] = 0;
+				}
+				PushIDNative((byte*)pstrIdBegin, pStr0);
+				if (pStrSize0 >= Utils.MaxStackallocSize)
+				{
+					Utils.Free(pStr0);
 				}
 			}
 		}

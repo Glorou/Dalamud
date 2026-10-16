@@ -46,8 +46,8 @@ public static unsafe partial class ImGuiP
             var seed = *self.IDStack.Back;
             var id = ImGuiPNative.ImHashStr(strPtr, (nuint)str.Length, seed);
             var g = ImGui.GetCurrentContext();
-            if (g.DebugHookIdInfo == id)
-                DebugHookIdInfo(id, (ImGuiDataType)ImGuiDataTypePrivate.String, strPtr, strPtr + str.Length);
+            if (g.DebugHookIdInfoId == id)
+                DebugHookIdInfo(id, (ImGuiDataType)ImGuiDataTypePrivate.Pointer, strPtr, strPtr + str.Length);
             str.Recycle();
             return id;
         }
@@ -202,7 +202,6 @@ public static unsafe partial class ImGuiP
                 drawList.Handle,
                 posMin,
                 posMax,
-                clipMaxX,
                 ellipsisMaxX,
                 textPtr,
                 textPtr + text.Length,

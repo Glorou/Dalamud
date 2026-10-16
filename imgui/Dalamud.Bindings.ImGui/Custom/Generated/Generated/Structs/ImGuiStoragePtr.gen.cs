@@ -74,6 +74,10 @@ public unsafe partial struct ImGuiStoragePtr
 		{
 			ImGuiNative.SetVoidPtr(Handle, key, val);
 		}
+		public unsafe void SetVoidPtr(uint key, nint val)
+		{
+			ImGuiNative.SetVoidPtr(Handle, key, (void*)val);
+		}
 }
 // DISCARDED: GetBoolRef
 // DISCARDED: GetFloatRef

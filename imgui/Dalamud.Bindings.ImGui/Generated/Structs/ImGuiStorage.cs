@@ -242,6 +242,18 @@ namespace Dalamud.Bindings.ImGui
 		/// <summary>
 		/// To be documented.
 		/// </summary>
+		public unsafe void** GetVoidPtrRef(uint key, nint defaultVal)
+		{
+			fixed (ImGuiStorage* @this = &this)
+			{
+				void** ret = ImGui.GetVoidPtrRefNative(@this, key, (void*)defaultVal);
+				return ret;
+			}
+		}
+
+		/// <summary>
+		/// To be documented.
+		/// </summary>
 		public unsafe void SetAllInt(int val)
 		{
 			fixed (ImGuiStorage* @this = &this)
@@ -291,6 +303,17 @@ namespace Dalamud.Bindings.ImGui
 			fixed (ImGuiStorage* @this = &this)
 			{
 				ImGui.SetVoidPtrNative(@this, key, val);
+			}
+		}
+
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		public unsafe void SetVoidPtr(uint key, nint val)
+		{
+			fixed (ImGuiStorage* @this = &this)
+			{
+				ImGui.SetVoidPtrNative(@this, key, (void*)val);
 			}
 		}
 
@@ -495,6 +518,15 @@ namespace Dalamud.Bindings.ImGui
 		/// <summary>
 		/// To be documented.
 		/// </summary>
+		public unsafe void** GetVoidPtrRef(uint key, nint defaultVal)
+		{
+			void** ret = ImGui.GetVoidPtrRefNative(Handle, key, (void*)defaultVal);
+			return ret;
+		}
+
+		/// <summary>
+		/// To be documented.
+		/// </summary>
 		public unsafe void SetAllInt(int val)
 		{
 			ImGui.SetAllIntNative(Handle, val);
@@ -530,6 +562,14 @@ namespace Dalamud.Bindings.ImGui
 		public unsafe void SetVoidPtr(uint key, void* val)
 		{
 			ImGui.SetVoidPtrNative(Handle, key, val);
+		}
+
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		public unsafe void SetVoidPtr(uint key, nint val)
+		{
+			ImGui.SetVoidPtrNative(Handle, key, (void*)val);
 		}
 
 	}
