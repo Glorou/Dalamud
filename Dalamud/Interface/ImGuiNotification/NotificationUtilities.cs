@@ -53,7 +53,7 @@ public static class NotificationUtilities
         using (fontHandle.Push())
         {
             var font = ImGui.GetFont();
-            var glyphPtr = (ImGuiHelpers.ImFontGlyphReal*)font.FindGlyphNoFallback(c);
+            var glyphPtr = (ImGuiHelpers.ImFontGlyphReal*)font.LastBaked.FindGlyphNoFallback(c);
             if (glyphPtr is null)
                 return false;
 
@@ -65,7 +65,7 @@ public static class NotificationUtilities
             var pos = ((minCoord + maxCoord) - size) / 2;
             pos += ImGui.GetWindowPos();
             ImGui.GetWindowDrawList().AddImage(
-                font.ContainerAtlas.Textures[glyph.TextureIndex].TexID,
+                new ImTextureRef(texId: font.OwnerAtlas.TexList[glyph.TextureIndex].TexID),
                 pos,
                 pos + size,
                 glyph.UV0,
@@ -107,7 +107,7 @@ public static class NotificationUtilities
             if (size.Y > maxCoord.Y - minCoord.Y)
                 size *= (maxCoord.Y - minCoord.Y) / size.Y;
             ImGui.SetCursorPos(((minCoord + maxCoord) - size) / 2);
-            ImGui.Image(handle, size);
+            ImGui.Image(new ImTextureRef(texId: texture.Handle), size);
             return true;
         }
         catch

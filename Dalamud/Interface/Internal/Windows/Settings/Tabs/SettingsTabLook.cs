@@ -212,7 +212,7 @@ internal sealed class SettingsTabLook : SettingsTab
             ImGui.SameLine();
             if (ImGui.Button(buttonLabel, buttonSize) && Math.Abs(this.globalUiScale - scale) > float.Epsilon)
             {
-                ImGui.GetIO().FontGlobalScale = this.globalUiScale = scale;
+                ImGui.GetStyle().ScaleAllSizes(this.globalUiScale);
                 interfaceManager.RebuildFonts();
                 Service<InterfaceManager>.Get().InvokeGlobalScaleChanged();
             }
@@ -236,7 +236,7 @@ internal sealed class SettingsTabLook : SettingsTab
         if (ImGui.DragFloat("##DalamudSettingsGlobalUiScaleDrag"u8, ref globalUiScaleInPct, 1f, 80f, 300f, "%.0f%%", ImGuiSliderFlags.AlwaysClamp))
         {
             this.globalUiScale = globalUiScaleInPct / 100f;
-            ImGui.GetIO().FontGlobalScale = this.globalUiScale;
+            ImGui.GetStyle().ScaleAllSizes(this.globalUiScale);
             interfaceManager.RebuildFonts();
             Service<InterfaceManager>.Get().InvokeGlobalScaleChanged();
         }

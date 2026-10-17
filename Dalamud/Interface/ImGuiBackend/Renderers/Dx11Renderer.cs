@@ -268,7 +268,7 @@ internal unsafe partial class Dx11Renderer : IImGuiRenderer
         }
 
         // Stop if there's nothing to draw
-        var cmdLists = new Span<ImDrawListPtr>(drawData.Handle->CmdLists, drawData.Handle->CmdListsCount);
+        var cmdLists = new Span<ImDrawListPtr>(drawData.Handle->CmdLists.Data, drawData.Handle->CmdLists.Size);
         if (cmdLists.IsEmpty)
             return;
 
@@ -389,7 +389,7 @@ internal unsafe partial class Dx11Renderer : IImGuiRenderer
                         this.context.Get()->RSSetScissorRects(1, &clipRect);
 
                         // Bind texture and draw
-                        var srv = (ID3D11ShaderResourceView*)cmd.TextureId.Handle;
+                        var srv = (ID3D11ShaderResourceView*)cmd.GetTexID().Handle;
                         this.context.Get()->PSSetShaderResources(0, 1, &srv);
                         this.context.Get()->DrawIndexed(
                             cmd.ElemCount,
@@ -742,9 +742,9 @@ internal unsafe partial class Dx11Renderer : IImGuiRenderer
         if (Service<Framework>.GetNullable() is not { IsFrameworkUnloading: false })
             return;
 
-        var io = ImGui.GetIO();
-        if (io.Fonts.Textures.Size == 0)
-            io.Fonts.Build();
+       /* var io = ImGui.GetIO();
+        if (io.Fonts.Fonts.Size == 0)
+            io.FontDefault.
 
         for (int textureIndex = 0, textureCount = io.Fonts.Textures.Size;
              textureIndex < textureCount;
@@ -772,7 +772,7 @@ internal unsafe partial class Dx11Renderer : IImGuiRenderer
             this.fontTextures.Add(tex);
         }
 
-        io.Fonts.ClearTexData();
+        io.Fonts.ClearTexData();*/
     }
 
     /// <summary>
@@ -1175,8 +1175,8 @@ internal unsafe partial class Dx11Renderer : IImGuiRenderer
         foreach (var fontResourceView in this.fontTextures)
             fontResourceView.Dispose();
 
-        foreach (var i in Enumerable.Range(0, io.Fonts.Textures.Size))
-            io.Fonts.SetTexID(i, ImTextureID.Null);
+        /*foreach (var i in Enumerable.Range(0, io.FontDefault.Textures.Size))
+            io.Fonts.SetTexID(i, ImTextureID.Null);*/
 
         this.device.Reset();
         this.context.Reset();

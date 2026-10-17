@@ -113,16 +113,18 @@ public record SingleFontSpec : IFontSpec
         tk.RegisterPostBuild(
             () =>
             {
+
                 // Multiplication by scale will be done with global scale, outside of this handling.
+                font.GetFontBaked(this.SizePx);
                 var scale = tk.GetFontScaleMode(font) == FontScaleMode.UndoGlobalScale ? 1 / tk.Scale : 1;
                 var roundUnit = tk.GetFontScaleMode(font) == FontScaleMode.SkipHandling ? 1 : 1 / tk.Scale;
-                var newAscent = MathF.Round((font.Ascent * this.LineHeight) / roundUnit) * roundUnit;
-                var newFontSize = MathF.Round((font.FontSize * this.LineHeight) / roundUnit) * roundUnit;
-                var shiftDown = MathF.Round((newFontSize - font.FontSize) / 2f / roundUnit) * roundUnit;
+                var newAscent = MathF.Round((font.LastBaked.Ascent * this.LineHeight) / roundUnit) * roundUnit;
+                var newFontSize = MathF.Round((font.LastBaked.Size * this.LineHeight) / roundUnit) * roundUnit;
+                var shiftDown = MathF.Round((newFontSize - font.LastBaked.Size) / 2f / roundUnit) * roundUnit;
 
-                font.Ascent = newAscent;
-                font.FontSize = newFontSize;
-                font.Descent = newFontSize - font.Ascent;
+                font.LastBaked.Ascent = newAscent;
+                font.LastBaked.Size = newFontSize;
+                font.LastBaked.Descent = newFontSize - font.LastBaked.Ascent;
 
                 var lookup = new BitArray(ushort.MaxValue + 1, this.GlyphRanges is null);
                 if (this.GlyphRanges is not null)

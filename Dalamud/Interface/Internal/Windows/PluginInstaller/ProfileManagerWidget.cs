@@ -211,7 +211,7 @@ internal class ProfileManagerWidget
         using var profileChooserChild = ImRaii.Child("###profileChooserScrolling"u8);
         if (profileChooserChild)
         {
-            var contentRegionMaxX = ImGui.GetWindowContentRegionMax().X;
+            var contentRegionMaxX = ImGui.GetCursorPosX() + ImGui.GetContentRegionAvail().X;
             Guid? toCloneGuid = null;
 
             using var syncScope = profman.GetSyncScope();
@@ -582,7 +582,7 @@ internal class ProfileManagerWidget
         using var pluginListChild = ImRaii.Child("###profileEditorPluginList"u8);
         if (pluginListChild)
         {
-            var contentRegionMaxX = ImGui.GetWindowContentRegionMax().X;
+            var contentRegionMaxX = ImGui.GetCursorPosX() + ImGui.GetContentRegionAvail().X;
             var pluginLineHeight = 32 * ImGuiHelpers.GlobalScale;
             Guid? wantRemovePluginGuid = null;
 

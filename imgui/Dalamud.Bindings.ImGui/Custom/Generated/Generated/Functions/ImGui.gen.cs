@@ -1227,6 +1227,20 @@ public unsafe partial class ImGui
 		{
 			ImGuiNative.Image(texRef, imageSize, (Vector2)(new Vector2(0,0)), (Vector2)(new Vector2(1,1)));
 		}
+
+        public static void Image(ImTextureID texID, Vector2 imageSize, Vector2 uv0, Vector2 uv1)
+        {
+            ImGuiNative.Image(new(texId: texID), imageSize, uv0, uv1);
+        }
+        public static void Image(ImTextureID texID, Vector2 imageSize, Vector2 uv0)
+        {
+            ImGuiNative.Image(new(texId: texID), imageSize, uv0, (Vector2)(new Vector2(1,1)));
+        }
+
+        public static void Image(ImTextureID texID, Vector2 imageSize)
+        {
+            ImGuiNative.Image(new(texId: texID), imageSize, (Vector2)(new Vector2(0,0)), (Vector2)(new Vector2(1,1)));
+        }
 		public static void ImageWithBg(ImTextureRef texRef, Vector2 imageSize, Vector2 uv0, Vector2 uv1, Vector4 bgCol, Vector4 tintCol)
 		{
 			ImGuiNative.ImageWithBg(texRef, imageSize, uv0, uv1, bgCol, tintCol);

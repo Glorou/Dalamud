@@ -36,8 +36,7 @@ public static partial class ImGuiHelpers
     /// <summary>
     /// Gets the global Dalamud scale.
     /// </summary>
-    public static float GlobalScale =>
-        IsImGuiInitialized ? ImGui.GetIO().FontGlobalScale : Service<DalamudConfiguration>.Get().GlobalUiScale;
+    public static float GlobalScale => Service<DalamudConfiguration>.Get().GlobalUiScale;  // TODO: this is nolonger a given in 1.92
 
     /// <summary>
     /// Gets a value indicating whether ImGui is initialized and ready for use.<br />
@@ -391,22 +390,24 @@ public static partial class ImGuiHelpers
     {
         Func<float, float> rounder = round > 0 ? x => MathF.Round(x / round) * round : x => x;
 
-        var font = fontPtr.Handle;
-        font->FontSize = rounder(font->FontSize * scale);
-        font->Ascent = rounder(font->Ascent * scale);
-        font->Descent = font->FontSize - font->Ascent;
-        if (font->ConfigData != null)
-            font->ConfigData->SizePixels = rounder(font->ConfigData->SizePixels * scale);
 
-        foreach (ref var glyphHotDataReal in new Span<ImFontGlyphHotDataReal>(
-                     (void*)font->IndexedHotData.Data,
-                     font->IndexedHotData.Size))
+        var font = fontPtr.Handle;
+
+        font->LegacySize = rounder(font->LegacySize * scale);
+        if (font->LastBaked == null)
         {
-            glyphHotDataReal.AdvanceX = rounder(glyphHotDataReal.AdvanceX * scale);
-            glyphHotDataReal.OccupiedWidth = rounder(glyphHotDataReal.OccupiedWidth * scale);
+            font->GetFontBaked(font->LegacySize);
         }
 
-        foreach (ref var glyphReal in new Span<ImFontGlyphReal>((void*)font->Glyphs.Data, font->Glyphs.Size))
+        font->LastBaked->Ascent = rounder(font->LastBaked->Ascent * scale);
+        font->LastBaked->Descent = font->LegacySize - font->LastBaked->Ascent;
+
+        /*if (font->ConfigData != null)
+            font->ConfigData->SizePixels = rounder(font->ConfigData->SizePixels * scale);*/
+
+
+
+        foreach (ref var glyphReal in new Span<ImFontGlyphReal>((void*)font->LastBaked->Glyphs.Data, font->LastBaked->Glyphs.Size))
         {
             glyphReal.X0 *= scale;
             glyphReal.X1 *= scale;
@@ -415,11 +416,6 @@ public static partial class ImGuiHelpers
             glyphReal.AdvanceX = rounder(glyphReal.AdvanceX * scale);
         }
 
-        foreach (ref var kp in new Span<ImFontKerningPair>((void*)font->KerningPairs.Data, font->KerningPairs.Size))
-            kp.AdvanceXAdjustment = rounder(kp.AdvanceXAdjustment * scale);
-
-        foreach (ref var fkp in new Span<float>((void*)font->FrequentKerningPairs.Data, font->FrequentKerningPairs.Size))
-            fkp = rounder(fkp * scale);
     }
 
     /// <summary>
@@ -464,28 +460,30 @@ public static partial class ImGuiHelpers
         int rangeLow = 32,
         int rangeHigh = 0xFFFE)
     {
+        return;
+
         if (!source.IsNotNullAndLoaded() || !target.IsNotNullAndLoaded())
             return;
 
         var changed = false;
-        var scale = target.FontSize / source.FontSize;
+        var scale = target.LegacySize / source.LegacySize;
         var addedCodepoints = new HashSet<int>();
 
-        if (source.Glyphs.Size == 0)
+        if (source.LastBaked is { IsNull: false, Glyphs.Size: 0 })
             return;
 
-        var glyphs = (ImFontGlyphReal*)source.Glyphs.Data;
+        var glyphs = (ImFontGlyphReal*)source.LastBaked.Glyphs.Data;
         if (glyphs is null)
             throw new InvalidOperationException("Glyphs data is empty but size is >0?");
 
-        for (int j = 0, k = source.Glyphs.Size; j < k; j++)
+        for (int j = 0, k = source.LastBaked.Glyphs.Size; j < k; j++)
         {
             var glyph = &glyphs![j];
             if (glyph->Codepoint < rangeLow || glyph->Codepoint > rangeHigh)
                 continue;
 
-            var prevGlyphPtr = (ImFontGlyphReal*)target.FindGlyphNoFallback((ushort)glyph->Codepoint);
-            if ((IntPtr)prevGlyphPtr == IntPtr.Zero)
+            var prevGlyphPtr = (ImFontGlyphReal*)target.LastBaked.FindGlyphNoFallback((ushort)glyph->Codepoint);
+           /* if ((IntPtr)prevGlyphPtr == IntPtr.Zero)
             {
                 addedCodepoints.Add(glyph->Codepoint);
                 target.AddGlyph(
@@ -546,7 +544,7 @@ public static partial class ImGuiHelpers
             target.Handle->FallbackGlyph = null;
 
             target.BuildLookupTable();
-        }
+        */}
     }
 
     /// <summary>
@@ -719,7 +717,7 @@ public static partial class ImGuiHelpers
     {
         // Mark 4K page as used
         var pageIndex = unchecked((ushort)(codepoint / 4096));
-        font.Used4kPagesMap[pageIndex >> 3] |= unchecked((byte)(1 << (pageIndex & 7)));
+        font.Used8kPagesMap[pageIndex >> 3] |= unchecked((byte)(1 << (pageIndex & 7)));
     }
 
     /// <summary>
@@ -769,7 +767,7 @@ public static partial class ImGuiHelpers
             if (font is null)
                 throw new NullReferenceException("The font is null.");
 
-            _ = Marshal.ReadIntPtr((nint)font);
+            _ = Marshal.ReadIntPtr((nint)font);/*
             if (font->IndexedHotData.Data != null)
                 _ = *font->IndexedHotData.Front;
             if (font->FrequentKerningPairs.Data != null)
@@ -794,7 +792,7 @@ public static partial class ImGuiHelpers
                     || (nint)font->FallbackHotData >= (nint)font->IndexedHotData.Data))
                 throw new InvalidOperationException("FallbackGlyph is not in range of Glyphs.Data");
             if (font->ContainerAtlas is not null)
-                _ = Marshal.ReadIntPtr((nint)font->ContainerAtlas);
+                _ = Marshal.ReadIntPtr((nint)font->ContainerAtlas);*/
         }
         catch (Exception e)
         {
@@ -811,9 +809,9 @@ public static partial class ImGuiHelpers
     /// <param name="c">The fallback character.</param>
     internal static unsafe void UpdateFallbackChar(this ImFontPtr font, char c)
     {
-        font.FallbackChar = c;
+        /*font.FallbackChar = c;
         font.Handle->FallbackHotData =
-            (ImFontGlyphHotData*)((ImFontGlyphHotDataReal*)font.IndexedHotData.Data + font.FallbackChar);
+            (ImFontGlyphHotData*)((ImFontGlyphHotDataReal*)font.IndexedHotData.Data + font.FallbackChar);*/
     }
 
     /// <summary>

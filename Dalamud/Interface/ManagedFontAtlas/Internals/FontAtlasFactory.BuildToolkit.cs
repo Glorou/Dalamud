@@ -202,7 +202,7 @@ internal sealed partial class FontAtlasFactory
                     }
                 }
 
-                foreach (var pair in pairAdjustments)
+                /*foreach (var pair in pairAdjustments)
                 {
                     if (!ImGuiHelpers.IsCodepointInSuppliedGlyphRangesUnsafe(pair.Left, raw.GlyphRanges))
                         continue;
@@ -210,7 +210,7 @@ internal sealed partial class FontAtlasFactory
                         continue;
 
                     font.AddKerningPair(pair.Left, pair.Right, pair.Distance * raw.SizePixels);
-                }
+                }*/
 
                 return font;
             }
@@ -553,14 +553,15 @@ internal sealed partial class FontAtlasFactory
         /// <inheritdoc/>
         public void AttachExtraGlyphsForDalamudLanguage(in SafeFontConfig fontConfig)
         {
-            var targetFont = fontConfig.MergeFont;
+            return;
+            /*var targetFont = fontConfig.MergeFont;
             if (targetFont.IsNull)
                 targetFont = this.Font;
             if (targetFont.IsNull)
                 return;
 
             var dalamudConfiguration = Service<DalamudConfiguration>.Get();
-            var ime = Service<DalamudIme>.GetNullable();
+            //var ime = Service<DalamudIme>.GetNullable();
 
             string langTag = null;
             // fontNo: 0 = japanese, 1 = traditional chinese, 2 = simplified chinese, 3 = korean
@@ -593,7 +594,7 @@ internal sealed partial class FontAtlasFactory
                         MergeFont = targetFont,
                         GlyphRanges = default(FluentGlyphRangeBuilder).WithLanguage(langTag).BuildExact(),
                     });
-            }
+            }*/
         }
 
         public void PreBuildSubstances()
@@ -638,8 +639,7 @@ internal sealed partial class FontAtlasFactory
                     new() { GlyphRanges = [' ', ' ', '\0'], SizePx = 1 });
             }
 
-            if (!this.NewImAtlas.Build())
-                throw new InvalidOperationException("ImFontAtlas.Build failed");
+
 
             this.BuildStep = FontAtlasBuildStep.PostBuild;
         }
@@ -654,7 +654,7 @@ internal sealed partial class FontAtlasFactory
 
                 foreach (var c in FallbackCodepoints)
                 {
-                    var g = font.FindGlyphNoFallback(c);
+                    var g = font.LastBaked.FindGlyphNoFallback(c);
                     if (g == null)
                         continue;
 
@@ -664,7 +664,7 @@ internal sealed partial class FontAtlasFactory
 
                 foreach (var c in EllipsisCodepoints)
                 {
-                    var g = font.FindGlyphNoFallback(c);
+                    var g = font.LastBaked.FindGlyphNoFallback(c);
                     if (g == null)
                         continue;
 
@@ -694,15 +694,15 @@ internal sealed partial class FontAtlasFactory
             {
                 var use4 = this.factory.TextureManager.IsDxgiFormatSupported(DXGI_FORMAT.DXGI_FORMAT_B4G4R4A4_UNORM);
                 var bpp = use4 ? 2 : 4;
-                var width = this.NewImAtlas.TexWidth;
-                var height = this.NewImAtlas.TexHeight;
+                var width = this.NewImAtlas.TexMaxWidth;
+                var height = this.NewImAtlas.TexMaxHeight;
                 var textureSpan = this.data.ImTextures.DataSpan;
                 for (var i = 0; i < textureSpan.Length; i++)
                 {
                     ref var texture = ref textureSpan[i];
                     var name =
                         $"{nameof(FontAtlasBuiltData)}[{this.data.Owner?.Name ?? "-"}][0x{(long)this.data.Atlas.Handle:X}][{i}]";
-                    if (!texture.TexID.IsNull)
+                    if (!texture)
                     {
                         // Nothing to do
                     }

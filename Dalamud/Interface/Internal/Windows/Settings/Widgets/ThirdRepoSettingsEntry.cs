@@ -80,7 +80,7 @@ internal class ThirdRepoSettingsEntry : SettingsEntry
         config.ThirdRepoSpeedbumpDismissed ??= config.ThirdRepoList.Any(x => x.IsEnabled);
         var disclaimerDismissed = config.ThirdRepoSpeedbumpDismissed.Value;
 
-        ImGui.PushFont(InterfaceManager.IconFont);
+        ImGui.PushFont(InterfaceManager.IconFont, InterfaceManager.DefaultFontSizePt);
         ImGui.PushStyleColor(ImGuiCol.Text, ImGuiColors.AttentionForeground);
         ImGui.TextWrapped(FontAwesomeIcon.ExclamationTriangle.ToIconString());
         ImGui.PopFont();
@@ -91,7 +91,7 @@ internal class ThirdRepoSettingsEntry : SettingsEntry
         ImGui.SameLine();
         ImGuiHelpers.ScaledDummy(2);
         ImGui.SameLine();
-        ImGui.PushFont(InterfaceManager.IconFont);
+        ImGui.PushFont(InterfaceManager.IconFont, InterfaceManager.DefaultFontSizePt);
         ImGui.TextWrapped(FontAwesomeIcon.ExclamationTriangle.ToIconString());
         ImGui.PopFont();
 
@@ -132,7 +132,7 @@ internal class ThirdRepoSettingsEntry : SettingsEntry
 
         ImGui.Columns(4);
         ImGui.SetColumnWidth(0, 18 + (5 * ImGuiHelpers.GlobalScale));
-        ImGui.SetColumnWidth(1, ImGui.GetWindowContentRegionMax().X - ImGui.GetWindowContentRegionMin().X - (18 + 16 + 14) - ((5 + 45 + 26) * ImGuiHelpers.GlobalScale));
+        ImGui.SetColumnWidth(1, ImGui.GetContentRegionAvail().X - (18 + 16 + 14) - ((5 + 45 + 26) * ImGuiHelpers.GlobalScale));
         ImGui.SetColumnWidth(2, 16 + (45 * ImGuiHelpers.GlobalScale));
         ImGui.SetColumnWidth(3, 14 + (26 * ImGuiHelpers.GlobalScale));
 

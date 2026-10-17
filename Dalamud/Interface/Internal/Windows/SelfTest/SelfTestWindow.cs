@@ -327,7 +327,7 @@ internal class SelfTestWindow : Window
     /// </summary>
     private void DrawUnloadedIcon()
     {
-        ImGui.PushFont(UiBuilder.IconFont);
+        ImGui.PushFont(UiBuilder.IconFont, UiBuilder.DefaultFontSizePt);
         ImGui.TextColored(ImGuiColors.DalamudGrey, FontAwesomeIcon.Unlink.ToIconString());
         ImGui.PopFont();
 
