@@ -164,7 +164,7 @@ internal class InventoryWidget : IDataWindowWidget
                         using var tooltip = ImRaii.Tooltip();
                         ImGui.Text("Click to copy IconId"u8);
                         ImGui.Text($"ID: {iconId} – Size: {texture.Width}x{texture.Height}");
-                        ImGui.Image(texture.Handle, new(texture.Width, texture.Height));
+                        ImGui.Image( texture.Handle, new(texture.Width, texture.Height));
                     }
 
                     if (ImGui.IsItemClicked())

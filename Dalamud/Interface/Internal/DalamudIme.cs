@@ -116,7 +116,7 @@ internal sealed unsafe class DalamudIme : IInternalDisposableService
         this.setPlatformImeDataDelegate = this.ImGuiSetPlatformImeData;
 
         var io = ImGui.GetIO();
-        io.SetPlatformImeDataFn = Marshal.GetFunctionPointerForDelegate(this.setPlatformImeDataDelegate).ToPointer();
+       //io.SetPlatform = Marshal.GetFunctionPointerForDelegate(this.setPlatformImeDataDelegate).ToPointer();
         this.interfaceManager.Draw += this.Draw;
         this.wndProcHookManager.PreWndProc += this.WndProcHookManagerOnPreWndProc;
     }
@@ -262,7 +262,7 @@ internal sealed unsafe class DalamudIme : IInternalDisposableService
         if (ImGuiHelpers.IsImGuiInitialized)
         {
             var io = ImGui.GetIO();
-            io.SetPlatformImeDataFn = null;
+            //io.SetPlatformImeDataFn = null;
         }
     }
 
@@ -597,7 +597,7 @@ internal sealed unsafe class DalamudIme : IInternalDisposableService
         this.temporaryUndoSelection = null;
 
         var textState = GetInputTextState();
-        textState.Stb.SelectStart = textState.Stb.Cursor = textState.Stb.SelectEnd;
+        //textState.Stb.SelectStart = textState.Stb.Cursor = textState.Stb.SelectEnd;
 
         this.candidateStrings.Clear();
         this.immCandNative = default;
@@ -651,7 +651,7 @@ internal sealed unsafe class DalamudIme : IInternalDisposableService
         if (!this.ShouldDraw)
             return;
 
-        if (Service<DalamudIme>.GetNullable() is not { } ime)
+        /*if (Service<DalamudIme>.GetNullable() is not { } ime)
             return;
 
         var viewport = ime.associatedViewport;
@@ -904,7 +904,7 @@ internal sealed unsafe class DalamudIme : IInternalDisposableService
                     cursor + sizeBeforeCaret,
                     ImGui.GetColorU32(ImGuiCol.Text));
             }
-        }
+        }*/
     }
 
 #if IMEDEBUG

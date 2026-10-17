@@ -93,6 +93,12 @@
     <ItemGroup>
         <None Remove="EnumCloneMap.txt" />
         <AdditionalFiles Include="EnumCloneMap.txt" />
+        <Compile Remove="Interface\Internal\ImGuiInputTextStatePtrExtensions.cs" />
+        <None Include="Interface\Internal\ImGuiInputTextStatePtrExtensions.cs" />
+        <Compile Remove="Interface\Internal\DalamudIme.cs" />
+        <None Include="Interface\Internal\DalamudIme.cs" />
+        <Compile Remove="Interface\Internal\Windows\ChangelogWindow.cs" />
+        <None Include="Interface\Internal\Windows\ChangelogWindow.cs" />
     </ItemGroup>
 
     <ItemGroup>

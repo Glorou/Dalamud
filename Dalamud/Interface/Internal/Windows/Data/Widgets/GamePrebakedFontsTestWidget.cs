@@ -178,8 +178,7 @@ internal class GamePrebakedFontsTestWidget : IDataWindowWidget, IDisposable
 
         fixed (byte* labelPtr = "Test Input"u8)
         {
-            if (!this.atlasScaleMode)
-                ImGui.SetWindowFontScale(1 / ImGuiHelpers.GlobalScale);
+
             using (this.fontDialogHandle.Push())
             {
                 if (ImGui.InputTextMultiline(
@@ -201,8 +200,7 @@ internal class GamePrebakedFontsTestWidget : IDataWindowWidget, IDisposable
                 }
             }
 
-            if (!this.atlasScaleMode)
-                ImGui.SetWindowFontScale(1);
+
         }
 
         this.fontHandles ??=
@@ -263,8 +261,7 @@ internal class GamePrebakedFontsTestWidget : IDataWindowWidget, IDisposable
                     }
                     else
                     {
-                        if (!this.atlasScaleMode)
-                            ImGui.SetWindowFontScale(1 / ImGuiHelpers.GlobalScale);
+
 
                         if (counter++ % 2 == 0)
                         {
@@ -281,7 +278,7 @@ internal class GamePrebakedFontsTestWidget : IDataWindowWidget, IDisposable
                 }
                 finally
                 {
-                    ImGui.SetWindowFontScale(1);
+
                 }
             }
         }
@@ -342,7 +339,7 @@ internal class GamePrebakedFontsTestWidget : IDataWindowWidget, IDisposable
 
         static void TestSingle(ImFontPtr fontPtr, IFontHandle handle)
         {
-            var dim = ImGui.CalcTextSizeA(fontPtr, fontPtr.FontSize, float.MaxValue, 0f, "Test string"u8, out _);
+            var dim = ImGui.CalcTextSizeA(fontPtr, fontPtr.LastBaked.Size, float.MaxValue, 0f, "Test string"u8, out _);
             Log.Information($"{nameof(GamePrebakedFontsTestWidget)}: {handle} => {dim}");
         }
     }

@@ -12,8 +12,6 @@ using Dalamud.Interface.Animation.EasingFunctions;
 using Dalamud.Interface.Colors;
 using Dalamud.Interface.Components;
 using Dalamud.Interface.GameFonts;
-using Dalamud.Interface.ManagedFontAtlas;
-using Dalamud.Interface.ManagedFontAtlas.Internals;
 using Dalamud.Interface.Textures.TextureWraps;
 using Dalamud.Interface.Utility;
 using Dalamud.Interface.Utility.Raii;
@@ -49,8 +47,6 @@ internal sealed class ChangelogWindow : Window, IDisposable
     private readonly GameGui gameGui;
 
     private readonly DisposeSafety.ScopedFinalizer scopedFinalizer = new();
-    private readonly IFontAtlas privateAtlas;
-    private readonly Lazy<IFontHandle> bannerFont;
     private readonly Lazy<IDalamudTextureWrap> apiBumpExplainerTexture;
     private readonly Lazy<IDalamudTextureWrap> logoTexture;
 

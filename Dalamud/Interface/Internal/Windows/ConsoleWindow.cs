@@ -183,7 +183,7 @@ internal class ConsoleWindow : Window, IDisposable
 
         ImGui.PushStyleVar(ImGuiStyleVar.ItemSpacing, Vector2.Zero);
 
-        ImGui.PushFont(InterfaceManager.MonoFont);
+        ImGui.PushFont(InterfaceManager.MonoFont, InterfaceManager.DefaultFontSizePt);
 
         var childPos = ImGui.GetWindowPos();
         var childDrawList = ImGui.GetWindowDrawList();
@@ -227,7 +227,7 @@ internal class ConsoleWindow : Window, IDisposable
                 ImGui.Selectable(
                     "###console_null"u8,
                     true,
-                    ImGuiSelectableFlags.AllowItemOverlap | ImGuiSelectableFlags.SpanAllColumns);
+                    ImGuiSelectableFlags.AllowOverlap | ImGuiSelectableFlags.SpanAllColumns);
 
                 // This must be after ImGui.Selectable, it uses ImGui.IsItem... functions
                 this.HandleCopyMode(i, line);
@@ -571,7 +571,7 @@ internal class ConsoleWindow : Window, IDisposable
         ImGui.SameLine();
 
         var inputWidth = 200.0f * ImGuiHelpers.GlobalScale;
-        var nextCursorPosX = ImGui.GetContentRegionMax().X - (2 * inputWidth) - ImGui.GetStyle().ItemSpacing.X;
+        var nextCursorPosX = ImGui.GetCursorPosX() + ImGui.GetContentRegionAvail().X - (2 * inputWidth) - ImGui.GetStyle().ItemSpacing.X;
         var breakInputLines = nextCursorPosX < 0;
         if (ImGui.GetCursorPosX() > nextCursorPosX)
         {
@@ -1108,10 +1108,10 @@ internal class ConsoleWindow : Window, IDisposable
         var drawList = ImGui.GetWindowDrawList().Handle;
         var font = ImGui.GetFont();
         var size = ImGui.GetFontSize();
-        var scale = size / font.FontSize;
+        //var scale = size / font.FontSize;
         var hotData = font.IndexedHotDataWrapped();
         var lookup = font.IndexLookupWrapped();
-        var kern = (ImGui.GetIO().ConfigFlags & ImGuiConfigFlags.NoKerning) == 0;
+        //var kern = (ImGui.GetIO().ConfigFlags & ImGuiConfigFlags.NoKerning) == 0;
         var lastc = '\0';
         for (var i = 0; i < charOffsetsIndex - 1; i++)
         {
@@ -1126,11 +1126,11 @@ internal class ConsoleWindow : Window, IDisposable
                 if (currc >= lookup.Length || lookup[currc] == ushort.MaxValue)
                     currc = (char)font.FallbackChar;
 
-                if (kern)
-                    screenPos.X += scale * ImGui.GetFont().GetDistanceAdjustmentForPair(lastc, currc);
+                //if (kern)
+                    //screenPos.X += scale * ImGui.GetFont().GetDistanceAdjustmentForPair(lastc, currc);
                 font.RenderChar(drawList, size, screenPos, i % 2 == 1 ? highlightCol : col, currc);
 
-                screenPos.X += scale * hotData[currc].AdvanceX;
+                //screenPos.X += scale * hotData[currc].AdvanceX;
                 lastc = currc;
             }
         }

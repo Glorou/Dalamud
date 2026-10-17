@@ -150,7 +150,7 @@ public partial class FileDialog
 
     private void DrawPathComposer()
     {
-        ImGui.PushFont(InterfaceManager.IconFont);
+        ImGui.PushFont(InterfaceManager.IconFont, InterfaceManager.DefaultFontSizePt);
         if (ImGui.Button(this.pathInputActivated ? FontAwesomeIcon.Times.ToIconString() : FontAwesomeIcon.Edit.ToIconString()))
         {
             this.pathInputActivated = !this.pathInputActivated;
@@ -203,7 +203,7 @@ public partial class FileDialog
 
     private void DrawSearchBar()
     {
-        ImGui.PushFont(InterfaceManager.IconFont);
+        ImGui.PushFont(InterfaceManager.IconFont, InterfaceManager.DefaultFontSizePt);
         if (ImGui.Button(FontAwesomeIcon.Home.ToIconString()))
         {
             this.SetPath(".");
@@ -237,7 +237,7 @@ public partial class FileDialog
     {
         if (this.flags.HasFlag(ImGuiFileDialogFlags.DisableCreateDirectoryButton)) return;
 
-        ImGui.PushFont(InterfaceManager.IconFont);
+        ImGui.PushFont(InterfaceManager.IconFont, InterfaceManager.DefaultFontSizePt);
         if (ImGui.Button(FontAwesomeIcon.FolderPlus.ToIconString()) && !this.createDirectoryMode)
         {
             this.createDirectoryMode = true;
@@ -326,7 +326,7 @@ public partial class FileDialog
                     this.selectedSideBar = qa.Text;
                 }
 
-                ImGui.PushFont(InterfaceManager.IconFont);
+                ImGui.PushFont(InterfaceManager.IconFont, InterfaceManager.DefaultFontSizePt);
                 ImGui.SameLine();
                 ImGui.SetCursorPosX(0);
                 ImGui.Text(qa.Icon.ToIconString());
@@ -472,7 +472,7 @@ public partial class FileDialog
     {
         const ImGuiSelectableFlags flags = ImGuiSelectableFlags.AllowDoubleClick | ImGuiSelectableFlags.SpanAllColumns;
 
-        ImGui.PushFont(InterfaceManager.IconFont);
+        ImGui.PushFont(InterfaceManager.IconFont, InterfaceManager.DefaultFontSizePt);
 
         ImGui.Text(icon.ToIconString());
         ImGui.PopFont();

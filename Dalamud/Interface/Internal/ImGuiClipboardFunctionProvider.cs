@@ -53,13 +53,13 @@ internal sealed unsafe class ImGuiClipboardFunctionProvider : IInternalDisposabl
         // Effectively waiting for ImGui to become available.
         Debug.Assert(ImGuiHelpers.IsImGuiInitialized, "IMWS initialized but IsImGuiInitialized is false?");
 
-        var io = ImGui.GetIO();
-        this.clipboardUserDataOriginal = io.ClipboardUserData;
-        this.setTextOriginal = io.SetClipboardTextFn;
-        this.getTextOriginal = io.GetClipboardTextFn;
-        io.ClipboardUserData = GCHandle.ToIntPtr(this.clipboardUserData = GCHandle.Alloc(this)).ToPointer();
-        io.SetClipboardTextFn = (delegate* unmanaged<nint, byte*, void>)&StaticSetClipboardTextImpl;
-        io.GetClipboardTextFn = (delegate* unmanaged<nint, byte*>)&StaticGetClipboardTextImpl;
+        var io = ImGui.GetPlatformIO();
+        this.clipboardUserDataOriginal = io.PlatformClipboardUserData;
+        this.setTextOriginal = io.PlatformSetClipboardTextFn;
+        this.getTextOriginal = io.PlatformGetClipboardTextFn;
+        io.PlatformClipboardUserData = GCHandle.ToIntPtr(this.clipboardUserData = GCHandle.Alloc(this)).ToPointer();
+        io.PlatformSetClipboardTextFn = (delegate* unmanaged<nint, byte*, void>)&StaticSetClipboardTextImpl;
+        io.PlatformGetClipboardTextFn = (delegate* unmanaged<nint, byte*>)&StaticGetClipboardTextImpl;
 
         this.clipboardData = new(0);
         return;
@@ -79,10 +79,10 @@ internal sealed unsafe class ImGuiClipboardFunctionProvider : IInternalDisposabl
         if (!this.clipboardUserData.IsAllocated)
             return;
 
-        var io = ImGui.GetIO();
-        io.SetClipboardTextFn = this.setTextOriginal;
-        io.GetClipboardTextFn = this.getTextOriginal;
-        io.ClipboardUserData = this.clipboardUserDataOriginal;
+        var io = ImGui.GetPlatformIO();
+        io.PlatformSetClipboardTextFn = this.setTextOriginal;
+        io.PlatformGetClipboardTextFn = this.getTextOriginal;
+        io.PlatformClipboardUserData = this.clipboardUserDataOriginal;
 
         this.clipboardUserData.Free();
         this.clipboardData.Dispose();

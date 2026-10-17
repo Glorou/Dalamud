@@ -244,11 +244,11 @@ internal class NotificationPositionChooser
 
         // Draw the big box
         dl.AddRectFilled(topLeft, bottomRight, ImGui.ColorConvertFloat4ToU32(backgroundColor), borderRounding, ImDrawFlags.RoundCornersAll);
-        dl.AddRect(topLeft, bottomRight, borderColor, borderRounding, ImDrawFlags.RoundCornersAll, borderThickness);
+        dl.AddRect(topLeft, bottomRight, borderColor, borderRounding,  borderThickness, ImDrawFlags.RoundCornersAll);
 
         // Draw the small box
         dl.AddRectFilled(smallTopLeft, smallBottomRight, ImGui.ColorConvertFloat4ToU32(backgroundColor), borderRounding, ImDrawFlags.RoundCornersAll);
-        dl.AddRect(smallTopLeft, smallBottomRight, borderColor, borderRounding, ImDrawFlags.RoundCornersAll, borderThickness);
+        dl.AddRect(smallTopLeft, smallBottomRight, borderColor, borderRounding, borderThickness, ImDrawFlags.RoundCornersAll);
     }
 
     private static class Locs

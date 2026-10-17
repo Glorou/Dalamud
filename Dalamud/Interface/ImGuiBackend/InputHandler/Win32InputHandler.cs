@@ -499,7 +499,7 @@ internal sealed unsafe partial class Win32InputHandler : IImGuiInputHandler
             focusedWindow != default
             && (focusedWindow == this.hWnd
                 || IsChild(focusedWindow, this.hWnd)
-                || !ImGui.FindViewportByPlatformHandle(focusedWindow).IsNull);
+                || !ImGui.FindViewportByPlatformHandle((nint)focusedWindow).IsNull);
 
         if (isAppFocused)
         {
@@ -553,7 +553,7 @@ internal sealed unsafe partial class Win32InputHandler : IImGuiInputHandler
     private ImGuiViewportPtr ViewportFromPoint(POINT mouseScreenPos)
     {
         var hoveredHwnd = WindowFromPoint(mouseScreenPos);
-        return hoveredHwnd != default ? ImGui.FindViewportByPlatformHandle(hoveredHwnd) : default;
+        return hoveredHwnd != default ? ImGui.FindViewportByPlatformHandle((nint)hoveredHwnd) : default;
     }
 
     private bool UpdateMouseCursor()
@@ -630,7 +630,7 @@ internal sealed unsafe partial class Win32InputHandler : IImGuiInputHandler
         if (ImGui.GetCurrentContext().IsNull)
             return DefWindowProcW(hWndCurrent, msg, wParam, lParam);
 
-        var viewport = ImGui.FindViewportByPlatformHandle(hWndCurrent);
+        var viewport = ImGui.FindViewportByPlatformHandle((nint)hWndCurrent);
         if (viewport.Handle == null)
             return DefWindowProcW(hWndCurrent, msg, wParam, lParam);
 

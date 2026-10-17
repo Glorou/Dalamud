@@ -88,7 +88,7 @@ public class IconBrowserWidget : IDataWindowWidget
             {
                 if (child.Success)
                 {
-                    var itemsPerRow = (int)MathF.Floor(ImGui.GetContentRegionMax().X / (this.iconSize.X + ImGui.GetStyle().ItemSpacing.X));
+                    var itemsPerRow = (int)MathF.Floor((ImGui.GetCursorPosX() + ImGui.GetContentRegionAvail().X) / (this.iconSize.X + ImGui.GetStyle().ItemSpacing.X));
                     var itemHeight = this.iconSize.Y + ImGui.GetStyle().ItemSpacing.Y;
 
                     ImGuiClip.ClippedDraw(this.valueRange!, this.DrawIcon, itemsPerRow, itemHeight);

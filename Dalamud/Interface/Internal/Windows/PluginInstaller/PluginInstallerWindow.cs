@@ -693,7 +693,7 @@ internal class PluginInstallerWindow : Window, IDisposable
     private void DrawHeader()
     {
         var style = ImGui.GetStyle();
-        var windowSize = ImGui.GetWindowContentRegionMax();
+        var windowSize = ImGui.GetCursorPos() + ImGui.GetContentRegionAvail();
 
         ImGui.SetCursorPosY(ImGui.GetCursorPosY() - (5 * ImGuiHelpers.GlobalScale));
 
@@ -904,7 +904,7 @@ internal class PluginInstallerWindow : Window, IDisposable
         var configuration = Service<DalamudConfiguration>.Get();
         var pluginManager = Service<PluginManager>.Get();
 
-        var windowSize = ImGui.GetWindowContentRegionMax();
+        var windowSize = ImGui.GetCursorPos() + ImGui.GetContentRegionAvail();
         var placeholderButtonSize = ImGuiHelpers.GetButtonSize("placeholder");
 
         ImGui.Separator();
@@ -1690,7 +1690,7 @@ internal class PluginInstallerWindow : Window, IDisposable
         var colorSearchHighlight = Vector4.One;
         unsafe
         {
-            var colorPtr = ImGui.GetStyleColorVec4(ImGuiCol.NavHighlight);
+            var colorPtr = ImGui.GetStyleColorVec4(ImGuiCol.NavWindowingHighlight);
             if (colorPtr != null)
             {
                 colorSearchHighlight = *colorPtr;
@@ -1773,7 +1773,7 @@ internal class PluginInstallerWindow : Window, IDisposable
             ImGuiHelpers.ScaledDummy(10);
 
             ImGui.PushStyleColor(ImGuiCol.Text, ImGuiColors.WarningForeground);
-            ImGui.PushFont(InterfaceManager.IconFont);
+            ImGui.PushFont(InterfaceManager.IconFont, InterfaceManager.DefaultFontSizePt);
             ImGuiHelpers.CenteredText(FontAwesomeIcon.ExclamationTriangle.ToIconString());
             ImGui.PopFont();
             ImGui.PopStyleColor();
