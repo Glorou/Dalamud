@@ -73,7 +73,5 @@ namespace Dalamud.Bindings.ImGui
 		/// To be documented.
 		/// </summary>
 		LiveEditOnInput = unchecked(384),
-
-        MixedValue = 1 << 9,
 	}
 }

@@ -30,4 +30,20 @@ public static unsafe partial class ImGui
             return r;
         }
     }
+
+    public static bool ImageButton(ImU8String strId, ImTextureID userTextureId, Vector2 size)
+    {
+        fixed (byte* strIdPtr = strId)
+        {
+            byte ret = ImGuiNative.ImageButton(
+                strIdPtr,
+                new(texId:userTextureId),
+                size,
+                (Vector2)(new Vector2(0, 0)),
+                (Vector2)(new Vector2(1, 1)),
+                (Vector4)(new Vector4(0, 0, 0, 0)),
+                (Vector4)(new Vector4(1, 1, 1, 1)));
+            return ret != 0;
+        }
+    }
 }

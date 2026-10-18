@@ -293,7 +293,7 @@ public class WindowHost
         {
             ref var nextWindowData = ref ImGui.GetCurrentContext().NextWindowData;
             effectiveWindowBgAlpha = ImGui.GetStyle().Colors[(int)ImGuiCol.WindowBg].W;
-            if (nextWindowData.Flags.HasFlag(ImGuiNextWindowDataFlags.HasBgAlpha))
+            if (nextWindowData.WindowFlags.HasFlag(ImGuiNextWindowDataFlags.HasBgAlpha))
             {
                 effectiveWindowBgAlpha = nextWindowData.BgAlphaVal;
             }
@@ -335,7 +335,7 @@ public class WindowHost
             var context = ImGui.GetCurrentContext();
             if (!context.IsNull)
             {
-                ImGuiP.GetCurrentWindow().InheritNoInputs = this.Window.IsClickthrough;
+                //ImGuiP.GetCurrentWindow().InheritNoInputs = this.Window.IsClickthrough;  ??
             }
 
             if (ImGui.GetWindowViewport().ID != ImGui.GetMainViewport().ID)
@@ -731,7 +731,7 @@ public class WindowHost
     {
         var window = ImGuiP.GetCurrentWindow();
         var flags = window.Flags;
-        var titleBarRect = window.TitleBarRect();
+        var titleBarRect = ImGuiP.TitleBarRect(window);
         ImGui.PushClipRect(ImGui.GetWindowPos(), ImGui.GetWindowPos() + ImGui.GetWindowSize(), false);
 
         var style = ImGui.GetStyle();
@@ -773,7 +773,7 @@ public class WindowHost
                 // ButtonBehavior does not function if the window is clickthrough, so we have to do it ourselves
                 var pad = ImGui.GetStyle().TouchExtraPadding;
                 var rect = new ImRect(pos - pad, max + pad);
-                hovered = rect.Contains(ImGui.GetMousePos());
+                hovered = ImGuiP.Contains(&rect, ImGui.GetMousePos());
 
                 // Temporarily enable inputs
                 // This will be reset on next frame, and then enabled again if it is still being hovered
@@ -844,7 +844,7 @@ public class WindowHost
         {
             var dl = ImGui.GetWindowDrawList();
             dl.AddImage(
-                this.fadeOutTexture!.Handle,
+                new(texId:this.fadeOutTexture!.Handle),
                 this.fadeOutOrigin,
                 this.fadeOutOrigin + this.fadeOutSize,
                 Vector2.Zero,
