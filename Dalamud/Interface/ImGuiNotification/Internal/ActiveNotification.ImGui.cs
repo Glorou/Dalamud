@@ -336,34 +336,7 @@ internal sealed partial class ActiveNotification
         var windowSize = ImGui.GetWindowSize();
 
         var rtOffset = new Vector2(width, 0);
-        using (Service<InterfaceManager>.Get().IconFontHandle?.Push())
-        {
-            ImGui.PushClipRect(windowPos, windowPos + windowSize with { Y = height }, false);
 
-            if (!drawActionButtons)
-                this.DrawExpiryPie(warrantsExtension, new(width - height, 0), new(height));
-
-            if (this.UserDismissable)
-            {
-                if (this.DrawIconButton(FontAwesomeIcon.Times, rtOffset, height, drawActionButtons))
-                    this.DismissNow(NotificationDismissReason.Manual);
-                rtOffset.X -= height;
-            }
-
-            if (this.underlyingNotification.Minimized)
-            {
-                if (this.DrawIconButton(FontAwesomeIcon.ChevronUp, rtOffset, height, drawActionButtons))
-                    this.Minimized = false;
-            }
-            else
-            {
-                if (this.DrawIconButton(FontAwesomeIcon.ChevronDown, rtOffset, height, drawActionButtons))
-                    this.Minimized = true;
-            }
-
-            rtOffset.X -= height;
-            ImGui.PopClipRect();
-        }
 
         float relativeOpacity;
         if (this.expandoEasing.IsRunning && !ReducedMotions)
@@ -485,13 +458,6 @@ internal sealed partial class ActiveNotification
         if (this.Icon?.DrawIcon(minCoord, maxCoord, iconColor) is true)
             return;
 
-        if (NotificationUtilities.DrawIconFrom(
-                minCoord,
-                maxCoord,
-                this.Type.ToChar(),
-                Service<NotificationManager>.Get().IconFontAwesomeFontHandle,
-                iconColor))
-            return;
 
         if (NotificationUtilities.DrawIconFrom(minCoord, maxCoord, this.initiatorPlugin))
             return;

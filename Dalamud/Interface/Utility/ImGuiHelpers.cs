@@ -14,8 +14,7 @@ using Dalamud.Interface.ImGuiBackend.InputHandler;
 using Dalamud.Interface.ImGuiBackend.Renderers;
 using Dalamud.Interface.ImGuiSeStringRenderer;
 using Dalamud.Interface.ImGuiSeStringRenderer.Internal;
-using Dalamud.Interface.ManagedFontAtlas;
-using Dalamud.Interface.ManagedFontAtlas.Internals;
+
 using Dalamud.Interface.Utility.Raii;
 using Dalamud.Utility;
 
@@ -313,10 +312,7 @@ public static partial class ImGuiHelpers
 
             using (ImRaii.Tooltip())
             {
-                using (ImRaii.PushFont(UiBuilder.IconFont))
-                {
-                    ImGui.Text(FontAwesomeIcon.Copy.ToIconString());
-                }
+
 
                 ImGui.SameLine();
                 ImGui.Text(textCopy.IsNull ? text.Span : textCopy.Span);
@@ -647,13 +643,7 @@ public static partial class ImGuiHelpers
         bool addFallbackCodepoints = true,
         bool addEllipsisCodepoints = true)
     {
-        if (addFallbackCodepoints)
-            builder.AddText(FontAtlasFactory.FallbackCodepoints);
-        if (addEllipsisCodepoints)
-        {
-            builder.AddText(FontAtlasFactory.EllipsisCodepoints);
-            builder.AddChar('.');
-        }
+
 
         ImVector<ushort> outRanges = default;
         builder.BuildRanges(&outRanges);

@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 
 using Dalamud.Bindings.ImGui;
-using Dalamud.Interface.ManagedFontAtlas;
+
 using Dalamud.Storage.Assets;
 
 using Newtonsoft.Json;
@@ -78,9 +78,6 @@ public sealed class DalamudAssetFontAndFamilyId : IFontFamilyId, IFontId
     /// <inheritdoc/>
     public int FindBestMatch(int weight, int stretch, int style) => 0;
 
-    /// <inheritdoc/>
-    public ImFontPtr AddToBuildToolkit(IFontAtlasBuildToolkitPreBuild tk, in SafeFontConfig config) =>
-        tk.AddDalamudAssetFont(this.Asset, config);
 
     private bool Equals(DalamudAssetFontAndFamilyId other) => this.Asset == other.Asset;
 }

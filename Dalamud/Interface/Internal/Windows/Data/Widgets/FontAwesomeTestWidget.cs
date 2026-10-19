@@ -56,13 +56,7 @@ internal class FontAwesomeTestWidget : IDataWindowWidget
         {
             if (this.iconSearchInput == string.Empty && this.selectedIconCategory <= 1)
             {
-                var en = InterfaceManager.IconFont.GlyphsWrapped()
-                                         .Select(x => (FontAwesomeIcon)x.Codepoint)
-                                         .Where(x => (ushort)x is >= 0xE000 and < 0xF000);
-                en = this.selectedIconCategory == 0
-                         ? en.Concat(FontAwesomeHelpers.SearchIcons(string.Empty, string.Empty))
-                         : en.Except(FontAwesomeHelpers.SearchIcons(string.Empty, string.Empty));
-                this.icons = en.Distinct().Order().ToList();
+
             }
             else
             {
@@ -104,7 +98,7 @@ internal class FontAwesomeTestWidget : IDataWindowWidget
             ImGui.Text($"{this.iconNames?[i]}");
             ImGuiHelpers.ScaledRelativeSameLine(280f);
 
-            using var pushedFont = ImRaii.PushFont(this.useFixedWidth ? InterfaceManager.IconFontFixedWidth : InterfaceManager.IconFont);
+
             ImGui.Text(this.icons[i].ToIconString());
             ImGuiHelpers.ScaledRelativeSameLine(320f);
             if (this.useFixedWidth

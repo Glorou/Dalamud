@@ -100,7 +100,6 @@ internal class PluginErrorHandler : IServiceType
         var notification = new Notification()
         {
             Title = creatingErrorsText,
-            Icon = INotificationIcon.From(FontAwesomeIcon.Bolt),
             Type = NotificationType.Error,
             InitialDuration = TimeSpan.FromSeconds(15),
             MinimizedText = creatingErrorsText,

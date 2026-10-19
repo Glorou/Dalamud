@@ -3,7 +3,6 @@ using System.IO;
 using System.Linq;
 
 using Dalamud.Bindings.ImGui;
-using Dalamud.Interface.ManagedFontAtlas;
 using Dalamud.Utility;
 
 using Newtonsoft.Json;
@@ -88,12 +87,6 @@ public sealed class SystemFontId : IFontId
     public override string ToString() =>
         $"{nameof(SystemFontId)}:{this.Weight}:{this.Stretch}:{this.Style}:{this.Family}";
 
-    /// <inheritdoc/>
-    public ImFontPtr AddToBuildToolkit(IFontAtlasBuildToolkitPreBuild tk, in SafeFontConfig config)
-    {
-        var (path, index) = this.GetFileAndIndex();
-        return tk.AddFontFromFile(path, config with { FontNo = index });
-    }
 
     /// <summary>
     /// Gets the file containing this font, and the font index within.

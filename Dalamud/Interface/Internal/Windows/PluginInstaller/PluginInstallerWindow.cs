@@ -1013,8 +1013,7 @@ internal class PluginInstallerWindow : Window, IDisposable
                                 {
                                     Title = Locs.Notifications_UpdatesInstalledTitle,
                                     Content = Locs.Notifications_UpdatesInstalled(this.updatedPlugins),
-                                    Type = NotificationType.Success,
-                                    Icon = INotificationIcon.From(FontAwesomeIcon.Download),
+                                    Type = NotificationType.Success
                                 });
 
                                 this.categoryManager.CurrentGroupKind = PluginCategoryManager.GroupKind.Installed;
@@ -1773,7 +1772,6 @@ internal class PluginInstallerWindow : Window, IDisposable
             ImGuiHelpers.ScaledDummy(10);
 
             ImGui.PushStyleColor(ImGuiCol.Text, ImGuiColors.WarningForeground);
-            ImGui.PushFont(InterfaceManager.IconFont, InterfaceManager.DefaultFontSizePt);
             ImGuiHelpers.CenteredText(FontAwesomeIcon.ExclamationTriangle.ToIconString());
             ImGui.PopFont();
             ImGui.PopStyleColor();
@@ -2052,7 +2050,7 @@ internal class PluginInstallerWindow : Window, IDisposable
 
                         if (ImGui.BeginPopup(popupId))
                         {
-                            if (ImGui.ImageButton(image.Handle, new Vector2(image.Width, image.Height)))
+                            if (ImGui.ImageButton(popupId, image.Handle, new Vector2(image.Width, image.Height)))
                                 ImGui.CloseCurrentPopup();
 
                             ImGui.EndPopup();
@@ -2076,7 +2074,7 @@ internal class PluginInstallerWindow : Window, IDisposable
                         }
 
                         var size = ImGuiHelpers.ScaledVector2(xAct / thumbFactor, yAct / thumbFactor);
-                        if (ImGui.ImageButton(image.Handle, size))
+                        if (ImGui.ImageButton("popup",image.Handle, size))
                             ImGui.OpenPopup(popupId);
 
                         ImGui.PopStyleVar();
@@ -2307,7 +2305,7 @@ internal class PluginInstallerWindow : Window, IDisposable
 
         var iconSize = ImGuiHelpers.ScaledVector2(64, 64);
         var cursorBeforeImage = ImGui.GetCursorPos();
-        var rectOffset = ImGui.GetWindowContentRegionMin() + ImGui.GetWindowPos();
+        var rectOffset = ImGui.GetCursorPos() + ImGui.GetWindowPos();
 
         var overlayAlpha = 1.0f;
         if (ImGui.IsRectVisible(rectOffset + cursorBeforeImage, rectOffset + cursorBeforeImage + iconSize))
@@ -2569,7 +2567,7 @@ internal class PluginInstallerWindow : Window, IDisposable
 
         var iconSize = ImGuiHelpers.ScaledVector2(64, 64);
         var cursorBeforeImage = ImGui.GetCursorPos();
-        var rectOffset = ImGui.GetWindowContentRegionMin() + ImGui.GetWindowPos();
+        var rectOffset = ImGui.GetCursorPos() + ImGui.GetWindowPos();
         if (ImGui.IsRectVisible(rectOffset + cursorBeforeImage, rectOffset + cursorBeforeImage + iconSize))
         {
             IDalamudTextureWrap icon;
@@ -3667,7 +3665,7 @@ internal class PluginInstallerWindow : Window, IDisposable
             var problems = PluginValidator.CheckForProblems(devPlugin);
             if (problems.Count == 0)
             {
-                ImGui.PushFont(InterfaceManager.IconFont);
+
                 ImGui.Text(FontAwesomeIcon.Check.ToIconString());
                 ImGui.PopFont();
                 ImGui.SameLine();
@@ -3720,23 +3718,7 @@ internal class PluginInstallerWindow : Window, IDisposable
                         };
 
                         using (ImRaii.PushColor(ImGuiCol.Text, iconColor))
-                        using (ImRaii.PushFont(InterfaceManager.IconFont))
-                        {
-                            switch (problem.Severity)
-                            {
-                                case PluginValidator.ValidationSeverity.Fatal:
-                                    ImGui.Text(FontAwesomeIcon.TimesCircle.ToIconString());
-                                    break;
-                                case PluginValidator.ValidationSeverity.Warning:
-                                    ImGui.Text(FontAwesomeIcon.ExclamationTriangle.ToIconString());
-                                    break;
-                                case PluginValidator.ValidationSeverity.Information:
-                                    ImGui.Text(FontAwesomeIcon.InfoCircle.ToIconString());
-                                    break;
-                                default:
-                                    throw new ArgumentOutOfRangeException();
-                            }
-                        }
+
 
                         ImGui.SameLine();
 
@@ -3841,7 +3823,7 @@ internal class PluginInstallerWindow : Window, IDisposable
         ImGui.SameLine();
         if (plugin.State == PluginState.Loaded || devNotDeletable)
         {
-            ImGui.PushFont(InterfaceManager.IconFont);
+
             ImGuiComponents.DisabledButton(FontAwesomeIcon.TrashAlt.ToIconString());
             ImGui.PopFont();
 
@@ -3972,7 +3954,7 @@ internal class PluginInstallerWindow : Window, IDisposable
                 var popupId = $"plugin{index}image{i}";
                 if (ImGui.BeginPopup(popupId))
                 {
-                    if (ImGui.ImageButton(image.Handle, new Vector2(image.Width, image.Height)))
+                    if (ImGui.ImageButton(popupId, image.Handle, new Vector2(image.Width, image.Height)))
                         ImGui.CloseCurrentPopup();
 
                     ImGui.EndPopup();
@@ -3996,7 +3978,7 @@ internal class PluginInstallerWindow : Window, IDisposable
                 }
 
                 var size = ImGuiHelpers.ScaledVector2(xAct / thumbFactor, yAct / thumbFactor);
-                if (ImGui.ImageButton(image.Handle, size))
+                if (ImGui.ImageButton(popupId, image.Handle, size))
                     ImGui.OpenPopup(popupId);
 
                 ImGui.PopStyleVar();
@@ -4287,7 +4269,7 @@ internal class PluginInstallerWindow : Window, IDisposable
     {
         var positionOffset = ImGuiHelpers.ScaledVector2(0.0f, 1.0f);
         var cursorStart = ImGui.GetCursorPos() + positionOffset;
-        ImGui.PushFont(InterfaceManager.IconFont);
+
 
         ImGui.PushStyleColor(ImGuiCol.Text, outline);
         foreach (var x in Enumerable.Range(-1, 3))

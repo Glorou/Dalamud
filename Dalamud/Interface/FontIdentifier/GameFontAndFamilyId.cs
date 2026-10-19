@@ -2,7 +2,7 @@ using System.Collections.Generic;
 
 using Dalamud.Bindings.ImGui;
 using Dalamud.Interface.GameFonts;
-using Dalamud.Interface.ManagedFontAtlas;
+
 
 using Newtonsoft.Json;
 
@@ -73,8 +73,6 @@ public sealed class GameFontAndFamilyId : IFontId, IFontFamilyId
     public override string ToString() => $"{nameof(GameFontAndFamilyId)}:{this.GameFontFamily}";
 
     /// <inheritdoc/>
-    public ImFontPtr AddToBuildToolkit(IFontAtlasBuildToolkitPreBuild tk, in SafeFontConfig config) =>
-        tk.AddGameGlyphs(new(this.GameFontFamily, config.SizePx), config.GlyphRanges, config.MergeFont);
 
     private bool Equals(GameFontAndFamilyId other) => this.GameFontFamily == other.GameFontFamily;
 }

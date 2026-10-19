@@ -192,12 +192,11 @@ public class IconBrowserWidget : IDataWindowWidget
         else if (exc is not null)
         {
             ImGui.Dummy(this.iconSize);
-            using (Service<InterfaceManager>.Get().IconFontHandle?.Push())
-            {
+
                 var iconText = FontAwesomeIcon.Ban.ToIconString();
                 var textSize = ImGui.CalcTextSize(iconText);
                 drawList.AddText(cursor + ((this.iconSize - textSize) / 2), red, iconText);
-            }
+
 
             if (ImGui.IsItemHovered())
                 ImGui.SetTooltip($"{iconId}\n{exc}");

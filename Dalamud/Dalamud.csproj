@@ -99,6 +99,14 @@
         <None Include="Interface\Internal\DalamudIme.cs" />
         <Compile Remove="Interface\Internal\Windows\ChangelogWindow.cs" />
         <None Include="Interface\Internal\Windows\ChangelogWindow.cs" />
+        <Compile Remove="Interface\ImGuiFontChooserDialog\SingleFontChooserDialog.cs" />
+        <None Include="Interface\ImGuiFontChooserDialog\SingleFontChooserDialog.cs" />
+        <Compile Remove="Interface\ImGuiNotification\Internal\NotificationIcon\SeIconCharNotificationIcon.cs" />
+        <None Include="Interface\ImGuiNotification\Internal\NotificationIcon\SeIconCharNotificationIcon.cs" />
+        <Compile Remove="Interface\ImGuiNotification\Internal\NotificationIcon\FontAwesomeIconNotificationIcon.cs" />
+        <None Include="Interface\ImGuiNotification\Internal\NotificationIcon\FontAwesomeIconNotificationIcon.cs" />
+        <Compile Remove="Interface\Internal\Windows\Data\Widgets\GamePrebakedFontsTestWidget.cs" />
+        <None Include="Interface\Internal\Windows\Data\Widgets\GamePrebakedFontsTestWidget.cs" />
     </ItemGroup>
 
     <ItemGroup>

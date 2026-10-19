@@ -53,7 +53,7 @@ public class ProfilerWindow : Window
 
             for (var i = 0; i < width; i += 80)
             {
-                ImGui.PushFont(InterfaceManager.MonoFont, InterfaceManager.DefaultFontSizePt);
+
 
                 var lineEnd = childHeight - 20;
 

@@ -15,8 +15,7 @@ using Dalamud.Interface.ImGuiNotification;
 using Dalamud.Interface.ImGuiNotification.Internal;
 using Dalamud.Interface.Internal;
 using Dalamud.Interface.Internal.DesignSystem;
-using Dalamud.Interface.ManagedFontAtlas;
-using Dalamud.Interface.ManagedFontAtlas.Internals;
+
 using Dalamud.Interface.Utility;
 using Dalamud.Plugin.Internal.Types;
 using Dalamud.Utility;
@@ -73,94 +72,9 @@ public interface IUiBuilder
     /// <inheritdoc cref="InterfaceManager.DefaultStyleChanged"/>
     event Action? DefaultStyleChanged;
 
-    /// <summary>
-    /// Gets the handle to the default Dalamud font - supporting all game languages and icons.
-    /// </summary>
-    /// <remarks>
-    /// A font handle corresponding to this font can be obtained with:
-    /// <code>
-    /// fontAtlas.NewDelegateFontHandle(
-    ///     e => e.OnPreBuild(
-    ///         tk => tk.AddDalamudDefaultFont(UiBuilder.DefaultFontSizePx)));
-    /// </code>
-    /// </remarks>
-    IFontHandle DefaultFontHandle { get; }
 
-    /// <summary>
-    /// Gets the default Dalamud icon font based on FontAwesome 5 Free solid.
-    /// </summary>
-    /// <remarks>
-    /// A font handle corresponding to this font can be obtained with:
-    /// <code>
-    /// fontAtlas.NewDelegateFontHandle(
-    ///     e => e.OnPreBuild(
-    ///         tk => tk.AddFontAwesomeIconFont(new() { SizePt = UiBuilder.DefaultFontSizePt })));
-    /// // or use
-    ///         tk => tk.AddFontAwesomeIconFont(new() { SizePx = UiBuilder.DefaultFontSizePx })));
-    /// </code>
-    /// </remarks>
-    IFontHandle IconFontHandle { get; }
 
-    /// <summary>
-    /// Gets the default Dalamud monospaced font based on Inconsolata Regular.
-    /// </summary>
-    /// <remarks>
-    /// A font handle corresponding to this font can be obtained with:
-    /// <code>
-    /// fontAtlas.NewDelegateFontHandle(
-    ///     e => e.OnPreBuild(
-    ///         tk => tk.AddDalamudAssetFont(
-    ///             DalamudAsset.InconsolataRegular,
-    ///             new() { SizePt = UiBuilder.DefaultFontSizePt })));
-    /// // or use
-    ///             new() { SizePx = UiBuilder.DefaultFontSizePx })));
-    /// </code>
-    /// </remarks>
-    IFontHandle MonoFontHandle { get; }
 
-    /// <summary>
-    /// Gets the default Dalamud icon font based on FontAwesome 5 free solid with a fixed width and vertically centered glyphs.
-    /// </summary>
-    IFontHandle IconFontFixedWidthHandle { get; }
-
-    /// <summary>
-    /// Gets the default font specifications.
-    /// </summary>
-    IFontSpec DefaultFontSpec { get; }
-
-    /// <summary>
-    /// Gets the default Dalamud font size in points.
-    /// </summary>
-    float FontDefaultSizePt { get; }
-
-    /// <summary>
-    /// Gets the default Dalamud font size in pixels.
-    /// </summary>
-    float FontDefaultSizePx { get; }
-
-    /// <summary>
-    /// Gets the default Dalamud font - supporting all game languages and icons.<br />
-    /// <strong>Accessing this static property outside of <see cref="Draw"/> is dangerous and not supported.</strong>
-    /// </summary>
-    ImFontPtr FontDefault { get; }
-
-    /// <summary>
-    /// Gets the default Dalamud icon font based on FontAwesome 5 Free solid.<br />
-    /// <strong>Accessing this static property outside of <see cref="Draw"/> is dangerous and not supported.</strong>
-    /// </summary>
-    ImFontPtr FontIcon { get; }
-
-    /// <summary>
-    /// Gets the default Dalamud monospaced font based on Inconsolata Regular.<br />
-    /// <strong>Accessing this static property outside of <see cref="Draw"/> is dangerous and not supported.</strong>
-    /// </summary>
-    ImFontPtr FontMono { get; }
-
-    /// <summary>
-    /// Gets the default Dalamud icon font based on FontAwesome 5 Free solid with a fixed width and vertically centered glyphs. <br />
-    /// <strong>Accessing this static property outside of <see cref="Draw"/> is dangerous and not supported.</strong>
-    /// </summary>
-    ImFontPtr FontIconFixedWidth { get; }
 
     /// <summary>Gets the game's active Direct3D device.</summary>
     /// <value>Pointer to the instance of IUnknown that the game is using and should be containing an ID3D11Device,
@@ -223,7 +137,7 @@ public interface IUiBuilder
     /// <summary>
     /// Gets the plugin-private font atlas.
     /// </summary>
-    IFontAtlas FontAtlas { get; }
+
 
     /// <summary>
     /// Gets a value indicating whether to use "reduced motion". This usually means that you should use less
@@ -281,10 +195,7 @@ public interface IUiBuilder
     /// If <paramref name="autoRebuildMode"/> is not <see cref="FontAtlasAutoRebuildMode.OnNewFrame"/>,
     /// the font rebuilding functions must be called manually.
     /// </remarks>
-    IFontAtlas CreateFontAtlas(
-        FontAtlasAutoRebuildMode autoRebuildMode,
-        bool isGlobalScaled = true,
-        string? debugName = null);
+
 }
 
 /// <summary>
@@ -308,10 +219,7 @@ public sealed class UiBuilder : IDisposable, IUiBuilder
     private Exception? lastError = null;
     private bool lastFrameUiHideState = false;
 
-    private IFontHandle? defaultFontHandle;
-    private IFontHandle? iconFontHandle;
-    private IFontHandle? monoFontHandle;
-    private IFontHandle? iconFontFixedWidthHandle;
+
 
     /// <summary>
     /// Initializes a new instance of the <see cref="UiBuilder"/> class and registers it.
@@ -342,12 +250,7 @@ public sealed class UiBuilder : IDisposable, IUiBuilder
             this.interfaceManager.DefaultFontChanged += this.OnDefaultFontChanged;
             this.scopedFinalizer.Add(() => this.interfaceManager.DefaultFontChanged -= this.OnDefaultFontChanged);
 
-            this.FontAtlas =
-                this.scopedFinalizer
-                    .Add(
-                        Service<FontAtlasFactory>
-                            .Get()
-                            .CreateFontAtlas(namespaceName, FontAtlasAutoRebuildMode.Async));
+
         }
         catch
         {
@@ -383,132 +286,7 @@ public sealed class UiBuilder : IDisposable, IUiBuilder
     /// <inheritdoc/>
     public event Action? DefaultStyleChanged;
 
-    /// <summary>
-    /// Gets the default Dalamud font size in points.
-    /// </summary>
-    public static float DefaultFontSizePt => Service<FontAtlasFactory>.Get().DefaultFontSpec.SizePt;
 
-    /// <summary>
-    /// Gets the default Dalamud font size in pixels.
-    /// </summary>
-    public static float DefaultFontSizePx => Service<FontAtlasFactory>.Get().DefaultFontSpec.SizePx;
-
-    /// <summary>
-    /// Gets the default Dalamud font - supporting all game languages and icons.<br />
-    /// <strong>Accessing this static property outside of <see cref="Draw"/> is dangerous and not supported.</strong>
-    /// </summary>
-    public static ImFontPtr DefaultFont => InterfaceManager.DefaultFont;
-
-    /// <summary>
-    /// Gets the default Dalamud icon font based on FontAwesome 5 Free solid.<br />
-    /// <strong>Accessing this static property outside of <see cref="Draw"/> is dangerous and not supported.</strong>
-    /// </summary>
-    public static ImFontPtr IconFont => InterfaceManager.IconFont;
-
-    /// <summary>
-    /// Gets the default Dalamud monospaced font based on Inconsolata Regular.<br />
-    /// <strong>Accessing this static property outside of <see cref="Draw"/> is dangerous and not supported.</strong>
-    /// </summary>
-    public static ImFontPtr MonoFont => InterfaceManager.MonoFont;
-
-    /// <summary>
-    /// Gets the default Dalamud icon font based on FontAwesome 5 Free solid with a fixed width and vertically centered glyphs. <br />
-    /// <strong>Accessing this static property outside of <see cref="Draw"/> is dangerous and not supported.</strong>
-    /// </summary>
-    public static ImFontPtr IconFontFixedWidth => InterfaceManager.IconFontFixedWidth;
-
-    /// <summary>
-    /// Gets the default font specifications.
-    /// </summary>
-    public IFontSpec DefaultFontSpec => Service<FontAtlasFactory>.Get().DefaultFontSpec;
-
-    /// <inheritdoc/>
-    public float FontDefaultSizePt => Service<FontAtlasFactory>.Get().DefaultFontSpec.SizePt;
-
-    /// <inheritdoc/>
-    public float FontDefaultSizePx => Service<FontAtlasFactory>.Get().DefaultFontSpec.SizePx;
-
-    /// <inheritdoc/>
-    public ImFontPtr FontDefault => InterfaceManager.DefaultFont;
-
-    /// <inheritdoc/>
-    public ImFontPtr FontIcon => InterfaceManager.IconFont;
-
-    /// <inheritdoc/>
-    public ImFontPtr FontMono => InterfaceManager.MonoFont;
-
-    /// <inheritdoc/>
-    public ImFontPtr FontIconFixedWidth => InterfaceManager.IconFontFixedWidth;
-
-    /// <summary>
-    /// Gets the handle to the default Dalamud font - supporting all game languages and icons.
-    /// </summary>
-    /// <remarks>
-    /// A font handle corresponding to this font can be obtained with:
-    /// <code>
-    /// fontAtlas.NewDelegateFontHandle(
-    ///     e => e.OnPreBuild(
-    ///         tk => tk.AddDalamudDefaultFont(UiBuilder.DefaultFontSizePx)));
-    /// </code>
-    /// </remarks>
-    public IFontHandle DefaultFontHandle =>
-        this.defaultFontHandle ??=
-            this.scopedFinalizer.Add(
-                new FontHandleWrapper(
-                    this.InterfaceManagerWithScene?.DefaultFontHandle
-                    ?? throw new InvalidOperationException("Scene is not yet ready.")));
-
-    /// <summary>
-    /// Gets the default Dalamud icon font based on FontAwesome 5 Free solid.
-    /// </summary>
-    /// <remarks>
-    /// A font handle corresponding to this font can be obtained with:
-    /// <code>
-    /// fontAtlas.NewDelegateFontHandle(
-    ///     e => e.OnPreBuild(
-    ///         tk => tk.AddFontAwesomeIconFont(new() { SizePt = UiBuilder.DefaultFontSizePt })));
-    /// // or use
-    ///         tk => tk.AddFontAwesomeIconFont(new() { SizePx = UiBuilder.DefaultFontSizePx })));
-    /// </code>
-    /// </remarks>
-    public IFontHandle IconFontHandle =>
-        this.iconFontHandle ??=
-            this.scopedFinalizer.Add(
-                new FontHandleWrapper(
-                    this.InterfaceManagerWithScene?.IconFontHandle
-                    ?? throw new InvalidOperationException("Scene is not yet ready.")));
-
-    /// <summary>
-    /// Gets the default Dalamud icon font based on FontAwesome 5 free solid with a fixed width and vertically centered glyphs.
-    /// </summary>
-    public IFontHandle IconFontFixedWidthHandle =>
-        this.iconFontFixedWidthHandle ??=
-            this.scopedFinalizer.Add(
-                new FontHandleWrapper(
-                    this.InterfaceManagerWithScene?.IconFontFixedWidthHandle
-                    ?? throw new InvalidOperationException("Scene is not yet ready.")));
-
-    /// <summary>
-    /// Gets the default Dalamud monospaced font based on Inconsolata Regular.
-    /// </summary>
-    /// <remarks>
-    /// A font handle corresponding to this font can be obtained with:
-    /// <code>
-    /// fontAtlas.NewDelegateFontHandle(
-    ///     e => e.OnPreBuild(
-    ///         tk => tk.AddDalamudAssetFont(
-    ///             DalamudAsset.InconsolataRegular,
-    ///             new() { SizePt = UiBuilder.DefaultFontSizePt })));
-    /// // or use
-    ///             new() { SizePx = UiBuilder.DefaultFontSizePx })));
-    /// </code>
-    /// </remarks>
-    public IFontHandle MonoFontHandle =>
-        this.monoFontHandle ??=
-            this.scopedFinalizer.Add(
-                new FontHandleWrapper(
-                    this.InterfaceManagerWithScene?.MonoFontHandle
-                    ?? throw new InvalidOperationException("Scene is not yet ready.")));
 
     /// <inheritdoc/>
     public nint DeviceHandle => this.InterfaceManagerWithScene?.Backend?.DeviceHandle ?? 0;
@@ -575,10 +353,7 @@ public sealed class UiBuilder : IDisposable, IUiBuilder
     /// </summary>
     public bool UiPrepared => Service<InterfaceManager.InterfaceManagerWithScene>.GetNullable() != null;
 
-    /// <summary>
-    /// Gets the plugin-private font atlas.
-    /// </summary>
-    public IFontAtlas FontAtlas { get; }
+
 
     /// <summary>
     /// Gets a value indicating whether to use "reduced motion". This usually means that you should use less
@@ -689,18 +464,7 @@ public sealed class UiBuilder : IDisposable, IUiBuilder
     /// If <paramref name="autoRebuildMode"/> is not <see cref="FontAtlasAutoRebuildMode.OnNewFrame"/>,
     /// the font rebuilding functions must be called manually.
     /// </remarks>
-    public IFontAtlas CreateFontAtlas(
-        FontAtlasAutoRebuildMode autoRebuildMode,
-        bool isGlobalScaled = true,
-        string? debugName = null) =>
-        this.scopedFinalizer.Add(
-            Service<FontAtlasFactory>
-                .Get()
-                .CreateFontAtlas(
-                    this.namespaceName + ":" + (debugName ?? "custom"),
-                    autoRebuildMode,
-                    isGlobalScaled,
-                    this.plugin));
+
 
     /// <summary>
     /// Unregister the UiBuilder. Do not call this in plugin code.
@@ -872,64 +636,5 @@ public sealed class UiBuilder : IDisposable, IUiBuilder
     private void OnDefaultFontChanged()
         => this.DefaultFontChanged.InvokeSafely();
 
-    private class FontHandleWrapper : IFontHandle
-    {
-        private IFontHandle? wrapped;
 
-        public FontHandleWrapper(IFontHandle wrapped)
-        {
-            this.wrapped = wrapped;
-            this.wrapped.ImFontChanged += this.WrappedOnImFontChanged;
-        }
-
-        public event IFontHandle.ImFontChangedDelegate? ImFontChanged;
-
-        public Exception? LoadException => this.WrappedNotDisposed.LoadException;
-
-        public bool Available => this.WrappedNotDisposed.Available;
-
-        private IFontHandle WrappedNotDisposed =>
-            this.wrapped ?? throw new ObjectDisposedException(nameof(FontHandleWrapper));
-
-        public void Dispose()
-        {
-            if (this.wrapped is not { } w)
-                return;
-
-            this.wrapped = null;
-            w.ImFontChanged -= this.WrappedOnImFontChanged;
-            // Note: do not dispose w; we do not own it
-        }
-
-        public ILockedImFont? TryLock(out string? errorMessage)
-        {
-            if (this.wrapped is { } w)
-                return w.TryLock(out errorMessage);
-
-            errorMessage = nameof(ObjectDisposedException);
-            return null;
-        }
-
-        public ILockedImFont Lock() =>
-            this.wrapped?.Lock() ?? throw new ObjectDisposedException(nameof(FontHandleWrapper));
-
-        public IDisposable Push() => this.WrappedNotDisposed.Push();
-
-        public void Pop() => this.WrappedNotDisposed.Pop();
-
-        public Task<IFontHandle> WaitAsync() =>
-            this.wrapped?.WaitAsync().ContinueWith(_ => (IFontHandle)this)
-            ?? Task.FromException<IFontHandle>(new ObjectDisposedException(nameof(FontHandleWrapper)));
-
-        public Task<IFontHandle> WaitAsync(CancellationToken cancellationToken) =>
-            this.wrapped?.WaitAsync(cancellationToken)
-                .ContinueWith(_ => (IFontHandle)this, cancellationToken)
-            ?? Task.FromException<IFontHandle>(new ObjectDisposedException(nameof(FontHandleWrapper)));
-
-        public override string ToString() =>
-            $"{nameof(FontHandleWrapper)}({this.wrapped?.ToString() ?? "disposed"})";
-
-        private void WrappedOnImFontChanged(IFontHandle obj, ILockedImFont lockedFont) =>
-            this.ImFontChanged?.Invoke(obj, lockedFont);
-    }
 }

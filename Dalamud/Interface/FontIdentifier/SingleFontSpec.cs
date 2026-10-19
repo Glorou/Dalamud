@@ -4,7 +4,7 @@ using System.Numerics;
 using System.Text;
 
 using Dalamud.Bindings.ImGui;
-using Dalamud.Interface.ManagedFontAtlas;
+
 using Dalamud.Interface.Utility;
 
 using Newtonsoft.Json;
@@ -89,72 +89,5 @@ public record SingleFontSpec : IFontSpec
     /// <inheritdoc/>
     public override string ToString() => this.ToLocalizedString("en");
 
-    /// <inheritdoc/>
-    public IFontHandle CreateFontHandle(IFontAtlas atlas, FontAtlasBuildStepDelegate? callback = null) =>
-        atlas.NewDelegateFontHandle(tk =>
-        {
-            tk.OnPreBuild(e => e.Font = this.AddToBuildToolkit(e));
-            callback?.Invoke(tk);
-        });
 
-    /// <inheritdoc/>
-    public ImFontPtr AddToBuildToolkit(IFontAtlasBuildToolkitPreBuild tk, ImFontPtr mergeFont = default)
-    {
-        var font = this.FontId.AddToBuildToolkit(
-            tk,
-            new()
-            {
-                FontNo = this.FontNo,
-                SizePx = this.SizePx,
-                GlyphRanges = this.GlyphRanges,
-                MergeFont = mergeFont,
-            });
-
-        tk.RegisterPostBuild(
-            () =>
-            {
-
-                // Multiplication by scale will be done with global scale, outside of this handling.
-                font.GetFontBaked(this.SizePx);
-                var scale = tk.GetFontScaleMode(font) == FontScaleMode.UndoGlobalScale ? 1 / tk.Scale : 1;
-                var roundUnit = tk.GetFontScaleMode(font) == FontScaleMode.SkipHandling ? 1 : 1 / tk.Scale;
-                var newAscent = MathF.Round((font.LastBaked.Ascent * this.LineHeight) / roundUnit) * roundUnit;
-                var newFontSize = MathF.Round((font.LastBaked.Size * this.LineHeight) / roundUnit) * roundUnit;
-                var shiftDown = MathF.Round((newFontSize - font.LastBaked.Size) / 2f / roundUnit) * roundUnit;
-
-                font.LastBaked.Ascent = newAscent;
-                font.LastBaked.Size = newFontSize;
-                font.LastBaked.Descent = newFontSize - font.LastBaked.Ascent;
-
-                var lookup = new BitArray(ushort.MaxValue + 1, this.GlyphRanges is null);
-                if (this.GlyphRanges is not null)
-                {
-                    for (var i = 0; i < this.GlyphRanges.Length && this.GlyphRanges[i] != 0; i += 2)
-                    {
-                        var to = (int)this.GlyphRanges[i + 1];
-                        for (var j = this.GlyphRanges[i]; j <= to; j++)
-                            lookup[j] = true;
-                    }
-                }
-
-                var dax = MathF.Round((this.LetterSpacing * scale) / roundUnit) * roundUnit;
-                var dxy0 = this.GlyphOffset * scale;
-                dxy0 /= roundUnit;
-                dxy0 = new(MathF.Round(dxy0.X), MathF.Round(dxy0.Y));
-                dxy0 *= roundUnit;
-
-                dxy0.Y += shiftDown;
-                var dxy = new Vector4(dxy0, dxy0.X, dxy0.Y);
-                foreach (ref var glyphReal in font.GlyphsWrapped().DataSpan)
-                {
-                    if (!lookup[glyphReal.Codepoint])
-                        continue;
-
-                    glyphReal.XY += dxy;
-                    glyphReal.AdvanceX += dax;
-                }
-            });
-
-        return font;
-    }
 }

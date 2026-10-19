@@ -679,16 +679,7 @@ public static class ImVectorWrapper
         }
     }
 
-    /// <summary>
-    /// Wraps <see cref="ImFontAtlas.ConfigData"/> into a <see cref="ImVectorWrapper{T}"/>.<br />
-    /// This does not need to be disposed.
-    /// </summary>
-    /// <param name="obj">The owner object.</param>
-    /// <returns>The wrapped vector.</returns>
-    public static unsafe ImVectorWrapper<ImFontConfig> ConfigDataWrapped(this ImFontAtlasPtr obj) =>
-        obj.Handle is null
-            ? throw new NullReferenceException()
-            : new((ImVector*)Unsafe.AsPointer(ref obj.ConfigData), x => x->Destroy());
+
 
     /// <summary>
     /// Wraps <see cref="ImFontAtlas.Fonts"/> into a <see cref="ImVectorWrapper{T}"/>.<br />
@@ -701,47 +692,6 @@ public static class ImVectorWrapper
             ? throw new NullReferenceException()
             : new((ImVector*)Unsafe.AsPointer(ref obj.Fonts), x => x->Destroy());
 
-    /// <summary>
-    /// Wraps <see cref="ImFontAtlas.Textures"/> into a <see cref="ImVectorWrapper{T}"/>.<br />
-    /// This does not need to be disposed.
-    /// </summary>
-    /// <param name="obj">The owner object.</param>
-    /// <returns>The wrapped vector.</returns>
-    public static unsafe ImVectorWrapper<ImFontAtlasTexture> TexturesWrapped(this ImFontAtlasPtr obj) =>
-        obj.Handle is null
-            ? throw new NullReferenceException()
-            : new((ImVector*)Unsafe.AsPointer(ref obj.Textures));
 
-    /// <summary>
-    /// Wraps <see cref="ImFont.Glyphs"/> into a <see cref="ImVectorWrapper{T}"/>.<br />
-    /// This does not need to be disposed.
-    /// </summary>
-    /// <param name="obj">The owner object.</param>
-    /// <returns>The wrapped vector.</returns>
-    public static unsafe ImVectorWrapper<ImGuiHelpers.ImFontGlyphReal> GlyphsWrapped(this ImFontPtr obj) =>
-        obj.Handle is null
-            ? throw new NullReferenceException()
-            : new((ImVector*)Unsafe.AsPointer(ref obj.Glyphs));
 
-    /// <summary>
-    /// Wraps <see cref="ImFont.IndexedHotData"/> into a <see cref="ImVectorWrapper{T}"/>.<br />
-    /// This does not need to be disposed.
-    /// </summary>
-    /// <param name="obj">The owner object.</param>
-    /// <returns>The wrapped vector.</returns>
-    public static unsafe ImVectorWrapper<ImGuiHelpers.ImFontGlyphHotDataReal> IndexedHotDataWrapped(this ImFontPtr obj)
-        => obj.Handle is null
-               ? throw new NullReferenceException()
-               : new((ImVector*)Unsafe.AsPointer(ref obj.IndexedHotData));
-
-    /// <summary>
-    /// Wraps <see cref="ImFont.IndexLookup"/> into a <see cref="ImVectorWrapper{T}"/>.<br />
-    /// This does not need to be disposed.
-    /// </summary>
-    /// <param name="obj">The owner object.</param>
-    /// <returns>The wrapped vector.</returns>
-    public static unsafe ImVectorWrapper<ushort> IndexLookupWrapped(this ImFontPtr obj) =>
-        obj.Handle is null
-            ? throw new NullReferenceException()
-            : new((ImVector*)Unsafe.AsPointer(ref obj.IndexLookup));
 }

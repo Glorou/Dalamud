@@ -59,7 +59,7 @@ internal sealed class SettingsTabDtr : SettingsTab
             // TODO: Maybe we can also resort the rest of the bar in the future?
             // var isRequired = search is Configuration.SearchSetting.Internal or Configuration.SearchSetting.MacroLinks;
 
-            ImGui.PushFont(UiBuilder.IconFont, UiBuilder.DefaultFontSizePt);
+
 
             var arrowUpText = $"{FontAwesomeIcon.ArrowUp.ToIconString()}##{title}";
             if (i == 0)

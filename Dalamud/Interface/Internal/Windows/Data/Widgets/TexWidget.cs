@@ -403,10 +403,9 @@ internal class TexWidget : IDataWindowWidget
 
         const int numIcons = 1;
         float iconWidths;
-        using (im.IconFontHandle?.Push())
-        {
+
             iconWidths = ImGui.CalcTextSize(FontAwesomeIcon.Save.ToIconString()).X;
-        }
+
 
         ImGui.TableSetupScrollFreeze(0, 1);
         ImGui.TableSetupColumn(
@@ -559,12 +558,11 @@ internal class TexWidget : IDataWindowWidget
 
         const int numIcons = 4;
         float iconWidths;
-        using (im.IconFontHandle?.Push())
-        {
+
             iconWidths = ImGui.CalcTextSize(FontAwesomeIcon.Save.ToIconString()).X;
             iconWidths += ImGui.CalcTextSize(FontAwesomeIcon.Sync.ToIconString()).X;
             iconWidths += ImGui.CalcTextSize(FontAwesomeIcon.Trash.ToIconString()).X;
-        }
+
 
         ImGui.TableSetupScrollFreeze(0, 1);
         ImGui.TableSetupColumn("ID"u8, ImGuiTableColumnFlags.WidthFixed, ImGui.CalcTextSize("000000"u8).X);

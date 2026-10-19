@@ -39,7 +39,6 @@ public static partial class ImRaii
             if (FontPushCounter++ == 0)
                 DefaultPushed = ImGui.GetFont();
 
-            ImGui.PushFont(font);
             ++this.Count;
             return this;
         }

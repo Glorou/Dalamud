@@ -8,7 +8,6 @@ using Dalamud.Configuration.Internal;
 using Dalamud.Interface.Colors;
 using Dalamud.Interface.Internal.DesignSystem;
 using Dalamud.Interface.Internal.Windows.Settings.Tabs;
-using Dalamud.Interface.ManagedFontAtlas.Internals;
 using Dalamud.Interface.Utility;
 using Dalamud.Interface.Utility.Raii;
 using Dalamud.Interface.Windowing;
@@ -111,25 +110,14 @@ internal sealed class SettingsWindow : Window
     {
         var configuration = Service<DalamudConfiguration>.Get();
         var interfaceManager = Service<InterfaceManager>.Get();
-        var fontAtlasFactory = Service<FontAtlasFactory>.Get();
         var localization = Service<Localization>.Get();
 
         var scaleChanged = !Equals(ImGui.GetStyle().FontScaleMain, configuration.GlobalUiScale);
-        var rebuildFont = !Equals(fontAtlasFactory.DefaultFontSpec, configuration.DefaultFontSpec);
-        rebuildFont |= scaleChanged;
 
         ImGui.GetStyle().ScaleAllSizes(configuration.GlobalUiScale);
         if (scaleChanged)
         {
             interfaceManager.InvokeGlobalScaleChanged();
-        }
-
-        fontAtlasFactory.DefaultFontSpecOverride = null;
-
-        if (rebuildFont)
-        {
-            interfaceManager.RebuildFonts();
-            interfaceManager.InvokeFontChanged();
         }
 
         foreach (var settingsTab in this.tabs)
@@ -307,7 +295,6 @@ internal sealed class SettingsWindow : Window
 
         configuration.QueueSave();
 
-        Service<InterfaceManager>.Get().RebuildFonts();
     }
 
     private void OnLocalizationChanged(string langCode)

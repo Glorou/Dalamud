@@ -1276,7 +1276,7 @@ internal class SeStringCreatorWidget : IDataWindowWidget
 
     private bool IconButton(string key, FontAwesomeIcon icon, string tooltip, Vector2 size = default, bool disabled = false, bool active = false)
     {
-        using var iconFont = ImRaii.PushFont(UiBuilder.IconFont);
+
         if (!key.StartsWith("##")) key = "##" + key;
 
         var disposables = new List<IDisposable>();
@@ -1297,7 +1297,7 @@ internal class SeStringCreatorWidget : IDataWindowWidget
         foreach (var disposable in disposables)
             disposable.Dispose();
 
-        iconFont?.Dispose();
+
 
         if (ImGui.IsItemHovered())
         {
@@ -1311,7 +1311,6 @@ internal class SeStringCreatorWidget : IDataWindowWidget
 
     private Vector2 GetIconButtonSize(FontAwesomeIcon icon)
     {
-        using var iconFont = ImRaii.PushFont(UiBuilder.IconFont);
         return ImGui.CalcTextSize(icon.ToIconString()) + ImGui.GetStyle().FramePadding * 2;
     }
 

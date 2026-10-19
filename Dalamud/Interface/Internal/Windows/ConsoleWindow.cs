@@ -183,7 +183,6 @@ internal class ConsoleWindow : Window, IDisposable
 
         ImGui.PushStyleVar(ImGuiStyleVar.ItemSpacing, Vector2.Zero);
 
-        ImGui.PushFont(InterfaceManager.MonoFont, InterfaceManager.DefaultFontSizePt);
 
         var childPos = ImGui.GetWindowPos();
         var childDrawList = ImGui.GetWindowDrawList();
@@ -1109,8 +1108,6 @@ internal class ConsoleWindow : Window, IDisposable
         var font = ImGui.GetFont();
         var size = ImGui.GetFontSize();
         //var scale = size / font.FontSize;
-        var hotData = font.IndexedHotDataWrapped();
-        var lookup = font.IndexLookupWrapped();
         //var kern = (ImGui.GetIO().ConfigFlags & ImGuiConfigFlags.NoKerning) == 0;
         var lastc = '\0';
         for (var i = 0; i < charOffsetsIndex - 1; i++)
@@ -1123,8 +1120,7 @@ internal class ConsoleWindow : Window, IDisposable
             for (var j = begin; j < end; j++)
             {
                 var currc = line[j];
-                if (currc >= lookup.Length || lookup[currc] == ushort.MaxValue)
-                    currc = (char)font.FallbackChar;
+
 
                 //if (kern)
                     //screenPos.X += scale * ImGui.GetFont().GetDistanceAdjustmentForPair(lastc, currc);

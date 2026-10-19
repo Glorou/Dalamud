@@ -325,7 +325,7 @@ internal class AutoUpdateManager : IServiceType
         notification.ShowIndeterminateIfNoExpiry = false;
         notification.UserDismissable = false;
         notification.Progress = 0;
-        notification.Icon = INotificationIcon.From(FontAwesomeIcon.Download);
+
         notification.Minimized = false;
 
         var progress = new Progress<PluginManager.PluginUpdateProgress>();
@@ -389,7 +389,7 @@ internal class AutoUpdateManager : IServiceType
             Type = NotificationType.Info,
             InitialDuration = TimeSpan.MaxValue,
             ShowIndeterminateIfNoExpiry = false,
-            Icon = INotificationIcon.From(FontAwesomeIcon.Download),
+
         });
 
         void DrawNotificationContent(INotificationDrawArgs args)

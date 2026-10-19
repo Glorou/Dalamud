@@ -15,19 +15,7 @@ namespace Dalamud.Interface.ImGuiNotification;
 /// Dalamud.</remarks>
 public interface INotificationIcon
 {
-    /// <summary>Gets a new instance of <see cref="INotificationIcon"/> that will source the icon from an
-    /// <see cref="SeIconChar"/>.</summary>
-    /// <param name="iconChar">The icon character.</param>
-    /// <returns>A new instance of <see cref="INotificationIcon"/> that should be disposed after use.</returns>
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    static INotificationIcon From(SeIconChar iconChar) => new SeIconCharNotificationIcon(iconChar);
 
-    /// <summary>Gets a new instance of <see cref="INotificationIcon"/> that will source the icon from an
-    /// <see cref="FontAwesomeIcon"/>.</summary>
-    /// <param name="iconChar">The icon character.</param>
-    /// <returns>A new instance of <see cref="INotificationIcon"/> that should be disposed after use.</returns>
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    static INotificationIcon From(FontAwesomeIcon iconChar) => new FontAwesomeIconNotificationIcon(iconChar);
 
     /// <summary>Gets a new instance of <see cref="INotificationIcon"/> that will source the icon from a texture
     /// file shipped as a part of the game resources.</summary>

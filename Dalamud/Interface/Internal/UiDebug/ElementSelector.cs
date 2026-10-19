@@ -84,8 +84,7 @@ internal unsafe class ElementSelector : IDisposable
 
         if (ch.Success)
         {
-            using (ImRaii.PushFont(IconFont))
-            {
+
                 using (ImRaii.PushColor(Text, new Vector4(1, 1, 0.2f, 1), this.Active))
                 {
                     if (ImGui.Button($"{(char)ObjectUngroup}"))
@@ -100,34 +99,34 @@ internal unsafe class ElementSelector : IDisposable
                         {
                             Countdown = 0;
                         }
+
                     }
                 }
-            }
 
-            if (ImGui.IsItemHovered())
-            {
-                ImGui.SetTooltip("Element Selector"u8);
-            }
+                if (ImGui.IsItemHovered())
+                {
+                    ImGui.SetTooltip("Element Selector"u8);
+                }
 
-            ImGui.SameLine();
+                ImGui.SameLine();
 
-            ImGui.SetNextItemWidth(ImGui.GetContentRegionAvail().X - 32);
-            ImGui.InputTextWithHint(
-                "###addressSearchInput"u8,
-                "Address Search"u8,
-                ref this.addressSearchInput,
-                18,
-                ImGuiInputTextFlags.AutoSelectAll);
-            ImGui.SameLine();
+                ImGui.SetNextItemWidth(ImGui.GetContentRegionAvail().X - 32);
+                ImGui.InputTextWithHint(
+                    "###addressSearchInput"u8,
+                    "Address Search"u8,
+                    ref this.addressSearchInput,
+                    18,
+                    ImGuiInputTextFlags.AutoSelectAll);
+                ImGui.SameLine();
 
-            if (ImGuiComponents.IconButton("###elemSelectorAddrSearch", Search) && nint.TryParse(
-                    this.addressSearchInput,
-                    NumberStyles.HexNumber | NumberStyles.AllowHexSpecifier,
-                    InvariantInfo,
-                    out var address))
-            {
-                this.PerformSearch(address);
-            }
+                if (ImGuiComponents.IconButton("###elemSelectorAddrSearch", Search) && nint.TryParse(
+                        this.addressSearchInput,
+                        NumberStyles.HexNumber | NumberStyles.AllowHexSpecifier,
+                        InvariantInfo,
+                        out var address))
+                {
+                    this.PerformSearch(address);
+                }
         }
     }
 

@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 
 using Dalamud.Bindings.ImGui;
-using Dalamud.Interface.ManagedFontAtlas;
+
 
 using Newtonsoft.Json;
 
@@ -66,10 +66,6 @@ public sealed class DalamudDefaultFontAndFamilyId : IFontId, IFontFamilyId
     /// <inheritdoc/>
     public override string ToString() => nameof(DalamudDefaultFontAndFamilyId);
 
-    /// <inheritdoc/>
-    public ImFontPtr AddToBuildToolkit(IFontAtlasBuildToolkitPreBuild tk, in SafeFontConfig config)
-        => tk.AddDalamudDefaultFont(config.SizePx, config.GlyphRanges);
-    // TODO: mergeFont
 
     /// <inheritdoc/>
     public int FindBestMatch(int weight, int stretch, int style) => 0;

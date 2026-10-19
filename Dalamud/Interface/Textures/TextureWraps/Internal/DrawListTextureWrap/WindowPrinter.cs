@@ -30,13 +30,13 @@ internal sealed unsafe partial class DrawListTextureWrap
 
         var numDrawList = CountDrawList(windowPtr);
         var drawLists = stackalloc ImDrawList*[numDrawList];
+        var vec = new ImVector<ImDrawListPtr>(numDrawList, numDrawList, (ImDrawListPtr*)drawLists);
         var drawData = new ImDrawData
         {
             Valid = 1,
-            CmdListsCount = numDrawList,
             TotalIdxCount = 0,
             TotalVtxCount = 0,
-            CmdLists = drawLists,
+            CmdLists = vec,
             DisplayPos = windowPtr.Pos,
             DisplaySize = windowPtr.Size,
             FramebufferScale = scale,
@@ -44,8 +44,8 @@ internal sealed unsafe partial class DrawListTextureWrap
         AddWindowToDrawData(windowPtr, ref drawLists);
         for (var i = 0; i < numDrawList; i++)
         {
-            drawData.TotalVtxCount += drawData.CmdLists[i]->VtxBuffer.Size;
-            drawData.TotalIdxCount += drawData.CmdLists[i]->IdxBuffer.Size;
+            drawData.TotalVtxCount += drawData.CmdLists[i].VtxBuffer.Size;
+            drawData.TotalIdxCount += drawData.CmdLists[i].IdxBuffer.Size;
         }
 
         this.Draw(drawData);

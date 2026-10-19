@@ -798,7 +798,7 @@ public class WindowHost
                 drawList.AddCircleFilled(GetCenter(bb) + new Vector2(0.0f, -0.5f), (fontSize * 0.5f) + 1.0f, bgCol);
 
             var offset = button.IconOffset * ImGuiHelpers.GlobalScale;
-            drawList.AddText(InterfaceManager.IconFont, (float)(fontSize * 0.8), new Vector2(bb.Min.X + offset.X, bb.Min.Y + offset.Y), textCol, button.Icon.ToIconString());
+
 
             if (hovered)
                 button.ShowTooltip?.Invoke();
@@ -825,7 +825,7 @@ public class WindowHost
         ImGui.PopClipRect();
     }
 
-    private void DrawFakeFadeOutWindow()
+    private unsafe void DrawFakeFadeOutWindow()
     {
         // Draw a fake window to fade out, so that the fade out texture stays in the right place in the
         // focus order

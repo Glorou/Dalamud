@@ -22,8 +22,7 @@ public static partial class ImGuiComponents
     /// <returns>Indicator if button is clicked.</returns>
     public static bool DisabledButton(FontAwesomeIcon icon, int? id = null, Vector4? defaultColor = null, Vector4? activeColor = null, Vector4? hoveredColor = null, float alphaMult = .5f)
     {
-        using (ImRaii.PushFont(UiBuilder.IconFont))
-        {
+
             var text = icon.ToIconString();
             if (id.HasValue)
             {
@@ -31,7 +30,7 @@ public static partial class ImGuiComponents
             }
 
             return DisabledButton(text, defaultColor, activeColor, hoveredColor, alphaMult);
-        }
+
     }
 
     /// <summary>

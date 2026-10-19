@@ -28,10 +28,7 @@ public static partial class ImGuiComponents
 
         ImGui.SameLine();
 
-        using (ImRaii.PushFont(UiBuilder.IconFont))
-        {
-            ImGui.TextDisabled(icon.ToIconString());
-        }
+
 
         if (ImGui.IsItemHovered())
         {

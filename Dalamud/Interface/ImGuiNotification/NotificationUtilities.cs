@@ -5,7 +5,6 @@ using System.Runtime.CompilerServices;
 using Dalamud.Bindings.ImGui;
 using Dalamud.Game.Text;
 using Dalamud.Interface.Internal.Windows;
-using Dalamud.Interface.ManagedFontAtlas;
 using Dalamud.Interface.Textures;
 using Dalamud.Interface.Textures.TextureWraps;
 using Dalamud.Interface.Utility;
@@ -17,15 +16,6 @@ namespace Dalamud.Interface.ImGuiNotification;
 /// <summary>Utilities for implementing stuff under <see cref="ImGuiNotification"/>.</summary>
 public static class NotificationUtilities
 {
-    /// <inheritdoc cref="INotificationIcon.From(SeIconChar)"/>
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static INotificationIcon ToNotificationIcon(this SeIconChar iconChar) =>
-        INotificationIcon.From(iconChar);
-
-    /// <inheritdoc cref="INotificationIcon.From(FontAwesomeIcon)"/>
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static INotificationIcon ToNotificationIcon(this FontAwesomeIcon iconChar) =>
-        INotificationIcon.From(iconChar);
 
     /// <inheritdoc cref="INotificationIcon.FromFile(string)"/>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -43,35 +33,8 @@ public static class NotificationUtilities
         Vector2 minCoord,
         Vector2 maxCoord,
         char c,
-        IFontHandle fontHandle,
         Vector4 color)
     {
-        if (c is '\0' or char.MaxValue)
-            return false;
-
-        var smallerDim = Math.Max(maxCoord.Y - minCoord.Y, maxCoord.X - minCoord.X);
-        using (fontHandle.Push())
-        {
-            var font = ImGui.GetFont();
-            var glyphPtr = (ImGuiHelpers.ImFontGlyphReal*)font.LastBaked.FindGlyphNoFallback(c);
-            if (glyphPtr is null)
-                return false;
-
-            ref readonly var glyph = ref *glyphPtr;
-            var size = glyph.XY1 - glyph.XY0;
-            var smallerSizeDim = Math.Min(size.X, size.Y);
-            var scale = smallerSizeDim > smallerDim ? smallerDim / smallerSizeDim : 1f;
-            size *= scale;
-            var pos = ((minCoord + maxCoord) - size) / 2;
-            pos += ImGui.GetWindowPos();
-            ImGui.GetWindowDrawList().AddImage(
-                new ImTextureRef(texId: font.OwnerAtlas.TexList[glyph.TextureIndex].TexID),
-                pos,
-                pos + size,
-                glyph.UV0,
-                glyph.UV1,
-                ImGui.GetColorU32(color with { W = color.W * ImGui.GetStyle().Alpha }));
-        }
 
         return true;
     }
@@ -94,7 +57,7 @@ public static class NotificationUtilities
     /// <param name="maxCoord">The coordinates of the bottom right of the icon area.</param>
     /// <param name="texture">The texture.</param>
     /// <returns><c>true</c> if anything has been drawn.</returns>
-    internal static bool DrawIconFrom(Vector2 minCoord, Vector2 maxCoord, IDalamudTextureWrap? texture)
+    internal unsafe static bool DrawIconFrom(Vector2 minCoord, Vector2 maxCoord, IDalamudTextureWrap? texture)
     {
         if (texture is null)
             return false;

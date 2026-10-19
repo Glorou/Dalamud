@@ -40,11 +40,11 @@ public unsafe struct BufferBackedImDrawData : IDisposable
 
         var atlas = ImGui.GetIO().Fonts;
         ds->SharedData = *ImGui.GetDrawListSharedData().Handle;
-        ds->SharedData.TexIdCommon = atlas.Textures[atlas.TextureIndexCommon].TexID;
+
         ds->SharedData.TexUvWhitePixel = atlas.TexUvWhitePixel;
         ds->SharedData.TexUvLines = (Vector4*)Unsafe.AsPointer(ref atlas.TexUvLines[0]);
         ds->SharedData.Font = ImGui.GetIO().FontDefault;
-        ds->SharedData.FontSize = ds->SharedData.Font->FontSize;
+
         ds->SharedData.ClipRectFullscreen = new(
             float.NegativeInfinity,
             float.NegativeInfinity,
@@ -53,14 +53,15 @@ public unsafe struct BufferBackedImDrawData : IDisposable
 
         ds->List.Data = &ds->SharedData;
         ds->ListPtr = &ds->List;
-        ds->Data.CmdLists = &ds->ListPtr;
-        ds->Data.CmdListsCount = 1;
+
+        ds->Data.CmdLists = new ImVector<ImDrawListPtr>(ds->SharedData.DrawLists.Size,ds->SharedData.DrawLists.Size, (ImDrawListPtr*)&ds->ListPtr);
+
         ds->Data.FramebufferScale = Vector2.One;
         ds->Data.Valid = 1;
 
         res.ListPtr._ResetForNewFrame();
         res.ListPtr.PushClipRectFullScreen();
-        res.ListPtr.PushTextureID(new(atlas.TextureIndexCommon));
+
         return res;
     }
 

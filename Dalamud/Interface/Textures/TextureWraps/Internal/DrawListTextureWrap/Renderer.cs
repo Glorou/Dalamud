@@ -77,9 +77,9 @@ internal sealed unsafe partial class DrawListTextureWrap
             ThreadSafety.AssertMainThread();
 
             if (drawData.DisplaySize.X <= 0 || drawData.DisplaySize.Y <= 0
-                || !drawData.Valid || drawData.CmdListsCount < 1)
+                || !drawData.Valid || drawData.CmdLists.Size < 1)
                 return;
-            var cmdLists = new Span<ImDrawListPtr>(drawData.CmdLists, drawData.CmdListsCount);
+            var cmdLists = new Span<ImDrawListPtr>(drawData.CmdLists.Data, drawData.CmdLists.Size);
 
             // Create and grow vertex/index buffers if needed
             if (this.vertexBufferSize < drawData.TotalVtxCount)
@@ -241,7 +241,7 @@ internal sealed unsafe partial class DrawListTextureWrap
                     {
                         // Bind texture and draw
                         var samplerp = this.samplerState.Get();
-                        var srvp = (ID3D11ShaderResourceView*)cmd.TextureId.Handle;
+                        var srvp = (ID3D11ShaderResourceView*)cmd.TexRef.TexID.Handle;
                         this.deviceContext.Get()->PSSetShader(this.drawToPremulPixelShader, null, 0);
                         this.deviceContext.Get()->PSSetSamplers(0, 1, &samplerp);
                         this.deviceContext.Get()->PSSetShaderResources(0, 1, &srvp);

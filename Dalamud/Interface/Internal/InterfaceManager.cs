@@ -25,8 +25,6 @@ using Dalamud.Interface.ImGuiNotification.Internal;
 using Dalamud.Interface.Internal.Asserts;
 using Dalamud.Interface.Internal.DesignSystem;
 using Dalamud.Interface.Internal.ReShadeHandling;
-using Dalamud.Interface.ManagedFontAtlas;
-using Dalamud.Interface.ManagedFontAtlas.Internals;
 using Dalamud.Interface.Style;
 using Dalamud.Interface.Utility;
 using Dalamud.Interface.Windowing;
@@ -116,8 +114,6 @@ internal partial class InterfaceManager : IInternalDisposableService
     private ObjectVTableHook<IDXGISwapChain4.Vtbl<IDXGISwapChain4>>? dxgiSwapChainHook;
     private ReShadeAddonInterface? reShadeAddonInterface;
 
-    private IFontAtlas? dalamudAtlas;
-    private ILockedImFont? defaultFontResourceLock;
 
     // can't access imgui IO before first present call
     private HWND gameWindowHandle;
@@ -166,53 +162,8 @@ internal partial class InterfaceManager : IInternalDisposableService
     /// </summary>
     public event Action? DefaultStyleChanged;
 
-    /// <summary>
-    /// Gets the default ImGui font.<br />
-    /// <strong>Accessing this static property outside of the main thread is dangerous and not supported.</strong>
-    /// </summary>
-    public static ImFontPtr DefaultFont =>
-        WhenFontsReady().DefaultFontHandle!.LockUntilPostFrame().OrElse(ImGui.GetIO().FontDefault);
 
-    /// <summary>
-    /// Gets an included FontAwesome icon font.<br />
-    /// <strong>Accessing this static property outside of the main thread is dangerous and not supported.</strong>
-    /// </summary>
-    public static ImFontPtr IconFont =>
-        WhenFontsReady().IconFontHandle!.LockUntilPostFrame().OrElse(ImGui.GetIO().FontDefault);
 
-    /// <summary>
-    /// Gets an included FontAwesome icon font with fixed width.
-    /// <strong>Accessing this static property outside of the main thread is dangerous and not supported.</strong>
-    /// </summary>
-    public static ImFontPtr IconFontFixedWidth =>
-        WhenFontsReady().IconFontFixedWidthHandle!.LockUntilPostFrame().OrElse(ImGui.GetIO().FontDefault);
-
-    /// <summary>
-    /// Gets an included monospaced font.<br />
-    /// <strong>Accessing this static property outside of the main thread is dangerous and not supported.</strong>
-    /// </summary>
-    public static ImFontPtr MonoFont =>
-        WhenFontsReady().MonoFontHandle!.LockUntilPostFrame().OrElse(ImGui.GetIO().FontDefault);
-
-    /// <summary>
-    /// Gets the default font handle.
-    /// </summary>
-    public FontHandle? DefaultFontHandle { get; private set; }
-
-    /// <summary>
-    /// Gets the icon font handle.
-    /// </summary>
-    public FontHandle? IconFontHandle { get; private set; }
-
-    /// <summary>
-    /// Gets the icon font handle with fixed width.
-    /// </summary>
-    public FontHandle? IconFontFixedWidthHandle { get; private set; }
-
-    /// <summary>
-    /// Gets the mono font handle.
-    /// </summary>
-    public FontHandle? MonoFontHandle { get; private set; }
 
     /// <summary>
     /// Gets or sets the pointer to ImGui.IO(), when it was last used.
@@ -281,10 +232,7 @@ internal partial class InterfaceManager : IInternalDisposableService
         }
     }
 
-    /// <summary>
-    /// Gets the font build task.
-    /// </summary>
-    public Task FontBuildTask => WhenFontsReady().dalamudAtlas!.BuildTask;
+
 
     /// <summary>Gets the number of calls to <see cref="DxgiSwapChainPresentDetour"/> so far.</summary>
     /// <remarks>
@@ -328,23 +276,6 @@ internal partial class InterfaceManager : IInternalDisposableService
 
         // Below this point, hooks are guaranteed to be no longer called.
 
-        // A font resource lock outlives the parent handle and the owner atlas. It should be disposed.
-        Interlocked.Exchange(ref this.defaultFontResourceLock, null)?.Dispose();
-
-        // Font handles become invalid after disposing the atlas, but just to be safe.
-        this.DefaultFontHandle?.Dispose();
-        this.DefaultFontHandle = null;
-
-        this.MonoFontHandle?.Dispose();
-        this.MonoFontHandle = null;
-
-        this.IconFontHandle?.Dispose();
-        this.IconFontHandle = null;
-
-        this.IconFontFixedWidthHandle?.Dispose();
-        this.IconFontFixedWidthHandle = null;
-
-        Interlocked.Exchange(ref this.dalamudAtlas, null)?.Dispose();
         Interlocked.Exchange(ref this.backend, null)?.Dispose();
 
         return;
@@ -361,14 +292,7 @@ internal partial class InterfaceManager : IInternalDisposableService
         }
     }
 
-    /// <summary>
-    /// Sets up a deferred invocation of font rebuilding, before the next render frame.
-    /// </summary>
-    public void RebuildFonts()
-    {
-        Log.Verbose("[FONT] RebuildFonts() called");
-        this.dalamudAtlas?.BuildFontsAsync();
-    }
+
 
     /// <summary>
     /// Enqueue a texture to be disposed at the end of the frame.
@@ -563,11 +487,7 @@ internal partial class InterfaceManager : IInternalDisposableService
     private static InterfaceManager WhenFontsReady()
     {
         var im = Service<InterfaceManager>.GetNullable();
-        if (im?.dalamudAtlas is not { } atlas)
-            throw new InvalidOperationException($"Tried to access fonts before {nameof(SetupHooks)} call.");
 
-        if (!atlas.HasBuiltAtlas)
-            atlas.BuildTask.GetAwaiter().GetResult();
         return im;
     }
 
@@ -612,7 +532,6 @@ internal partial class InterfaceManager : IInternalDisposableService
             return;
 
         this.framework.Update -= this.FrameworkOnUpdate;
-        this.SetupHooks(Service<TargetSigScanner>.Get(), Service<FontAtlasFactory>.Get());
     }
 
     /// <summary>Checks if the provided swap chain is the target that Dalamud should draw its interface onto,
@@ -632,21 +551,10 @@ internal partial class InterfaceManager : IInternalDisposableService
         if (!SwapChainHelper.IsGameDeviceSwapChain(swapChain))
             return null;
 
-        Debug.Assert(this.dalamudAtlas is not null, "dalamudAtlas should have been set already");
+
 
         var activeBackend = this.backend ?? this.InitBackend(swapChain);
 
-        if (!this.dalamudAtlas!.HasBuiltAtlas)
-        {
-            if (this.dalamudAtlas.BuildTask.Exception != null)
-            {
-                // TODO: Can we do something more user-friendly here? Unload instead?
-                Log.Error(this.dalamudAtlas.BuildTask.Exception, "Failed to initialize Dalamud base fonts");
-                Util.Fatal("Failed to initialize Dalamud base fonts.\nPlease report this error.", "Dalamud");
-            }
-
-            return null;
-        }
 
         return activeBackend;
     }
@@ -846,77 +754,9 @@ internal partial class InterfaceManager : IInternalDisposableService
     }
 
     private unsafe void SetupHooks(
-        TargetSigScanner sigScanner,
-        FontAtlasFactory fontAtlasFactory)
+        TargetSigScanner sigScanner)
     {
-        this.dalamudAtlas = fontAtlasFactory
-            .CreateFontAtlas(nameof(InterfaceManager), FontAtlasAutoRebuildMode.Disable);
-        using (this.dalamudAtlas.SuppressAutoRebuild())
-        {
-            this.DefaultFontHandle = (FontHandle)this.dalamudAtlas.NewDelegateFontHandle(
-                e => e.OnPreBuild(tk => tk.AddDalamudDefaultFont(-1)));
-            this.IconFontHandle = (FontHandle)this.dalamudAtlas.NewDelegateFontHandle(
-                e => e.OnPreBuild(
-                    tk => tk.AddFontAwesomeIconFont(
-                        new()
-                        {
-                            SizePx = Service<FontAtlasFactory>.Get().DefaultFontSpec.SizePx,
-                            GlyphMinAdvanceX = DefaultFontSizePx,
-                            GlyphMaxAdvanceX = DefaultFontSizePx,
-                        })));
-            this.IconFontFixedWidthHandle = (FontHandle)this.dalamudAtlas.NewDelegateFontHandle(
-                e => e.OnPreBuild(tk => tk.AddDalamudAssetFont(
-                    DalamudAsset.FontAwesomeFreeSolid,
-                    new()
-                    {
-                        SizePx = Service<FontAtlasFactory>.Get().DefaultFontSpec.SizePx,
-                        GlyphRanges = [0x20, 0x20, 0x00],
-                    })));
-            this.MonoFontHandle = (FontHandle)this.dalamudAtlas.NewDelegateFontHandle(
-                e => e.OnPreBuild(
-                    tk => tk.AddDalamudAssetFont(
-                        DalamudAsset.InconsolataRegular,
-                        new()
-                        {
-                            SizePx = Service<FontAtlasFactory>.Get().DefaultFontSpec.SizePx,
-                        })));
-            this.dalamudAtlas.BuildStepChange += e => e.OnPostBuild(
-                tk =>
-                {
-                    // Fill missing glyphs in MonoFont from DefaultFont.
-                    tk.CopyGlyphsAcrossFonts(
-                        tk.GetFont(this.DefaultFontHandle),
-                        tk.GetFont(this.MonoFontHandle),
-                        missingOnly: true);
 
-                    // Fill missing glyphs in IconFontFixedWidth with IconFont and fit ratio
-                    tk.CopyGlyphsAcrossFonts(
-                        tk.GetFont(this.IconFontHandle),
-                        tk.GetFont(this.IconFontFixedWidthHandle),
-                        missingOnly: true);
-                    tk.FitRatio(tk.GetFont(this.IconFontFixedWidthHandle));
-                });
-            this.DefaultFontHandle.ImFontChanged += (_, font) =>
-            {
-                var fontLocked = font.NewRef();
-                this.framework.RunOnFrameworkThread(
-                    () =>
-                    {
-                        // Update the ImGui default font.
-                        ImGui.GetIO().Handle->FontDefault = fontLocked.ImFont;
-
-                        // Update the reference to the resources of the default font.
-                        this.defaultFontResourceLock?.Dispose();
-                        this.defaultFontResourceLock = fontLocked;
-
-                        // Broadcast to auto-rebuilding instances.
-                        this.AfterBuildFonts.InvokeSafely();
-                    });
-            };
-        }
-
-        // This will wait for scene on its own. We just wait for this.dalamudAtlas.BuildTask in this.InitScene.
-        _ = this.dalamudAtlas.BuildFontsAsync();
 
         SwapChainHelper.BusyWaitForGameDeviceSwapChain();
         var swapChainDesc = default(DXGI_SWAP_CHAIN_DESC);

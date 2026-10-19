@@ -227,7 +227,6 @@ public static unsafe partial class ImGui
             {
                 var g = GetCurrentContext();
                 var backupItemFlags = g.CurrentItemFlags;
-                g.CurrentItemFlags |= ImGuiItemFlags.MixedValue;
                 pressed = ImGuiNative.Checkbox(labelPtr, &allOn) != 0;
                 g.CurrentItemFlags = backupItemFlags;
             }

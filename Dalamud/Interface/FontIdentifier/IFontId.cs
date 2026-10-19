@@ -1,5 +1,5 @@
 using Dalamud.Bindings.ImGui;
-using Dalamud.Interface.ManagedFontAtlas;
+
 
 namespace Dalamud.Interface.FontIdentifier;
 
@@ -29,11 +29,4 @@ public interface IFontId : IObjectWithLocalizableName
     /// </summary>
     int Style { get; }
 
-    /// <summary>
-    /// Adds this font to the given font build toolkit.
-    /// </summary>
-    /// <param name="tk">The font build toolkit.</param>
-    /// <param name="config">The font configuration. Some parameters may be ignored.</param>
-    /// <returns>The added font.</returns>
-    ImFontPtr AddToBuildToolkit(IFontAtlasBuildToolkitPreBuild tk, in SafeFontConfig config);
 }

@@ -10,8 +10,7 @@ using Dalamud.Game.Addon.Lifecycle;
 using Dalamud.Game.ClientState;
 using Dalamud.Game.Gui;
 using Dalamud.Interface.Animation.EasingFunctions;
-using Dalamud.Interface.ManagedFontAtlas;
-using Dalamud.Interface.ManagedFontAtlas.Internals;
+
 using Dalamud.Interface.Textures.TextureWraps;
 using Dalamud.Interface.Utility;
 using Dalamud.Interface.Utility.Raii;
@@ -40,8 +39,7 @@ internal class TitleScreenMenuWindow : Window, IDisposable
     private readonly TitleScreenMenu titleScreenMenu;
 
     private readonly DisposeSafety.ScopedFinalizer scopedFinalizer = new();
-    private readonly IFontAtlas privateAtlas;
-    private readonly Lazy<IFontHandle> myFontHandle;
+
     private readonly Lazy<IDalamudTextureWrap> shadeTexture;
 
     private readonly Dictionary<Guid, InOutCubic> shadeEasings = [];
@@ -70,7 +68,6 @@ internal class TitleScreenMenuWindow : Window, IDisposable
         ClientState clientState,
         DalamudConfiguration configuration,
         DalamudAssetManager dalamudAssetManager,
-        FontAtlasFactory fontAtlasFactory,
         Framework framework,
         GameGui gameGui,
         TitleScreenMenu titleScreenMenu,
@@ -98,21 +95,10 @@ internal class TitleScreenMenuWindow : Window, IDisposable
         this.RespectCloseHotkey = false;
 
         this.shadeTexture = new(() => dalamudAssetManager.GetDalamudTextureWrap(DalamudAsset.TitleScreenMenuShade));
-        this.privateAtlas = fontAtlasFactory.CreateFontAtlas(this.WindowName, FontAtlasAutoRebuildMode.Async);
-        this.scopedFinalizer.Add(this.privateAtlas);
+
 
         this.AllowBackgroundBlur = false;
 
-        this.myFontHandle = new(
-            () => this.scopedFinalizer.Add(
-                this.privateAtlas.NewDelegateFontHandle(
-                    e => e.OnPreBuild(
-                        toolkit => toolkit.AddDalamudDefaultFont(
-                            TargetFontSizePx,
-                            titleScreenMenu.Entries.SelectMany(x => x.Name).ToGlyphRange())))));
-
-        titleScreenMenu.EntryListChange += this.TitleScreenMenuEntryListChange;
-        this.scopedFinalizer.Add(() => titleScreenMenu.EntryListChange -= this.TitleScreenMenuEntryListChange);
 
         this.shadeTexture = new(() => dalamudAssetManager.GetDalamudTextureWrap(DalamudAsset.TitleScreenMenuShade));
 
@@ -333,7 +319,7 @@ internal class TitleScreenMenuWindow : Window, IDisposable
     private bool DrawEntry(
         ITitleScreenMenuEntry entry, bool inhibitFadeout, bool showText, bool isFirst, bool overrideAlpha, bool interactable)
     {
-        using var fontScopeDispose = this.myFontHandle.Value.Push();
+
 
         var scale = ImGui.GetStyle().FontScaleMain;
 
@@ -461,5 +447,5 @@ internal class TitleScreenMenuWindow : Window, IDisposable
             this.IsOpen = false;
     }
 
-    private void TitleScreenMenuEntryListChange() => this.privateAtlas.BuildFontsAsync();
+
 }

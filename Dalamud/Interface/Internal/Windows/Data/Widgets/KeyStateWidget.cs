@@ -62,10 +62,7 @@ internal class KeyStateWidget : IDataWindowWidget
     {
         if (isExtended)
         {
-            using (ImRaii.PushFont(UiBuilder.IconFont))
-            {
-                ImGui.TextColored(ImGuiColors.DalamudYellow, FontAwesomeIcon.ExclamationTriangle.ToIconString());
-            }
+
 
             ImGui.SameLine();
             ImGui.Text("Extended keybinds cannot be used by the game, but are made available for plugin use.");

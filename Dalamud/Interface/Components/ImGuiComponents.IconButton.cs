@@ -140,8 +140,7 @@ public static partial class ImGuiComponents
 
         bool button;
 
-        using (ImRaii.PushFont(UiBuilder.IconFont))
-        {
+
             var iconSize = ImGui.CalcTextSize(icon);
             var cursor = ImGui.GetCursorScreenPos();
 
@@ -158,7 +157,7 @@ public static partial class ImGuiComponents
             var iconPos = cursor + ((buttonSize - iconSize) / 2f);
 
             ImGui.GetWindowDrawList().AddText(iconPos, ImGui.GetColorU32(ImGuiCol.Text), icon);
-        }
+
 
         return button;
     }
@@ -202,10 +201,9 @@ public static partial class ImGuiComponents
         bool button;
 
         Vector2 iconSize;
-        using (ImRaii.PushFont(UiBuilder.IconFont))
-        {
+
             iconSize = ImGui.CalcTextSize(icon.ToIconString());
-        }
+
 
         var textStr = text;
         if (textStr.Contains('#'))
@@ -233,10 +231,9 @@ public static partial class ImGuiComponents
 
         var dl = ImGui.GetWindowDrawList();
 
-        using (ImRaii.PushFont(UiBuilder.IconFont))
-        {
+
             dl.AddText(iconPos, ImGui.GetColorU32(ImGuiCol.Text), icon.ToIconString());
-        }
+
 
         dl.AddText(textPos, ImGui.GetColorU32(ImGuiCol.Text), textStr);
 
@@ -252,10 +249,9 @@ public static partial class ImGuiComponents
     public static float GetIconButtonWithTextWidth(FontAwesomeIcon icon, string text)
     {
         Vector2 iconSize;
-        using (ImRaii.PushFont(UiBuilder.IconFont))
-        {
+
             iconSize = ImGui.CalcTextSize(icon.ToIconString());
-        }
+
 
         var textSize = ImGui.CalcTextSize(text);
         var iconPadding = 3 * ImGuiHelpers.GlobalScale;

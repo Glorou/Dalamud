@@ -151,14 +151,6 @@ internal class ImGuiWidget : IDataWindowWidget
                     },
                     Icon = this.notificationTemplate.IconInt switch
                     {
-                        1 => INotificationIcon.From(
-                            (SeIconChar)(this.notificationTemplate.IconText.Length == 0
-                                             ? 0
-                                             : this.notificationTemplate.IconText[0])),
-                        2 => INotificationIcon.From(
-                            (FontAwesomeIcon)(this.notificationTemplate.IconText.Length == 0
-                                                  ? 0
-                                                  : this.notificationTemplate.IconText[0])),
                         3 => INotificationIcon.FromGame(this.notificationTemplate.IconText),
                         4 => INotificationIcon.FromFile(this.notificationTemplate.IconText),
                         _ => null,

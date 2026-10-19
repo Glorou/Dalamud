@@ -34,11 +34,10 @@ internal static partial class DalamudComponents
         var saveButtonWidth = ImGuiComponents.GetIconButtonWithTextWidth(FontAwesomeIcon.Save, saveText);
 
         float closeButtonWidth;
-        using (ImRaii.PushFont(UiBuilder.IconFont))
-        {
+
             var iconSize = ImGui.CalcTextSize(FontAwesomeIcon.Times.ToIconString());
             closeButtonWidth = iconSize.X + (ImGui.GetStyle().FramePadding.X * 2);
-        }
+
 
         var totalWidth = closeButtonWidth + ImGui.GetStyle().ItemSpacing.X + saveButtonWidth;
         ImGui.SetCursorPos(windowSize - new Vector2(totalWidth + ImGuiHelpers.ScaledVector2(74).X, ImGuiHelpers.ScaledVector2(74).Y));

@@ -9,8 +9,6 @@ using Dalamud.Bindings.ImGui;
 using Dalamud.Configuration.Internal;
 using Dalamud.Interface.Colors;
 using Dalamud.Interface.FontIdentifier;
-using Dalamud.Interface.ManagedFontAtlas;
-using Dalamud.Interface.ManagedFontAtlas.Internals;
 using Dalamud.Interface.Utility;
 using Dalamud.Utility;
 
@@ -59,7 +57,7 @@ public sealed class SingleFontChooserDialog : IDisposable
     private readonly int counter;
     private readonly byte[] fontPreviewText = new byte[2048];
     private readonly TaskCompletionSource<SingleFontSpec> tcs = new(TaskCreationOptions.RunContinuationsAsynchronously);
-    private readonly IFontAtlas atlas;
+
 
     private string popupImGuiName;
     private string title;
@@ -81,7 +79,7 @@ public sealed class SingleFontChooserDialog : IDisposable
     private string familySearch = string.Empty;
     private string fontSearch = string.Empty;
     private string fontSizeSearch = "12";
-    private IFontHandle? fontHandle;
+
     private SingleFontSpec selectedFont;
 
     private bool popupPositionChanged;

@@ -32,7 +32,6 @@ using Dalamud.Interface.Internal.Windows.PluginInstaller;
 using Dalamud.Interface.Internal.Windows.SelfTest;
 using Dalamud.Interface.Internal.Windows.Settings;
 using Dalamud.Interface.Internal.Windows.StyleEditor;
-using Dalamud.Interface.ManagedFontAtlas.Internals;
 using Dalamud.Interface.Style;
 using Dalamud.Interface.Textures;
 using Dalamud.Interface.Utility;
@@ -67,7 +66,7 @@ internal class DalamudInterface : IInternalDisposableService
     private readonly DalamudConfiguration configuration;
     private readonly InterfaceManager interfaceManager;
 
-    private readonly ChangelogWindow changelogWindow;
+
     private readonly ColorDemoWindow colorDemoWindow;
     private readonly ComponentDemoWindow componentDemoWindow;
     private readonly DataWindow dataWindow;
@@ -109,7 +108,6 @@ internal class DalamudInterface : IInternalDisposableService
     private DalamudInterface(
         Dalamud dalamud,
         DalamudConfiguration configuration,
-        FontAtlasFactory fontAtlasFactory,
         InterfaceManager interfaceManager,
         PluginImageCache pluginImageCache,
         DalamudAssetManager dalamudAssetManager,
@@ -141,7 +139,6 @@ internal class DalamudInterface : IInternalDisposableService
             clientState,
             configuration,
             dalamudAssetManager,
-            fontAtlasFactory,
             framework,
             gameGui,
             titleScreenMenu,
@@ -150,20 +147,12 @@ internal class DalamudInterface : IInternalDisposableService
         {
             IsOpen = false,
         };
-        this.changelogWindow = new ChangelogWindow(
-            this.titleScreenMenuWindow,
-            fontAtlasFactory,
-            dalamudAssetManager,
-            gameGui,
-            framework)
-        {
-            IsOpen = false,
-        };
+
         this.profilerWindow = new ProfilerWindow { IsOpen = false };
         this.branchSwitcherWindow = new BranchSwitcherWindow { IsOpen = false };
         this.hitchSettingsWindow = new HitchSettingsWindow { IsOpen = false };
 
-        this.WindowSystem.AddWindow(this.changelogWindow);
+
         this.WindowSystem.AddWindow(this.colorDemoWindow);
         this.WindowSystem.AddWindow(this.componentDemoWindow);
         this.WindowSystem.AddWindow(this.dataWindow);
@@ -278,7 +267,6 @@ internal class DalamudInterface : IInternalDisposableService
         this.WindowSystem.Windows.OfType<IDisposable>().AggregateToDisposable().Dispose();
         this.WindowSystem.RemoveAllWindows();
 
-        this.changelogWindow.Dispose();
         this.consoleWindow.Dispose();
         this.pluginWindow.Dispose();
         this.titleScreenMenuWindow.Dispose();
@@ -289,7 +277,6 @@ internal class DalamudInterface : IInternalDisposableService
     /// <summary>
     /// Opens the <see cref="ChangelogWindow"/>.
     /// </summary>
-    public void OpenChangelogWindow() => this.changelogWindow.IsOpen = true;
 
     /// <summary>
     /// Opens the <see cref="ColorDemoWindow"/>.
@@ -444,10 +431,7 @@ internal class DalamudInterface : IInternalDisposableService
 
     #region Toggle
 
-    /// <summary>
-    /// Toggles the <see cref="ChangelogWindow"/>.
-    /// </summary>
-    public void ToggleChangelogWindow() => this.changelogWindow.Toggle();
+
 
     /// <summary>
     /// Toggles the <see cref="ColorDemoWindow"/>.
@@ -611,8 +595,7 @@ internal class DalamudInterface : IInternalDisposableService
 
                 this.WindowSystem.Draw();
 
-                if (this.isImGuiTestWindowsInMonospace)
-                    ImGui.PushFont(InterfaceManager.MonoFont, InterfaceManager.DefaultFontSizePt);
+
 
                 if (this.isImGuiDrawDemoWindow)
                     ImGui.ShowDemoWindow(ref this.isImGuiDrawDemoWindow);
@@ -882,10 +865,6 @@ internal class DalamudInterface : IInternalDisposableService
                         this.OpenSettings();
                     }
 
-                    if (ImGui.MenuItem("Open Changelog window"u8))
-                    {
-                        this.OpenChangelogWindow();
-                    }
 
                     if (ImGui.MenuItem("Open Components Demo"u8))
                     {
@@ -1235,7 +1214,7 @@ internal class DalamudInterface : IInternalDisposableService
 
                 if (this.configuration.ShowDevBarInfo)
                 {
-                    ImGui.PushFont(InterfaceManager.MonoFont, InterfaceManager.DefaultFontSizePt);
+
 
                     ImGui.BeginMenu($"{Versioning.GetActiveTrack() ?? "???"} on {Versioning.GetGitBranch() ?? "???"}", false);
                     ImGui.BeginMenu(Versioning.GetScmVersion(), false);
