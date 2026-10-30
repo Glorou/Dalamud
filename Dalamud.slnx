@@ -24,9 +24,9 @@
     <Project Path="lib/FFXIVClientStructs/InteropGenerator/InteropGenerator.csproj" />
   </Folder>
   <Folder Name="/Dependencies/imgui/">
-    <Project Path="build/external/cimgui.vcxproj" Id="6c11b58c-fb91-34c6-82b2-e2186f252da5" />
-    <Project Path="build/external/cimguizmo.vcxproj" Id="b81fa456-8285-3221-a3a6-1e88fa3b46ee" />
-    <Project Path="build/external/cimplot.vcxproj" Id="c64a55e8-4353-3caa-8989-b5bc8912cb15" />
+    <Project Path="build/external/cimgui.vcxproj" Id="44d1f0cb-3592-3da3-9050-2995e85cbfe4" />
+    <Project Path="build/external/cimguizmo.vcxproj" Id="9d1617d8-4170-3355-b598-298a756a99cb" />
+    <Project Path="build/external/cimplot.vcxproj" Id="8e3aa6f4-3363-3ebf-b194-2f4a324f189e" />
   </Folder>
   <Folder Name="/Dependencies/Lumina/">
     <Project Path="lib/Lumina.Excel/src/Lumina.Excel.Generator/Lumina.Excel.Generator.csproj" />
@@ -38,7 +38,7 @@
     <File Path="build.cmd" />
     <File Path="generate.cmd" />
     <File Path="tools/find-cmake.cmd" />
-    <Project Path="build/ZERO_CHECK.vcxproj" Id="da052c2f-b067-35ce-8e08-c1b653064162" />
+    <Project Path="build/ZERO_CHECK.vcxproj" Id="3fb31a54-fda1-3a7a-888f-9fc6ff89b0df" />
   </Folder>
   <Folder Name="/Solution Items/">
     <File Path=".editorconfig" />
@@ -62,8 +62,8 @@
       <Platform Project="x64" />
     </Project>
   </Folder>
-  <Project Path="build/Dalamud.Boot/Dalamud.Boot.vcxproj" Id="a26b8b98-74e0-3f5d-935f-86d318f43b15" />
-  <Project Path="build/DalamudCrashHandler/DalamudCrashHandler.vcxproj" Id="e06892af-ba2d-34b9-97e9-8aa563df2c5d" />
+  <Project Path="build/Dalamud.Boot/Dalamud.Boot.vcxproj" Id="38c947d0-4fa8-3ca6-bb64-1b349fcfb499" />
+  <Project Path="build/DalamudCrashHandler/DalamudCrashHandler.vcxproj" Id="0c5d2bf7-d5f8-3ffb-9e66-a9e182c253ba" />
   <Project Path="Dalamud.Common/Dalamud.Common.csproj">
     <Platform Project="x64" />
   </Project>

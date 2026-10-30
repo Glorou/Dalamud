@@ -532,6 +532,7 @@ internal partial class InterfaceManager : IInternalDisposableService
             return;
 
         this.framework.Update -= this.FrameworkOnUpdate;
+        this.SetupHooks(Service<TargetSigScanner>.Get());
     }
 
     /// <summary>Checks if the provided swap chain is the target that Dalamud should draw its interface onto,

@@ -184,7 +184,6 @@ internal sealed unsafe class Dx11Win32Backend : IWin32Backend
     }
 
     /// <inheritdoc/>
-    public void InvalidateFonts() => this.imguiRenderer.RebuildFontTexture();
 
     /// <inheritdoc/>
     public bool IsImGuiCursor(nint cursorHandle) => this.imguiInput.IsImGuiCursor(cursorHandle);

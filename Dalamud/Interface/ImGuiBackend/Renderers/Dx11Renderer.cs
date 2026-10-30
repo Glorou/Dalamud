@@ -1,5 +1,6 @@
 using System.Buffers;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Numerics;
@@ -24,6 +25,12 @@ using static TerraFX.Interop.Windows.Windows;
 
 namespace Dalamud.Interface.ImGuiBackend.Renderers;
 
+public struct Texture
+{
+    public ID3D11Texture2D* pTexture;
+    public ID3D11ShaderResourceView* pTextureView;
+}
+
 /// <summary>
 /// Deals with rendering ImGui using DirectX 11.
 /// See https://github.com/ocornut/imgui/blob/master/examples/imgui_impl_dx11.cpp for the original implementation.
@@ -34,7 +41,6 @@ namespace Dalamud.Interface.ImGuiBackend.Renderers;
     Justification = "Multiple fixed/using scopes")]
 internal unsafe partial class Dx11Renderer : IImGuiRenderer
 {
-    private readonly List<IDalamudTextureWrap> fontTextures = [];
     private readonly D3D_FEATURE_LEVEL featureLevel;
     private readonly ViewportHandler viewportHandler;
     private readonly nint renderNamePtr;
@@ -165,18 +171,6 @@ internal unsafe partial class Dx11Renderer : IImGuiRenderer
     public void RenderDrawData(ImDrawDataPtr drawData) =>
         this.mainViewport.Draw(drawData, this.mainViewport.SwapChain == null);
 
-    /// <summary>
-    /// Rebuilds font texture.
-    /// </summary>
-    public void RebuildFontTexture()
-    {
-        foreach (var fontResourceView in this.fontTextures)
-            fontResourceView.Dispose();
-        this.fontTextures.Clear();
-
-        this.CreateFontsTexture();
-    }
-
     /// <inheritdoc/>
     public IDalamudTextureWrap CreateTexture2D(
         ReadOnlySpan<byte> data,
@@ -258,6 +252,10 @@ internal unsafe partial class Dx11Renderer : IImGuiRenderer
         // Avoid rendering when minimized
         if (drawData.DisplaySize.X <= 0 || drawData.DisplaySize.Y <= 0)
             return;
+        if(drawData.Textures.Address(0) != null)
+            foreach(ImTextureDataPtr tex in drawData.Textures)
+                if (tex.Status != ImTextureStatus.Ok)
+                    UpdateTexture(tex);
 
         // Set up render target
         this.context.Get()->OMSetRenderTargets(1, &renderTargetView, null);
@@ -732,47 +730,29 @@ internal unsafe partial class Dx11Renderer : IImGuiRenderer
     /// Builds fonts as necessary, and uploads the built data onto the GPU.<br />
     /// No-op if it has already been done.
     /// </summary>
-    private void CreateFontsTexture()
+    private static void DestroyTexture(ImTextureData* tex)
     {
-        ObjectDisposedException.ThrowIf(this.device.IsEmpty(), this);
 
-        if (this.fontTextures.Count != 0)
-            return;
 
         if (Service<Framework>.GetNullable() is not { IsFrameworkUnloading: false })
             return;
 
-       /* var io = ImGui.GetIO();
-        if (io.Fonts.Fonts.Size == 0)
-            io.FontDefault.
+        Texture* backend_tex = (Texture*)tex->BackendUserData;
+        if (backend_tex == null)
+            return;
+        Debug.Assert(backend_tex->pTextureView == (ID3D11ShaderResourceView*)((ulong)tex->TexID.Handle));
+        backend_tex->pTextureView->Release();
+        backend_tex->pTexture->Release();
 
-        for (int textureIndex = 0, textureCount = io.Fonts.Textures.Size;
-             textureIndex < textureCount;
-             textureIndex++)
-        {
-            int width = 0, height = 0, bytespp = 0;
-            byte* fontPixels = null;
+        // Clear identifiers and mark as destroyed (in order to allow e.g. calling InvalidateDeviceObjects while running)
+        tex->SetTexID(ImTextureID.Null);
+        tex->SetStatus(ImTextureStatus.Destroyed);
+        tex->BackendUserData = null;
+    }
 
-            // Build texture atlas
-            io.Fonts.GetTexDataAsRGBA32(
-                textureIndex,
-                &fontPixels,
-                ref width,
-                ref height,
-                ref bytespp);
-
-            var tex = this.CreateTexture2D(
-                new(fontPixels, width * height * bytespp),
-                new(width, height, (int)DXGI_FORMAT.DXGI_FORMAT_R8G8B8A8_UNORM, width * bytespp),
-                false,
-                false,
-                false,
-                $"Font#{textureIndex}");
-            io.Fonts.SetTexID(textureIndex, tex.Handle);
-            this.fontTextures.Add(tex);
-        }
-
-        io.Fonts.ClearTexData();*/
+    public void UpdateTexture(ImTextureData* tex) {
+        var bd = ImGui.GetCurrentContext();
+        if (tex->Status == ImTextureStatus.WantCreate) { }
     }
 
     /// <summary>
@@ -1150,7 +1130,6 @@ internal unsafe partial class Dx11Renderer : IImGuiRenderer
                 this.device.Get()->CreateBlendState(&blurBlendDesc, ppBlendState).ThrowOnError();
         }
 
-        this.CreateFontsTexture();
     }
 
     private void ReleaseUnmanagedResources()
@@ -1172,8 +1151,6 @@ internal unsafe partial class Dx11Renderer : IImGuiRenderer
         if (this.renderNamePtr != 0)
             Marshal.FreeHGlobal(this.renderNamePtr);
 
-        foreach (var fontResourceView in this.fontTextures)
-            fontResourceView.Dispose();
 
         /*foreach (var i in Enumerable.Range(0, io.FontDefault.Textures.Size))
             io.Fonts.SetTexID(i, ImTextureID.Null);*/
